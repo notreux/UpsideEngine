@@ -10,9 +10,9 @@ return function(this)
 			
 			data.robloxSpace[this.index].Size = this.size;
 			
-		elseif property == "zIndex" and this.zIndex ~= 103 then
+		elseif property == "zIndex" and this.zIndex ~= 999999999 then
 			
-			this.zIndex = 103;
+			this.zIndex = 999999999;
 			
 		elseif property == "size" and this.size.X ~= this.range/100 then
 			
