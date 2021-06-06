@@ -1,4 +1,4 @@
-local Tween, rs, data = game:GetService("TweenService"), game:GetService("RunService"), require(script.Parent.Parent.data);
+local Tween, rs, data = game:GetService("TweenService"), game:GetService("RunService"), require(script.Parent.Parent:WaitForChild("data"));
 
 return function(this)
 	
@@ -6,19 +6,19 @@ return function(this)
 	this.tags = {};
 	
 	function this.methods.on(event_name, __function)
-				
+		print(this.events, this.events[event_name])
 		if not this.events[event_name] then
 			
-			this.events[event_name] = {__function}
+			this.events[event_name] = {}
 			
 		end
 		
-		local index = #this.events[event_name]+1;
+		local index = #this.events[event_name] + 1;
 		
 		this.events[event_name].waiting = "///waiting///";
 		
 		this.events[event_name][index] = __function;
-		
+				
 		return {
 			
 			wait = function()
@@ -29,7 +29,7 @@ return function(this)
 				
 				this.events[event_name].waiting = "///waiting///";
 				
-				return ew
+				return ew;
 				
 			end,
 			
@@ -159,6 +159,7 @@ return function(this)
 		
 		local object = Instance.new("ImageLabel");
 		object.Parent = renderIn;
+		object.AnchorPoint = Vector2.new(0.5,0.5);
 		
 		for index, value in pairs(this) do
 			
