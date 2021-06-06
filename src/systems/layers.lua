@@ -1,4 +1,4 @@
-local data, contentProvider, rs = require(script.Parent.Parent.data), game:GetService("ContentProvider"), game:GetService("RunService");
+local data, contentProvider, rs = require(script.Parent.Parent:WaitForChild("data")), game:GetService("ContentProvider"), game:GetService("RunService");
 
 return function(this)
 	
