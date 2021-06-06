@@ -1,10 +1,6 @@
 local self, data, HTTPS, indexs, ambient = {}, require(script.data), game:GetService("HttpService"), {}, nil;
 
-function self.new(object)
-	
-	return require(script.objects)(object);
-
-end
+self.new = require(script.objects);
 
 function self.start(renderIn)
 	
