@@ -2,16 +2,16 @@ local self = {}
 
 for _, n in pairs(script:GetChildren()) do
 	
-	self[n] = require(n)
+	self[n.Name] = require(n)
 	
 end
 
 return function(object, methods)
 	
-	table.foreach(methods, function(method)
+	for _, method in pairs(methods) do
 		
 		self[method](object);
 		
-	end)
+	end
 	
 end;
