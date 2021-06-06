@@ -1,4 +1,4 @@
-local self, properties, methods, data = {}, {}, {}, require(script.Parent.data);
+local self, properties, methods, data = {}, {}, {}, require(script.Parent:WaitForChild("data"));
 
 properties.name = "Base";
 properties.class = "BaseObject";
