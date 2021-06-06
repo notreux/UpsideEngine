@@ -99,19 +99,7 @@ return function(this)
 		
 		assert(meta and meta.inherited and meta.inherited[1] == "BaseObject", "Invalid object")
 		
-		local cp, cs, mp, ms = this.position,
-
-			  this.hitbox.X > 0 and this.hitbox or this.size,
-
-			  meta.position, 
-
-			  meta.hitbox.X > 0 and this.hitbox or meta.size;
-		
-		
-		return (cp.X < (mp.X + ms.X)
-				and(cp.X + cs.X) > mp.X
-			and cp.Y < (mp.Y + ms.Y)
-		and(cs.Y + cp.Y) > mp.Y);
+		return this.collisions[meta.index] and true or false;
 				
 	end
 	
