@@ -1,9 +1,7 @@
 local self, base = {}, require(script.Parent:WaitForChild("BaseObject"));
 
 return function(obj)
-	
-	print(obj)
-	
+		
 	if obj == "static" then
 		print("static passed")
 		base.properties.image = "";
