@@ -1,4 +1,4 @@
-local data = require(script.Parent.Parent.data);
+local data = require(script.Parent.Parent:WaitForChild("data"));
 
 return function(this)
 	
