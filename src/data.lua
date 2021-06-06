@@ -1,7 +1,5 @@
 local self = setmetatable({}, {});
 
-local internal = require(script.Parent.Internal);
-
 -- arrays, variables and others
 
 self.space = {};
@@ -15,8 +13,12 @@ function self.getMetaData(this)
 	local metaData = {};
 
 	function metaData.__index(_, index)
-				
-		return this.base and this or this.properties[index]
+		
+		local ro;
+		
+		pcall(function() ro = self.robloxSpace[this.index][index]; end);
+		
+		return ro or this.properties[index]
 			or this.functions[index]
 			or this.methods[index]
 			or this[index]
@@ -25,10 +27,10 @@ function self.getMetaData(this)
 	end
 
 	function metaData.__newindex(_, index, val)
-				
+		
 		local currentVal = this.functions[index] or this.properties[index] or nil;
 		
-		this.fire("changed", index);
+		if this.fire then this.fire("changed", index);end;
 		
 		if index == "name" and typeof(val) ~= "string" then
 			
@@ -77,7 +79,11 @@ function self.getMetaData(this)
 		
 		if this.base then
 			
-			this[index] = val;
+			if typeof(this[index]) == "function" then
+				this.methods[index] = val;
+			else
+				this[index] = val;
+			end
 			
 		elseif typeof(val) == "function" then
 
@@ -91,7 +97,7 @@ function self.getMetaData(this)
 		
 		if (index == "position" or index == "size") and this.canCollide then
 			
-			spawn(internal.updateSpace(this))
+			spawn(require(script.Parent.Internal).updateSpace(this))
 
 		end
 		
@@ -107,11 +113,11 @@ function self.getMetaData(this)
 		
 		local inherited = "; inherited from: ";
 		
-		table.foreachi(this.inherited, function(index, element)
+		for index, element in pairs(this.inherited) do
 			
 			inherited ..= (index == 1 and "" or ", ") .. element;
 			
-		end)
+		end
 		
 		return this.class .. inherited .. ".";
 
@@ -119,9 +125,11 @@ function self.getMetaData(this)
 
 	function metaData.__call(__this, generic, newClass)
 		
+		generic = typeof(generic) == "table" and generic or {generic};
+		
 		if not this.modules then
 			
-			this.modules = typeof(generic) == "table" and generic or {generic};
+			this.modules = generic;
 			
 		else
 			
