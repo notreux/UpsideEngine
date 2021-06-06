@@ -18,10 +18,6 @@ return function(this)
 			
 			this.size = Vector2.new(this.range / 100, this.range / 100)
 			
-		elseif property == "hitbox" and (this.hitbox.X > 0 or this.hitbox.Y > 0) then
-			
-			this.hitbox = Vector2.new();
-			
 		end
 		
 	end)
