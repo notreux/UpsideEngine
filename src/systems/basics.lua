@@ -1,33 +1,28 @@
-local rs, data = game:GetService("RunService"), require(script.Parent.Parent:WaitForChild("data"));
+local rs, data, __ = game:GetService("RunService"), require(script.Parent.Parent:WaitForChild("data")), {};
 
-return function(this)
-	
-	this.events = {};
-	this.tags = {};
-	
-	function this.methods.on(event_name, __function)
+	function __:on(self, event_name, __function)
 		
-		if not this.events[event_name] then
+		if not self.events[event_name] then
 			
-			this.events[event_name] = {}
+			self.events[event_name] = {}
 			
 		end
 		
-		local index = #this.events[event_name] + 1;
+		local index = #self.events[event_name] + 1;
 
-		this.events[event_name].waiting = "///waiting///";
+		self.events[event_name].waiting = "///waiting///";
 		
-		this.events[event_name][index] = __function;
+		self.events[event_name][index] = __function;
 
 		return {
 			
 			wait = function()
 				
-				while this.events[event_name].waiting == "///waiting///" and wait() do end
+				while self.events[event_name].waiting == "///waiting///" and wait() do end
 				
-				local ew = this.events[event_name].waiting;
+				local ew = self.events[event_name].waiting;
 				
-				this.events[event_name].waiting = "///waiting///";
+				self.events[event_name].waiting = "///waiting///";
 				
 				return ew;
 				
@@ -35,7 +30,7 @@ return function(this)
 			
 			disconnect = function()
 				
-				table.remove(this.events[event_name], index);
+				table.remove(self.events[event_name], index);
 				
 			end
 			
@@ -43,11 +38,11 @@ return function(this)
 		
 	end
 	
-	function this.methods.fire(name, ...)
+	function __:fire(self, name, ...)
 		
-		this.events[name].waiting = ...;	
+		self.events[name].waiting = ...;	
 		
-		for _, f in pairs(this.events[name] or {}) do
+		for _, f in pairs(self.events[name] or {}) do
 				
 			f(...);
 				
@@ -55,33 +50,33 @@ return function(this)
 		
 	end
 
-	function this.methods.addTag(Tag)
+	function __:addTag(self, Tag)
 		
-		this.tags[Tag] = true;
+		self.tags[Tag] = true;
 		
 	end
 	
-	function this.methods.hasTag(Tag)
+	function __:hasTag(self, Tag)
 
-		return this.tags[Tag];
-
-	end
-	
-	function this.methods.removeTag(Tag)
-
-		this.tags[Tag] = nil;
+		return self.tags[Tag];
 
 	end
 	
-	function this.methods.tween(p, t, v)
+	function __:removeTag(self, Tag)
+
+		self.tags[Tag] = nil;
+
+	end
+	
+	function __:tween(self, p, t, v)
 		
-		local init, vel, cn = this[p], this[p] - v/t, nil;
+		local init, vel, cn = self[p], self[p] - v/t, nil;
 		
 		cn = rs.Heartbeat:Connect(function()
 			
-			if (init > v == v < this[p] or init < v == v > this[p]) and wait(vel) then
+			if (init > v == v < self[p] or init < v == v > self[p]) and wait(vel) then
 
-				this[p] += vel;
+				self[p] += vel;
 				
 			else
 				
@@ -90,40 +85,38 @@ return function(this)
 			end
 			
 		end)
-		
-		this[p] = v;
-		
-	end
-	
-	function this.methods.checkCollision(meta)
-		
-		assert(meta and meta.inherited and meta.inherited[1] == "BaseObject", "Invalid object")
-		
-		return this.collisions[meta.index] and true or false;
 				
 	end
 	
-	function this.methods.destroy() 
+	function __:checkCollision(self, meta)
 		
-		this.fire("destroy");
+		assert(meta and meta.inherited and meta.inherited[1] == "BaseObject", "Invalid object")
 		
-		if data.robloxSpace[this.index] then
+		return self.collisions[meta.index] and true or false;
+				
+	end
+	
+	function __:destroy() 
+		
+		self.fire("destroy");
+		
+		if data.robloxSpace[self.index] then
 			
-			data.robloxSpace[this.index]:Destroy();
+			data.robloxSpace[self.index]:Destroy();
 			
-			data.space[this.index] = nil;
-			data.workspace[this.name] = nil;
+			data.space[self.index] = nil;
+			data.workspace[self.name] = nil;
 			
 		end	
 		
 	end
 	
-	function this.methods.extend(class)
+	function __:extend(self, class)
 
-		local copy, metaCopy = data.robloxSpace[this.index]:Clone(), {};
-		copy.Parent = data.robloxSpace[this.index].Parent;
+		local copy, metaCopy = data.robloxSpace[self.index]:Clone(), {};
+		copy.Parent = data.robloxSpace[self.index].Parent;
 		
-		for index, val in pairs(this) do
+		for index, val in pairs(self) do
 			
 			metaCopy[index] = val;
 			
@@ -132,7 +125,7 @@ return function(this)
 		metaCopy.index = math.random();
 		data.robloxSpace[metaCopy.index] = copy;
 		
-		local clon = setmetatable({}, data.getMetaData(metaCopy))(this.modules, class); 
+		local clon = setmetatable({}, data.getMetaData(metaCopy))(self.modules, class); 
 		
 		data.space[metaCopy.index] = clon;
 		data.workspace[metaCopy.name] = clon;
@@ -141,7 +134,7 @@ return function(this)
 		
 	end
 	
-	function this.methods.build(renderIn)
+	function __.build(self, renderIn)
 		
 		renderIn = renderIn or game.StarterGui:FindFirstChildOfClass("ScreenGui") or game.StarterGui;
 		
@@ -149,18 +142,22 @@ return function(this)
 		object.Parent = renderIn;
 		object.AnchorPoint = Vector2.new(0.5,0.5);
 		
-		for index, value in pairs(this) do
+		for index, value in pairs(self.properties) do
 			
 			pcall(function()
 				
-				this[index] = value;
+				self.properties[index] = value;
 				
 			end)
 			
 		end
 		
-		this.loaded = true;
+		data.robloxSpace[self.index] = object
+	
+		self.methods:fire("loaded", os.clock());
+	
+		self.loaded = true;
 		
 	end
 	
-end
+return __;
