@@ -1,26 +1,32 @@
-local self, properties, methods, data = {}, {}, {}, require(script.Parent:WaitForChild("data"));
+local data = require(script.Parent:WaitForChild("data"));
 
-properties.name = "Base";
-properties.class = "BaseObject";
+return (function()
 
-properties.rotation = 0;
-properties.zIndex = 0;
+	local self, properties, methods = {}, {}, {};
 
-properties.loaded = false;
-properties.canCollide = true;
-properties.visible = true;
+	properties.name = "Base";
+	properties.class = "BaseObject";
 
-properties.size = Vector2.new();
-properties.position = Vector2.new();
+	properties.rotation = 0;
+	properties.zIndex = 0;
 
-self.index = math.random();
+	properties.loaded = false;
+	properties.canCollide = true;
+	properties.visible = true;
 
-self.functions = {};
-self.properties = properties;
-self.methods = methods;
-self.base = true;
+	properties.size = Vector2.new();
+	properties.position = Vector2.new();
 
-self.inherited = { properties.class };
-data.space[self.index] = self;
+	self.index = math.random();
 
-return setmetatable({}, data.getMetaData(self));
+	self.functions = {};
+	self.properties = properties;
+	self.methods = methods;
+	self.base = true;
+
+	self.inherited = "";
+	data.space[self.index] = self;
+
+	return setmetatable({}, data.getMetaData(self));
+	
+end)();
