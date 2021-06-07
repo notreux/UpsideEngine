@@ -109,7 +109,7 @@ function self.getMetaData(this)
 
 	end
 
-	function metaData:__tostring(this)
+	function metaData:__tostring()
 		
 		local inherited = "; inherited from: ";
 		
