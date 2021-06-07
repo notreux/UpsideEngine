@@ -21,8 +21,11 @@ return function()
 
 	self.functions = {};
 	self.properties = properties;
+	
 	self.methods = methods;
 	self.base = true;
+	
+	self.collisions = {};
 	
 	self.events = {};
 	self.tags = {};
