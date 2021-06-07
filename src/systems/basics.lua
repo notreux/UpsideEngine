@@ -1,4 +1,4 @@
-local Tween, rs, data = game:GetService("TweenService"), game:GetService("RunService"), require(script.Parent.Parent:WaitForChild("data"));
+local rs, data = game:GetService("RunService"), require(script.Parent.Parent:WaitForChild("data"));
 
 return function(this)
 	
@@ -6,7 +6,7 @@ return function(this)
 	this.tags = {};
 	
 	function this.methods.on(event_name, __function)
-		print(this.events, this.events[event_name])
+		
 		if not this.events[event_name] then
 			
 			this.events[event_name] = {}
@@ -14,11 +14,11 @@ return function(this)
 		end
 		
 		local index = #this.events[event_name] + 1;
-		
+
 		this.events[event_name].waiting = "///waiting///";
 		
 		this.events[event_name][index] = __function;
-				
+
 		return {
 			
 			wait = function()
