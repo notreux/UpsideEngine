@@ -8,11 +8,11 @@ self.workspace = setmetatable({}, {});
 
 -- methods
 
-function self.getMetaData(this)
+function self.getMetaData(this, directAcces)
 
 	local metaData = {};
 
-	function metaData.__index(_, index)
+	function metaData:__index(index)
 		
 		local ro;
 		
@@ -26,7 +26,7 @@ function self.getMetaData(this)
 
 	end
 
-	function metaData.__newindex(_, index, val)
+	function metaData:__newindex(index, val)
 		
 		local currentVal = this.functions[index] or this.properties[index] or nil;
 		
@@ -111,41 +111,33 @@ function self.getMetaData(this)
 
 	function metaData:__tostring()
 		
-		local inherited = "; inherited from: ";
-		
-		for index, element in pairs(this.inherited) do
-			
-			inherited ..= (index == 1 and "" or ", ") .. element;
-			
-		end
-		
-		return this.class .. inherited .. ".";
+		return this.properties.name .. "; inherited from: " .. this.inherited;
 
 	end
 
-	function metaData.__call(__this, generic, newClass)
-		print(__this, generic, newClass)
+	function metaData:__call(generic, newClass)
+		
 		generic = typeof(generic) == "table" and generic or {generic};
 		
 		if not this.modules then
 			
-			this.modules = generic;
+			directAcces.modules = generic;
 			
 		else
 			
 			for _, val in pairs(generic) do
 				
-				this.modules[#this.modules + 1] = val; 
+				directAcces.modules[#this.modules + 1] = val; 
 				
 			end
 			
 		end
 		
-		this.inherited[#this.inherited + 1] = this.class ~= newClass and newClass or "";
+		directAcces.inherited ..=  this.class ~= newClass and newClass .. ", " or "";
 		
-		this.class = typeof(newClass) == "string" and newClass or this.class;
+		directAcces.class = typeof(newClass) == "string" and newClass or this.class;
 
-		require(script.Parent.systems)(__this, generic);
+		require(script.Parent.systems)(this, directAcces, generic);
 		
 	end
 	
