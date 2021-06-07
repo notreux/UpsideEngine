@@ -49,7 +49,13 @@ return function(obj)
 		return error("Invalid object!");
 
 	end
-
+	
+	if base.setup then
+		
+		base:setup();
+		
+	end
+	
 	base.properties.size = Vector2.new(0.2,0.2);
 
 	base.base = nil;
