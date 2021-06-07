@@ -1,6 +1,5 @@
 local data, contentProvider, rs, __ = require(script.Parent.Parent:WaitForChild("data")), game:GetService("ContentProvider"), game:GetService("RunService"), {};
 
-
 function __:setLayer(self, name, layers, rectSize, frames)
 
 	assert(typeof(name) == "string", "You must define a valid name!");
@@ -25,7 +24,7 @@ function __.play(self, name)
 
 	if not self.loaded then self.on('loaded'):wait(); end
 
-	self.methods:fire("layerStarted", name, unpack(self.layers[name]))
+	self:fire("layerStarted", name, unpack(self.layers[name]))
 
 	self.playing = true;
 
@@ -65,7 +64,7 @@ end
 
 function __.stop(self, name)
 
-	self.methods:fire("layerStarted", name, unpack(self.layers[name]));
+	self:fire("layerStarted", name, unpack(self.layers[name]));
 	self.playing = false;
 	self.actions[name] = false;
 
