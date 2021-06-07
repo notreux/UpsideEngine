@@ -8,7 +8,7 @@ local self, exclusivePermissions = {}, {
 
 for _, n in pairs(script:GetChildren()) do
 
-	self[n.Name] = require(n)
+	self[n.Name] = require(n);
 
 end
 
