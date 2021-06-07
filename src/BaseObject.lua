@@ -12,7 +12,6 @@ properties.visible = true;
 
 properties.size = Vector2.new();
 properties.position = Vector2.new();
-properties.hitbox = Vector2.new();
 
 self.index = math.random();
 
