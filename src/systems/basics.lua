@@ -154,7 +154,7 @@ local rs, data, __ = game:GetService("RunService"), require(script.Parent.Parent
 		
 		data.robloxSpace[self.index] = object
 	
-		self.methods:fire("loaded", os.clock());
+		self:fire("loaded", os.clock());
 	
 		self.loaded = true;
 		
