@@ -124,7 +124,7 @@ function self.getMetaData(this)
 	end
 
 	function metaData.__call(__this, generic, newClass)
-		
+		print(__this, generic, newClass)
 		generic = typeof(generic) == "table" and generic or {generic};
 		
 		if not this.modules then
