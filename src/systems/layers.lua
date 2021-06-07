@@ -2,7 +2,7 @@ local data, contentProvider, rs = require(script.Parent.Parent:WaitForChild("dat
 
 return function(this)
 	
-	this.methods.spriteSpeed = 0.05;
+	this.properties.spriteSpeed = 0.05;
 	this.layers = {};
 	this.actions = {};
 	
@@ -29,6 +29,8 @@ return function(this)
 		this.playing = false;
 		
 		if not this.loaded then this.on('loaded'):wait(); end
+		
+		this.fire("layerStarted", name, unpack(this.layers[name]))
 		
 		this.playing = true;
 
@@ -66,10 +68,12 @@ return function(this)
 			
 	end
 	
-	function this.methods.stop()
+	function this.methods.stop(name)
 		
+		this.fire("layerStarted", name, unpack(this.layers[name]));
 		this.playing = false;
-		
+		this.actions[name] = false;
+
 	end
 	
 	
