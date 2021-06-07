@@ -2,7 +2,7 @@ local self = {};
 
 return function(obj)
 	
-	local base = require(script.Parent:WaitForChild("BaseObject"));
+	local base = require(script.Parent:WaitForChild("BaseObject"))();
 	
 	if obj == "static" then
 		
@@ -10,6 +10,11 @@ return function(obj)
 		base("basics", "static");
 
 	elseif obj == "sprite" then
+		
+		base.properties.spriteSpeed = 0.05;
+		base.layers = {};
+		base.actions = {};
+		base.playing = false;
 		
 		base({"basics", "layers"}, "sprite");
 
