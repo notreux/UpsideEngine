@@ -1,5 +1,6 @@
 local self, exclusivePermissions = {}, {
-
+	
+	"setLayer",
 	"play",
 	"stop",
 	"build"	
@@ -12,36 +13,29 @@ for _, n in pairs(script:GetChildren()) do
 
 end
 
-return function(object, directAcces, systems)
+return function(object, directAccess, systems)
 
 	for _, system in pairs(systems) do
 
-		local system = self[system];
+		for index, method in pairs(self[system]) do
+			
+			object[index] = function(...)
 
-		for index, method in pairs(system) do
-
-			if table.find(exclusivePermissions, method) then
-
-				object[system] = function(...)
-					
-					local params = {...};
-
-					assert(params[1] and params[1].index and params[1].index == object.index, "Expected ':' not '.' calling member method " .. method);
-					
-					table.remove(params, 1);
-					
-					self[system](directAcces, params);
-					
-				end
-					
-			else
+				local params = {...};
 				
-				object[system] = self[system];
-				
-			end 
+				assert(typeof(params[1]) == "table" and params[1].index and params[1].index == object.index, "Expected ':' not '.' calling member method " .. index);
 
-		end
+				table.remove(params, 1);
+				
+				local toSend = table.find(exclusivePermissions, index) and {directAccess, unpack(params)}
+					or {object, unpack(params)} 
+				
+				return method(unpack(toSend));
+
+			end
+			
+		end 
 
 	end
 
-end;
+end
