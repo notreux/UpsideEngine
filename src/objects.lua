@@ -17,6 +17,17 @@ return function(obj)
 		base.playing = false;
 		
 		base({"basics", "layers"}, "sprite");
+		
+	elseif obj == "light" then
+
+		base.properties.imageTransparency = 0.5;
+		base.properties.range = 5;
+		base.properties.image = "rbxassetid://6904405933";
+		base.properties.zIndex = 999999999;
+		base.properties.imageColor3 = Color3.fromRGB(255,255,255)
+		base.properties.canCollide = false;
+		
+		base({"basics", "light"}, "light");
 
 	elseif obj == "particles" then
 
@@ -35,15 +46,6 @@ return function(obj)
 
 		base({"basics", "layers"}, "particles");
 
-	elseif obj == "light" then
-		
-		base.properties.transparency = 0.5;
-		base.properties.range = 5;
-		base.properties.image = "rbxassetid://6904405933";
-		base.properties.zIndex = 999999999;
-
-		base({"basics", "light"}, "light");
-
 	else
 
 		return error("Invalid object!");
@@ -53,11 +55,10 @@ return function(obj)
 	if base.setup then
 		
 		base:setup();
-		
+		base.setup = nil;
+
 	end
 	
-	base.properties.size = Vector2.new(0.2,0.2);
-
 	base.base = nil;
 
 	return base;
