@@ -1,6 +1,6 @@
 local internal, data = setmetatable({}, {}), require(script.Parent:WaitForChild("data"));
 
-function getAxis(c1, c2)
+local function getAxis(c1, c2)
 
 	local axis = {};
 
@@ -13,12 +13,12 @@ function getAxis(c1, c2)
 
 end
 
-function getCorners(object)
+local function getCorners(object)
 
-	local corners, rot, ap, as = {}, math.rad(object.Rotation),
-		  object.AbsolutePosition, object.AbsoluteSize;
+	local corners, rot, ap, as = {}, math.rad(object.rotation),
+		  object.absolutePosition, object.absoluteSize;
 
-	local center, wc = object.AbsolutePosition + object.absoluteSize/2, {
+	local center, wc = object.absolutePosition + object.absoluteSize/2, {
 
 		Vector2.new(ap.X, ap.Y);
 		Vector2.new(ap.X + as.X, ap.Y);
@@ -47,18 +47,18 @@ function internal.updateSpace(this)
 	for _, meta in pairs(data.space) do
 
 		if meta.canCollide and meta.loaded and this.index ~= meta.index then
-
-			local c1, c2, collision = getCorners(this), getCorners(meta), nil;
+			
+			local c1, c2, collision = getCorners(this), getCorners(meta), true;
 			local axis = getAxis(c1, c2);
-
+			
 			for i = 1, #axis do
-
-				local s1, s2, ax = {}, {}, axis[i]:Dot();
-
+				
+				local s1, s2 = {}, {};
+				
 				for n = 1, 4 do
 
-					table.insert(s1, ax, c1[n]);
-					table.insert(s2, ax, c2[n]);
+					table.insert(s1, axis[i]:Dot(c1[n]));
+					table.insert(s2, axis[i]:Dot(c2[n]));
 
 				end
 
@@ -69,20 +69,19 @@ function internal.updateSpace(this)
 
 			end
 			
-			collision = collision == false and false or true
 			
 			if collision and not this.collisions[meta.index] then
 
-				this.fire("collision", meta);
-				meta.fire("collision", this);
+				this:fire("collision", meta);
+				meta:fire("collision", this);
 
 				meta.collisions[this.index] = this;
 				this.collisions[meta.index] = meta;
 
 			elseif not collision and this.collisions[meta.index] then
 
-				this.fire("collisionEnded", meta);
-				meta.fire("collisionEnded", this);
+				this:fire("collisionEnded", meta);
+				meta:fire("collisionEnded", this);
 
 				meta.collisions[this.index] = nil;
 				this.collisions[meta.index] = nil;
