@@ -1,17 +1,60 @@
-local self, data, HTTPS, indexs, ambient = {}, require(script.data), game:GetService("HttpService"), {}, nil;
+local self, data, HTTPS, indexs, ambient, new, rs = {}, require(script.data), game:GetService("HttpService"), {}, nil, require(script.objects), game:GetService("RunService");
 
-self.new = require(script.objects);
+function self.new(object, properties)
 
-function self.start(renderIn)
+	object = new(object);
 
-	self.ambient.build(renderIn);
+	for index, value in pairs(properties or {}) do
 
-	local storage = game.ServerStorage:FindFirstChild("UpsideEngineDataBase")
-		or game.ReplicatedStorage:FindFirstChild("UpsideEngineDataBase");
+		object[index] = value;
+
+	end
+
+	return object;
+
+end
+
+function self:start(renderIn)
+
+	rs.Stepped:Wait();
+
+	if renderIn:FindFirstChild("Main") then renderIn.Main:Destroy();end
+
+	local main = Instance.new("Frame");
+	main.BackgroundTransparency = 1
+	main.Position = UDim2.new(0.5, 0, 0.5, 0);
+	main.Size = UDim2.new(1,0,1.05)
+	main.AnchorPoint = Vector2.new(0.5, 0.525)
+	main.Name = "Main"
+	main.Parent = renderIn;
+
+	ambient = Instance.new("Frame");
+	ambient.BorderSizePixel = 0;
+	ambient.Parent = main;
+	ambient.AnchorPoint = Vector2.new(0.5, 0.5);
+	ambient.Position = UDim2.new(0.5, 0, 0.5, 0);
+	ambient.Size = UDim2.new(1,0,1,0)
+	ambient.BackgroundTransparency = 0.8;
+	ambient.BackgroundColor3 = Color3.fromRGB(255,255,255);
+	ambient.ZIndex = 999999998;
+	ambient.Name = "___________Ambient";
+
+	for index, val in pairs(indexs) do
+
+		pcall(function()
+
+			ambient[index] = val;
+
+		end)
+
+	end	
+
+	local storage = rs:IsClient() and game.ReplicatedStorage:FindFirstChild("UpsideEngineDataBase")
+		or game.ServerStorage:FindFirstChild("UpsideEngineDataBase");
 
 	if storage then
 
-		local rebuilded = self.rebuildSpace(HTTPS:JSONDecode(storage and string.len(storage.Value) > 1 and storage.Value or {}));
+		local rebuilded = self.rebuildSpace(HTTPS:JSONDecode(storage and #storage.Value > 1 and storage.Value or {}));
 
 		for index, value in pairs(rebuilded) do
 
@@ -21,9 +64,13 @@ function self.start(renderIn)
 
 	end
 
-	for _, obj in pairs(data.workspace) do
+	for _, obj in pairs(data.space) do
 
-		obj.build(renderIn);
+		if not obj.loaded then
+
+			obj:build(main);
+
+		end
 
 	end
 
@@ -47,36 +94,31 @@ function self.rebuildSpace(wkspace)
 
 end
 
+function self:robloxGuiEnabler(array, state)
+
+	array = typeof(array) == "table" and array or {array};
+
+	for i = 1, 15 do 
+
+		if pcall(function() for _, core in pairs(array) do game:GetService('StarterGui'):SetCoreGuiEnabled(core, state) end end) then
+
+			break;
+
+		end 
+
+	end
+
+end
+
 self.ambient = setmetatable({
 
-	build = function(renderIn)
+	getAmbient = function()
 
-		if not renderIn:FindFirstChild("___________Ambient") then
+		return ambient;
 
-			ambient = Instance.new("Frame");
-			ambient.BorderSizePixel = 0;
-			ambient.Parent = renderIn;
-			ambient.AnchorPoint = Vector2.new(0.5, 0.5);
-			ambient.Position = UDim2.new(0.5, 0, 0.5, 0);
-			ambient.Size = UDim2.new(1,0,1,0)
-			ambient.BackgroundTransparency = 0.8;
-			ambient.BackgroundColor3 = Color3.fromRGB(255,255,255);
-			ambient.ZIndex = 999999998;
-			ambient.Name = "___________Ambient";
+	end,
 
-		end
-
-		for index, val in pairs(indexs) do
-
-			pcall(function()
-
-				ambient[index] = val;
-
-			end)
-
-		end
-
-	end}, { 
+}, { 
 
 	__index = function(_, index)
 
@@ -104,5 +146,7 @@ self.ambient = setmetatable({
 	end});
 
 self.workspace = data.workspace;
+
+self:robloxGuiEnabler(Enum.CoreGuiType.All, false)
 
 return self;
