@@ -1,7 +1,7 @@
 local data, contentProvider, rs, __ = require(script.Parent.Parent:WaitForChild("data")), game:GetService("ContentProvider"), game:GetService("RunService"), {};
 
-function __:setLayer(self, name, layers, rectSize, frames)
-
+function __.setLayer(self, name, layers, rectSize, frames)
+	
 	assert(typeof(name) == "string", "You must define a valid name!");
 
 	contentProvider:PreloadAsync(typeof(layers) == "table" and layers or {layers});
@@ -15,47 +15,56 @@ function __:setLayer(self, name, layers, rectSize, frames)
 	};
 
 	self.actions[name] = false;
-
+		
 end
 
-function __.play(self, name)
+function __.play(self, name, speed)
+		
 
-	self.playing = false;
-
-	if not self.loaded then self.on('loaded'):wait(); end
-
-	self:fire("layerStarted", name, unpack(self.layers[name]))
+	if not self.loaded then self:on('loaded'):wait(); end
+	
+	if self.playing then self:stop(); end;
+		
+	self:fire("layerStarted", name, self.layers[name] and unpack(self.layers[name]) or nil);
 
 	self.playing = true;
 
-	local object, cn = data.robloxSpace[self.index], nil;		
-
+	local object, ended = data.robloxSpace[self.index], true;		
+	object.Image = typeof(self.layers[name].layers) == "string" and self.layers[name].layers or self.layers[name][1]
 	object.ImageRectSize = self.layers[name].rectSize;
 
 	local function everySprite(layer)
 
 		object.Image = layer;
 
-		wait(self.properties.spriteSpeed)
+		wait(speed or self.properties.spriteSpeed)
 
 	end
 
 	local function everyFrame(frame)
 
-		object.ImageRectOffset = frame * object.ImageRectSize;
+		object.ImageRectOffset = frame * self.layers[name].rectSize;
+		
+		wait(speed or self.properties.spriteSpeed);
 
-		wait(self.properties.spriteSpeed);
+	end
+	
+	local f = (self.layers[name].frames and everyFrame or everySprite);
+	
+	self.heartbeat = rs.Heartbeat:Connect(function()
 
-	end		
-
-	cn = rs.Heartbeat:Connect(function()
-
-		if self.playing then
-
-			table.foreach(self.layers[name].frames or self.layers, self.layers[name].frames and everyFrame or everySprite)
-
-		else cn:Disconnect();
-
+		if ended then
+			
+			ended = false;
+			
+			for _, frame in pairs(self.layers[name].frames or self.layers[name]) do
+				
+				f(frame)
+				
+			end
+			
+			ended = true;
+			
 		end
 
 	end)
@@ -63,11 +72,13 @@ function __.play(self, name)
 end
 
 function __.stop(self, name)
-
-	self:fire("layerStarted", name, unpack(self.layers[name]));
+	
 	self.playing = false;
-	self.actions[name] = false;
-
+	self.actions[name or ""] = false;
+	self:fire("layerEnded", name, unpack(self.layers[name] or {}));
+	
+	return self.heartbeat and self.heartbeat:Disconnect() or nil;
+		
 end
 
 
