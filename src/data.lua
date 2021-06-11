@@ -1,14 +1,14 @@
-local self = setmetatable({}, {});
+local main = setmetatable({}, {});
 
 -- arrays, variables and others
 
-self.space = {};
-self.robloxSpace = {};
-self.workspace = setmetatable({}, {});
+main.space = {};
+main.robloxSpace = {};
+main.workspace = setmetatable({}, {});
 
 -- methods
 
-function self.getMetaData(this, directAcces)
+function main.getMetaData(this)
 
 	local metaData = {};
 
@@ -16,74 +16,71 @@ function self.getMetaData(this, directAcces)
 		
 		local ro;
 		
-		pcall(function() ro = self.robloxSpace[this.index][index]; end);
+		pcall(function()
+			
+			local i = index:sub(1,1);
+			i = i:upper() .. index:sub(2, #index);
+			
+			ro = main.robloxSpace[this.index][i]; 
+			
+		end);
 		
-		return ro or this.properties[index]
+		return this[index]
+			or this.properties[index]
 			or this.functions[index]
-			or this.methods[index]
-			or this[index]
-			or nil;
+			or ro or nil;
 
 	end
 
-	function metaData:__newindex(index, val)
+	function metaData.__newindex(__this, index, val)
 		
 		local currentVal = this.functions[index] or this.properties[index] or nil;
 		
-		if this.fire then this.fire("changed", index);end;
+		if this.fire then this:fire("changed", index);end;
 		
 		if index == "name" and typeof(val) ~= "string" then
 			
 			return error("The object name must be a string.");
 			
-		elseif index == "name" and self.workspace[val] then
+		elseif index == "name" and main.workspace[val] then
 							
 			return error("There's already another object with this name! You must specify a name that has no other object.");
 							
 		elseif index == "name" then
-				
-			self.workspace[this.properties.name] = nil;
 			
-			self.workspace[val] = self.space[this.index];
+			main.workspace[val] = main.workspace[this.index];
+
+			main.workspace[this.properties.name] = nil;
 			
 		end
-		
+
 		if currentVal and typeof(currentVal) ~= typeof(val) then
 
 			return error(string.format("%s must be a %s", index, typeof(currentVal)));
 
 		end
 		
-		spawn(pcall(function()
+		coroutine.wrap(pcall)(function()
 			
-			if not this.loaded and this.on then this.on('loaded'):wait(); end
-						
-			local obj, i = self.robloxSpace[this.index], index:sub(1,1);
-			i = i:upper() .. index:sub(2, string.len(index));
+			if not this.loaded and this.on then this:on('loaded'):wait(); end
+			
+			local obj, i = main.robloxSpace[this.index], index:sub(1,1);
+			i = i:upper() .. index:sub(2, #index);
 
-			if obj and obj[i] then
+			obj[i] = typeof(val) == "Vector2" and UDim2.new(val.X, 0, val.Y, 0) or val;
+			
+			if (index == "position" or index == "size") and this.properties.canCollide then
 
-				local v = val;			
+				coroutine.wrap(require(script.Parent.Internal).updateSpace)(__this)
 
-				if typeof(v) == "Vector2" then
-
-					v = UDim2.new(v.X, 0, v.Y, 0);
-
-				end
-
-				obj[i] = val;
-				
 			end
 			
-		end))
-		
+		end)
+
+
 		if this.base then
-			
-			if typeof(this[index]) == "function" then
-				this.methods[index] = val;
-			else
-				this[index] = val;
-			end
+		
+			this[index] = val;
 			
 		elseif typeof(val) == "function" then
 
@@ -92,12 +89,6 @@ function self.getMetaData(this, directAcces)
 		else
 
 			this.properties[index] = val;
-
-		end
-		
-		if (index == "position" or index == "size") and this.canCollide then
-			
-			spawn(require(script.Parent.Internal).updateSpace(this))
 
 		end
 		
@@ -115,29 +106,29 @@ function self.getMetaData(this, directAcces)
 
 	end
 
-	function metaData:__call(generic, newClass)
+	function metaData.__call(__this, generic, newClass)
 		
 		generic = typeof(generic) == "table" and generic or {generic};
 		
 		if not this.modules then
 			
-			directAcces.modules = generic;
+			this.modules = generic;
 			
 		else
 			
 			for _, val in pairs(generic) do
 				
-				directAcces.modules[#this.modules + 1] = val; 
+				this.modules[#this.modules + 1] = val;
 				
 			end
 			
 		end
 		
-		directAcces.inherited ..=  this.class ~= newClass and newClass .. ", " or "";
+		this.inherited ..=  this.class ~= newClass and newClass .. ", " or "";
 		
-		directAcces.class = typeof(newClass) == "string" and newClass or this.class;
+		this.class = typeof(newClass) == "string" and newClass or this.class;
 
-		require(script.Parent.systems)(this, directAcces, generic);
+		require(script.Parent.systems)(__this, this, generic);
 		
 	end
 	
@@ -145,4 +136,4 @@ function self.getMetaData(this, directAcces)
 	
 end;
 
-return self;
+return main;
