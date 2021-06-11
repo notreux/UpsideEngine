@@ -1,29 +1,26 @@
 local data = require(script.Parent.Parent:WaitForChild("data"));
 
-return {setup = function(this)
+return {
 
-	this.on("changed", function(property)
+	setup = function(self)
+		
+		self:applySymmetry();
 
-		if property == "range" then
+		self:on("changed", function(property)
 
-			this.size = UDim2.new(this.range / 100, 0, this.range / 100, 0);
+			if property == "range" then
+									
+				wait()
+				self.size = Vector2.new(self.range / 100, self.range / 100);
+				
+			elseif property:lower() == "zIndex" and self.zIndex ~= 999999999 then
+				
+				self.zIndex = 999999999;
+				
+			end
 
-			data.robloxSpace[this.index].Size = this.size;
+		end)
+		
+	end
 
-		elseif property == "zIndex" and this.zIndex ~= 999999999 then
-
-			this.zIndex = 999999999;
-
-		elseif property == "size" and this.size.X ~= this.range/100 then
-
-			this.size = Vector2.new(this.range / 100, this.range / 100)
-
-		end
-
-	end)
-
-	this.on("loaded"):wait();
-
-	Instance.new("UIAspectRatioConstraint").Parent = data.robloxSpace[this.index];
-
-end}
+}
