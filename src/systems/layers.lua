@@ -1,6 +1,6 @@
-local data, contentProvider, rs, __ = require(script.Parent.Parent:WaitForChild("data")), game:GetService("ContentProvider"), game:GetService("RunService"), {};
+local data, contentProvider, rs, __ = require(script.Parent.Parent:WaitForChild("data")), game:GetService("ContentProvider"), game:GetService("RunService"), { direct = {} };
 
-function __.setLayer(self, name, layers, rectSize, frames)
+function __.direct.setLayer(self, name, layers, rectSize, frames)
 	
 	assert(typeof(name) == "string", "You must define a valid name!");
 
@@ -18,7 +18,7 @@ function __.setLayer(self, name, layers, rectSize, frames)
 		
 end
 
-function __.play(self, name, speed)
+function __.direct.play(self, name, speed)
 		
 
 	if not self.loaded then self:on('loaded'):wait(); end
@@ -71,7 +71,7 @@ function __.play(self, name, speed)
 
 end
 
-function __.stop(self, name)
+function __.direct.stop(self, name)
 	
 	self.playing = false;
 	self.actions[name or ""] = false;
