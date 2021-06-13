@@ -192,20 +192,16 @@ function __.direct.build(self, renderIn)
 end
 
 function __.onLoaded.applySymmetry(this)
-
-	spawn(function()
-		
-		if not this.loaded then this:on("loaded"):wait(); end;
-		
-		Instance.new("UIAspectRatioConstraint").Parent = data.robloxSpace[this.index];
 				
-	end)
+	Instance.new("UIAspectRatioConstraint").Parent = data.robloxSpace[this.index];
 
 end
 
 function __.onLoaded.setParallax(this, v2)
 	
 	data.robloxSpace[this.index].ScaleType = Enum.ScaleType.Tile;
+	
+	this.scroll = v2;
 	
 	local function update()
 		
@@ -214,9 +210,7 @@ function __.onLoaded.setParallax(this, v2)
 	end
 	
 	update();
-	
-	this.scroll = v2;
-	
+		
 	local cn = workspace.Camera:GetPropertyChangedSignal('ViewportSize'):Connect(update);
 	
 	return {
