@@ -1,6 +1,6 @@
-local rs, data, __ = game:GetService("RunService"), require(script.Parent.Parent:WaitForChild("data")), {};
+local rs, data, __ = game:GetService("RunService"), require(script.Parent.Parent:WaitForChild("data")), { direct = {}, fast = {}, onLoaded = {}; };
 
-function __.on(this, event_name, __function)
+function __.fast.on(this, event_name, __function)
 
 	if not this.events[event_name] then
 
@@ -38,7 +38,7 @@ function __.on(this, event_name, __function)
 
 end
 
-function __.fire(self, name, ...)
+function __.fast.fire(self, name, ...)
 
 	if not self.events[name] then
 
@@ -60,25 +60,25 @@ function __.fire(self, name, ...)
 
 end
 
-function __.addTag(self, Tag)
+function __.fast.addTag(self, Tag)
 
 	self.tags[Tag] = true;
 
 end
 
-function __.hasTag(self, Tag)
+function __.fast.hasTag(self, Tag)
 
 	return self.tags[Tag];
 
 end
 
-function __.removeTag(self, Tag)
+function __.fast.removeTag(self, Tag)
 
 	self.tags[Tag] = nil;
 
 end
 
-function __.tween(self, p, t, v)
+function __.fast.tween(self, p, t, v)
 
 	local init, vel, cn = self[p], self[p] - v/t, nil;
 
@@ -98,7 +98,7 @@ function __.tween(self, p, t, v)
 
 end
 
-function __.checkCollision(self, meta)
+function __.onLoaded.checkCollision(self, meta)
 
 	assert(meta and meta.inherited and meta.inherited[1] == "BaseObject", "Invalid object")
 
@@ -106,7 +106,7 @@ function __.checkCollision(self, meta)
 
 end
 
-function __.destroy(self) 
+function __.onLoaded.destroy(self) 
 
 	self:fire("destroyed", os.clock());
 
@@ -121,10 +121,8 @@ function __.destroy(self)
 
 end
 
-function __.extend(self, class, props)
-	
-	if not self.loaded then self:on('loaded'):wait(); end;
-	
+function __.onLoaded.extend(self, class, props)
+		
 	local metaCopy =  { properties = {}, functions = {}, base = true };
 
 	for index, val in pairs(self.properties) do
@@ -166,7 +164,7 @@ function __.extend(self, class, props)
 
 end
 
-function __.build(self, renderIn)
+function __.direct.build(self, renderIn)
 
 	renderIn = renderIn or game.StarterGui:FindFirstChildOfClass("ScreenGui") or game.StarterGui;
 
@@ -193,7 +191,7 @@ function __.build(self, renderIn)
 
 end
 
-function __.applySymmetry(this)
+function __.onLoaded.applySymmetry(this)
 
 	spawn(function()
 		
@@ -203,6 +201,46 @@ function __.applySymmetry(this)
 				
 	end)
 
+end
+
+function __.onLoaded.setParallax(this, v2)
+	
+	data.robloxSpace[this.index].ScaleType = Enum.ScaleType.Tile;
+	
+	local function update()
+		
+		data.robloxSpace[this.index].TileSize = UDim2.new(0, workspace.Camera.ViewportSize.X + this.scroll.X, 0, workspace.Camera.ViewportSize.X + this.scroll.Y) ;
+
+	end
+	
+	update();
+	
+	this.scroll = v2;
+	
+	local cn = workspace.Camera:GetPropertyChangedSignal('ViewportSize'):Connect(update);
+	
+	return {
+		
+		rotate = function(_, _v2)	
+			
+			assert(typeof(_v2) == 'Vector2' and data.robloxSpace[this.index].ScaleType == Enum.ScaleType.Tile, 'Parallax error.');
+			
+			data.robloxSpace[this.index].TileSize += UDim2.new(0, _v2.X, 0, _v2.Y)
+			
+			this.scroll = _v2;
+			
+		end,
+		
+		disable = function()
+			
+			cn:Disconnect();
+			
+			data.robloxSpace[this.index].ScaleType = Enum.ScaleType.Stretch;
+			
+		end
+		
+	}
+	
 end
 
 return __;
