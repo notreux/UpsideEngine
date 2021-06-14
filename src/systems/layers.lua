@@ -28,11 +28,12 @@ function __.direct.play(self, name, speed)
 	self:fire("layerStarted", name, self.layers[name] and unpack(self.layers[name]) or nil);
 
 	self.playing = true;
+	self.actions[name] = true;
 
 	local object, ended = data.robloxSpace[self.index], true;		
 	object.Image = typeof(self.layers[name].layers) == "string" and self.layers[name].layers or self.layers[name][1]
 	object.ImageRectSize = self.layers[name].rectSize;
-
+	
 	local function everySprite(layer)
 
 		object.Image = layer;
