@@ -33,7 +33,7 @@ function __.direct.play(self, name, speed)
 	local object, ended = data.robloxSpace[self.index], true;		
 	object.Image = typeof(self.layers[name].layers) == "string" and self.layers[name].layers or self.layers[name][1]
 	object.ImageRectSize = self.layers[name].rectSize;
-	
+
 	local function everySprite(layer)
 
 		object.Image = layer;
@@ -75,7 +75,21 @@ end
 function __.direct.stop(self, name)
 	
 	self.playing = false;
-	self.actions[name or ""] = false;
+	
+	if not name then
+	
+		for index, value in pairs(self.actions) do
+		
+			self.actions[index] = false;
+		
+		end
+		
+	else
+		
+		self.actions[name] = false;
+		
+	end
+	
 	self:fire("layerEnded", name, unpack(self.layers[name] or {}));
 	
 	return self.heartbeat and self.heartbeat:Disconnect() or nil;
