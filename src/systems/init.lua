@@ -22,16 +22,19 @@ return function(object, directAccess, systems)
 
 					table.remove(params, 1);
 
-					params = block == 'direct' and {directAccess, unpack(params)}
-							 or {object, unpack(params)} 
+					if block == 'onLoaded' then  
+						
+						return spawn(function()
+
+							if not object.loaded and object.on then object:on('loaded'):wait(); end
+
+							return method({object, unpack(params)});
+
+						end)
+
+					end
 					
-					return block ~= 'onLoaded' and method(unpack(params)) or spawn(function()
-
-						if not object.loaded and object.on then object:on('loaded'):wait(); end
-
-						return method(unpack(params));
-
-					end)
+					return method(block == 'direct' and {directAccess, unpack(params)} or {object, unpack(params)}) 
 					
 				end
 
