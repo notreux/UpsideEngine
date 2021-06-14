@@ -121,8 +121,10 @@ function __.onLoaded.destroy(self)
 
 end
 
-function __.onLoaded.extend(self, class, props)
+function __.fast.extend(self, class, props)
 		
+	if not self.loaded then self:on('loaded'):wait(); end
+	
 	local metaCopy =  { properties = {}, functions = {}, base = true };
 
 	for index, val in pairs(self.properties) do
