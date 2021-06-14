@@ -49,7 +49,7 @@ function internal.updateSpace(this)
 		if meta.canCollide and meta.loaded and this.index ~= meta.index then
 			
 			local c1, c2, collision = getCorners(this), getCorners(meta), true;
-			local axis = getAxis(c1, c2);
+			local axis, mtvs = getAxis(c1, c2), {};
 			
 			for i = 1, #axis do
 				
@@ -66,14 +66,17 @@ function internal.updateSpace(this)
 				local s2max, s2min = math.max(unpack(s2)), math.min(unpack(s2));
 
 				if s2min > s1max or s2max < s1min then collision = false; break; end;
-
+				
+				table.insert(mtvs, axis[i] * s1max > s2max and -(s2max - s1min) or (s1max - s1min))
+				
 			end
 			
+			table.sort(mtvs, function(a, b) return a.magnitude < b.magnitude end)
 			
 			if collision and not this.collisions[meta.index] then
 
-				this:fire("collision", meta);
-				meta:fire("collision", this);
+				this:fire("collision", meta, mtvs[1]);
+				meta:fire("collision", this, mtvs[1]);
 
 				meta.collisions[this.index] = this;
 				this.collisions[meta.index] = meta;
@@ -91,7 +94,7 @@ function internal.updateSpace(this)
 		end
 
 	end
-
+	
 end
 
 return internal;
