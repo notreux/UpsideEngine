@@ -49,20 +49,10 @@ function self:start(renderIn)
 
 	end	
 
-	local storage = rs:IsClient() and game.ReplicatedStorage:FindFirstChild("UpsideEngineDataBase")
+	local storage = game.ReplicatedStorage:FindFirstChild("UpsideEngineDataBase")
 		or game.ServerStorage:FindFirstChild("UpsideEngineDataBase");
 
-	if storage then
-
-		local rebuilded = self.rebuildSpace(HTTPS:JSONDecode(storage and #storage.Value > 1 and storage.Value or {}));
-
-		for index, value in pairs(rebuilded) do
-
-			self.workspace[index] = value;
-
-		end
-
-	end
+	storage = storage and self.rebuildSpace(HTTPS:JSONDecode(storage and #storage.Value > 1 and storage.Value or {})) or nil;
 
 	for _, obj in pairs(data.space) do
 
@@ -79,13 +69,10 @@ end
 function self.rebuildSpace(wkspace)
 
 	local space = {};
-
+	
 	for name, object in pairs(wkspace) do
-
-		local co = self.new(object.class);
-		co(object.modules);
-		co.properties = object.properties;
-
+		
+		local co = self.new(object.class, object.properties);
 		space[co.index] = co;
 
 	end
