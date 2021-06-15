@@ -20,11 +20,11 @@ end
 
 function __.direct.play(self, name, speed)
 
-
+	if self.heartbeat then self.heartbeat:Disconnect(); end
 	if not self.loaded then self:on('loaded'):wait(); end
 
 	if self.playing then self:stop(); end;
-
+	
 	self:fire("layerStarted", name, self.layers[name] and unpack(self.layers[name]) or nil);
 
 	self.playing = true;
