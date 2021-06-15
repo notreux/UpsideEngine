@@ -67,7 +67,7 @@ function internal.updateSpace(this)
 
 				if s2min > s1max or s2max < s1min then collision = false; break; end;
 				
-				table.insert(mtvs, axis[i] * s1max > s2max and -(s2max - s1min) or (s1max - s1min))
+				table.insert(mtvs, axis[i] * (s1max > s2max and -(s2max - s1min) or (s1max - s1min)))
 				
 			end
 			
