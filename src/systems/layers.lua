@@ -20,9 +20,9 @@ end
 
 function __.direct.play(self, name, speed)
 
-	if self.heartbeat then self.heartbeat:Disconnect(); end
 	if not self.loaded then self:on('loaded'):wait(); end
-	
+	if self.playing then self:stop(); end
+
 	self:fire("layerStarted", name, self.layers[name] and unpack(self.layers[name]) or nil);
 
 	self.playing = true;
@@ -51,12 +51,13 @@ function __.direct.play(self, name, speed)
 	local f = (self.layers[name].frames and everyFrame or everySprite);
 
 	self.heartbeat = rs.Heartbeat:Connect(function()
-
+				
 		if ended then
 
 			ended = false;
 
 			for _, frame in pairs(self.layers[name].frames or self.layers[name]) do
+				if not self.actions[name] then return end;
 
 				f(frame)
 
