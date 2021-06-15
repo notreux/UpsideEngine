@@ -56,6 +56,8 @@ function __.direct.play(self, name, speed)
 
 		if ended then
 			
+			self:fire('layerStarted', os.clock())
+			
 			ended = false;
 			
 			for _, frame in pairs(self.layers[name].frames or self.layers[name]) do
@@ -65,6 +67,8 @@ function __.direct.play(self, name, speed)
 			end
 			
 			ended = true;
+			
+			self:fire('layerEnded', os.clock())
 			
 		end
 
