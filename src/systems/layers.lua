@@ -28,8 +28,8 @@ function __.direct.play(self, name, speed)
 	self.playing = true;
 	self.actions[name] = true;
 
-	local object, ended = data.robloxSpace[self.index], true;		
-	object.Image = typeof(self.layers[name].layers) == "string" and self.layers[name].layers or self.layers[name][1]
+	local object, ended = data.robloxSpace[self.index], true;
+	object.Image = typeof(self.layers[name].layers[1]) == "string" and self.layers[name].layers[1] or self.layers[name].layers
 	object.ImageRectSize = self.layers[name].rectSize;
 
 	local function everySprite(layer)
@@ -51,12 +51,12 @@ function __.direct.play(self, name, speed)
 	local f = (self.layers[name].frames and everyFrame or everySprite);
 
 	self.heartbeat = rs.Heartbeat:Connect(function()
-				
+
 		if ended then
 
 			ended = false;
 
-			for _, frame in pairs(self.layers[name].frames or self.layers[name]) do
+			for _, frame in pairs(self.layers[name].frames or self.layers[name].layers) do
 				if not self.actions[name] then return end;
 
 				f(frame)
