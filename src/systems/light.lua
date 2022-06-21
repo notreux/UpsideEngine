@@ -13,7 +13,7 @@ return {
 				wait()
 				self.size = Vector2.new(self.range / 100, self.range / 100);
 
-			elseif property:lower() == "zIndex" and self.zIndex ~= 999999999 then
+			elseif property:lower() == "zindex" and self.zIndex ~= 999999999 then
 
 				self.zIndex = 999999999;
 
