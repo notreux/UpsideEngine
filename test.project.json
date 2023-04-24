@@ -1,0 +1,19 @@
+{
+  "name": "UpsideEngine",
+  "tree": {
+    "$className": "DataModel",
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "$ignoreUnknownInstances": true,
+      "DevPackages": {
+        "$path": "DevPackages"
+      },
+      "UpsideEngine": {
+        "$path": "default.project.json"
+      },
+      "Test-Runner": {
+        "$path": "bin/tests-runner.server.lua"
+      }
+    }
+  }
+}

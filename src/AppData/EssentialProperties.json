@@ -1,0 +1,27 @@
+{
+	"object": [
+		"Mass",
+		"Anchored",
+		"CanCollide",
+		"TrackCollisions",
+		"HitboxShape",
+		"CollisionGroup",
+		"Tags"
+	],
+	"instance": [
+		"ZIndex",
+		"SoundId",
+		"Position",
+		"ScaleType",
+		"TileSize",
+		"SliceScale",
+		"ImageTransparency",
+		"ImageRectSize",
+		"ImageRectOffset",
+		"Rotation",
+		"ResampleMode",
+		"ImageColor3",
+		"Size",
+		"Image"
+	]
+}

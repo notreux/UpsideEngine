@@ -1,0 +1,8 @@
+[package]
+name = "TestEZ"
+authors = [
+  "Roblox"
+]
+license = "Apache2"
+content_root = "src"
+version = "0.4.2"

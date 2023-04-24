@@ -1,0 +1,3 @@
+[submodule "DevPackages/TestEZ"]
+	path = DevPackages/TestEZ
+	url = https://github.com/Roblox/testez
