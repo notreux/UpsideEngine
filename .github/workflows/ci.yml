@@ -1,4 +1,4 @@
-name: Upside Engine
+name: Upside Engine - Github Pages
 on:
   push:
     branches:
