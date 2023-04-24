@@ -1,0 +1,70 @@
+.gameCard {
+    width: 300px;
+    height:400px;
+    border-color: var(--md-default-fg-color--lightest);
+    border-width: 1px;
+    border-style: outset;
+    border-radius: 10px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    display: inline-block;
+    margin: 10px;
+    background-color: rgba(255,255,255,0.05);
+}
+
+.banner {
+    background-size: cover;
+    image-rendering: pixelated;
+    width:100%;
+    height:100px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.title {
+    font-weight: bolder;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.description {
+    margin-right: 10%;
+    margin-left: 10%;
+    text-align:justify;
+    font-size: 16px;
+    width: 235px;
+    height: 125px;
+}
+
+.viewButton {
+    bottom: 0px;
+    width: 235px !important;
+}
+.no-margin {
+    margin: 0px !important;
+    top: -1px;
+    position: relative !important;
+}
+
+#games-grid {
+    background-color: var(--md-code-bg-color);
+    text-align: center;
+    width: 100%;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    border-radius: 10px;
+}
+
+#games-grid::-webkit-scrollbar {
+    width: 1px;
+}
+
+#games-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#games-grid::-webkit-scrollbar-thumb {
+  background: #888;
+}

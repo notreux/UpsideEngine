@@ -1,0 +1,88 @@
+h1 {
+  opacity: 0
+}
+  
+figure {
+  display: inline-block !important; 
+  width: 430px !important;
+}
+
+tb {
+  color: var(--text-color) !important;
+}
+
+.md-content__button {
+    display: none;
+}
+
+.md-content {
+  text-align: center;
+  color: white;
+  width: 4;
+}
+
+.md-button {
+  color: white;
+  border-color: white;
+}
+
+.text-white {
+  border-color: white !important;
+  color: white !important;
+}
+
+.black-background {
+  background-color: black;
+}
+
+@keyframes arrow {
+  from {
+    right: -1rem;
+  }
+
+  25%{
+    right: -0.5rem;
+
+  }
+
+  75%{
+    right: -0.5rem;
+  }
+
+  100%{
+    right: -1rem;
+  }
+}
+
+.md-mainpage-button::after {
+    position: relative;
+    content: "🡪";
+    right: -0.5rem;
+    animation-name: arrow;
+    animation-duration: 1.5s;
+    animation-play-state: running;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+}
+
+#background {
+  z-index: -2;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#gradient {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.11), rgba(0,0,0,1));
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -1;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
