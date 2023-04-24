@@ -1,9 +1,0 @@
-{
-  "name": "UpsideEngine",
-  "tree": {
-    "$path": "src",
-    "Types": {
-      "$path":"Types/luau/index.luau"
-    }
-  }
-}
