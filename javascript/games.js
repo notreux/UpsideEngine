@@ -3,7 +3,7 @@ const games = [
         name: "The Slime Game",
         description: `This is the final result of the getting started tutorial, you can play or edit the place. You can also donate buying a gamepass.`,
         banner: "https://cdn.discordapp.com/attachments/886012037916930109/1093616927257153536/image.png",
-        game_url: "https://www.roblox.com/games/12868051803",
+        game_url: "https://www.roblox.com/games/13021482729/Upside-Engine-Getting-Started",
     }
 ]
 
