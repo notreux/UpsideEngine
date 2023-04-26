@@ -31,5 +31,7 @@ music:Set({
 })
 ```
 
+You can view and edit the finished project [here](https://www.roblox.com/games/13021482729/Upside-Engine-Getting-Started).
+
 ____
 ##### Great job! You have successfully learned the fundamentals of the Upside Engine framework 🎉🎉<br> The following pages are dedicated to interesting information that you may want to know
