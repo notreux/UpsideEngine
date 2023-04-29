@@ -6,7 +6,7 @@
 To install the Upside Engine Framework, use the following command to create a new folder named "packages" with the Upside Engine Framework inside:
 
 ```git
-git submodules add https://github.com/TheHackerPuppy/UpsideEngine packages/UpsideEngine
+git submodule add https://github.com/TheHackerPuppy/UpsideEngine packages/UpsideEngine
 ```
 
 ??? Download-for-roblox-studio
