@@ -154,7 +154,7 @@ end
 }=]]
 
 return environment:Extend(script.Name, {
-	constructors = constructor,
+	constructor = constructor,
 	methods = methods,
 	rules = {
 		AmbientColor = Color3.fromRGB(),

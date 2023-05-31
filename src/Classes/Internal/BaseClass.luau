@@ -16,7 +16,7 @@ local classEnvironments = {
 }
 
 local directories = {
-	"constructors",
+	"constructor",
 	"readonly",
 	"rules",
 	"private",
@@ -39,7 +39,7 @@ function baseClass:new(...)
 	local this = self:Extend(self.ClassName, {})
 	local restricted = data.restricted[this.Id]
 
-	local constructors, args = restricted.constructors, { ... }
+	local constructors, args = restricted.constructor, { ... }
 	data.workSpace[this.Name] = this
 
 	for _, constructor in ipairs(constructors) do
@@ -75,7 +75,7 @@ function baseClass:Extend(className: string, classStructure: any)
 	local id = this.Id
 	local restricted = data.restricted[id]
 
-	local constructors = restricted.constructors
+	local constructors = restricted.constructor
 	local readonly = restricted.readonly
 	local methods = util.Fuse(data.restricted[self.Id].methods, classStructure.methods)
 

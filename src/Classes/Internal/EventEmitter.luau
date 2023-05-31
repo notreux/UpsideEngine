@@ -20,7 +20,7 @@ end
 	@link Connection.md
 }=]]
 
-function methods:On(name: string, callback: () -> ()): Connection
+function methods:On(name: string, callback: () -> any): Connection
 	local event = getEvent(self.EventsStorage, name)
 	local id = #event.Functions + 1
 

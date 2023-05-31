@@ -36,7 +36,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetDeviceConfig(device: string, controls: Dictionary<string, string?>)
+function methods:SetDeviceConfig(device: string, controls: Dictionary<string, string>)
 	self.Configs[device] = controls
 end
 

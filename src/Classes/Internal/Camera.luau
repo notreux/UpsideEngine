@@ -65,7 +65,7 @@ end
 }=]]
 
 return eventEmitter:Extend(script.Name, {
-	constructors = constructor,
+	constructor = constructor,
 	methods = methods,
 	readonly = {
 		Subject = character:new(),

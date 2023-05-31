@@ -48,6 +48,7 @@ end
 --[[={
 	@desc Replicates an object and each change on it, and returns the connections that detect each change of the object
 	@link Connection.md
+	@tsreturns LuaTuple<[Connection, Connection]>
 }=]]
 
 function methods:ReplicateOnChange(object: BaseObject): (Connection, Connection)

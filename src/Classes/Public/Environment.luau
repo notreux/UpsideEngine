@@ -3,13 +3,13 @@ local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 local getNormalAccess = require(upsideEngine.Private.Util).GetNormalAccess
 
 local methods = {}
-local constructors = {}
+local constructor = {}
 
 local function setProperty(obj, p, v)
 	obj[p] = v
 end
 
-function constructors:Environment()
+function constructor:Environment()
 	self:On("Changed", function(property)
 		if property ~= "Content" or self.Count ~= 0 then
 			return
@@ -70,6 +70,8 @@ end
 
 --[[={
 	@desc Checks if the environment contains every specified index and returns a boolean and a dictionary with boolean values, example:
+	@tsreturns LuaTuple<[boolean, Dictionary<any, boolean>]>
+	@link boolean.link
 	```lua
 	local hasAll, dictionary = treeEnv:Has({
 		"Tree1",
@@ -79,7 +81,6 @@ end
 
 	print(hasAll, dictionary) -- output: false, { Tree1 = true, Tree2 = true, Tree4 = false }
 	```
-	@link boolean.link
 }=]]
 
 function methods:Has(objects: Array<string>): (boolean, Dictionary<string, boolean>)
@@ -203,7 +204,7 @@ end
 
 return baseObject:Extend(script.Name, {
 	methods = methods,
-	constructors = constructors,
+	constructor = constructor,
 	rules = { Content = {} },
 	readonly = {
 		Count = 0,

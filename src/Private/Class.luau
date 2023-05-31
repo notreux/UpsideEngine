@@ -76,7 +76,7 @@ function class.new(className, methods)
 	restricted.masterAccess = util.CreateMasterAccess(id, token)
 	restricted.token = token
 	restricted.methods = methods
-	restricted.constructors = {}
+	restricted.constructor = {}
 	restricted.readonly = { ClassName = className }
 	restricted.private = {}
 	restricted.rules = {}

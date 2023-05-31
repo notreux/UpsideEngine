@@ -19,14 +19,20 @@ function methods:GetService(name: string)
 	return self.Services[name]
 end
 
-return eventEmitter:Extend("UpsideEngine", {
-	constructors = constructor,
-	methods = methods,
-	private = {
-		Classes = {},
-		Services = {}
-	},
-	readonly = {
-		Version = "v1.0.0",
-	},
-}):new()
+function methods:Extend(name: string, classData: ClassData)
+	return self.Classes[name]:Extend(classData.name, classData)
+end
+
+return eventEmitter
+	:Extend("UpsideEngine", {
+		constructor = constructor,
+		methods = methods,
+		private = {
+			Classes = {},
+			Services = {},
+		},
+		readonly = {
+			Version = "v1.0.0",
+		},
+	})
+	:new()

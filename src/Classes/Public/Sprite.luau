@@ -78,7 +78,7 @@ end
 
 return physicalObject:Extend(script.Name, {
 	methods = methods,
-	constructors = constructor,
+	constructor = constructor,
 	private = {
 		Connection = nil,
 	},

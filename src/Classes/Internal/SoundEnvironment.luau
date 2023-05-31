@@ -13,5 +13,5 @@ end
 
 return Environment:Extend(script.Name, {
 	readonly = { InstanceType = "SoundGroup" },
-	constructors = constructor,
+	constructor = constructor,
 })

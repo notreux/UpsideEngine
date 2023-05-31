@@ -1,4 +1,4 @@
-local types = require(script.Types)
+local types = require(script["init.d"])
 local data = require(script.AppData.Data)
 
 local runService = game:GetService("RunService")
@@ -37,28 +37,7 @@ for dir, childs in scripts do
 	end
 end
 
-for _, name in { "new", "Extend" } do
-	data.restricted[upsideEngine.Id].methods[name] = nil
-end
-
+data.restricted[upsideEngine.Id].methods["new"] = nil
 task.delay(0.1, destroy)
-type upsideEngine = types.EventEmitter & {
-	Version: string,
-	Workspace: {},
-	Create: ((self: upsideEngine, name: "PhysicalObject", ...any) -> types.PhysicalObject)
-		& ((self: upsideEngine, name: "Sprite", ...any) -> types.Sprite)
-		& ((self: upsideEngine, name: "Sound", ...any) -> types.Sound)
-		& ((self: upsideEngine, name: "Environment", ...any) -> types.Environment)
-		& ((self: upsideEngine, name: "Light", ...any) -> types.Light)
-		& ((self: upsideEngine, name: "Character", ...any) -> types.Character)
-		& ((self: upsideEngine, name: "Scene", ...any) -> types.Scene)
-		& ((self: upsideEngine, name: "Particle", ...any) -> types.Particle)
-		& ((self: upsideEngine, name: "Scene", ...any) -> types.Scene),
 
-	GetService: ((self: upsideEngine, name: "SceneManager") -> types.SceneManager)
-		& ((self: upsideEngine, name: "PluginSupportService") -> types.PluginSupportService)
-		& ((self: upsideEngine, name: "NetworkingService") -> types.NetworkingService)
-		& ((self: upsideEngine, name: "CrossPlatformService") -> types.CrossPlatformService),
-}
-
-return upsideEngine :: upsideEngine
+return upsideEngine :: types.upsideEngine

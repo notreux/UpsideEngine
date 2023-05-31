@@ -24,7 +24,7 @@ end
 }=]]
 
 return physicalObject:Extend(script.Name, {
-	constructors = constructor,
+	constructor = constructor,
 	methods = methods,
 	readonly = {
 		TrackCollisions = false,

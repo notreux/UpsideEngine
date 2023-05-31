@@ -52,7 +52,7 @@ end
 }=]]
 
 return baseClass:Extend(script.Name, {
-	constructors = constructor,
+	constructor = constructor,
 	methods = methods,
 	readonly = {
 		Active = true,

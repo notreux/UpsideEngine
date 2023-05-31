@@ -42,7 +42,7 @@ return function()
 
 		local class = baseClass:Extend("MyExtendedClass", {
 			methods = methods,
-			constructors = constructor,
+			constructor = constructor,
 			readonly = { ReadonlyProperty = 1 },
 			rules = { RuleProperty = "string" },
 			private = { PrivateProperty = true },
