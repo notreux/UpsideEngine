@@ -65,18 +65,17 @@ To install the Upside Engine Framework, use the following command to create a ne
 
 ## Recommended LSP
 
-For the best experience, we recommend to use the [LuauLSP](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp) extension for Visual Studio Code. Additionally, you should download [this file]() which provides all the types of the Upside Engine Framework
+For the best experience, we recommend to use the [LuauLSP](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp) extension for Visual Studio Code.
 
 ??? Typescript-Types
-	If you use typescript then download [this file]() instead
+	You can also use typescript, just be sure you have installed [roblox-ts](https://roblox-ts.com/)
 
-Once you have installed LuauLSP and the types file downloaded
-	then go to extension settings and search “Definition Files”
+Once you have installed LuauLSP then go to extension settings and search “Definition Files”
 
 ![Image](https://cdn.glitch.global/d1a228c9-9cc7-42e7-875e-5a138e0874ab/luauLSP.png){width="100%"}
 
 
-Once you have installed LuauLSP and downloaded the types file, go to extension settings and search for "Definition Files." Click on "Add Item" and then enter the path to the file. You can use the following path to keep the types up to date: `packages/UpsideEngine/upside-engine.d.luau`
+Click on "Add Item" and then enter this path `packages/UpsideEngine/upside-engine.d.luau`. Then click again on "Add Item" and then enter this path too `packages/UpsideEngine/src/init.d.luau`.
 
 
 ## An important step

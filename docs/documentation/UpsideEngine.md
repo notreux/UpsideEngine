@@ -28,7 +28,6 @@ This method extends any of these classes:
 
 ` Scene, Environment, Character, Sprite, Particle, PhysicalObject, Sound, Light `
 
-works like this
 ___
 
 ## [void]() `GetService(ServiceName: string)` 
