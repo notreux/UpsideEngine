@@ -1269,15 +1269,14 @@
 </code></pre></div>
 </details>
 <h2 id="recommended-lsp">Recommended LSP<a class="headerlink" href="#recommended-lsp" title="Anchor link to this section for reference">&para;</a></h2>
-<p>For the best experience, we recommend to use the <a href="https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp">LuauLSP</a> extension for Visual Studio Code. Additionally, you should download <a href="">this file</a> which provides all the types of the Upside Engine Framework</p>
+<p>For the best experience, we recommend to use the <a href="https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp">LuauLSP</a> extension for Visual Studio Code.</p>
 <details class="typescript-types">
 <summary>Typescript-types</summary>
-<p>If you use typescript then download <a href="">this file</a> instead</p>
+<p>You can also use typescript, just be sure you have installed <a href="https://roblox-ts.com/">roblox-ts</a></p>
 </details>
-<p>Once you have installed LuauLSP and the types file downloaded
-    then go to extension settings and search “Definition Files”</p>
+<p>Once you have installed LuauLSP then go to extension settings and search “Definition Files”</p>
 <p><img alt="Image" src="https://cdn.glitch.global/d1a228c9-9cc7-42e7-875e-5a138e0874ab/luauLSP.png" width="100%" /></p>
-<p>Once you have installed LuauLSP and downloaded the types file, go to extension settings and search for "Definition Files." Click on "Add Item" and then enter the path to the file. You can use the following path to keep the types up to date: <code>packages/UpsideEngine/upside-engine.d.luau</code></p>
+<p>Click on "Add Item" and then enter this path <code>packages/UpsideEngine/upside-engine.d.luau</code>. Then click again on "Add Item" and then enter this path too <code>packages/UpsideEngine/src/init.d.luau</code>.</p>
 <h2 id="an-important-step">An important step<a class="headerlink" href="#an-important-step" title="Anchor link to this section for reference">&para;</a></h2>
 <p>To ensure that the Upside Engine functions correctly, it is important to initialize the engine on the server, even if you are not using any server-side functionality. This is because some services, such as <code>NetworkingService</code>, depend on the server side.</p>
 <p>Here is an example of how to initialize the engine:</p>
