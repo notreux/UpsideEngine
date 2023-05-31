@@ -16,21 +16,29 @@ ___
 
 # Methods
 
-## [void]() `Create(ClassName, ...any)` 
+## [void]() `Create(ClassName: string, ...any)` 
 This method creates any of these classes:
 
 ` Scene, Environment, Character, Sprite, Particle, PhysicalObject, Sound, Light `
 
 ___
 
-## [void]() `GetService(ServiceName)` 
+## [void]() `Extend(ClassName: string, ClassData: ClassData)` 
+This method extends any of these classes:
+
+` Scene, Environment, Character, Sprite, Particle, PhysicalObject, Sound, Light `
+
+works like this
+___
+
+## [void]() `GetService(ServiceName: string)` 
 This method returns any of these services:
 
 ` SceneManager, NetworkingService, CrossPlatformService, PluginSupportService `
 
 ___
 
-## [void]() `Optimizate(options: dictionary)` 
+## [void]() `Optimizate(Options: dictionary)` 
 Removes innecesary roblox scripts
 
 ???+ info
