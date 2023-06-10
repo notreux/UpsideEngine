@@ -40,23 +40,31 @@ local function onUserInput(state, input)
 	local value = directions[action] or Vector2.zero
 
 	local jumping = (action == "jump" or action == "up") and crossPlatformService.SideView
-	controls[action] = begin
+	local isLateral = (action == "left" or action == "right")
+	value *= character.WalkSpeed * 10
+
+	if isLateral and begin then
+		character.Velocity = Vector2.new(0, character.Velocity.Y)
+		controls.left = false
+		controls.right = false
+	elseif action == "idle" then
+		character.Velocity = Vector2.zero
+	end
 
 	if jumping and begin and character.IsGrounded then
 		return character:Jump()
-	elseif not begin and not jumping then
-		value /= character.WalkSpeed * 10
-		character.Velocity = value
-	elseif begin then
-		value *= character.WalkSpeed * 10
-		character.Velocity = value
+	elseif not begin and controls[action] and not jumping then
+		character.Velocity -= value
+	elseif begin and not controls[action] then
+		character.Velocity += value
 	end
 
+	controls[action] = begin
 	return
 end
 
 local function getStickDirection(position, config)
-	local action, smaller = "Idle", 10
+	local action, smaller = "idle", 10
 	local direction = position.Unit
 
 	for _, keyword in config do
@@ -112,34 +120,29 @@ local function mobileSetup()
 	local stick = thumbstick:WaitForChild("StickImage")
 	local jumpButton = touchControlFrame:WaitForChild("JumpButton")
 
-	local margin = Vector2.new(30, 30)
 	local jumpKeyCode = {
 		Name = "JumpButton",
 		EnumType = "KeyCode",
 		Value = 5,
 	}
 
-	local function onInput(keyCode, input)
-		local position = util.ToVector2(stick.Position, "Offset") - margin
-		position = keyCode == Enum.KeyCode.Up and Vector2.zero or position
-		position = Vector2.new(position.X, -position.Y)
-
+	inputSetup(jumpButton, function()
 		inputDetector({
-			Position = position,
-			UserInputState = input.UserInputState,
+			Position = Vector2.zero,
+			UserInputState = Enum.UserInputState.Begin,
 			UserInputType = Enum.UserInputType.InputMethod,
-			KeyCode = keyCode,
+			KeyCode = jumpKeyCode,
 		})
-	end
-
-	inputSetup(stick, wrap(onInput, Enum.KeyCode.Thumbstick1))
-	inputSetup(jumpButton, wrap(onInput, jumpKeyCode))
+	end)
 
 	local changed = false
+	local base = Vector2.new(17, 17)
 	runService.Heartbeat:Connect(function()
-		local position = stick.Position
+		local position = Vector2.new(stick.Position.X.Offset, stick.Position.Y.Offset)
+		position = position - base
+		position = Vector2.new(position.X, -position.Y)
 
-		if position.X.Offset == 17 and changed then
+		if position.X == 0 and changed then
 			changed = false
 			inputDetector({
 				Position = Vector2.zero,
@@ -147,8 +150,14 @@ local function mobileSetup()
 				UserInputType = Enum.UserInputType.InputMethod,
 				KeyCode = Enum.KeyCode.Thumbstick1,
 			})
-		elseif position.X.Offset ~= 17 or position.Y.Offset ~= 17 then
+		elseif position.X ~= 0 then
 			changed = true
+			inputDetector({
+				Position = position,
+				UserInputState = Enum.UserInputState.Begin,
+				UserInputType = Enum.UserInputType.InputMethod,
+				KeyCode = Enum.KeyCode.Thumbstick1,
+			})
 		end
 	end)
 end
@@ -167,7 +176,7 @@ local last = ""
 RunService.Heartbeat:Connect(function()
 	local character = crossPlatformService.Character
 	local action = "idle"
-	
+
 	for control, enabled in controls do
 		if not enabled or not character.Sprites[action] then
 			continue
