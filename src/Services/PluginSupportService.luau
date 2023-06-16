@@ -66,7 +66,7 @@ end
 local function rebuild(parent, index, value)
 	local object = parent[index]
 
-	if not object then
+	if not object or object.ClassName ~= value.ClassName then
 		local sucess, class = pcall(require, classes.Public[value.ClassName])
 		if not sucess then
 			return

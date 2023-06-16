@@ -39,7 +39,7 @@ end
 }=]]
 
 function methods:AddOne(value: any, index: string)
-	assert(index == nil or self.Content[index] == nil, "This value already exist!")
+	assert(self.Content[index] == nil, "This value already exist!")
 	if typeof(value) == "table" then
 		value = getNormalAccess(value)
 	end
