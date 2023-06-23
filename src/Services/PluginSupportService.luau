@@ -63,16 +63,27 @@ local function setRestricted(object, id, name)
 	object:SetName(name)
 end
 
+function setRestrictedProperty(object, index, value)
+	local this = restricted[object.Id]
+	if this.readonly[index] then
+		this.readonly[index] = value
+		return
+	end
+
+	this.rules[index] = value
+end
+
 local function rebuild(parent, index, value)
 	local object = parent[index]
 
-	if not object or object.ClassName ~= value.ClassName then
+	if not object or value.ClassName and object.ClassName ~= value.ClassName then
 		local sucess, class = pcall(require, classes.Public[value.ClassName])
 		if not sucess then
 			return
 		end
 
 		object = class:new(parent)
+		pcall(setRestrictedProperty, parent, index, object)
 	end
 
 	if value.Id then
