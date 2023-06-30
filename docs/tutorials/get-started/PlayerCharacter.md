@@ -1,5 +1,5 @@
 # Creating the Player Character
-To create the player character, we will need to create a new Luau file named `character.client.luau` in the `src/client` folder and add the following code:
+To create the player character, we will need to create a new Luau file named `character.luau` in the `src/client` folder and add the following code:
 
 ```lua
 local replicatedStorage = game:GetService("ReplicatedStorage")

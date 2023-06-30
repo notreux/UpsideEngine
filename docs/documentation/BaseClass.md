@@ -66,13 +66,21 @@ Creates a new class
         }
     })
     ```
+___
+
+## [boolean](https://create.roblox.com/docs/scripting/luau/nil) `IsA(className: string)` 
+IsA returns true if the Instance's class is equivalent to or a subclass of a given class name
+
+___
+
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) `SetName(name: string)` 
 Sets the object name
+
 
 ___
 
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) `Destroy()` 
-destroys the object
+Destroys the object
 
 # Events
 
