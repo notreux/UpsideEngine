@@ -4,8 +4,8 @@ local PhysicalObject = require(script.Parent.PhysicalObject)
 
 return function()
 	Scene = Scene:new()
-	Sound = Sound:new(Scene)
-	PhysicalObject = PhysicalObject:new(Scene)
+	Sound = Sound:new({ Parent = Scene })
+	PhysicalObject = PhysicalObject:new({ Parent = Scene })
 
 	describe(":SetSubject()", function()
 		it("should set a new subject", function()

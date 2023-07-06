@@ -13,10 +13,19 @@ local event = isClient and "OnClientEvent" or "OnServerEvent"
 
 local function onEvent(server, client)
 	local data = client or server
-	if typeof(data) == "table" then
-		networkingService:Fire("ReplicationRequest", request:new(data.ClientId, data.Content))
+	if typeof(data) ~= "table" then
+		return
 	end
+
+	networkingService:Fire(
+		"ReplicationRequest",
+		request:new({
+			ClientId = data.ClientId,
+			Content = data.Content,
+		})
+	)
 end
+
 local function onPlayerAdded(player)
 	users[player.UserId] = {}
 	local objects = users[players.LocalPlayer.UserId]

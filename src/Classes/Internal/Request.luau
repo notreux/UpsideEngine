@@ -5,7 +5,7 @@ local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
-local restricted = require(upsideEngine.AppData.Data).restricted
+local classes = {}
 local networking
 
 local constructor = {}
@@ -26,9 +26,9 @@ end
 	@link Request.md
 }=]]
 
-function constructor:Request(clientId: number, content: Dictionary<string, any>)
-	self.ClientId = clientId or players.LocalPlayer.UserId
-	self.Content = table.freeze(content or {})
+function constructor:Request(data: RequestParams)
+	self.ClientId = data.ClientId or players.LocalPlayer.UserId
+	self.Content = table.freeze(data.Content or {})
 end
 
 local function setProperty(object, property, value)
@@ -80,16 +80,15 @@ end
 	@link BaseObject.md
 }=]]
 
-function methods:Accept(...): BaseObject
+function methods:Accept(data: BaseObjectParams): BaseObject
 	local content = self.Content
-	local class = restricted[upsideEngine.Id].private
-	class = class.Classes[content.className]
+	local class = classes[content.className]
 
 	local replicated = networking.Players[self.ClientId] or {}
 	local isFirstRequest = not replicated[content.id]
 
 	assert(class ~= nil, "Invalid class!")
-	local clon = replicated[content.id] or class:new(...)
+	local clon = replicated[content.id] or class:new(data)
 
 	if isFirstRequest then
 		networking.Players[self.ClientId][content.id] = clon
@@ -119,8 +118,16 @@ function methods:GetClient(): Player
 end
 
 task.defer(function()
+	for _, module in upsideEngine.Classes.Public:GetChildren() do
+		if module.Name:match(".src") then
+			continue
+		end
+
+		classes[module.Name] = require(module)
+	end
+
 	upsideEngine = require(upsideEngine.UpsideEngine)
-	networking = upsideEngine:GetService("NetworkingService")
+	networking = upsideEngine.GetService("NetworkingService")
 end)
 
 --[[={

@@ -11,8 +11,8 @@ end
 	@link Connection.md
 }=]]
 
-function constructor:Connection(eventId: number, event: Dictionary<string, table>)
-	addReadonly({ EventId = eventId, Event = event })
+function constructor:Connection(data: ConnectionParams)
+	addReadonly({ EventId = data.EventId, Event = data.Event })
 end
 
 --[[={

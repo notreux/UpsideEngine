@@ -6,7 +6,8 @@ local constructor = {}
 	@link Light.md
 }=]]
 
-function constructor:Light(scene: Scene)
+function constructor:Light(data: BaseObjectParams)
+	local scene = data.Parent
 	if scene and scene.LightingEnvironment then
 		scene.LightingEnvironment:AddOne(self, self.Id)
 	end

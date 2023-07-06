@@ -10,7 +10,7 @@ local Test = {
 }
 
 return function()
-	Request = Request:new(1, Test)
+	Request = Request:new({ ClientId = 1, Content = Test })
 
 	describe("Constructor :new()", function()
 		it("should send the provided information to the client|server", function()

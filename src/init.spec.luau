@@ -1,15 +1,18 @@
 local UpsideEngine = require(script.Parent)
 
 return function()
-	describe(":Create()", function()
+	describe(".new()", function()
 		it("should create a new object", function()
-			local object = UpsideEngine:Create("Sound")
+			local object = UpsideEngine.new "Sound" { 
+				Parent = workspace,
+			}
+			
 			expect(object.Id).to.be.ok()
 		end)
 	end)
-	describe(":GetService()", function()
+	describe(".GetService()", function()
 		it("should get a service", function()
-			local service = UpsideEngine:GetService("SceneManager")
+			local service = UpsideEngine.GetService("SceneManager")
 			expect(service.Id).to.be.a("string")
 		end)
 	end)

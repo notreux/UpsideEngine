@@ -5,7 +5,8 @@ local eventEmitter = require(script.Parent.EventEmitter)
 	@link BaseObject.md
 }=]]
 
-function constructor:BaseObject(parent: Scene)
+function constructor:BaseObject(data: BaseObjectParams)
+	local parent = data.Parent
 	local parentType = typeof(parent)
 	local parentInstance = parentType == "Instance" and parent or nil
 

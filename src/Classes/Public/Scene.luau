@@ -2,7 +2,7 @@ local upsideEngine = script.Parent.Parent.Parent
 
 local camera = require(upsideEngine.Classes.Internal.Camera)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
-local data = require(upsideEngine.AppData.Data)
+local restricted = require(upsideEngine.AppData.Data).restricted
 
 local soundEnvironment = require(upsideEngine.Classes.Internal.SoundEnvironment)
 local lightingEnvironment = require(upsideEngine.Classes.Internal.LightingEnvironment)
@@ -28,7 +28,8 @@ end
 	@link Scene.md
 }=]]
 
-function constructor:ZScene(parent: Instance)
+function constructor:Scene(data: SceneParams)
+	local parent = data.Parent
 	local isInstance = typeof(parent) == "Instance"
 	local isLayerCollector = isInstance and parent:IsA("LayerCollector")
 
@@ -59,10 +60,10 @@ function constructor:ZScene(parent: Instance)
 
 	sceneManager.Scenes[self.Id] = util.GetNormalAccess(self)
 	addReadonly({
-		LightingEnvironment = lightingEnvironment:new(this),
-		SoundEnvironment = soundEnvironment:new(),
+		Camera = camera:new({ Parent = self }),
+		LightingEnvironment = lightingEnvironment:new({ Parent = this }),
 		ParticleEnvironment = particleEnvironment:new(),
-		Camera = camera:new(self),
+		SoundEnvironment = soundEnvironment:new(),
 	})
 end
 
@@ -72,7 +73,7 @@ end
 }=]]
 
 function methods:AddObject(object: BaseObject)
-	local readonly = data.restricted[object.Id].readonly
+	local readonly = restricted[object.Id].readonly
 	readonly.Scene = self.Id
 
 	local instance = object.Instance
@@ -88,7 +89,7 @@ end
 }=]]
 
 function methods:RemoveObject(object: BaseObject)
-	local readonly = data.restricted[object.Id].readonly
+	local readonly = restricted[object.Id].readonly
 	readonly.Scene = ""
 
 	local instance = object.Instance

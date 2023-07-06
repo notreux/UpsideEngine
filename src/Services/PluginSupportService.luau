@@ -82,7 +82,7 @@ local function rebuild(parent, index, value)
 			return
 		end
 
-		object = class:new(parent)
+		object = class:new({ Parent = parent })
 		pcall(setRestrictedProperty, parent, index, object)
 	elseif not object then
 		object = {}

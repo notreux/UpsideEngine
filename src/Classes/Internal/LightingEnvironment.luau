@@ -40,7 +40,8 @@ end
 	@link LightingEnvironment.md
 }=]]
 
-function constructor:ZLightingEnvironment(parent: Frame)
+function constructor:LightingEnvironment(data: BaseObjectParams)
+	local parent = data.Parent
 	if not parent then
 		return
 	end

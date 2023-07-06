@@ -5,7 +5,7 @@ return function()
 	describe("Constructor :new()", function()
 		it("should set the object parent to SoundService", function()
 			Scene = Scene:new()
-			Light = Light:new(Scene)
+			Light = Light:new({ Parent = Scene })
 
 			expect(Scene.LightingEnvironment:Get(Light.Id).Id).to.equal(Light.Id)
 		end)

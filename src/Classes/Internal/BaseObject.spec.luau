@@ -5,14 +5,14 @@ return function()
 	describe("constructor :new()", function()
 		it("should use the first arg as parent", function()
 			local parent = Instance.new("Frame")
-			local obj = BaseObject:new(parent)
+			local obj = BaseObject:new({ Parent = parent })
 
 			expect(obj.Instance.Parent).to.equal(parent)
 		end)
 
 		it("should be added to the parent scene", function()
 			local scene = Scene:new()
-			local obj = BaseObject:new(scene)
+			local obj = BaseObject:new({ Parent = scene })
 
 			expect(obj.Scene).to.equal(scene.Id)
 			expect(scene.Objects[obj.Id].Id).to.equal(obj.Id)
@@ -47,7 +47,7 @@ return function()
 
 	describe(":Set()", function()
 		it("should set properties", function()
-			local obj = BaseObject:new(workspace)
+			local obj = BaseObject:new({ Parent = workspace })
 			obj:Set({
 				BackgroundTransparency = 1,
 			})

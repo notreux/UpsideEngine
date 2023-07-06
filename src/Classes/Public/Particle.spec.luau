@@ -4,8 +4,8 @@ local PhysicalObject = require(script.Parent.PhysicalObject)
 
 return function()
 	Scene = Scene:new()
-	Particle = Particle:new(Scene)
-	PhysicalObject = PhysicalObject:new(Scene)
+	Particle = Particle:new({ Parent = Scene })
+	PhysicalObject = PhysicalObject:new({ Parent = Scene })
 
 	describe(":SetSubject()", function()
 		it("should set the particle subject", function()

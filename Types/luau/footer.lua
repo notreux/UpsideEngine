@@ -1,30 +1,29 @@
 export type upsideEngine = {
 	Version: string,
 	Workspace: {},
-	Create: ((self: upsideEngine, name: "PhysicalObject", ...any) -> PhysicalObject)
-		& ((self: upsideEngine, name: "Sprite", ...any) -> Sprite)
-		& ((self: upsideEngine, name: "Sound", ...any) -> Sound)
-		& ((self: upsideEngine, name: "Environment", ...any) -> Environment)
-		& ((self: upsideEngine, name: "Light", ...any) -> Light)
-		& ((self: upsideEngine, name: "Character", ...any) -> Character)
-		& ((self: upsideEngine, name: "Scene", ...any) -> Scene)
-		& ((self: upsideEngine, name: "Particle", ...any) -> Particle)
-		& ((self: upsideEngine, name: "Scene", ...any) -> Scene),
+	new: ((name: "PhysicalObject") -> (data: BaseObjectParams) -> PhysicalObject)
+		& ((name: "Sprite") -> (data: SpriteParams) -> Sprite)
+		& ((name: "Sound") -> (data: BaseObjectParams) -> Sound)
+		& ((name: "Environment") -> (data: BaseObjectParams) -> Environment)
+		& ((name: "Light") -> (data: BaseObjectParams) -> Light)
+		& ((name: "Character") -> (data: SpriteParams) -> Character)
+		& ((name: "Scene") -> (data: SceneParams) -> Scene)
+		& ((name: "Particle") -> (data: BaseObjectParams) -> Particle),
 
-	Extend: ((self: upsideEngine, name: "PhysicalObject", classData: ClassData) -> PhysicalObject)
-		& ((self: upsideEngine, name: "Sprite", classData: ClassData) -> Sprite)
-		& ((self: upsideEngine, name: "Sound", classData: ClassData) -> Sound)
-		& ((self: upsideEngine, name: "Environment", classData: ClassData) -> Environment)
-		& ((self: upsideEngine, name: "Light", classData: ClassData) -> Light)
-		& ((self: upsideEngine, name: "Character", classData: ClassData) -> Character)
-		& ((self: upsideEngine, name: "Scene", classData: ClassData) -> Scene)
-		& ((self: upsideEngine, name: "Particle", classData: ClassData) -> Particle)
-		& ((self: upsideEngine, name: "Scene", classData: ClassData) -> Scene),
+	Extend: ((name: "PhysicalObject", classData: ClassData) -> PhysicalObject)
+		& ((name: "Sprite", classData: ClassData) -> Sprite)
+		& ((name: "Sound", classData: ClassData) -> Sound)
+		& ((name: "Environment", classData: ClassData) -> Environment)
+		& ((name: "Light", classData: ClassData) -> Light)
+		& ((name: "Character", classData: ClassData) -> Character)
+		& ((name: "Scene", classData: ClassData) -> Scene)
+		& ((name: "Particle", classData: ClassData) -> Particle)
+		& ((name: "Scene", classData: ClassData) -> Scene),
 
-	GetService: ((self: upsideEngine, name: "SceneManager") -> SceneManager)
-		& ((self: upsideEngine, name: "PluginSupportService") -> PluginSupportService)
-		& ((self: upsideEngine, name: "NetworkingService") -> NetworkingService)
-		& ((self: upsideEngine, name: "CrossPlatformService") -> CrossPlatformService),
+	GetService: ((name: "SceneManager") -> SceneManager)
+		& ((name: "PluginSupportService") -> PluginSupportService)
+		& ((name: "NetworkingService") -> NetworkingService)
+		& ((name: "CrossPlatformService") -> CrossPlatformService),
 }
 
 return {}

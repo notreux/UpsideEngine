@@ -24,7 +24,7 @@ function methods:On(name: string, callback: () -> any): Connection
 	local event = getEvent(self.EventsStorage, name)
 	local id = #event.Functions + 1
 
-	local cn = connection:new(id, event)
+	local cn = connection:new({ EventId = id, Event = event })
 	event.Functions[id] = callback
 
 	return cn

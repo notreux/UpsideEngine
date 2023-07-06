@@ -22,7 +22,7 @@ return function()
 
 	describe(":SetSubject()", function()
 		it("should set the camera subject", function()
-			local Subject = PhysicalObject:new(Scene)
+			local Subject = PhysicalObject:new({ Parent = Scene })
 			Camera:SetSubject(Subject)
 			expect(Camera.Subject).to.equal(Subject)
 		end)

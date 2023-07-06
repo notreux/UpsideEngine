@@ -9,13 +9,13 @@ local constructor = {}
 	@link Sprite.md
 }=]]
 
-function constructor:ZSprite(parent: Scene, size: Vector2)
-	if typeof(size) ~= "Vector2" then
+function constructor:Sprite(data: SpriteParams)
+	if typeof(data.SpriteSize) ~= "Vector2" then
 		return
 	end
 
 	local instance = self.Instance
-	instance.ImageRectSize = size
+	instance.ImageRectSize = data.SpriteSize
 end
 
 --[[={

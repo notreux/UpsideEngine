@@ -1,38 +1,32 @@
-local upsideEngine = script.Parent
-local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
-local services = require(upsideEngine.Services)
-local upsideWorkspace = require(upsideEngine.AppData.Data).workSpace
+local parent = script.Parent
+local upsideWorkspace = require(parent.AppData.Data).workSpace
+local services = require(parent.Services)
+local classes = {}
 
-local constructor = {}
-local methods = {}
+local upsideEngine = {}
+upsideEngine.Version = "v1.1.0"
+upsideEngine.Workspace = upsideWorkspace
 
-function constructor:UpsideEngine()
-	self.Services = services
-	addReadonly({ Workspace = upsideWorkspace })
+function upsideEngine.new(name: string)
+	return function(data)
+		return classes[name]:new(data)
+	end
 end
 
-function methods:Create(name: string, ...)
-	return self.Classes[name]:new(...)
+function upsideEngine.GetService(name: string)
+	return services[name]
 end
 
-function methods:GetService(name: string)
-	return self.Services[name]
+function upsideEngine.Extend(name: string, classData: ClassData)
+	return classes[name]:Extend(classData.name, classData)
 end
 
-function methods:Extend(name: string, classData: ClassData)
-	return self.Classes[name]:Extend(classData.name, classData)
+for _, class in parent.Classes.Public:GetDescendants() do
+	if class.Name:match(".spec") or not class:IsA("ModuleScript") then
+		continue
+	end
+
+	classes[class.Name] = require(class)
 end
 
-return eventEmitter
-	:Extend("UpsideEngine", {
-		constructor = constructor,
-		methods = methods,
-		private = {
-			Classes = {},
-			Services = {},
-		},
-		readonly = {
-			Version = "v1.0.2",
-		},
-	})
-	:new()
+return upsideEngine

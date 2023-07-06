@@ -10,7 +10,8 @@ local constructor = {}
 	@link Camera.md
 }=]]
 
-function constructor:Camera(scene: Scene)
+function constructor:Camera(data: BaseObjectParams)
+	local scene = data.Parent
 	if not scene then
 		return
 	end

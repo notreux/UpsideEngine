@@ -35,11 +35,11 @@ local function set(self, clon, index)
 	clon[index] = self[index]
 end
 
-function baseClass:new(...)
+function baseClass:new(args, ...)
 	local this = self:Extend(self.ClassName, {})
 	local restricted = data.restricted[this.Id]
 
-	local constructors, args = restricted.constructor, { ... }
+	local constructors = restricted.constructor
 	data.workSpace[this.Name] = this
 
 	for _, constructor in ipairs(constructors) do
@@ -48,7 +48,7 @@ function baseClass:new(...)
 		env.addReadonly = util.Wrap(addReadonly, this.Id)
 
 		setfenv(constructor, env)
-		constructor(masterAccess, unpack(args))
+		constructor(masterAccess, args or {})
 	end
 
 	return this

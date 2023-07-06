@@ -30,9 +30,9 @@ return function()
 		local methods = {}
 		local constructor = {}
 
-		function constructor:Test(value)
+		function constructor:Test(data)
 			addReadonly({
-				NewReadonlyProperty = value,
+				NewReadonlyProperty = data.Property,
 			})
 		end
 
@@ -79,7 +79,7 @@ return function()
 		end)
 
 		it("should build an object with the extended class constructor", function()
-			local object = class:new(5)
+			local object = class:new({ Property = 5 })
 			expect(object:Read("NewReadonlyProperty")).to.equal(5)
 		end)
 	end)
