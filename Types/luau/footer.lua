@@ -10,15 +10,14 @@ export type upsideEngine = {
 		& ((name: "Scene") -> (data: SceneParams) -> Scene)
 		& ((name: "Particle") -> (data: BaseObjectParams) -> Particle),
 
-	Extend: ((name: "PhysicalObject", classData: ClassData) -> PhysicalObject)
-		& ((name: "Sprite", classData: ClassData) -> Sprite)
-		& ((name: "Sound", classData: ClassData) -> Sound)
-		& ((name: "Environment", classData: ClassData) -> Environment)
-		& ((name: "Light", classData: ClassData) -> Light)
-		& ((name: "Character", classData: ClassData) -> Character)
-		& ((name: "Scene", classData: ClassData) -> Scene)
-		& ((name: "Particle", classData: ClassData) -> Particle)
-		& ((name: "Scene", classData: ClassData) -> Scene),
+	Extend: ((name: "PhysicalObject") -> (classData: ClassData) -> PhysicalObject)
+		& ((name: "Sprite") -> (classData: ClassData) -> Sprite)
+		& ((name: "Sound") -> (classData: ClassData) -> Sound)
+		& ((name: "Environment") -> (classData: ClassData) -> Environment)
+		& ((name: "Light") -> (classData: ClassData) -> Light)
+		& ((name: "Character") -> (classData: ClassData) -> Character)
+		& ((name: "Scene") -> (classData: ClassData) -> Scene)
+		& ((name: "Particle") -> (classData: ClassData) -> Particle),
 
 	GetService: ((name: "SceneManager") -> SceneManager)
 		& ((name: "PluginSupportService") -> PluginSupportService)

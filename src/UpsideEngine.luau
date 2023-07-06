@@ -18,8 +18,10 @@ function upsideEngine.GetService(name: string)
 	return services[name]
 end
 
-function upsideEngine.Extend(name: string, classData: ClassData)
-	return classes[name]:Extend(classData.name, classData)
+function upsideEngine.Extend(name: string)
+	return function(classData)
+		return classes[name]:Extend(classData.name, classData)
+	end
 end
 
 for _, class in parent.Classes.Public:GetDescendants() do

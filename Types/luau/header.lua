@@ -53,11 +53,11 @@ export type Raycast2dParams = {
 
 export type ClassData = {
 	name: string,
-	constructor: Dictionary<string, () -> any>,
-	methods: Dictionary<string, () -> any>,
-	private: Dictionary<string, any>,
-	readonly: Dictionary<string, any>,
-	rules: Dictionary<string, any>,
+	constructor: Dictionary<string, () -> any>?,
+	methods: Dictionary<string, () -> any>?,
+	private: Dictionary<string, any>?,
+	readonly: Dictionary<string, any>?,
+	rules: Dictionary<string, any>?,
 }
 
 export type BaseClass = {

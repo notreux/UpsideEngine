@@ -11,11 +11,11 @@ declare interface BaseObjectParams {
 }
 
 declare interface SceneParams {
-	Parent: Instance,
+	Parent?: Instance,
 }
 
 declare interface SpriteParams extends BaseObjectParams {
-	SpriteSize?: number,
+	SpriteSize?: Vector2,
 }
 
 declare interface ConnectionParams {
