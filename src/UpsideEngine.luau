@@ -1,7 +1,8 @@
 local parent = script.Parent
-local upsideWorkspace = require(parent.AppData.Data).workSpace
-local services = require(parent.Services)
 local classes = {}
+
+local services = require(parent.Services)
+local upsideWorkspace = require(parent.AppData.Data).workSpace
 
 local upsideEngine = {}
 upsideEngine.Version = "v1.1.0"
