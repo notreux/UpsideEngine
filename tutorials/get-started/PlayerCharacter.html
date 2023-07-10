@@ -518,6 +518,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#camera-setup" class="md-nav__link">
+    Camera Setup
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1238,11 +1245,21 @@ This code creates a new character object in the game's scene using the Upside En
 </code></pre></div></p>
 <p>This sets the sprite sheet for the "idle" animation, using the ID of the asset and also pass the number of rows and columns as a Vector2, for example we have 5 frames in the in two lines, the expected Vector2 would be <code>Vector2.new(2, 5)</code>.</p>
 <h2 id="adding-player-controllers">Adding Player Controllers<a class="headerlink" href="#adding-player-controllers" title="Anchor link to this section for reference">&para;</a></h2>
-<p>To add player controllers, we need to use the CrossPlatformService:</p>
-<p><div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">crossPlatformService</span> <span class="o">=</span> <span class="n">upsideEngine</span><span class="p">:</span><span class="n">GetService</span><span class="p">(</span><span class="s2">&quot;CrossPlatformService&quot;</span><span class="p">)</span>
-<span class="n">crossPlatformService</span><span class="p">:</span><span class="n">SetSubject</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+<p>To add player controllers, we need to use the CrossPlatformService which was required in the previously:</p>
+<p><div class="highlight"><pre><span></span><code><span class="n">crossPlatformService</span><span class="p">:</span><span class="n">SetPlayerCharacter</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
 </code></pre></div>
 This sets the player character as the subject of the CrossPlatformService, allowing for control inputs to be applied to the character</p>
+<h2 id="camera-setup">Camera Setup<a class="headerlink" href="#camera-setup" title="Anchor link to this section for reference">&para;</a></h2>
+<p>To make the camera follow the character, we will need to define the player as the camera subject. We can achieve this by using the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="n">scene</span><span class="p">.</span><span class="n">Camera</span><span class="p">:</span><span class="n">SetSubject</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<div class="admonition bug">
+<p class="admonition-title">Bug</p>
+<p>Remember that you are using a module script, don't forget to return a value at the end of the script!
+<div class="highlight"><pre><span></span><code><span class="kr">return</span> <span class="p">{}</span>
+</code></pre></div></p>
+</div>
 <hr />
 <h5 id="congratulations-youve-now-created-your-first-player-character-using-upside-engine">Congratulations! You've now created your first player character using Upside Engine 🎉🎉<a class="headerlink" href="#congratulations-youve-now-created-your-first-player-character-using-upside-engine" title="Anchor link to this section for reference">&para;</a></h5>
 
