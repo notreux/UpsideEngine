@@ -38,13 +38,26 @@ player:SetSpriteSheet("idle", "rbxassetid://12908048527", Vector2.new(1, 12))
 This sets the sprite sheet for the "idle" animation, using the ID of the asset and also pass the number of rows and columns as a Vector2, for example we have 5 frames in the in two lines, the expected Vector2 would be `Vector2.new(2, 5)`.
 
 ## Adding Player Controllers
-To add player controllers, we need to use the CrossPlatformService:
+To add player controllers, we need to use the CrossPlatformService which was required in the previously:
 
 ```lua
-local crossPlatformService = upsideEngine:GetService("CrossPlatformService")
-crossPlatformService:SetSubject(player)
+crossPlatformService:SetPlayerCharacter(player)
 ```
 This sets the player character as the subject of the CrossPlatformService, allowing for control inputs to be applied to the character
+
+## Camera Setup
+To make the camera follow the character, we will need to define the player as the camera subject. We can achieve this by using the following code:
+
+```lua
+scene.Camera:SetSubject(player)
+```
+____
+
+!!! bug
+	Remember that you are using a module script, don't forget to return a value at the end of the script!
+	```lua
+	return {}
+	```
 
 ___
 ##### Congratulations! You've now created your first player character using Upside Engine 🎉🎉 

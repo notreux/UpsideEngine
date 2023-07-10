@@ -31,6 +31,14 @@ music:Set({
 })
 ```
 
+____
+
+!!! bug
+	Remember that you are using a module script, don't forget to return a value at the end of the script!
+	```lua
+	return {}
+	```
+
 You can view and edit the finished project [here](https://www.roblox.com/games/13021482729/Upside-Engine-Getting-Started).
 
 ____
