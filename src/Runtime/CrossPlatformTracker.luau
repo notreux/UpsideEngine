@@ -43,6 +43,12 @@ local function onUserInput(state, input)
 	local isLateral = (action == "left" or action == "right")
 	value *= character.WalkSpeed * 10
 
+	for _, key in { "X", "Y" } do
+		if not begin and character.Velocity[key] == 0 and value[key] ~= 0 then
+			return
+		end
+	end
+
 	if isLateral and begin then
 		character.Velocity = Vector2.new(0, character.Velocity.Y)
 		controls.left = false
