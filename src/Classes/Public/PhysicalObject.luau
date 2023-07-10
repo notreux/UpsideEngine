@@ -156,6 +156,7 @@ end
 		@TrackCollisions This property defines if the object is going to have physics and collisions or not
 		@Force Is the force which is applied in the moment to the object
 		@Velocity Is the velocity applied to the object
+		@ConstantVelocity This property defines whether the object will maintain velocity after a collision or not
 		@Hitbox 
 		!!! warning 
 			Experimental, dont use
@@ -191,6 +192,7 @@ return baseObject:Extend(script.Name, {
 		CanCollide = true,
 		IsGrounded = false,
 		TrackCollisions = true,
+		ConstantVelocityEnabled = false,
 		HitboxShape = "Box",
 		Force = Vector2.zero,
 		Velocity = Vector2.zero,
