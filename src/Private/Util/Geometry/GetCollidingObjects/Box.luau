@@ -1,5 +1,28 @@
 local getCorners = require(script.Parent.Parent.GetCorners)
 
+local function minAndmaxV2(arr)
+	local max = -math.huge
+	local min = math.huge
+
+	local minV2
+	local maxV2
+
+	for _, v2 in ipairs(arr) do
+		local op = v2.X + v2.Y
+		if op > max then
+			max = op
+			maxV2 = v2
+		end
+
+		if op < min then
+			min = op
+			minV2 = v2
+		end
+	end
+
+	return minV2, maxV2
+end
+
 local function sortf(a, b)
 	return a.Magnitude < b.Magnitude
 end
@@ -17,15 +40,12 @@ local function collide(self, object)
 	local c1, c2 = getCorners(self), getCorners(object)
 	local axis, mtvs = getAxis(c1, c2), {}
 
-	for i = 1, #axis do
-		local s1, s2 = {}, {}
-		for n = 1, 4 do
-			table.insert(s1, axis[i]:Dot(c1[n]))
-			table.insert(s2, axis[i]:Dot(c2[n]))
-		end
+	local c1min, c1max = minAndmaxV2(c1)
+	local c2min, c2max = minAndmaxV2(c2)
 
-		local s1max, s1min = math.max(unpack(s1)), math.min(unpack(s1))
-		local s2max, s2min = math.max(unpack(s2)), math.min(unpack(s2))
+	for i = 1, #axis do
+		local s1max, s1min = axis[i]:Dot(c1max), axis[i]:Dot(c1min)
+		local s2max, s2min = axis[i]:Dot(c2max), axis[i]:Dot(c2min)
 
 		if s2min > s1max or s2max < s1min then
 			return

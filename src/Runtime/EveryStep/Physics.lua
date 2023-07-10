@@ -2,8 +2,11 @@ local upsideEngine = script.Parent.Parent.Parent
 local util = require(upsideEngine.Private.Util)
 
 local max = 10000
-local movers = { "Velocity", "Force" }
 local recentCollisions = {}
+
+local function adaptToCollisions(object, property, smtv)
+	object[property] = Vector2.new(smtv.X == 0 and object[property].X or 0, smtv.Y == 0 and object[property].Y or 0)
+end
 
 local function getRecentCollisions(object)
 	local recent = recentCollisions[object.Id]
@@ -40,49 +43,61 @@ return function(scene, deltaTime)
 			continue
 		end
 
-		local instance, position, collisions = object.Instance, nil, nil
+		local instance = object.Instance
 		local absolutePosition = instance.AbsolutePosition
 
 		local colliding, recentC = {}, getRecentCollisions(object)
-		local smtv = Vector2.zero
+		local distance = (object.Force + object.Velocity) * deltaTime
 
-		for i = 1, 4 do
-			position = absolutePosition + (object.Force + object.Velocity) * deltaTime / i
-			collisions = util.GetCollidingObjects(object, position, scene)
+		local smtv, position = Vector2.zero, nil
+		local stop, collisions = nil, nil
 
-			if #collisions > 0 then
+		for i = 4, 1, -1 do
+			local dis = distance / i
+			position = absolutePosition + dis
+			collisions, stop = util.GetCollidingObjects(object, position, scene)
+
+			if stop and object.CanCollide then
+				distance = dis
 				break
 			end
 		end
 
-		for _, collision in ipairs(collisions) do
-			smtv += collision.mtv
+		for _, collision in collisions do
+			local meta = collision.object
+			if object.CanCollide and meta.CanCollide then
+				smtv += collision.mtv
+			end
 
 			colliding[collision.object.Id] = true
 			emit(object, collision.object, true)
 		end
 
-		for id in pairs(object.Collisions) do
-			emit(object, scene.Objects[id], colliding[id])
+		for id in object.Collisions do
+			local obj = scene.Objects[id]
+			if not obj then
+				continue
+			end
+
+			emit(object, obj, colliding[id])
 		end
 
-		for id, iterations in pairs(recentC) do
+		for id, iterations in recentC do
 			recentC[id] -= 1
 			if iterations < 0 then
 				recentC[id] = nil
 			end
 		end
 
-		if object.Anchored or not object.CanCollide then
+		if object.Anchored then
 			continue
+		elseif not object.ConstantVelocityEnabled then
+			adaptToCollisions(object, "Velocity", smtv)
 		end
 
-		for _, mover in ipairs(movers) do
-			object[mover] = Vector2.new(smtv.X == 0 and object[mover].X or 0, smtv.Y == 0 and object[mover].Y or 0)
-		end
-
-		position -= smtv
-		instance.Position -= util.ToUDim2(absolutePosition - position)
+		adaptToCollisions(object, "Force", smtv)
+		distance -= smtv
+		instance.Position += util.ToUDim2(distance)
 
 		object.IsGrounded = object.Force.Y == 0
 		object.Force += Vector2.new(0, math.clamp(object.Mass * 10, -max, max)) * deltaTime

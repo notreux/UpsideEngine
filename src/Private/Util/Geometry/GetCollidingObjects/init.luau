@@ -47,13 +47,13 @@ local function checkByPoint(object, position, scene)
 end
 
 local function checkByShape(object, position, scene)
-	local collisions = {}
+	local stop = false
 	local instance = object.Instance
 
-	local hitboxScale = object.HitboxScale
+	local collisions = {}
 	local fakeInstance = {
 		AbsolutePosition = position,
-		AbsoluteSize = instance.AbsoluteSize * hitboxScale,
+		AbsoluteSize = instance.AbsoluteSize * object.HitboxScale,
 		Rotation = instance.Rotation,
 	}
 
@@ -66,6 +66,7 @@ local function checkByShape(object, position, scene)
 		local isColliding, mtv = solve(fakeInstance, meta.Instance)
 
 		if isColliding then
+			stop = stop or (meta.CanCollide and not meta.Collisions[object.Id])
 			table.insert(collisions, {
 				object = meta,
 				mtv = mtv,
@@ -73,7 +74,7 @@ local function checkByShape(object, position, scene)
 		end
 	end
 
-	return collisions
+	return collisions, stop
 end
 
 return function(object, ...)

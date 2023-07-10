@@ -1,21 +1,21 @@
 function rotateVector(v, a)
-	return Vector2.new(
-		v.X * math.cos(a) - v.Y * math.sin(a), 
-		v.X * math.sin(a) + v.Y * math.cos(a)
-	)
+	local sin, cos = math.sin(a), math.cos(a)
+	return Vector2.new(v.X * cos - v.Y * sin, v.X * sin + v.Y * cos)
 end
 
 return function(object)
-	local corners, rot, ap, as = {}, math.rad(object.Rotation), object.AbsolutePosition, object.AbsoluteSize
-	local center, world_cords = ap + as / 2, {
-			ap,
-			Vector2.new(ap.X + as.X, ap.Y),
-			Vector2.new(ap.X + as.X, ap.Y + as.Y),
-			Vector2.new(ap.X, ap.Y + as.Y),
-		}
+	local aSize, aPosition = object.AbsoluteSize, object.AbsolutePosition
+	local center, rotation = aPosition + aSize / 2, math.rad(object.Rotation)
+	local world_cords = {
+		aPosition,
+		Vector2.new(aPosition.X + aSize.X, aPosition.Y),
+		aPosition + aSize,
+		Vector2.new(aPosition.X, aPosition.Y + aSize.Y),
+	}
 
-	for i, corner in ipairs(world_cords) do
-		corners[i] = center + rotateVector(corner - center, rot)
+	local corners = {}
+	for i, corner in world_cords do
+		corners[i] = center + rotateVector(corner - center, rotation)
 	end
 
 	return corners
