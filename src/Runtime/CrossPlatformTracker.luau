@@ -19,10 +19,10 @@ local controls = {
 	jump = false,
 }
 local directions = {
-	up = Vector2.new(0, 1),
+	up = Vector2.new(0, -1),
 	left = Vector2.new(-1, 0),
 	right = Vector2.new(1, 0),
-	down = Vector2.new(0, -1),
+	down = Vector2.new(0, 1),
 	jump = Vector2.zero,
 	idle = Vector2.zero,
 }
@@ -45,6 +45,7 @@ local function onUserInput(state, input)
 
 	for _, key in { "X", "Y" } do
 		if not begin and character.Velocity[key] == 0 and value[key] ~= 0 then
+			controls[action] = false
 			return
 		end
 	end
@@ -56,7 +57,6 @@ local function onUserInput(state, input)
 	elseif action == "idle" then
 		character.Velocity = Vector2.zero
 	end
-
 	if jumping and begin and character.IsGrounded then
 		return character:Jump()
 	elseif not begin and controls[action] and not jumping then
