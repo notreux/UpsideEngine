@@ -52,7 +52,8 @@ return function(scene, deltaTime)
 		local smtv, position = Vector2.zero, nil
 		local stop, collisions = nil, nil
 
-		for i = 4, 1, -1 do
+		local steps = object.Anchored and 1 or 4
+		for i = steps, 1, -1 do
 			local dis = distance / i
 			position = absolutePosition + dis
 			collisions, stop = util.GetCollidingObjects(object, position, scene)
