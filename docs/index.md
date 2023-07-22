@@ -13,9 +13,9 @@
 
 ![Upside Engine](assets/logo_pixel_art.png){style="width:150px; image-rendering: pixelated"}
 
-<b>
+<h3>
 Upside Engine
-</b>
+</h3>
 
 <div>
 Upside Engine is the ultimate 2d framework to make your own 2d games!
