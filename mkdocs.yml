@@ -14,8 +14,7 @@ theme:
   favicon: assets/logo.png
   icon:
     repo: fontawesome/brands/github-alt
-  font:
-    code: Fira Code
+  font: false
 
   features:
   - navigation.instant

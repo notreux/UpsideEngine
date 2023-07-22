@@ -1,3 +1,28 @@
+@font-face {
+  font-family: "Roboto";
+  src: url(../fonts/Roboto-Regular.ttf) format(woff2);
+}
+
+@font-face {
+  font-family: "Roboto-Light";  
+  src: url(../fonts/Roboto-Light.ttf) format(woff2);
+}  
+
+@font-face {
+  font-family: "Roboto-Bold";  
+  src: url(../fonts/Roboto-Bold.ttf) format(woff2);
+}
+
+@font-face {
+  font-family: "FiraCode";
+  src: url(../fonts/FiraCode.ttf) format(woff2);
+}
+
+:root {
+  --md-text-font: "Roboto";
+  --md-code-font: "FiraCode";
+}
+
 [data-md-color-scheme="default"] {
     --md-footer-bg-color: #519DAF;
     --custom-navbar-color: #f1f1f1;
@@ -125,4 +150,12 @@ a {
 
 .generic {
     color: var(--md-typeset-color)
+}
+
+.md-ellipsis, #__nav_3_label, h5 {
+    font-family: "Roboto-Bold";
+}
+
+h1, h2, h3, h4 {
+    font-family: "Roboto-Light";
 }
