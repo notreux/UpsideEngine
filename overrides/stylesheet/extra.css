@@ -152,7 +152,7 @@ a {
     color: var(--md-typeset-color)
 }
 
-.md-ellipsis, #__nav_3_label, h5 {
+.md-ellipsis, .title, .md-button, #__nav_3_label, h5 {
     font-family: "Roboto-Bold";
 }
 
