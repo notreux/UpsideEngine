@@ -5,6 +5,7 @@ export type Array<v> = {}
 export type ChromaticAberrationConnection = {}
 
 export type BaseObjectParams = {
+	InstanceType: string?,
 	Parent: Scene,
 }
 
@@ -19,22 +20,22 @@ export type SpriteParams = BaseObjectParams & {
 export type ConnectionParams = {
 	EventId: number,
 	Event: {
-		Functions: {},
-		Threads: {},
+		Functions: table,
+		Threads: table,
 	},
 }
 
 export type RequestParams = {
-	ClientId: number,
+	ClientId: number?,
 	Content: {
 		className: string,
 		id: string,
 		name: string,
 		properties: {
-			instance: {},
-			object: {},
+			instance: table,
+			object: table,
 		},
-	},
+	}?,
 }
 
 export type Raycast2dResult = {
@@ -51,23 +52,13 @@ export type Raycast2dParams = {
 	To: any,
 }
 
-export type ClassData = {
-	name: string,
-	constructor: Dictionary<string, () -> any>?,
-	methods: Dictionary<string, () -> any>?,
-	private: Dictionary<string, any>?,
-	readonly: Dictionary<string, any>?,
-	rules: Dictionary<string, any>?,
-}
-
 export type BaseClass = {
 	Id: string,
 	ClassName: string,
 	Name: string,
-	SetName: (name: string) -> (),
+	new: () -> BaseClass,
+	SetName: (self: BaseClass, name: string) -> (),
 	IsA: (self: BaseClass, className: string) -> boolean,
-	new: (...any) -> BaseClass,
-	Clone: (...any) -> BaseClass,
-	Extend: (self: BaseClass, className: string, classStructure: table) -> BaseClass,
-	Destroy: () -> (),
+	Clone: (self: BaseClass, ...any) -> BaseClass,
+	Destroy: (self: BaseClass) -> (),
 }

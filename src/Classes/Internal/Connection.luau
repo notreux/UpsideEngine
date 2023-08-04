@@ -1,6 +1,6 @@
 local baseClass = require(script.Parent.BaseClass)
-local methods = {}
-local constructor = {}
+local connection = {}
+connection.__index = connection
 
 local function unyield(seconds, running)
 	task.wait(seconds)
@@ -11,8 +11,15 @@ end
 	@link Connection.md
 }=]]
 
-function constructor:Connection(data: ConnectionParams)
-	addReadonly({ EventId = data.EventId, Event = data.Event })
+function connection.new(data: ConnectionParams)
+	local self = baseClass.new()
+
+	self:SetClassName(script.Name)
+	self.Active = true
+	self.EventId = data.EventId
+	self.Event = data.Event
+	
+	return setmetatable(self, connection)
 end
 
 --[[={
@@ -20,7 +27,7 @@ end
 	@link thread.link
 }=]]
 
-function methods:Wait(seconds: number?): thread?
+function connection:Wait(seconds: number?): thread?
 	local running = coroutine.running()
 	if not self.Active then
 		return
@@ -39,7 +46,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Disconnect()
+function connection:Disconnect()
 	self.Active = false
 	self.Event.Functions[self.EventId] = nil
 	self:Destroy()
@@ -51,10 +58,4 @@ end
 		@Active Defines if the connection is active or not
 }=]]
 
-return baseClass:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	readonly = {
-		Active = true,
-	},
-})
+return setmetatable(connection, baseClass)

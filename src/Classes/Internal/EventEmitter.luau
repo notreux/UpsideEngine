@@ -2,7 +2,8 @@ local baseClass = require(script.Parent.BaseClass)
 local connection = require(script.Parent.Connection)
 
 local testService = game:GetService("TestService")
-local methods = {}
+local eventEmitter = {}
+eventEmitter.__index = eventEmitter
 
 local function getEvent(events, name)
 	if not events[name] then
@@ -15,16 +16,24 @@ local function getEvent(events, name)
 	return events[name]
 end
 
+function eventEmitter.new(data): EventEmitter
+	local self = baseClass.new()
+	self:SetClassName(script.Name)
+	self.EventsStorage = {}
+
+	return setmetatable(self, eventEmitter)
+end
+
 --[[={
 	@desc Executes the provided function when the specified event gets fired
 	@link Connection.md
 }=]]
 
-function methods:On(name: string, callback: () -> any): Connection
+function eventEmitter:On(name: string, callback: () -> any): Connection
 	local event = getEvent(self.EventsStorage, name)
 	local id = #event.Functions + 1
 
-	local cn = connection:new({ EventId = id, Event = event })
+	local cn = connection.new({ EventId = id, Event = event })
 	event.Functions[id] = callback
 
 	return cn
@@ -35,7 +44,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Fire(name: string, ...)
+function eventEmitter:Fire(name: string, ...)
 	local event = getEvent(self.EventsStorage, name)
 	local functions = event.Functions
 
@@ -63,9 +72,4 @@ end
 		@EventsStorage This table store all the events of the class
 }=]]
 
-return baseClass:Extend(script.Name, {
-	methods = methods,
-	readonly = {
-		EventsStorage = {},
-	},
-})
+return setmetatable(eventEmitter, baseClass)

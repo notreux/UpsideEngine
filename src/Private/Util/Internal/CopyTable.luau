@@ -1,5 +1,5 @@
 local appData = script.Parent.Parent.Parent.Parent.AppData
-local data = require(appData.Data)
+local objects = require(appData.Data).objects
 
 function copyTable(__table, copyIn)
 	local copy = copyIn or {}
@@ -7,7 +7,7 @@ function copyTable(__table, copyIn)
 	for key, value in __table do
 		if typeof(value) ~= "table" then
 			copy[key] = value
-		elseif value.Id and data.restricted[value.Id] then
+		elseif value.Id and objects[value.Id] then
 			local _, obj = pcall(value.new, value)
 			copy[key] = obj
 		else

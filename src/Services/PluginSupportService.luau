@@ -1,7 +1,7 @@
 local ue = script.Parent.Parent
 local classes = ue.Classes
 
-local restricted = require(ue.AppData.Data).restricted
+local objects = require(ue.AppData.Data).objects
 local essentialProperties = require(ue.AppData.EssentialProperties)
 local eventEmitter = require(classes.Internal.EventEmitter)
 
@@ -13,7 +13,7 @@ local isStudio = runService:IsStudio()
 local isClient = runService:IsClient()
 
 local sceneManager = require(ue.Services.SceneManager)
-local methods = {}
+local pluginSupportService = eventEmitter.new()
 
 function getData(data)
 	local result = {}
@@ -55,22 +55,12 @@ local function setRestricted(object, id, name)
 		sceneManager.ActiveScenes[id] = object
 	end
 
-	restricted[id] = restricted[object.Id]
-	restricted[id].masterAccess.Id = id
-	restricted[object.Id] = nil
+	objects[id] = objects[object.Id]
+	objects[id].masterAccess.Id = id
+	objects[object.Id] = nil
 
 	object.Id = id
 	object:SetName(name)
-end
-
-local function setRestrictedProperty(object, index, value)
-	local this = restricted[object.Id]
-	if this.readonly[index] then
-		this.readonly[index] = value
-		return
-	end
-
-	this.rules[index] = value
 end
 
 local function rebuild(parent, index, value)
@@ -82,8 +72,8 @@ local function rebuild(parent, index, value)
 			return
 		end
 
-		object = class:new({ Parent = parent })
-		pcall(setRestrictedProperty, parent, index, object)
+		object = class.new({ Parent = parent })
+		parent[index] = object
 	elseif not object then
 		object = {}
 	end
@@ -112,11 +102,11 @@ end
 	@link void.link
 }=]]
 
-function methods:LoadPluginContent()
+function pluginSupportService:LoadPluginContent()
 	local db = encoder.Decode(game.ReplicatedStorage:GetAttribute("UpsideEngineDB") or "{}")
 	for _, sceneData in pairs(db) do
 		local scene = rebuild({}, 0, sceneData)
-		restricted[scene.Camera.Id].readonly.Scene = scene.Id
+		scene.Camera.Scene = scene.Id
 	end
 
 	for _, scene in pairs(sceneManager.Scenes) do
@@ -136,7 +126,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SavePluginContent(content: {})
+function pluginSupportService:SavePluginContent(content: {})
 	if isStudio then
 		local json = encoder.Encode(getData(content or {}))
 		replicatedStorage:SetAttribute("UpsideEngineDB", json)
@@ -147,7 +137,4 @@ end
 	@desc This class save and build the engine data
 }=]]
 
-return eventEmitter:Extend(script.Name, {
-	methods = methods,
-	readonly = {},
-})
+return pluginSupportService

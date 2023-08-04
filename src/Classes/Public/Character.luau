@@ -1,6 +1,7 @@
 local upsideEngine = script.Parent.Parent.Parent
 local sprite = require(upsideEngine.Classes.Public.Sprite)
-local methods = {}
+local character = {}
+character.__index = character
 
 local function check(greater, axePos, targetAxe)
 	return if greater then axePos >= targetAxe else axePos <= targetAxe
@@ -68,12 +69,27 @@ local function moveTo(self, target)
 	end
 end
 
+function character.new(data: SpriteParams): Character
+	local self = sprite.new({
+		Parent = data.Parent,
+		SpriteSize = data.SpriteSize,
+	})
+
+	self.Health = 100
+	self.MaxHealth = 100
+	self.WalkSpeed = 50
+	self.JumpPower = 250
+
+	self:SetClassName(script.Name)
+	return setmetatable(self, character)
+end
+
 --[[={
 	@desc Updates the amount of health of the character 
 	@link void.link
 }=]]
 
-function methods:UpdateHealth(Health: number)
+function character:UpdateHealth(Health: number)
 	assert(typeof(Health) == "number", ("Number expected got %s"):format(typeof(Health)))
 	assert(Health <= self.MaxHealth, "The health cannot exceed maximum health")
 	self.Health = Health
@@ -90,7 +106,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Jump(jumpPower: number?)
+function character:Jump(jumpPower: number?)
 	if not self.IsGrounded then
 		return
 	end
@@ -104,7 +120,7 @@ end
 	@link void.link
 }=]]
 
-function methods:MoveTo(target: Vector2)
+function character:MoveTo(target: Vector2)
 	coroutine.wrap(moveTo)(self, target)
 end
 
@@ -117,14 +133,4 @@ end
 		@JumpPower The jump power of the character
 }=]]
 
-return sprite:Extend("Character", {
-	methods = methods,
-	readonly = {
-		Health = 100,
-	},
-	rules = {
-		MaxHealth = 100,
-		WalkSpeed = 50,
-		JumpPower = 250,
-	},
-})
+return setmetatable(character, sprite)

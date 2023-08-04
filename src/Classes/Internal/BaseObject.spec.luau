@@ -2,17 +2,17 @@ local BaseObject = require(script.Parent.BaseObject)
 local Scene = require(script.Parent.Parent.Public.Scene)
 
 return function()
-	describe("constructor :new()", function()
+	describe("constructor .new()", function()
 		it("should use the first arg as parent", function()
 			local parent = Instance.new("Frame")
-			local obj = BaseObject:new({ Parent = parent })
+			local obj = BaseObject.new({ Parent = parent })
 
 			expect(obj.Instance.Parent).to.equal(parent)
 		end)
 
 		it("should be added to the parent scene", function()
-			local scene = Scene:new()
-			local obj = BaseObject:new({ Parent = scene })
+			local scene = Scene.new({ Parent = workspace })
+			local obj = BaseObject.new({ Parent = scene })
 
 			expect(obj.Scene).to.equal(scene.Id)
 			expect(scene.Objects[obj.Id].Id).to.equal(obj.Id)
@@ -21,7 +21,7 @@ return function()
 
 	describe(":AddTag()", function()
 		it("should add a Tag", function()
-			local obj = BaseObject:new()
+			local obj = BaseObject.new({ Parent = workspace })
 			obj:AddTag("Summit")
 
 			expect(obj:HasTag("Summit")).to.equal(true)
@@ -30,7 +30,7 @@ return function()
 
 	describe(":RemoveTag()", function()
 		it("should remove a Tag", function()
-			local obj = BaseObject:new()
+			local obj = BaseObject.new({ Parent = workspace })
 			obj:AddTag("Disconnected")
 			obj:RemoveTag("Disconnected")
 
@@ -40,14 +40,14 @@ return function()
 
 	describe(":HasTag()", function()
 		it("should check if an object has a tag", function()
-			local obj = BaseObject:new()
+			local obj = BaseObject.new({ Parent = workspace })
 			expect(obj.Tags.Bonfire).never.to.equal(true)
 		end)
 	end)
 
 	describe(":Set()", function()
 		it("should set properties", function()
-			local obj = BaseObject:new({ Parent = workspace })
+			local obj = BaseObject.new({ Parent = workspace })
 			obj:Set({
 				BackgroundTransparency = 1,
 			})

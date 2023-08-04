@@ -1,17 +1,21 @@
 local upsideEngine = script.Parent.Parent.Parent
-local Environment = require(upsideEngine.Classes.Public.Environment)
-local constructor = {}
+local environment = require(upsideEngine.Classes.Public.Environment)
+local soundEnvironment = {}
+soundEnvironment.__index = soundEnvironment
 
 --[[={
 	@link SoundEnvironment.md
 }=]]
 
-function constructor:ZSoundEnvironment()
+function soundEnvironment.new(data: BaseObjectParams): SoundEnvironment
+	local self = environment.new({
+		Parent = data.Parent,
+	})
+
 	self.Instance.Parent = game.SoundService
-	return
+	self:SetClassName(script.Name)
+
+	return setmetatable(self, soundEnvironment)
 end
 
-return Environment:Extend(script.Name, {
-	readonly = { InstanceType = "SoundGroup" },
-	constructor = constructor,
-})
+return setmetatable(soundEnvironment, environment)

@@ -1,26 +1,50 @@
 local upsideEngine = script.Parent.Parent.Parent
-local data = require(upsideEngine.AppData.Data)
 local sceneManager = require(upsideEngine.Services).SceneManager
 
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 local light = require(upsideEngine.Classes.Public.Light)
-local character = require(upsideEngine.Classes.Public.Character)
 
 local tweenService = game:GetService("TweenService")
-local restricted = data.restricted
-local methods = {}
+local character = require(script.Parent.Character)
+local particle = {}
+particle.__index = particle
 
-local function destroy(id, self, t1, t2, cn1, cn2)
-	if cn1 then
-		cn1:Disconnect()
-		cn2:Disconnect()
-	end
+function particle.new(data): Particle
+	local self = baseObject.new({
+		Parent = data.Parent,
+		InstanceType = "ImageLabel",
+	})
 
-	t1:Destroy()
-	t2:Destroy()
+	self:SetClassName(script.Name)
+	self.Angle = Vector2.new(90, 90)
+	self.Info = TweenInfo.new(0.5)
 
-	self:Destroy()
-	restricted[id].readonly.Units -= 1
+	self.TrackLight = false -- Experimental
+	self.CanCollide = false
+	self.Enabled = true
+
+	self.MaxRate = 100
+	self.Units = 0
+	self.LightBrightness = -10 -- Experimental
+	self.LightRange = 150 -- Experimental
+	self.Range = 5
+	self.LifeTime = 1
+	self.Clock = 0
+	self.Rate = 55
+
+	self.Properties = {
+		Image = "http://www.roblox.com/asset/?id=6904405933",
+	}
+	self.Goals = {
+		Size = UDim2.fromScale(0.05, 0.1),
+		ImageTransparency = 1,
+	}
+	self.Subject = character.new({
+		Parent = workspace,
+		SpriteSize = Vector2.zero,
+	})
+
+	return setmetatable(self, particle)
 end
 
 --[[={
@@ -28,7 +52,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetSubject(subject: Character)
+function particle:SetSubject(subject: Character)
 	local sScene = sceneManager:Get(subject.Scene)
 	assert(sScene ~= nil, "The subject must be in a scene!")
 
@@ -46,7 +70,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetAngle(Angle: Vector2)
+function particle:SetAngle(Angle: Vector2)
 	assert(Angle.X > 0 and Angle.Y > 0, "The angle must be greater than 0!")
 	self.Angle = Angle
 end
@@ -56,7 +80,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetMaxRate(maxRate: number)
+function particle:SetMaxRate(maxRate: number)
 	assert(maxRate > 0, "The maxRate must be greater than 0!")
 	assert(maxRate <= 1500, "The maxRate limit is 1500!")
 	self.MaxRate = maxRate
@@ -67,30 +91,38 @@ end
 	@link void.link
 }=]]
 
-function methods:Emit(rate: number)
+function particle:Emit(rate: number)
 	local id = self.Subject and self.Subject.Scene or self.Scene
 	local scene = sceneManager:Get(id)
+
 	for _ = 1, self.Enabled and (rate or self.Rate) or 0 do
 		if self.Units > self.MaxRate then
 			break
 		end
 
-		local unit = light:new()
+		local unit = light.new({} :: BaseObjectParams)
 		unit.CollisionBlacklist[self.Subject.Id] = true
 		unit.Track = self.TrackLight
 		unit.Range = self.LightRange
 		unit.Brightness = self.LightBrightness
 		unit:Set(self.Properties)
+		self.Units += 1
 
 		local subjectInstance = self.Subject.Instance
 		local instance = unit.Instance
 		instance.Parent = scene.Instance
 		instance.Position = subjectInstance.Position
 
-		local cn1, cn2 = nil, nil
-		self.Units += 1
+		local info = TweenInfo.new(
+			self.LifeTime,
+			self.Info.EasingStyle,
+			self.Info.EasingDirection,
+			self.Info.RepeatCount,
+			self.Info.Reverses,
+			self.Info.DelayTime
+		)
 
-		local goalsTween = tweenService:Create(instance, self.Info, self.Goals)
+		local goalsTween = tweenService:Create(instance, info, self.Goals)
 		local positionTween = tweenService:Create(instance, self.Info, {
 			Position = subjectInstance.Position + UDim2.fromOffset(
 				math.random(-self.Angle.X, self.Angle.X) * self.Range,
@@ -100,7 +132,14 @@ function methods:Emit(rate: number)
 
 		positionTween:Play()
 		goalsTween:Play()
-		task.delay(self.LifeTime, destroy, self.Id, unit, positionTween, goalsTween, cn1, cn2)
+
+		goalsTween.Completed:Connect(function()
+			goalsTween:Destroy()
+			positionTween:Destroy()
+
+			unit:Destroy()
+			self.Units -= 1
+		end)
 
 		task.wait(self.LifeTime / self.Rate)
 	end
@@ -141,32 +180,4 @@ end
 			Experimental, dont use
 }=]]
 
-return baseObject:Extend(script.Name, {
-	methods = methods,
-	readonly = {
-		Angle = Vector2.new(90, 90),
-		InstanceType = "ImageLabel",
-		Subject = character:new(),
-		MaxRate = 100,
-		Units = 0,
-	},
-	rules = {
-		Properties = {
-			Image = "http://www.roblox.com/asset/?id=6904405933",
-		},
-		Goals = {
-			Size = UDim2.fromScale(0.05, 0.1),
-			ImageTransparency = 1,
-		},
-		Info = TweenInfo.new(0.5),
-		TrackLight = false, -- Experimental
-		CanCollide = false,
-		Enabled = true,
-		LightBrightness = -10, -- Experimental
-		LightRange = 150, -- Experimental
-		Range = 5,
-		LifeTime = 1,
-		Clock = 0,
-		Rate = 55,
-	},
-})
+return setmetatable(particle, baseObject)

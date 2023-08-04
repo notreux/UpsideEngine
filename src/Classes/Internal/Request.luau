@@ -8,9 +8,6 @@ local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local classes = {}
 local networking
 
-local constructor = {}
-local methods = {}
-
 local isServer = runService:IsServer()
 local socket
 
@@ -26,9 +23,17 @@ end
 	@link Request.md
 }=]]
 
-function constructor:Request(data: RequestParams)
+local request = {}
+request.__index = request
+
+function request.new(data: RequestParams): Request
+	local self = eventEmitter.new()
+	self:SetClassName(script.Name)
+
 	self.ClientId = data.ClientId or players.LocalPlayer.UserId
 	self.Content = table.freeze(data.Content or {})
+
+	return setmetatable(self, request)
 end
 
 local function setProperty(object, property, value)
@@ -40,7 +45,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Send(content: Dictionary<string, any>)
+function request:Send(content: Dictionary<string, any>)
 	local args = {
 		ClientId = self.ClientId,
 		Content = content,
@@ -58,7 +63,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Approve(clients: table)
+function request:Approve(clients: table)
 	if not isServer then
 		return
 	end
@@ -80,7 +85,7 @@ end
 	@link BaseObject.md
 }=]]
 
-function methods:Accept(data: BaseObjectParams): BaseObject
+function request:Accept(data: BaseObjectParams): BaseObject
 	local content = self.Content
 	local class = classes[content.className]
 
@@ -88,7 +93,7 @@ function methods:Accept(data: BaseObjectParams): BaseObject
 	local isFirstRequest = not replicated[content.id]
 
 	assert(class ~= nil, "Invalid class!")
-	local clon = replicated[content.id] or class:new(data)
+	local clon = replicated[content.id] or class.new(data)
 
 	if isFirstRequest then
 		networking.Players[self.ClientId][content.id] = clon
@@ -113,7 +118,7 @@ end
 	@link player.link
 }=]]
 
-function methods:GetClient(): Player
+function request:GetClient(): Player
 	return players:GetPlayerByUserId(self.ClientId)
 end
 
@@ -140,11 +145,4 @@ end)
 		Fired when a request is accepted and the object to be replicated is being built
 }=]]
 
-return eventEmitter:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	readonly = {
-		Content = {},
-		ClientId = 0,
-	},
-})
+return setmetatable(request, eventEmitter)

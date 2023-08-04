@@ -10,21 +10,11 @@ upsideEngine.Workspace = upsideWorkspace
 
 function upsideEngine.new(name: string, data: any?)
 	if data then
-		return classes[name]:new(data)
+		return classes[name].new(data)
 	end
 
 	return function(data: any?)
-		return classes[name]:new(data)
-	end
-end
-
-function upsideEngine.Extend(name: string, classData: ClassData?)
-	if classData then
-		return classes[name]:Extend(classData.name, classData)
-	end
-
-	return function(classData: ClassData)
-		return classes[name]:Extend(classData.name, classData)
+		return classes[name].new(data)
 	end
 end
 

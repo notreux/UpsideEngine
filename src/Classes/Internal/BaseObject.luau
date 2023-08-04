@@ -1,25 +1,30 @@
-local methods, constructor = {}, {}
 local eventEmitter = require(script.Parent.EventEmitter)
-
+local baseObject = {}
+baseObject.__index = baseObject
 --[[={
 	@link BaseObject.md
 }=]]
 
-function constructor:BaseObject(data: BaseObjectParams)
+function baseObject.new(data: BaseObjectParams): BaseObject
 	local parent = data.Parent
 	local parentType = typeof(parent)
-	local parentInstance = parentType == "Instance" and parent or nil
 
-	local instance = Instance.new(self.InstanceType)
-	self.Instance = instance
+	local parentInstance = parentType == "Instance" and parent or nil
+	local self = eventEmitter.new()
+
+	self:SetClassName(script.Name)
+	self.Instance = Instance.new(data.InstanceType or "ImageLabel")
+	self.ClassName = script.Name
+	self.Scene = "SceneId"
+	self.Tags = {}
 
 	if parentInstance then
-		instance.Parent = parentInstance
+		self.Instance.Parent = parentInstance
 	elseif parent and parent.ClassName == "Scene" then
 		parent:AddObject(self)
 	end
 
-	return instance
+	return setmetatable(self, baseObject)
 end
 
 --[[={
@@ -27,7 +32,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Set(properties: Dictionary<string, any>)
+function baseObject:Set(properties: Dictionary<string, any>)
 	for index, value in properties do
 		self.Instance[index] = value
 	end
@@ -38,7 +43,7 @@ end
 	@link void.link
 }=]]
 
-function methods:AddTag(tag: string)
+function baseObject:AddTag(tag: string)
 	self.Tags[tag] = true
 end
 
@@ -47,7 +52,7 @@ end
 	@link boolean.link
 }=]]
 
-function methods:HasTag(tag: string): boolean
+function baseObject:HasTag(tag: string): boolean
 	return self.Tags[tag]
 end
 
@@ -56,7 +61,7 @@ end
 	@link void.link
 }=]]
 
-function methods:RemoveTag(tag: string)
+function baseObject:RemoveTag(tag: string)
 	self.Tags[tag] = nil
 end
 
@@ -69,13 +74,4 @@ end
 		@Tags This table stores all the tags of the object
 }=]]
 
-return eventEmitter:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	readonly = {
-		Instance = Instance.new("Folder"),
-		Scene = "SceneId",
-		InstanceType = "ImageLabel",
-		Tags = {},
-	},
-})
+return setmetatable(baseObject, eventEmitter)

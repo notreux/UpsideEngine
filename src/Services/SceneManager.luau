@@ -1,14 +1,15 @@
 local upsideEngine = script.Parent.Parent
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 
-local methods = {}
-
+local sceneManager = eventEmitter.new()
+sceneManager.Scenes = {}
+sceneManager.ActiveScenes = {}
 --[[={
 	@desc Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	@link void.link
 }=]]
 
-function methods:Load(scene: Scene)
+function sceneManager:Load(scene: Scene)
 	local instance = scene.Instance :: Frame
 	instance.Visible = true
 
@@ -21,7 +22,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Unload(scene: Scene)
+function sceneManager:Unload(scene: Scene)
 	local instance = scene.Instance :: Frame
 	instance.Visible = false
 
@@ -34,7 +35,7 @@ end
 	@link void.link
 }=]]
 
-function methods:FindByName(name: string): Scene?
+function sceneManager:FindByName(name: string): Scene?
 	for _, scene in self.Scenes do
 		if scene.Name == name then
 			return scene
@@ -49,7 +50,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Get(Id: string): Scene
+function sceneManager:Get(Id: string): Scene
 	return self.Scenes[Id]
 end
 
@@ -65,10 +66,4 @@ end
 		Fired when a scene is unloaded
 }=]]
 
-return eventEmitter:Extend(script.Name, {
-	methods = methods,
-	readonly = {
-		Scenes = {},
-		ActiveScenes = {},
-	},
-})
+return sceneManager

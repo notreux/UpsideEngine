@@ -1,21 +1,39 @@
 local contentProvider = game:GetService("ContentProvider")
 local physicalObject = require(script.Parent.PhysicalObject)
 
-local methods = {}
-local constructor = {}
+local sprite = {}
+sprite.__index = sprite
 
 --[[={
 	@desc The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance 
 	@link Sprite.md
 }=]]
 
-function constructor:Sprite(data: SpriteParams)
+function sprite.new(data: SpriteParams)
 	if typeof(data.SpriteSize) ~= "Vector2" then
 		return
 	end
 
+	local self = physicalObject.new({
+		Parent = data.Parent,
+		InstanceType = "ImageLabel",
+	})
+
+	self:SetClassName(script.Name)
+	self.IsPlaying = false
+	self.SecondsPerFrame = 0.05
+	self.Sprites = {}
+	self.Active = {
+		Name = "",
+		CurrentFrame = Vector2.zero,
+		SecondsPerFrame = 0,
+		NextStepReady = true,
+	}
+
 	local instance = self.Instance
 	instance.ImageRectSize = data.SpriteSize
+
+	return setmetatable(self, sprite)
 end
 
 --[[={
@@ -23,7 +41,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetSpriteSheet(name: string, url: string, frames: Vector2)
+function sprite:SetSpriteSheet(name: string, url: string, frames: Vector2)
 	contentProvider:PreloadAsync({ url })
 	self.Sprites[name] = {
 		Url = url,
@@ -36,7 +54,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetSpriteList(name: string, list: Array<string>)
+function sprite:SetSpriteList(name: string, list: Array<string>)
 	contentProvider:PreloadAsync(list)
 	self.Sprites[name] = {
 		List = list,
@@ -48,7 +66,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Play(name: string, secondsPerFrame: number?)
+function sprite:Play(name: string, secondsPerFrame: number?)
 	self.IsPlaying = true
 	self.Active = {
 		Name = name,
@@ -63,7 +81,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Stop()
+function sprite:Stop()
 	self.IsPlaying = false
 end
 
@@ -76,23 +94,4 @@ end
 		@Active This table stores information about the active spritesheet
 }=]]
 
-return physicalObject:Extend(script.Name, {
-	methods = methods,
-	constructor = constructor,
-	private = {
-		Connection = nil,
-	},
-	readonly = {
-		IsPlaying = false,
-		Active = {
-			Name = "",
-			CurrentFrame = Vector2.zero,
-			SecondsPerFrame = 0,
-			NextStepReady = true,
-		},
-	},
-	rules = {
-		SecondsPerFrame = 0.05,
-		Sprites = {},
-	},
-})
+return setmetatable(sprite, physicalObject)

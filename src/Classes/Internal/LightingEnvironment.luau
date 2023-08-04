@@ -1,8 +1,8 @@
 local upsideEngine = script.Parent.Parent.Parent
 local environment = require(upsideEngine.Classes.Public.Environment)
 
-local constructor = {}
-local methods = {}
+local lightingEnvironment = {}
+lightingEnvironment.__index = lightingEnvironment
 
 local function setProperty(i, p, v)
 	i[p] = v
@@ -40,11 +40,25 @@ end
 	@link LightingEnvironment.md
 }=]]
 
-function constructor:LightingEnvironment(data: BaseObjectParams)
+function lightingEnvironment.new(data: BaseObjectParams): LightingEnvironment
 	local parent = data.Parent
 	if not parent then
-		return
+		return {} :: LightingEnvironment
 	end
+
+	local self = environment.new({
+		Parent = data.Parent,
+		InstanceType = "Frame",
+	})
+
+	self:SetClassName(script.Name)
+	self.AmbientColor = Color3.fromRGB()
+	self.AmbientTransparency = 0.02
+	self.LightingIntensity = 5e-6
+	self.UpdateFrequency = 0.025
+	self.PixelIndex = 0
+	self.Distance = 0
+	self.Pixels = {}
 
 	local instance = self.Instance
 	instance.Parent = parent.Parent
@@ -53,6 +67,8 @@ function constructor:LightingEnvironment(data: BaseObjectParams)
 	instance.Position = parent.Position
 	instance.AnchorPoint = parent.AnchorPoint
 	instance.BackgroundTransparency = 1
+
+	return setmetatable(self, lightingEnvironment)
 end
 
 --[[={
@@ -67,7 +83,7 @@ end
 	@link void.link
 }=]]
 
-function methods:DrawPixels(settings: any)
+function lightingEnvironment:DrawPixels(settings: any)
 	if self.ready then
 		return
 	end
@@ -112,7 +128,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetLightingIntensity(value: number)
+function lightingEnvironment:SetLightingIntensity(value: number)
 	assert(value >= 0 and value <= 1, "The lighting intensity must be between 0 and 1")
 	self.LightingIntensity = (1.1 - value) / 1e5
 end
@@ -122,7 +138,7 @@ end
 	@link number.link
 }=]]
 
-function methods:GetLightingIntensity(): number
+function lightingEnvironment:GetLightingIntensity(): number
 	return self.LightingIntensity * 1e5 - 0.1
 end
 
@@ -131,7 +147,7 @@ end
 	@link void.link
 }=]]
 
-function methods:UpdateScreen()
+function lightingEnvironment:UpdateScreen()
 	for _, largePixel in self.Pixels do
 		for _, pixel in largePixel do
 			local instance = pixel.instance
@@ -154,22 +170,4 @@ end
 		@Distance This is the distance between every large pixel, used for internal purposes
 }=]]
 
-return environment:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	rules = {
-		AmbientColor = Color3.fromRGB(),
-		AmbientTransparency = 0.02,
-		UpdateFrequency = 0.025,
-		PixelIndex = 0,
-		Distance = 0,
-	},
-	readonly = {
-		InstanceType = "Frame",
-		Pixels = {},
-		LightingIntensity = 5e-6,
-	},
-	private = {
-		ready = false,
-	},
-})
+return setmetatable(lightingEnvironment, environment)

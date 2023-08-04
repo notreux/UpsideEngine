@@ -2,7 +2,6 @@ local upsideEngine = script.Parent.Parent.Parent
 
 local camera = require(upsideEngine.Classes.Internal.Camera)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
-local restricted = require(upsideEngine.AppData.Data).restricted
 
 local soundEnvironment = require(upsideEngine.Classes.Internal.SoundEnvironment)
 local lightingEnvironment = require(upsideEngine.Classes.Internal.LightingEnvironment)
@@ -11,8 +10,8 @@ local particleEnvironment = require(upsideEngine.Classes.Internal.ParticleEnviro
 local sceneManager = require(upsideEngine.Services).SceneManager
 local util = require(upsideEngine.Private.Util)
 
-local methods = {}
-local constructor = {}
+local scene = {}
+scene.__index = scene
 
 local function intersect(a, b, c, d)
 	local r, s = (b - a), (d - c)
@@ -28,7 +27,7 @@ end
 	@link Scene.md
 }=]]
 
-function constructor:Scene(data: SceneParams)
+function scene.new(data: SceneParams): Scene
 	local parent = data.Parent
 	local isInstance = typeof(parent) == "Instance"
 	local isLayerCollector = isInstance and parent:IsA("LayerCollector")
@@ -37,13 +36,25 @@ function constructor:Scene(data: SceneParams)
 	layerCollector.ZIndexBehavior = Enum.ZIndexBehavior.Global
 	layerCollector.ResetOnSpawn = false
 
-	local this = self.Instance
-	this.BorderSizePixel = 0
-	this.Size = UDim2.fromScale(1, 1)
-	this.Position = UDim2.fromScale(0.5, 0.5)
-	this.AnchorPoint = Vector2.new(0.5, 0.5)
-	this.BackgroundTransparency = 1
-	this.Parent = layerCollector
+	local self = baseObject.new({
+		Parent = data.Parent,
+		InstanceType = "Frame",
+	})
+
+	self:SetClassName(script.Name)
+	self.Objects = {}
+	self.Camera = camera.new({ Parent = self })
+	self.LightingEnvironment = lightingEnvironment.new({ Parent = self.Instance })
+	self.ParticleEnvironment = particleEnvironment.new({ Parent = self.Instance })
+	self.SoundEnvironment = soundEnvironment.new({ Parent = self.Instance })
+
+	local instance = self.Instance
+	instance.BorderSizePixel = 0
+	instance.Size = UDim2.fromScale(1, 1)
+	instance.Position = UDim2.fromScale(0.5, 0.5)
+	instance.AnchorPoint = Vector2.new(0.5, 0.5)
+	instance.BackgroundTransparency = 1
+	instance.Parent = layerCollector
 
 	if not isLayerCollector then
 		layerCollector.Parent = isInstance and parent or game.StarterGui
@@ -58,13 +69,8 @@ function constructor:Scene(data: SceneParams)
 		sceneManager.ActiveScenes[self.Id] = nil
 	end)
 
-	sceneManager.Scenes[self.Id] = util.GetNormalAccess(self)
-	addReadonly({
-		Camera = camera:new({ Parent = self }),
-		LightingEnvironment = lightingEnvironment:new({ Parent = this }),
-		ParticleEnvironment = particleEnvironment:new(),
-		SoundEnvironment = soundEnvironment:new(),
-	})
+	sceneManager.Scenes[self.Id] = self
+	return setmetatable(self, scene)
 end
 
 --[[={
@@ -72,15 +78,12 @@ end
 	@link void.link
 }=]]
 
-function methods:AddObject(object: BaseObject)
-	local readonly = restricted[object.Id].readonly
-	readonly.Scene = self.Id
-
+function scene:AddObject(object: BaseObject)
 	local instance = object.Instance
 	instance.Parent = self.Instance
 
-	local normal = util.GetNormalAccess(object)
-	self.Objects[normal.Id] = normal
+	self.Objects[object.Id] = object
+	object.Scene = self.Id
 end
 
 --[[={
@@ -88,14 +91,12 @@ end
 	@link void.link
 }=]]
 
-function methods:RemoveObject(object: BaseObject)
-	local readonly = restricted[object.Id].readonly
-	readonly.Scene = ""
-
+function scene:RemoveObject(object: BaseObject)
 	local instance = object.Instance
 	instance.Parent = nil
 
 	self.Objects[object.Id] = nil
+	object.Scene = "SceneId"
 end
 
 --[[={
@@ -103,7 +104,7 @@ end
 	@link BaseObject.md
 }=]]
 
-function methods:FindByName(name: string): BaseObject?
+function scene:FindByName(name: string): BaseObject?
 	for _, object in self.Objects do
 		if object.Name ~= name then
 			continue
@@ -120,7 +121,7 @@ end
 	@link boolean.link
 }=]]
 
-function methods:HasObject(object: BaseObject): boolean
+function scene:HasObject(object: BaseObject): boolean
 	return self.Objects[object.Id] and true or false
 end
 
@@ -129,7 +130,7 @@ end
 	@link array.link
 }=]]
 
-function methods:GetTaggedObjects(tag: string): Array<string>
+function scene:GetTaggedObjects(tag: string): Array<string>
 	local Taggeds = {}
 
 	for _, object in self.Objects do
@@ -146,7 +147,7 @@ end
 	@link /documentation/datatypes/Raycast2DResult.html
 }=]]
 
-function methods:Raycast(info: Raycast2dParams): Raycast2dResult
+function scene:Raycast(info: Raycast2dParams): Raycast2dResult
 	local intersections = {}
 	local isBlackList = info.FilterType == "Blacklist"
 	local from, to = info.From, info.To
@@ -194,14 +195,4 @@ end
 		@LightingEnvironment This is the LightingEnvironment of the scene
 }=]]
 
-return baseObject:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	readonly = {
-		Objects = {},
-		InstanceType = "Frame",
-		SoundEnvironment = nil,
-		ParticleEnvironment = nil,
-		LightingEnvironment = nil,
-	},
-})
+return setmetatable(scene, baseObject)

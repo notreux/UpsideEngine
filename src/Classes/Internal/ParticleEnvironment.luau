@@ -1,4 +1,16 @@
 local upsideEngine = script.Parent.Parent.Parent
-local Environment = require(upsideEngine.Classes.Public.Environment)
+local environment = require(upsideEngine.Classes.Public.Environment)
 
-return Environment:Extend(script.Name, {})
+local particleEnvironment = {}
+particleEnvironment.__index = particleEnvironment
+
+function particleEnvironment.new(data: BaseObjectParams): ParticleEnvironment
+	local self = environment.new({
+		Parent = data.Parent,
+	})
+
+	self:SetClassName(script.Name)
+	return setmetatable(self, particleEnvironment)
+end
+
+return setmetatable(particleEnvironment, environment)

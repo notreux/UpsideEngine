@@ -1,9 +1,50 @@
 local upsideEngine = script.Parent.Parent
 local classes = upsideEngine.Classes
 
+local character = require(script.Parent.Parent.Classes.Public.Character)
 local eventEmitter = require(classes.Internal.EventEmitter)
-local character = require(classes.Public.Character)
-local methods = {}
+local crossPlatformService = eventEmitter.new()
+crossPlatformService.ClassName = "CrossPlatformService"
+crossPlatformService.DefaultControllersEnabled = true
+crossPlatformService.SideView = true
+crossPlatformService.StickSensibility = 1
+crossPlatformService.Character = character.new({
+	Parent = workspace,
+	SpriteSize = Vector2.zero,
+})
+
+crossPlatformService.Configs = {
+	Keyboard = {
+		W = "Up",
+		A = "Left",
+		S = "Down",
+		D = "Right",
+
+		Up = "Up",
+		Left = "Left",
+		Down = "Down",
+		Right = "Right",
+		Space = "Jump",
+	},
+	Gamepad = {
+		ButtonA = "Jump",
+		Thumbstick1 = {
+			Up = "Up",
+			Left = "Left",
+			Down = "Down",
+			Right = "Right",
+		},
+	},
+	Mobile = {
+		JumpButton = "Jump",
+		Thumbstick1 = {
+			Up = "Up",
+			Left = "Left",
+			Down = "Down",
+			Right = "Right",
+		},
+	},
+}
 
 --[[={
 	@desc Assigns an action to a device key, example:
@@ -13,7 +54,7 @@ local methods = {}
 	@link void.link
 }=]]
 
-function methods:SetDeviceKey(device: string, key: string, action: string)
+function crossPlatformService:SetDeviceKey(device: string, key: string, action: string)
 	self.Configs[device][key] = action
 end
 
@@ -36,7 +77,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetDeviceConfig(device: string, controls: Dictionary<string, string>)
+function crossPlatformService:SetDeviceConfig(device: string, controls: Dictionary<string, string>)
 	self.Configs[device] = controls
 end
 
@@ -45,7 +86,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetPlayerCharacter(character: Character)
+function crossPlatformService:SetPlayerCharacter(character: Character)
 	self.Character = character
 end
 
@@ -101,46 +142,4 @@ end)
 		Fired when one of the keys/sticks in the configuration finish to be pressed/moved
 }=]]
 
-return eventEmitter:Extend(script.Name, {
-	methods = methods,
-	rules = {
-		DefaultControllersEnabled = true,
-		SideView = true,
-	},
-	readonly = {
-		Character = character:new(),
-		StickSensibility = 1,
-		Configs = {
-			Keyboard = {
-				W = "Up",
-				A = "Left",
-				S = "Down",
-				D = "Right",
-
-				Up = "Up",
-				Left = "Left",
-				Down = "Down",
-				Right = "Right",
-				Space = "Jump",
-			},
-			Gamepad = {
-				ButtonA = "Jump",
-				Thumbstick1 = {
-					Up = "Up",
-					Left = "Left",
-					Down = "Down",
-					Right = "Right",
-				},
-			},
-			Mobile = {
-				JumpButton = "Jump",
-				Thumbstick1 = {
-					Up = "Up",
-					Left = "Left",
-					Down = "Down",
-					Right = "Right",
-				},
-			},
-		},
-	},
-})
+return crossPlatformService

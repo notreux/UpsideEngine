@@ -1,16 +1,29 @@
 local physicalObject = require(script.Parent.PhysicalObject)
-local methods = {}
-local constructor = {}
+local light = {}
+light.__index = light
 
 --[[={
 	@link Light.md
 }=]]
 
-function constructor:Light(data: BaseObjectParams)
+function light.new(data: BaseObjectParams): Light
 	local scene = data.Parent
+	local self = physicalObject.new({
+		Parent = scene,
+	})
+
+	self:SetClassName(script.Name)
+	self.TrackCollisions = false
+	self.Track = true
+	self.Color = Color3.fromRGB(255, 255, 255)
+	self.Range = 50
+	self.Brightness = 1
+
 	if scene and scene.LightingEnvironment then
 		scene.LightingEnvironment:AddOne(self, self.Id)
 	end
+
+	return setmetatable(self, light)
 end
 
 --[[={
@@ -24,16 +37,4 @@ end
 		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
 }=]]
 
-return physicalObject:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	readonly = {
-		TrackCollisions = false,
-	},
-	rules = {
-		Color = Color3.fromRGB(255, 255, 255),
-		Range = 50,
-		Brightness = 1,
-		Track = true,
-	},
-})
+return setmetatable(light, physicalObject)

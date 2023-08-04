@@ -4,7 +4,8 @@ local colorProperties = { "ImageColor3", "TextColor3", "TextStrokeColor3" }
 
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 local util = require(upsideEngine.Private.Util)
-local methods, constructor = {}, {}
+local physicalObject = {}
+physicalObject.__index = physicalObject
 
 local function tryToReplicate(self, Property)
 	local value = self.ChromaticAberration.R[Property]
@@ -53,13 +54,40 @@ end
 	@link PhysicalObject.md
 }=]]
 
-function constructor:PhysicalObject()
-	local this = self.Instance
-	this.AnchorPoint = Vector2.new(0.5, 0.5)
-	this.Position = UDim2.fromOffset(100, 100)
-	this.Size = UDim2.fromOffset(200, 200)
-	this.BackgroundTransparency = 1
-	this.ResampleMode = Enum.ResamplerMode.Pixelated
+function physicalObject.new(data: BaseObjectParams): PhysicalObject
+	local self = baseObject.new({
+		Parent = data.Parent,
+	})
+
+	self:SetClassName(script.Name)
+	self.ChromaticAberrationPoint = Vector2.new(0.5, 0.5)
+	self.Force = Vector2.zero
+	self.Velocity = Vector2.zero
+	self.ChromaticAberration = {}
+	self.Collisions = {}
+	self.CollisionBlacklist = {}
+	self.Hitbox = {}
+	self.Mass = 200
+	self.HitboxScale = 1
+	self.CollisionGroup = 0
+	self.ChromaticAberrationIntensity = 0
+	self.ChromaticAberrationDistance = 0.1
+	self.Anchored = true
+	self.CanCollide = true
+	self.IsGrounded = false
+	self.TrackCollisions = true
+	self.ConstantVelocityEnabled = false
+	self.ChromaticAberrationConnection = false
+	self.HitboxShape = "Box"
+
+	local instance = self.Instance
+	instance.AnchorPoint = Vector2.new(0.5, 0.5)
+	instance.Position = UDim2.fromOffset(100, 100)
+	instance.Size = UDim2.fromOffset(200, 200)
+	instance.BackgroundTransparency = 1
+	instance.ResampleMode = Enum.ResamplerMode.Pixelated
+
+	return setmetatable(self, physicalObject)
 end
 
 --[[={
@@ -69,7 +97,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetHitboxShape(shape: string)
+function physicalObject:SetHitboxShape(shape: string)
 	assert(typeof(shape) == "string", "The Shape must be a string")
 	self.HitboxShape = shape:lower()
 
@@ -81,7 +109,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Load(url: string)
+function physicalObject:Load(url: string)
 	contentProvider:PreloadAsync({ url })
 	self.Instance.Image = url
 end
@@ -92,7 +120,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetChromaticAberration(Intensity: number, Distance: number, Point: Vector2)
+function physicalObject:SetChromaticAberration(Intensity: number, Distance: number, Point: Vector2)
 	assert(typeof(Intensity) == "number", "Invalid argument #1, it must be a number")
 	assert(typeof(Point) == "Vector2" or not Point, "Invalid argument #2, it must be a Vector2")
 
@@ -170,31 +198,4 @@ end
 		This event is fired when the object finish the collision with other object
 }=]]
 
-return baseObject:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	readonly = {
-		InstanceType = "ImageLabel",
-		ChromaticAberrationIntensity = 0,
-		ChromaticAberrationDistance = 0.1,
-		ChromaticAberrationPoint = Vector2.new(0.5, 0.5),
-		ChromaticAberration = {},
-		Collisions = {},
-		ChromaticAberrationConnection = false,
-	},
-	rules = {
-		CollisionBlacklist = {},
-		Hitbox = {},
-		Mass = 200,
-		HitboxScale = 1,
-		CollisionGroup = 0,
-		Anchored = true,
-		CanCollide = true,
-		IsGrounded = false,
-		TrackCollisions = true,
-		ConstantVelocityEnabled = false,
-		HitboxShape = "Box",
-		Force = Vector2.zero,
-		Velocity = Vector2.zero,
-	},
-})
+return setmetatable(physicalObject, baseObject)

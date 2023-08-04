@@ -1,15 +1,22 @@
 local upsideEngine = script.Parent.Parent.Parent
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
-local getNormalAccess = require(upsideEngine.Private.Util).GetNormalAccess
-
-local methods = {}
-local constructor = {}
 
 local function setProperty(obj, p, v)
 	obj[p] = v
 end
 
-function constructor:Environment()
+local environment = {}
+environment.__index = environment
+function environment.new(data: BaseObjectParams): Environment
+	local self = baseObject.new({
+		Parent = data.Parent,
+		InstanceType = data.InstanceType or "Folder",
+	})
+
+	self.Content = {}
+	self.Count = 0
+	
+	self:SetClassName(script.Name)
 	self:On("Changed", function(property)
 		if property ~= "Content" or self.Count ~= 0 then
 			return
@@ -22,6 +29,8 @@ function constructor:Environment()
 
 		self.Count = count
 	end)
+
+	return setmetatable(self, environment)
 end
 
 --[[={
@@ -29,7 +38,7 @@ end
 	@link any.link
 }=]]
 
-function methods:Get(index: string): any
+function environment:Get(index: string): any
 	return self.Content[index]
 end
 
@@ -38,11 +47,8 @@ end
 	@link any.link
 }=]]
 
-function methods:AddOne(value: any, index: string)
+function environment:AddOne(value: any, index: string)
 	assert(self.Content[index] == nil, "This value already exist!")
-	if typeof(value) == "table" then
-		value = getNormalAccess(value)
-	end
 
 	self.Count += 1
 	self.Content[index or self.Count] = value
@@ -53,7 +59,7 @@ end
 	@link void.link
 }=]]
 
-function methods:RemoveOne(index: string)
+function environment:RemoveOne(index: string)
 	assert(self.Content[index], "This value does not exist!")
 	self.Content[index or self.Count] = nil
 	self.Count -= 1
@@ -64,7 +70,7 @@ end
 	@link boolean.link
 }=]]
 
-function methods:HasOne(index: string): boolean
+function environment:HasOne(index: string): boolean
 	return self.Content[index] ~= nil
 end
 
@@ -83,7 +89,7 @@ end
 	```
 }=]]
 
-function methods:Has(objects: Array<string>): (boolean, Dictionary<string, boolean>)
+function environment:Has(objects: Array<string>): (boolean, Dictionary<string, boolean>)
 	local hasAll = true
 	local result = {}
 
@@ -103,9 +109,9 @@ end
 	@desc Adds objects with the specified index
 	```lua
 	treeEnv:Add({
-		"Tree1" = tree:new(),
-		"Tree2" = tree:new(),
-		"Tree3" = tree:new()
+		"Tree1" = tree.new(),
+		"Tree2" = tree.new(),
+		"Tree3" = tree.new()
 	})
 
 	print(treeEnv:Get("Tree2")) -- output: Tree2
@@ -113,7 +119,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Add(objects: Dictionary<string, any>)
+function environment:Add(objects: Dictionary<string, any>)
 	for index, object in objects do
 		self:AddOne(object, index)
 	end
@@ -128,7 +134,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Remove(objects: Array<string>)
+function environment:Remove(objects: Array<string>)
 	for _, index in ipairs(objects) do
 		self:RemoveOne(index)
 	end
@@ -145,12 +151,8 @@ end
 	@link void.link
 }=]]
 
-function methods:Update(objects: Dictionary<string, any>)
+function environment:Update(objects: Dictionary<string, any>)
 	for index, object in objects do
-		if typeof(object) == "table" then
-			object = getNormalAccess(object)
-		end
-
 		self.Content[index] = object
 	end
 end
@@ -160,7 +162,7 @@ end
 	@link any.link
 }=]]
 
-function methods:FindByName(name: string): any
+function environment:FindByName(name: string): any
 	for _, object in self.Content do
 		if object.Name ~= name then
 			continue
@@ -177,7 +179,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetProperty(property: string, value: any)
+function environment:SetProperty(property: string, value: any)
 	for _, object in self.Content do
 		pcall(setProperty, object, property, value)
 	end
@@ -188,7 +190,7 @@ end
 	@link void.link
 }=]]
 
-function methods:Run(method: string, ...)
+function environment:Run(method: string, ...)
 	for _, object in self.Content do
 		if typeof(object) == "table" then
 			coroutine.wrap(pcall)(object[method] or warn, object, ...)
@@ -202,12 +204,4 @@ end
 		@Count The amount of objects in this environment
 }=]]
 
-return baseObject:Extend(script.Name, {
-	methods = methods,
-	constructor = constructor,
-	rules = { Content = {} },
-	readonly = {
-		Count = 0,
-		InstanceType = "Folder",
-	},
-})
+return setmetatable(environment, baseObject)

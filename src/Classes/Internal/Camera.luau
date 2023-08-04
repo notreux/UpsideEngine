@@ -1,22 +1,36 @@
 local upsideEngine = script.Parent.Parent.Parent
 
+local character = require(script.Parent.Parent.Public.Character)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
-local character = require(upsideEngine.Classes.Public.Character)
-
-local methods = {}
-local constructor = {}
+local camera = {}
+camera.__index = camera
 
 --[[={
 	@link Camera.md
 }=]]
 
-function constructor:Camera(data: BaseObjectParams)
+function camera.new(data: BaseObjectParams): Camera
 	local scene = data.Parent
 	if not scene then
-		return
+		return {} :: Camera
 	end
 
-	addReadonly({ Scene = scene.Id, Instance = scene.Instance })
+	local self = eventEmitter.new({
+		Parent = data.Parent,
+	})
+
+	self:SetClassName(script.Name)
+	self.LocalPosition = Vector2.zero
+	self.Limits = Vector2.zero
+	self.FollowSubject = true
+	self.Scene = scene.Id
+	self.Instance = scene.Instance
+	self.Subject = character.new({
+		Parent = workspace,
+		SpriteSize = Vector2.zero,
+	})
+
+	return setmetatable(self, camera)
 end
 
 --[[={
@@ -24,7 +38,7 @@ end
 	@link udim2.link
 }=]]
 
-function methods:GetPosition(): UDim2
+function camera:GetPosition(): UDim2
 	return self.Instance.Position
 end
 
@@ -33,7 +47,7 @@ end
 	@link void.link
 }=]]
 
-function methods:SetPosition(udim2: UDim2)
+function camera:SetPosition(udim2: UDim2)
 	self.LocalPosition = Vector2.new(udim2.X.Offset, udim2.Y.Offset)
 	self.Instance.Position = udim2
 end
@@ -43,11 +57,11 @@ end
 	@link void.link
 }=]]
 
-function methods:SetSubject(subject: Character)
+function camera:SetSubject(subject: Character)
 	self.Subject = subject
 end
 
-function methods:LookTo(object: PhysicalObject)
+function camera:LookTo(object: PhysicalObject)
 	assert(object:IsA("PhysicalObject"), ("Physical Object expected, got%s"):format(typeof(object)))
 	local resolution = workspace.CurrentCamera.ViewportSize
 	local center = resolution / 2
@@ -68,15 +82,4 @@ end
 		@FollowSubject This property defines if the camera is going to follow the defined subject
 }=]]
 
-return eventEmitter:Extend(script.Name, {
-	constructor = constructor,
-	methods = methods,
-	readonly = {
-		Subject = character:new(),
-	},
-	rules = {
-		LocalPosition = Vector2.zero,
-		Limits = Vector2.zero,
-		FollowSubject = true,
-	},
-})
+return setmetatable(camera, eventEmitter)

@@ -1,12 +1,31 @@
 local upsideEngine = script.Parent.Parent.Parent
-local restricted = require(upsideEngine.AppData.Data).restricted
+local objects = require(upsideEngine.AppData.Data).objects
 
+local character = require(script.Parent.Character)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
-local character = require(upsideEngine.Classes.Public.Character)
+local sound = {}
+sound.__index = sound
 
-local methods = {}
 local function getSoundEnvironment(scene: string): SoundEnvironment
-	return restricted[scene].readonly.SoundEnvironment
+	return objects[scene].SoundEnvironment
+end
+
+function sound.new(data): Sound
+	local self = baseObject.new({
+		Parent = data.Parent,
+		InstanceType = "Sound",
+	})
+
+	self:SetClassName(script.Name)
+	self.Range = 1000
+	self.MaxVolume = 1
+	self.DistanceFading = true
+	self.Subject = character.new({
+		Parent = workspace,
+		SpriteSize = Vector2.zero,
+	})
+
+	return setmetatable(self, sound)
 end
 
 --[[={
@@ -14,11 +33,11 @@ end
 	@link void.link
 }=]]
 
-function methods:SetSubject(subject: Character, useSceneSoundGroup: boolean?)
-	assert(restricted[subject.Scene] ~= nil, "The subject must be in a scene!")
+function sound:SetSubject(subject: Character, useSceneSoundGroup: boolean?)
+	assert(objects[subject.Scene] ~= nil, "The subject must be in a scene!")
 
 	local sceneId = self.Subject.Scene or nil
-	if self.Subject and restricted[sceneId] then
+	if self.Subject and objects[sceneId] then
 		local SoundEnvironment = getSoundEnvironment(sceneId)
 		SoundEnvironment.Content[self.Id] = nil
 	end
@@ -41,16 +60,4 @@ end
 		@DistanceFading The volume will depend on the player distance
 }=]]
 
-return baseObject:Extend(script.Name, {
-	methods = methods,
-	readonly = {
-		InstanceType = "Sound",
-		Subject = character:new(),
-	},
-
-	rules = {
-		Range = 1000,
-		MaxVolume = 1,
-		DistanceFading = true,
-	},
-})
+return setmetatable(sound, baseObject)

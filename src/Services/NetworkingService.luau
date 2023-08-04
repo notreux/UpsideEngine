@@ -5,7 +5,11 @@ local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local request = require(upsideEngine.Classes.Internal.Request)
 local properties = require(upsideEngine.AppData.EssentialProperties)
 
-local methods = {}
+local networkingService = eventEmitter.new()
+networkingService.ClassName = "NetworkingService"
+networkingService.Players = {}
+networkingService.DestroyObjectsOnLeave = true
+
 local function read(object, index)
 	return object[index]
 end
@@ -30,11 +34,11 @@ end
 	@desc Replicates an object to other clients
 }=]]
 
-function methods:Replicate(object: BaseObject)
+function networkingService:Replicate(object: BaseObject)
 	local properties = getData(object)
 	self.Players[players.LocalPlayer.UserId][object.Id] = object
 
-	local req = request:new()
+	local req = request.new({} :: RequestParams)
 	req:Send({
 		className = object.ClassName,
 		id = object.Id,
@@ -51,7 +55,7 @@ end
 	@tsreturns LuaTuple<[Connection, Connection]>
 }=]]
 
-function methods:ReplicateOnChange(object: BaseObject): (Connection, Connection)
+function networkingService:ReplicateOnChange(object: BaseObject): (Connection, Connection)
 	local function wrapper()
 		self:Replicate(object)
 	end
@@ -73,12 +77,4 @@ end
 		Fired when a request is received by the client
 }=]]
 
-return eventEmitter:Extend(script.Name, {
-	methods = methods,
-	readonly = {
-		Players = {},
-	},
-	rules = {
-		DestroyObjectsOnLeave = true,
-	},
-})
+return networkingService

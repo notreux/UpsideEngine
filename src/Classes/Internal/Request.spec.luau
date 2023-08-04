@@ -1,34 +1,36 @@
 local Request = require(script.Parent.Request)
-local Test = {
-	name = "aa",
-	id = 2,
-	className = "Sprite",
-	properties = {
-		object = { SpriteSpeed = 0.5 },
-		instance = { BackgroundTransparency = 0.5 },
-	},
-}
 
 return function()
-	Request = Request:new({ ClientId = 1, Content = Test })
+	local newRequest = Request.new({
+		ClientId = 1,
+		Content = {
+			name = "aa",
+			id = 2,
+			className = "Sprite",
+			properties = {
+				object = { SpriteSpeed = 0.5 },
+				instance = { BackgroundTransparency = 0.5 },
+			},
+		},
+	})
 
-	describe("Constructor :new()", function()
+	describe("Constructor .new()", function()
 		it("should send the provided information to the client|server", function()
-			expect(Request.ClientId).to.equal(1)
-			expect(typeof(Request.Content)).to.equal("table")
+			expect(newRequest.ClientId).to.equal(1)
+			expect(typeof(newRequest.Content)).to.equal("table")
 		end)
 	end)
 	describe(":Approve()", function()
 		it("should replicate the request to others clients", function()
 			expect(function()
-				Request:Approve()
+				newRequest:Approve()
 			end).never.to.throw()
 		end)
 	end)
 	describe(":GetClient()", function()
 		it("should return the player instance of the client request", function()
 			expect(function()
-				Request:GetClient()
+				newRequest:GetClient()
 			end).never.to.throw()
 		end)
 	end)

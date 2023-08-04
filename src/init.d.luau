@@ -5,6 +5,7 @@ export type Array<v> = {}
 export type ChromaticAberrationConnection = {}
 
 export type BaseObjectParams = {
+	InstanceType: string?,
 	Parent: Scene,
 }
 
@@ -25,16 +26,16 @@ export type ConnectionParams = {
 }
 
 export type RequestParams = {
-	ClientId: number,
+	ClientId: number?,
 	Content: {
 		className: string,
 		id: string,
 		name: string,
 		properties: {
-			instance: {},
-			object: {},
+			instance: table,
+			object: table,
 		},
-	},
+	}?,
 }
 
 export type Raycast2dResult = {
@@ -51,175 +52,154 @@ export type Raycast2dParams = {
 	To: any,
 }
 
-export type ClassData = {
-	name: string,
-	constructor: Dictionary<string, () -> any>?,
-	methods: Dictionary<string, () -> any>?,
-	private: Dictionary<string, any>?,
-	readonly: Dictionary<string, any>?,
-	rules: Dictionary<string, any>?,
-}
-
 export type BaseClass = {
 	Id: string,
 	ClassName: string,
 	Name: string,
-	SetName: (name: string) -> (),
+	new: () -> BaseClass,
+	SetName: (self: BaseClass, name: string) -> (),
 	IsA: (self: BaseClass, className: string) -> boolean,
-	new: (...any) -> BaseClass,
-	Clone: (...any) -> BaseClass,
-	Extend: (self: BaseClass, className: string, classStructure: table) -> BaseClass,
-	Destroy: () -> (),
+	Clone: (self: BaseClass, ...any) -> BaseClass,
+	Destroy: (self: BaseClass) -> (),
 }
+
 --[[
 This class is the base class of the majority of classes
 	]]
 export type BaseObject = EventEmitter & {
---[[
+	--[[
 The object instance
 		]]
-Instance: Instance,
---[[
+	Instance: Instance,
+	--[[
 The object scene ID
 		]]
-Scene: string,
---[[
+	Scene: string,
+	--[[
 The class name of the object instance
 		]]
-InstanceType: string,
---[[
+	InstanceType: string,
+	--[[
 This table stores all the tags of the object
 ]]
-Tags: 	{ 	},
---[[
+	Tags: {},
+	--[[
 Sets the properties of the object instance
 	]]
-Set: (self: BaseObject, properties: Dictionary<string, any>) -> nil,
---[[
+	Set: (self: BaseObject, properties: Dictionary<string, any>) -> nil,
+	--[[
 Adds a tag to the object
 	]]
-AddTag: (self: BaseObject, tag: string) -> nil,
---[[
+	AddTag: (self: BaseObject, tag: string) -> nil,
+	--[[
 Checks if the object contain the specified tag
 	]]
-HasTag: (self: BaseObject, tag: string) -> boolean,
---[[
+	HasTag: (self: BaseObject, tag: string) -> boolean,
+	--[[
 Removes a tag from the object
 	]]
-RemoveTag: (self: BaseObject, tag: string) -> nil,
+	RemoveTag: (self: BaseObject, tag: string) -> nil,
 }
-
-
-
 
 --[[
 This class is included on every scene, it's used to move you around the scene
 	]]
 export type Camera = EventEmitter & {
---[[
+	--[[
 This property defines the object which is going to follow the camera
 		]]
-Subject: Character,
---[[
+	Subject: Character,
+	--[[
 This property defines if the camera is going to follow the defined subject
 ]]
-FollowSubject: boolean,
---[[
+	FollowSubject: boolean,
+	--[[
 Gets the camera position
 	]]
-GetPosition: (self: Camera) -> nil,
---[[
+	GetPosition: (self: Camera) -> nil,
+	--[[
 Sets the camera position
 	]]
-SetPosition: (self: Camera, udim2: UDim2) -> nil,
---[[
+	SetPosition: (self: Camera, udim2: UDim2) -> nil,
+	--[[
 Sets the camera subject
 	]]
-SetSubject: (self: Camera, subject: Character) -> nil,
---[[
+	SetSubject: (self: Camera, subject: Character) -> nil,
+	--[[
 ]]
-LookTo: (self: Camera, object: PhysicalObject) -> nil,
+	LookTo: (self: Camera, object: PhysicalObject) -> nil,
 }
-
-
-
 
 --[[
 This class is used in the event emitter class, its used to manage a listener
 	]]
 export type Connection = BaseClass & {
---[[
+	--[[
 Defines if the connection is active or not
 ]]
-Active: boolean,
---[[
+	Active: boolean,
+	--[[
 Wait until the event gets fired, if seconds were specified, once the specified seconds have elapsed, it will stop waiting
 	]]
-Wait: (self: Connection, seconds: number?) -> thread?,
---[[
+	Wait: (self: Connection, seconds: number?) -> thread?,
+	--[[
 Deletes the connection and the listener
 	]]
-Disconnect: (self: Connection) -> nil,
+	Disconnect: (self: Connection) -> nil,
 }
-
-
-
 
 --[[
 The event emitter is used to manage the events of a class
 	]]
 export type EventEmitter = BaseClass & {
---[[
+	--[[
 This table store all the events of the class
 ]]
-EventsStorage: 	{ 	},
---[[
+	EventsStorage: {},
+	--[[
 ]]
-On: (self: EventEmitter, name: string, callback: () -> any) -> Connection,
---[[
+	On: (self: EventEmitter, name: string, callback: () -> any) -> Connection,
+	--[[
 Triggers an event with the specified arguments
 	]]
-Fire: (self: EventEmitter, name: string, ...any) -> nil,
+	Fire: (self: EventEmitter, name: string, ...any) -> nil,
 }
-
-
-
 
 --[[
 This class is one of the most important components of a scene, is used to manage everything related with the light 
 	]]
 export type LightingEnvironment = Environment & {
---[[
+	--[[
 This is the color of every pixel of the ambient, we can say is the darkness color
 		]]
-AmbientColor: Color3,
---[[
+	AmbientColor: Color3,
+	--[[
 This is the transparency of the ambient, we can say is the darkness transparency
 		]]
-AmbientTransparency: number,
---[[
+	AmbientTransparency: number,
+	--[[
 This is the seconds between every update of the pixels in the screen
 		]]
-UpdateFrequency: number,
---[[
+	UpdateFrequency: number,
+	--[[
 This is the pixel in the middle of every large pixel, used for internal purposes
 		]]
-PixelIndex: number,
---[[
+	PixelIndex: number,
+	--[[
 This is the distance between every large pixel, used for internal purposes
 ]]
-Distance: number,
---[[
+	Distance: number,
+	--[[
 ]]
-InstanceType: string,
---[[
+	InstanceType: string,
+	--[[
 Stores all the ambient pixels
 		]]
-Pixels: 	{ 	},
---[[
+	Pixels: {},
+	--[[
 ]]
-LightingIntensity: number,
---[[
+	LightingIntensity: number,
+	--[[
 Draws the pixels for the scene with the specified settings
 	```lua
 		settings = {
@@ -229,169 +209,153 @@ Draws the pixels for the scene with the specified settings
 		}
 	```
 	]]
-DrawPixels: (self: LightingEnvironment, settings: any) -> nil,
---[[
+	DrawPixels: (self: LightingEnvironment, settings: any) -> nil,
+	--[[
 Sets the base intensity for all the lights in the scene
 	]]
-SetLightingIntensity: (self: LightingEnvironment, value: number) -> nil,
---[[
+	SetLightingIntensity: (self: LightingEnvironment, value: number) -> nil,
+	--[[
 Gets the base intensity for all the lights in the scene 
 	]]
-GetLightingIntensity: (self: LightingEnvironment) -> nil,
---[[
+	GetLightingIntensity: (self: LightingEnvironment) -> nil,
+	--[[
 Updates the position, the transparency and the color of the ambient
 	]]
-UpdateScreen: (self: LightingEnvironment) -> nil,
+	UpdateScreen: (self: LightingEnvironment) -> nil,
 }
-
-
-
 
 --[[
 ]]
-export type ParticleEnvironment = Environment & {
-}
-
-
-
+export type ParticleEnvironment = Environment & {}
 
 --[[
 This class is used for the client replication
 	]]
 export type Request = EventEmitter & {
---[[
+	--[[
 The content of the request
 		]]
-Content: 	{ 	},
---[[
+	Content: {},
+	--[[
 The UserId of the client which sent the request if exists 
 	]]
-ClientId: number,
---[[
+	ClientId: number,
+	--[[
 Sends the request to the server
 	]]
-Send: (self: Request, content: Dictionary<string, any>) -> nil,
---[[
+	Send: (self: Request, content: Dictionary<string, any>) -> nil,
+	--[[
 The request is approved and its replicated to the specified clients, if none is specified it will be replicated to all the clients except to the client who sent the request
 	]]
-Approve: (self: Request, clients: table) -> nil,
---[[
+	Approve: (self: Request, clients: table) -> nil,
+	--[[
 Accepts the request and builds the object to be replicated
 	]]
-Accept: (self: Request, data: BaseObjectParams) -> BaseObject,
---[[
+	Accept: (self: Request, data: BaseObjectParams) -> BaseObject,
+	--[[
 Returns the player which sent the request
 	]]
-GetClient: (self: Request) -> nil,
+	GetClient: (self: Request) -> nil,
 }
-
-
-
 
 --[[
 ]]
 export type SoundEnvironment = Environment & {
---[[
+	--[[
 ]]
-InstanceType: string,
+	InstanceType: string,
 }
-
-
-
 
 --[[
 This class is used for the player character and for npcs
 	]]
 export type Character = Sprite & {
---[[
+	--[[
 The amount of health of the character
 		]]
-Health: number,
---[[
+	Health: number,
+	--[[
 The maximum amount of health of the character 
 		]]
-MaxHealth: number,
---[[
+	MaxHealth: number,
+	--[[
 The walk speed of the character
 		]]
-WalkSpeed: number,
---[[
+	WalkSpeed: number,
+	--[[
 The jump power of the character
 ]]
-JumpPower: number,
---[[
+	JumpPower: number,
+	--[[
 Updates the amount of health of the character 
 	]]
-UpdateHealth: (self: Character, Health: number) -> nil,
---[[
+	UpdateHealth: (self: Character, Health: number) -> nil,
+	--[[
 The character jumps with the provided jump power, if none is provided it will use the JumpPower property as value 
 	]]
-Jump: (self: Character, jumpPower: number?) -> nil,
---[[
+	Jump: (self: Character, jumpPower: number?) -> nil,
+	--[[
 The character walks directly to the provided position
 	]]
-MoveTo: (self: Character, target: Vector2) -> nil,
+	MoveTo: (self: Character, target: Vector2) -> nil,
 }
-
-
-
 
 --[[
 This class is used to storage objects and interact with them in an easier way
 	]]
 export type Environment = BaseObject & {
---[[
+	--[[
 ]]
-Content: 	{ 	},
---[[
+	Content: {},
+	--[[
 The amount of objects in this environment
 ]]
-Count: number,
---[[
+	Count: number,
+	--[[
 ]]
-InstanceType: string,
---[[
+	InstanceType: string,
+	--[[
 Gets the object with the specified index
 	]]
-Get: (self: Environment, index: string) -> any,
---[[
+	Get: (self: Environment, index: string) -> any,
+	--[[
 Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
 	]]
-AddOne: (self: Environment, value: any, index: string) -> nil,
---[[
+	AddOne: (self: Environment, value: any, index: string) -> nil,
+	--[[
 Removes the object with the specified index
 	]]
-RemoveOne: (self: Environment, index: string) -> nil,
---[[
+	RemoveOne: (self: Environment, index: string) -> nil,
+	--[[
 Checks if the environment has a value with the specified index
 	]]
-HasOne: (self: Environment, index: string) -> boolean,
---[[
+	HasOne: (self: Environment, index: string) -> boolean,
+	--[[
 Checks if the environment contains every specified index and returns a boolean and a dictionary with boolean values, example:
 	]]
-Has: (self: Environment, objects: Array<string>) -> (boolean, Dictionary<string, boolean>),
---[[
+	Has: (self: Environment, objects: Array<string>) -> (boolean, Dictionary<string, boolean>),
+	--[[
 Adds objects with the specified index
 	```lua
 	treeEnv:Add({
-		"Tree1" = tree:new(),
-		"Tree2" = tree:new(),
-		"Tree3" = tree:new()
+		"Tree1" = tree.new(),
+		"Tree2" = tree.new(),
+		"Tree3" = tree.new()
 	})
 
 	print(treeEnv:Get("Tree2")) -- output: Tree2
 	```
 	]]
-Add: (self: Environment, objects: Dictionary<string, any>) -> nil,
---[[
+	Add: (self: Environment, objects: Dictionary<string, any>) -> nil,
+	--[[
 Removes the objects with the specified index, example:
 	```lua
 	treeEnv:Remove({ "Tree1", "Tree2", "Tree3" })
 	print(treeEnv:Get("Tree2")) -- output: nil
 	```
 	]]
-Remove: (self: Environment, objects: Array<string>) -> nil,
---[[
+	Remove: (self: Environment, objects: Array<string>) -> nil,
+	--[[
 Updates the objects with the specified index, example:
 	```lua
 	treeEnv:Update({
@@ -400,53 +364,47 @@ Updates the objects with the specified index, example:
 	})
 	```
 	]]
-Update: (self: Environment, objects: Dictionary<string, any>) -> nil,
---[[
+	Update: (self: Environment, objects: Dictionary<string, any>) -> nil,
+	--[[
 Finds an object by his name
 	]]
-FindByName: (self: Environment, name: string) -> any,
---[[
+	FindByName: (self: Environment, name: string) -> any,
+	--[[
 Sets the specified property in every object in the environment
 	]]
-SetProperty: (self: Environment, property: string, value: any) -> nil,
---[[
+	SetProperty: (self: Environment, property: string, value: any) -> nil,
+	--[[
 Executes the specified methods in every object in the environment with the specified parameters
 	]]
-Run: (self: Environment, method: string, ...any) -> nil,
+	Run: (self: Environment, method: string, ...any) -> nil,
 }
-
-
-
 
 --[[
 This class is used to illuminate areas in the darkness
 	]]
 export type Light = PhysicalObject & {
---[[
+	--[[
 Its a property of PhysicalObject, in this class is marked as readonly and is set false to optimizate
 		]]
-TrackCollisions: boolean,
---[[
+	TrackCollisions: boolean,
+	--[[
 ]]
-Color: Color3,
---[[
+	Color: Color3,
+	--[[
 Is the range of the light
 		]]
-Range: number,
---[[
+	Range: number,
+	--[[
 Is the brightness of the light
 		]]
-Brightness: number,
---[[
+	Brightness: number,
+	--[[
 If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
 		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
 		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
 ]]
-Track: boolean,
+	Track: boolean,
 }
-
-
-
 
 --[[
 !!! warning 
@@ -457,345 +415,330 @@ Track: boolean,
 
 	]]
 export type Particle = BaseObject & {
---[[
+	--[[
 Depending on the value the particles will be more dispersed
 		]]
-Angle: Vector2,
---[[
+	Angle: Vector2,
+	--[[
 ]]
-InstanceType: string,
---[[
+	InstanceType: string,
+	--[[
 The subject which is going to be the center of emission of the particle, a character, sprite, etc...
 		]]
-Subject: Character,
---[[
+	Subject: Character,
+	--[[
 Is the maximum amount of particles that can exist at the same time
 		]]
-MaxRate: number,
---[[
+	MaxRate: number,
+	--[[
 Is the amount of particles that are existing at this moment
 		]]
-Units: number,
---[[
+	Units: number,
+	--[[
 Is a table with the initial properties of the particle which is going to be generated
 		]]
-Properties: 	{
- --[[
+	Properties: {
+		--[[
 @desc]]
-Image: string,
+		Image: string,
 	},
---[[
+	--[[
 Is a table with the goals of the particles
 		]]
-Goals: 	{
- --[[
+	Goals: {
+		--[[
 @desc]]
-Size: UDim2,
---[[
+		Size: UDim2,
+		--[[
 @desc]]
-ImageTransparency: number,
+		ImageTransparency: number,
 	},
---[[
+	--[[
 Is the tween info of the tween which is going to be used to move the particles
 		]]
-Info: TweenInfo,
---[[
+	Info: TweenInfo,
+	--[[
 !!! warning 
 			Experimental, dont use
 		]]
-TrackLight: boolean,
---[[
+	TrackLight: boolean,
+	--[[
 !!! warning 
 			Experimental, dont use
 		]]
-CanCollide: boolean,
---[[
+	CanCollide: boolean,
+	--[[
 When its enabled new particles can be emitted
 		]]
-Enabled: boolean,
---[[
+	Enabled: boolean,
+	--[[
 !!! warning 
 			Experimental, dont use
 		]]
-LightBrightness: number,
---[[
+	LightBrightness: number,
+	--[[
 !!! warning 
 			Experimental, dont use
 ]]
-LightRange: number,
---[[
+	LightRange: number,
+	--[[
 Is the distance that can be traveled by each particle 
 		]]
-Range: number,
---[[
+	Range: number,
+	--[[
 The number of seconds the particle will be active before being destroyed
 		]]
-LifeTime: number,
---[[
+	LifeTime: number,
+	--[[
 Used for internal purposes
 		]]
-Clock: number,
---[[
+	Clock: number,
+	--[[
 Is the amount of particles which is going to be generated
 		]]
-Rate: number,
---[[
+	Rate: number,
+	--[[
 Sets the subject property
 	]]
-SetSubject: (self: Particle, subject: Character) -> nil,
---[[
+	SetSubject: (self: Particle, subject: Character) -> nil,
+	--[[
 Sets the angle property of the particle
 	]]
-SetAngle: (self: Particle, Angle: Vector2) -> nil,
---[[
+	SetAngle: (self: Particle, Angle: Vector2) -> nil,
+	--[[
 Sets the maximum amount of particles that can exist at the same time
 	]]
-SetMaxRate: (self: Particle, maxRate: number) -> nil,
---[[
+	SetMaxRate: (self: Particle, maxRate: number) -> nil,
+	--[[
 Emits the specified amount of particles, if none is provided then will use as amount the Rate property
 	]]
-Emit: (self: Particle, rate: number) -> nil,
+	Emit: (self: Particle, rate: number) -> nil,
 }
-
-
-
 
 --[[
 This class is used to create objects with physics
 	]]
 export type PhysicalObject = BaseObject & {
---[[
+	--[[
 ]]
-InstanceType: string,
---[[
+	InstanceType: string,
+	--[[
 ]]
-ChromaticAberrationIntensity: number,
---[[
+	ChromaticAberrationIntensity: number,
+	--[[
 ]]
-ChromaticAberrationDistance: number,
---[[
+	ChromaticAberrationDistance: number,
+	--[[
 This is the point which is being used as reference for the chromatic aberration
 		]]
-ChromaticAberrationPoint: Vector2,
---[[
+	ChromaticAberrationPoint: Vector2,
+	--[[
 The instances which makes the chromatic aberration effect
 		]]
-ChromaticAberration: 	{ 	},
---[[
+	ChromaticAberration: {},
+	--[[
 This table stores all the active collisions
 		]]
-Collisions: 	{ 	},
---[[
+	Collisions: {},
+	--[[
 ]]
-ChromaticAberrationConnection: boolean,
---[[
+	ChromaticAberrationConnection: boolean,
+	--[[
 This dictionary stores all the blacklisted objects, to blacklist an object do it like this:
 		```lua
 		CollisionBlacklist[object.Id] = true
 		```
 		]]
-CollisionBlacklist: 	{ 	},
---[[
+	CollisionBlacklist: {},
+	--[[
 !!! warning 
 			Experimental, dont use
 		]]
-Hitbox: 	{ 	},
---[[
+	Hitbox: {},
+	--[[
 The object mass
 		]]
-Mass: number,
---[[
+	Mass: number,
+	--[[
 ]]
-HitboxScale: number,
---[[
+	HitboxScale: number,
+	--[[
 A number which indicates the collision group of the object, the object only can collide with other objects with the same CollisionGroup
 		]]
-CollisionGroup: number,
---[[
+	CollisionGroup: number,
+	--[[
 This property defines if the object should have physics or not
 		]]
-Anchored: boolean,
---[[
+	Anchored: boolean,
+	--[[
 This property defines if the object can collide with other objects
 		]]
-CanCollide: boolean,
---[[
+	CanCollide: boolean,
+	--[[
 This property indicates if the object is touching the ground
 		]]
-IsGrounded: boolean,
---[[
+	IsGrounded: boolean,
+	--[[
 This property defines if the object is going to have physics and collisions or not
 		]]
-TrackCollisions: boolean,
---[[
+	TrackCollisions: boolean,
+	--[[
 !!! warning 
 			Experimental, dont use
 	]]
-HitboxShape: string,
---[[
+	HitboxShape: string,
+	--[[
 Is the force which is applied in the moment to the object
 		]]
-Force: Vector2,
---[[
+	Force: Vector2,
+	--[[
 Is the velocity applied to the object
 		]]
-Velocity: Vector2,
---[[
+	Velocity: Vector2,
+	--[[
 !!! warning 
 		Sets the hitbox shape. Experimental, dont use
 	]]
-SetHitboxShape: (self: PhysicalObject, shape: string) -> nil,
---[[
+	SetHitboxShape: (self: PhysicalObject, shape: string) -> nil,
+	--[[
 Loads an image for the current object and is set as the instance image
 	]]
-Load: (self: PhysicalObject, url: string) -> nil,
---[[
+	Load: (self: PhysicalObject, url: string) -> nil,
+	--[[
 Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
 	to disable the chromatic aberration send 0 as first parameter
 	]]
-SetChromaticAberration: (self: PhysicalObject, Intensity: number, Distance: number, Point: Vector2) -> nil,
+	SetChromaticAberration: (self: PhysicalObject, Intensity: number, Distance: number, Point: Vector2) -> nil,
 }
-
-
-
 
 --[[
 This class is useful to have a workspace and manage your project more easily
 	]]
 export type Scene = BaseObject & {
---[[
+	--[[
 This table stores all the objects in the scene
 		]]
-Objects: 	{ 	},
---[[
+	Objects: {},
+	--[[
 ]]
-InstanceType: string,
---[[
+	InstanceType: string,
+	--[[
 This is the SoundEnvironment of the scene
 		]]
-SoundEnvironment: SoundEnvironment,
---[[
+	SoundEnvironment: SoundEnvironment,
+	--[[
 This is the ParticleEnvironment of the scene
 		]]
-ParticleEnvironment: ParticleEnvironment,
---[[
+	ParticleEnvironment: ParticleEnvironment,
+	--[[
 This is the LightingEnvironment of the scene
 ]]
-LightingEnvironment: LightingEnvironment,
---[[
+	LightingEnvironment: LightingEnvironment,
+	--[[
 Adds the specified object
 	]]
-AddObject: (self: Scene, object: BaseObject) -> nil,
---[[
+	AddObject: (self: Scene, object: BaseObject) -> nil,
+	--[[
 Removes the specified object
 	]]
-RemoveObject: (self: Scene, object: BaseObject) -> nil,
---[[
+	RemoveObject: (self: Scene, object: BaseObject) -> nil,
+	--[[
 Finds an object by his name
 	]]
-FindByName: (self: Scene, name: string) -> BaseObject?,
---[[
+	FindByName: (self: Scene, name: string) -> BaseObject?,
+	--[[
 Checks if the object is in the scene
 	]]
-HasObject: (self: Scene, object: BaseObject) -> boolean,
---[[
+	HasObject: (self: Scene, object: BaseObject) -> boolean,
+	--[[
 Gets all the objects with the provided tags in the scene
 	]]
-GetTaggedObjects: (self: Scene, tag: string) -> Array<string>,
---[[
+	GetTaggedObjects: (self: Scene, tag: string) -> Array<string>,
+	--[[
 Casts a ray using the Raycast2dParams. If it finds an elegible object a Raycast2dResult is returned containing the results of the operations
 	]]
-Raycast: (self: Scene, info: Raycast2dParams) -> Raycast2dResult,
+	Raycast: (self: Scene, info: Raycast2dParams) -> Raycast2dResult,
 }
-
-
-
 
 --[[
 This class is used to play sounds
 	]]
 export type Sound = BaseObject & {
---[[
+	--[[
 ]]
-InstanceType: string,
---[[
+	InstanceType: string,
+	--[[
 This table stores all the objects in the scene
 		]]
-Subject: Character,
---[[
+	Subject: Character,
+	--[[
 This is the SoundEnvironment of the scene
 		]]
-Range: number,
---[[
+	Range: number,
+	--[[
 This is the ParticleEnvironment of the scene
 		]]
-MaxVolume: number,
---[[
+	MaxVolume: number,
+	--[[
 The volume will depend on the player distance
 ]]
-DistanceFading: boolean,
---[[
+	DistanceFading: boolean,
+	--[[
 Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	]]
-SetSubject: (self: Sound, subject: Character, useSceneSoundGroup: boolean?) -> nil,
+	SetSubject: (self: Sound, subject: Character, useSceneSoundGroup: boolean?) -> nil,
 }
-
-
-
 
 --[[
 This class is used to play sounds
 	]]
 export type Sprite = PhysicalObject & {
---[[
+	--[[
 Indicates if the sprite is playing
 		]]
-IsPlaying: boolean,
---[[
+	IsPlaying: boolean,
+	--[[
 This table stores information about the active spritesheet
 ]]
-Active: 	{
- --[[
+	Active: {
+		--[[
 @desc]]
-Name: string,
---[[
+		Name: string,
+		--[[
 @desc]]
-CurrentFrame: Vector2,
---[[
+		CurrentFrame: Vector2,
+		--[[
 @desc]]
-SecondsPerFrame: number,
---[[
+		SecondsPerFrame: number,
+		--[[
 @desc]]
-NextStepReady: boolean,
+		NextStepReady: boolean,
 	},
---[[
+	--[[
 This is the time to wait between frame and frame
 		]]
-SecondsPerFrame: number,
---[[
+	SecondsPerFrame: number,
+	--[[
 This table stores all sprite sheets and sprite lists 
 		]]
-Sprites: 	{ 	},
---[[
+	Sprites: {},
+	--[[
 Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2
 	]]
-SetSpriteSheet: (self: Sprite, name: string, url: string, frames: Vector2) -> nil,
---[[
+	SetSpriteSheet: (self: Sprite, name: string, url: string, frames: Vector2) -> nil,
+	--[[
 Adds a new sprite list to the object, it will play the animation using the order in the provided list, this list must contain the urls of every frame
 	]]
-SetSpriteList: (self: Sprite, name: string, list: Array<string>) -> nil,
---[[
+	SetSpriteList: (self: Sprite, name: string, list: Array<string>) -> nil,
+	--[[
 Plays the specified sprite if exists, if secondsEveryFrame is specified it will be used instead of .SecondsPerFrame
 	]]
-Play: (self: Sprite, name: string, secondsPerFrame: number?) -> nil,
---[[
+	Play: (self: Sprite, name: string, secondsPerFrame: number?) -> nil,
+	--[[
 Stops the reproduction of the current playing sprite sheet or sprite list
 	]]
-Stop: (self: Sprite) -> nil,
+	Stop: (self: Sprite) -> nil,
 }
-
-
-
 
 --[[
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
@@ -836,112 +779,112 @@ end)
 
 	]]
 export type CrossPlatformService = EventEmitter & {
---[[
+	--[[
 Defines if the default movement system is enabled
 		]]
-DefaultControllersEnabled: boolean,
---[[
+	DefaultControllersEnabled: boolean,
+	--[[
 Defines if the character is going to be seen from the side or from the top
 		]]
-SideView: boolean,
---[[
+	SideView: boolean,
+	--[[
 This is the character which is going to be tracked by the camera
 		]]
-Character: Character,
---[[
+	Character: Character,
+	--[[
 This is the sensibility of the sticks in mobile and in game controllers
 		]]
-StickSensibility: number,
---[[
+	StickSensibility: number,
+	--[[
 This table stores the default controllers
 	]]
-Configs: 	{
- --[[
+	Configs: {
+		--[[
 @desc]]
-Keyboard: 	{
- --[[
+		Keyboard: {
+			--[[
 @desc]]
-W: string,
---[[
+			W: string,
+			--[[
 @desc]]
-A: string,
---[[
+			A: string,
+			--[[
 @desc]]
-S: string,
---[[
+			S: string,
+			--[[
 @desc]]
-D: string,
---[[
+			D: string,
+			--[[
 @desc]]
-Up: string,
---[[
+			Up: string,
+			--[[
 @desc]]
-Left: string,
---[[
+			Left: string,
+			--[[
 @desc]]
-Down: string,
---[[
+			Down: string,
+			--[[
 @desc]]
-Right: string,
---[[
+			Right: string,
+			--[[
 @desc]]
-Space: string,
+			Space: string,
+		},
+		--[[
+@desc]]
+		Gamepad: {
+			--[[
+@desc]]
+			ButtonA: string,
+			--[[
+@desc]]
+			Thumbstick1: {
+				--[[
+@desc]]
+				Up: string,
+				--[[
+@desc]]
+				Left: string,
+				--[[
+@desc]]
+				Down: string,
+				--[[
+@desc]]
+				Right: string,
+			},
+		},
+		--[[
+@desc]]
+		Mobile: {
+			--[[
+@desc]]
+			JumpButton: string,
+			--[[
+@desc]]
+			Thumbstick1: {
+				--[[
+@desc]]
+				Up: string,
+				--[[
+@desc]]
+				Left: string,
+				--[[
+@desc]]
+				Down: string,
+				--[[
+@desc]]
+				Right: string,
+			},
+		},
 	},
---[[
-@desc]]
-Gamepad: 	{
- --[[
-@desc]]
-ButtonA: string,
---[[
-@desc]]
-Thumbstick1: 	{
- --[[
-@desc]]
-Up: string,
---[[
-@desc]]
-Left: string,
---[[
-@desc]]
-Down: string,
---[[
-@desc]]
-Right: string,
-	},
-	},
---[[
-@desc]]
-Mobile: 	{
- --[[
-@desc]]
-JumpButton: string,
---[[
-@desc]]
-Thumbstick1: 	{
- --[[
-@desc]]
-Up: string,
---[[
-@desc]]
-Left: string,
---[[
-@desc]]
-Down: string,
---[[
-@desc]]
-Right: string,
-	},
-	},
-	},
---[[
+	--[[
 Assigns an action to a device key, example:
 	```lua
 	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
 	```
 	]]
-SetDeviceKey: (self: CrossPlatformService, device: string, key: string, action: string) -> nil,
---[[
+	SetDeviceKey: (self: CrossPlatformService, device: string, key: string, action: string) -> nil,
+	--[[
 Sets the entire configuration of a device, example:
 	```lua
 	CrossPlatformService:SetDeviceConfig("Keyboard", {
@@ -958,89 +901,77 @@ Sets the entire configuration of a device, example:
 	})
 	```
 	]]
-SetDeviceConfig: (self: CrossPlatformService, device: string, controls: Dictionary<string, string>) -> nil,
---[[
+	SetDeviceConfig: (self: CrossPlatformService, device: string, controls: Dictionary<string, string>) -> nil,
+	--[[
 Sets the player character
 	]]
-SetPlayerCharacter: (self: CrossPlatformService, character: Character) -> nil,
+	SetPlayerCharacter: (self: CrossPlatformService, character: Character) -> nil,
 }
-
-
-
 
 --[[
 This class is to replicate objects to other clients, for example the player character
 	]]
 export type NetworkingService = EventEmitter & {
---[[
+	--[[
 A dictionary with the replicated objects by the clients
 		]]
-Players: 	{ 	},
---[[
+	Players: {},
+	--[[
 Defines if the replicated objects by other clients should be destroyed when they leaves
 	]]
-DestroyObjectsOnLeave: boolean,
---[[
+	DestroyObjectsOnLeave: boolean,
+	--[[
 Replicates an object to other clients
 ]]
-Replicate: (self: NetworkingService, object: BaseObject) -> nil,
---[[
+	Replicate: (self: NetworkingService, object: BaseObject) -> nil,
+	--[[
 Replicates an object and each change on it, and returns the connections that detect each change of the object
 	]]
-ReplicateOnChange: (self: NetworkingService, object: BaseObject) -> (Connection, Connection),
+	ReplicateOnChange: (self: NetworkingService, object: BaseObject) -> (Connection, Connection),
 }
-
-
-
 
 --[[
 This class save and build the engine data
 ]]
 export type PluginSupportService = EventEmitter & {
---[[
+	--[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
-LoadPluginContent: (self: PluginSupportService) -> nil,
---[[
+	LoadPluginContent: (self: PluginSupportService) -> nil,
+	--[[
 Saves the engine data in replicated storage as attribute with the name "UpsideEngineDB" can be useful to create plugins
 	]]
-SavePluginContent: (self: PluginSupportService, content: {}) -> nil,
+	SavePluginContent: (self: PluginSupportService, content: {}) -> nil,
 }
-
-
-
 
 --[[
 This class save and build the engine data
 	]]
 export type SceneManager = EventEmitter & {
---[[
+	--[[
 ]]
-Scenes: 	{ 	},
---[[
+	Scenes: {},
+	--[[
 This dictionary stores all the active scenes
 	]]
-ActiveScenes: 	{ 	},
---[[
+	ActiveScenes: {},
+	--[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
-Load: (self: SceneManager, scene: Scene) -> nil,
---[[
+	Load: (self: SceneManager, scene: Scene) -> nil,
+	--[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
-Unload: (self: SceneManager, scene: Scene) -> nil,
---[[
+	Unload: (self: SceneManager, scene: Scene) -> nil,
+	--[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
-FindByName: (self: SceneManager, name: string) -> Scene?,
---[[
+	FindByName: (self: SceneManager, name: string) -> Scene?,
+	--[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
-Get: (self: SceneManager, Id: string) -> Scene,
+	Get: (self: SceneManager, Id: string) -> Scene,
 }
-
-
-
 
 export type upsideEngine = {
 	Version: string,
@@ -1053,15 +984,6 @@ export type upsideEngine = {
 		& ((name: "Character") -> (data: SpriteParams) -> Character)
 		& ((name: "Scene") -> (data: SceneParams) -> Scene)
 		& ((name: "Particle") -> (data: BaseObjectParams) -> Particle),
-
-	Extend: ((name: "PhysicalObject") -> (classData: ClassData) -> PhysicalObject)
-		& ((name: "Sprite") -> (classData: ClassData) -> Sprite)
-		& ((name: "Sound") -> (classData: ClassData) -> Sound)
-		& ((name: "Environment") -> (classData: ClassData) -> Environment)
-		& ((name: "Light") -> (classData: ClassData) -> Light)
-		& ((name: "Character") -> (classData: ClassData) -> Character)
-		& ((name: "Scene") -> (classData: ClassData) -> Scene)
-		& ((name: "Particle") -> (classData: ClassData) -> Particle),
 
 	GetService: ((name: "SceneManager") -> SceneManager)
 		& ((name: "PluginSupportService") -> PluginSupportService)

@@ -440,9 +440,9 @@ Has(objects: Array<string>): LuaTuple<[boolean, Dictionary<any, boolean>]>
 Adds objects with the specified index
 	```lua
 	treeEnv:Add({
-		"Tree1" = tree:new(),
-		"Tree2" = tree:new(),
-		"Tree3" = tree:new()
+		"Tree1" = tree.new(),
+		"Tree2" = tree.new(),
+		"Tree3" = tree.new()
 	})
 
 	print(treeEnv:Get("Tree2")) -- output: Tree2

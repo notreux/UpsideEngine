@@ -19,7 +19,7 @@ local function onEvent(server, client)
 
 	networkingService:Fire(
 		"ReplicationRequest",
-		request:new({
+		request.new({
 			ClientId = data.ClientId,
 			Content = data.Content,
 		})
