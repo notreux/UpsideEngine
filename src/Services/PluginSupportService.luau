@@ -46,7 +46,7 @@ function getData(data)
 	return result
 end
 
-local function setRestricted(object, id, name)
+local function setObjectIds(object, id, name)
 	if object.ClassName == "Scene" then
 		sceneManager.Scenes[object.Id] = nil
 		sceneManager.ActiveScenes[object.Id] = nil
@@ -56,7 +56,6 @@ local function setRestricted(object, id, name)
 	end
 
 	objects[id] = objects[object.Id]
-	objects[id].masterAccess.Id = id
 	objects[object.Id] = nil
 
 	object.Id = id
@@ -79,7 +78,7 @@ local function rebuild(parent, index, value)
 	end
 
 	if value.Id then
-		setRestricted(object, value.Id, value.Name)
+		setObjectIds(object, value.Id, value.Name)
 	end
 
 	for i, v in value do
