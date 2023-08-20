@@ -1,14 +1,13 @@
 local getCorners = require(script.Parent.Parent.GetCorners)
 
 local function minAndmaxV2(arr)
-	local max = -math.huge
-	local min = math.huge
+	local max, min = -math.huge, math.huge
+	local minV2, maxV2
 
-	local minV2
-	local maxV2
-
-	for _, v2 in ipairs(arr) do
+	for i = 1, #arr do
+		local v2 = arr[i]
 		local op = v2.X + v2.Y
+
 		if op > max then
 			max = op
 			maxV2 = v2

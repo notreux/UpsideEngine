@@ -1,21 +1,32 @@
-function rotateVector(v, a)
-	local sin, cos = math.sin(a), math.cos(a)
-	return Vector2.new(v.X * cos - v.Y * sin, v.X * sin + v.Y * cos)
-end
-
 return function(object)
-	local aSize, aPosition = object.AbsoluteSize, object.AbsolutePosition
-	local center, rotation = aPosition + aSize / 2, math.rad(object.Rotation)
-	local world_cords = {
-		aPosition,
-		Vector2.new(aPosition.X + aSize.X, aPosition.Y),
-		aPosition + aSize,
-		Vector2.new(aPosition.X, aPosition.Y + aSize.Y),
+	local size, position = object.AbsoluteSize, object.AbsolutePosition
+	local center = position + size * 0.5
+	local corners = {
+		position,
+		Vector2.new(position.X + size.X, position.Y),
+		position + size,
+		Vector2.new(position.X, position.Y + size.Y),
 	}
 
-	local corners = {}
-	for i, corner in world_cords do
-		corners[i] = center + rotateVector(corner - center, rotation)
+	if object.Rotation == 0 then
+		return corners
+	end
+
+	local rotation = math.rad(object.Rotation)
+	local sin, cos = math.sin(rotation), math.cos(rotation)
+
+	for i = 1, #corners do
+		local corner = corners[i]
+
+		local XDistance = corner.X - center.X
+		local YDistance = corner.Y - center.Y
+
+		-- stylua: ignore start
+		corners[i] = Vector2.new(
+			center.X + XDistance * cos - YDistance * sin, 
+			center.Y + XDistance * sin + YDistance * cos
+		)
+		-- stylua: ignore end
 	end
 
 	return corners
