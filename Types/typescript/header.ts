@@ -6,37 +6,19 @@ declare interface table {}
 declare interface Dictionary<k,v> extends Record<any, any> {}
 declare interface ChromaticAberrationConnection {}
 
-declare interface BaseObjectParams {
-	Parent?: Scene,
+declare interface Event {
+	Functions: {},
+	Threads: {},
 }
 
-declare interface SceneParams {
-	Parent?: Instance,
-}
-
-declare interface SpriteParams extends BaseObjectParams {
-	SpriteSize?: Vector2,
-}
-
-declare interface ConnectionParams {
-	EventId: number,
-	Event: {
-		Functions: {},
-		Threads: {},
-	},
-}
-
-declare interface RequestParams {
-	ClientId: number,
-	Content: {
-		className: string,
-		id: string,
-		name: string,
-		properties: {
-			instance: {},
-			object: {},
-		},
-	},
+declare interface RequestContent {
+	className: string,
+	id: string,
+	name: string,
+	properties: {
+		instance: {},
+		object: {},
+	}
 }
 
 declare interface Raycast2dResult { 
@@ -51,15 +33,6 @@ declare interface Raycast2dParams {
     From: Vector2;
     List: Array<BaseObject>;
     To: any 
-}
-
-declare interface ClassData {
-	name: string,
-	constructor?: Dictionary<string, () => any>,
-	methods?: Dictionary<string, () => any>,
-	private?: Dictionary<string, any>,
-	readonly?: Dictionary<string, any>,
-	rules?: Dictionary<string, any>,
 }
 
 declare interface BaseClass {

@@ -6,37 +6,19 @@ declare interface table {}
 declare interface Dictionary<k,v> extends Record<any, any> {}
 declare interface ChromaticAberrationConnection {}
 
-declare interface BaseObjectParams {
-	Parent?: Scene,
+declare interface Event {
+	Functions: {},
+	Threads: {},
 }
 
-declare interface SceneParams {
-	Parent?: Instance,
-}
-
-declare interface SpriteParams extends BaseObjectParams {
-	SpriteSize?: Vector2,
-}
-
-declare interface ConnectionParams {
-	EventId: number,
-	Event: {
-		Functions: {},
-		Threads: {},
-	},
-}
-
-declare interface RequestParams {
-	ClientId: number,
-	Content: {
-		className: string,
-		id: string,
-		name: string,
-		properties: {
-			instance: {},
-			object: {},
-		},
-	},
+declare interface RequestContent {
+	className: string,
+	id: string,
+	name: string,
+	properties: {
+		instance: {},
+		object: {},
+	}
 }
 
 declare interface Raycast2dResult { 
@@ -53,15 +35,6 @@ declare interface Raycast2dParams {
     To: any 
 }
 
-declare interface ClassData {
-	name: string,
-	constructor?: Dictionary<string, () => any>,
-	methods?: Dictionary<string, () => any>,
-	private?: Dictionary<string, any>,
-	readonly?: Dictionary<string, any>,
-	rules?: Dictionary<string, any>,
-}
-
 declare interface BaseClass {
     Id: string,
     ClassName: string,
@@ -76,7 +49,7 @@ declare interface BaseClass {
 This class is the base class of the majority of classes
 	ription
 */ 
- export declare interface BaseObject extends EventEmitter {
+export declare interface BaseObject extends EventEmitter {
 /**
 The object instance
 		
@@ -88,20 +61,19 @@ The object scene ID
 */
 Scene: string;
 /**
-The class name of the object instance
-		
-*/
-InstanceType: string;
-/**
 This table stores all the tags of the object
 
 */
 Tags: 	{ 	};
 /**
-Sets the properties of the object instance
+
+*/
+new(instanceType: string | void): BaseObject;
+/**
+Sets the object scene
 	
 */
-Set(properties: Dictionary<string, any>): null;
+SetScene(scene: Scene): null;
 /**
 Adds a tag to the object
 	
@@ -126,17 +98,39 @@ RemoveTag(tag: string): null;
 This class is included on every scene, it's used to move you around the scene
 	ription
 */ 
- export declare interface Camera extends EventEmitter {
+export declare interface Camera extends EventEmitter {
+/**
+This property is used to move the camera internally
+		
+*/
+LocalPosition: Vector2;
+/**
+This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
+		
+*/
+Limits: Vector2;
+/**
+This property defines if the camera is going to follow the defined subject
+
+*/
+FollowSubject: boolean;
+/**
+
+*/
+Scene: string;
+/**
+
+*/
+Instance: string;
 /**
 This property defines the object which is going to follow the camera
 		
 */
 Subject: Character;
 /**
-This property defines if the camera is going to follow the defined subject
 
 */
-FollowSubject: boolean;
+new(scene: Scene): Camera;
 /**
 Gets the camera position
 	
@@ -165,12 +159,24 @@ LookTo(object: PhysicalObject): null;
 This class is used in the event emitter class, its used to manage a listener
 	ription
 */ 
- export declare interface Connection extends BaseClass {
+export declare interface Connection extends BaseClass {
 /**
 Defines if the connection is active or not
 
 */
 Active: boolean;
+/**
+
+*/
+EventId: number;
+/**
+
+*/
+Event: 	{ 	};
+/**
+
+*/
+new(eventId: number, event: table): Connection;
 /**
 Wait until the event gets fired, if seconds were specified, once the specified seconds have elapsed, it will stop waiting
 	
@@ -190,12 +196,16 @@ Disconnect(): null;
 The event emitter is used to manage the events of a class
 	ription
 */ 
- export declare interface EventEmitter extends BaseClass {
+export declare interface EventEmitter extends BaseClass {
 /**
 This table store all the events of the class
 
 */
 EventsStorage: 	{ 	};
+/**
+
+*/
+new(): EventEmitter;
 /**
 
 */
@@ -214,7 +224,7 @@ Fire(name: string, ...any): null;
 This class is one of the most important components of a scene, is used to manage everything related with the light 
 	ription
 */ 
- export declare interface LightingEnvironment extends Environment {
+export declare interface LightingEnvironment extends Environment {
 /**
 This is the color of every pixel of the ambient, we can say is the darkness color
 		
@@ -225,6 +235,10 @@ This is the transparency of the ambient, we can say is the darkness transparency
 		
 */
 AmbientTransparency: number;
+/**
+
+*/
+LightingIntensity: number;
 /**
 This is the seconds between every update of the pixels in the screen
 		
@@ -241,10 +255,6 @@ This is the distance between every large pixel, used for internal purposes
 */
 Distance: number;
 /**
-
-*/
-InstanceType: string;
-/**
 Stores all the ambient pixels
 		
 */
@@ -252,7 +262,7 @@ Pixels: 	{ 	};
 /**
 
 */
-LightingIntensity: number;
+new(scene: Scene): LightingEnvironment;
 /**
 Draws the pixels for the scene with the specified settings
 	```lua
@@ -288,7 +298,11 @@ UpdateScreen(): null;
 /**
 ription
 */ 
- export declare interface ParticleEnvironment extends Environment {
+export declare interface ParticleEnvironment extends Environment {
+/**
+
+*/
+new(): ParticleEnvironment;
 }
  
 
@@ -298,17 +312,21 @@ ription
 This class is used for the client replication
 	ription
 */ 
- export declare interface Request extends EventEmitter {
+export declare interface Request extends EventEmitter {
+/**
+The UserId of the client which sent the request if exists 
+	
+*/
+ClientId: number;
 /**
 The content of the request
 		
 */
 Content: 	{ 	};
 /**
-The UserId of the client which sent the request if exists 
-	
+
 */
-ClientId: number;
+new(clientId: number | void, content: RequestContent | void): Request;
 /**
 Sends the request to the server
 	
@@ -323,7 +341,7 @@ Approve(clients: table): null;
 Accepts the request and builds the object to be replicated
 	
 */
-Accept(data: BaseObjectParams): BaseObject;
+Accept(): null;
 /**
 Returns the player which sent the request
 	
@@ -337,11 +355,11 @@ GetClient(): null;
 /**
 ription
 */ 
- export declare interface SoundEnvironment extends Environment {
+export declare interface SoundEnvironment extends Environment {
 /**
 
 */
-InstanceType: string;
+new(): SoundEnvironment;
 }
  
 
@@ -351,7 +369,7 @@ InstanceType: string;
 This class is used for the player character and for npcs
 	ription
 */ 
- export declare interface Character extends Sprite {
+export declare interface Character extends Sprite {
 /**
 The amount of health of the character
 		
@@ -372,6 +390,10 @@ The jump power of the character
 
 */
 JumpPower: number;
+/**
+
+*/
+new(): Character;
 /**
 Updates the amount of health of the character 
 	
@@ -396,7 +418,7 @@ MoveTo(target: Vector2): null;
 This class is used to storage objects and interact with them in an easier way
 	ription
 */ 
- export declare interface Environment extends BaseObject {
+export declare interface Environment extends BaseObject {
 /**
 
 */
@@ -409,7 +431,7 @@ Count: number;
 /**
 
 */
-InstanceType: string;
+new(instanceType: string | void): Environment;
 /**
 Gets the object with the specified index
 	
@@ -494,12 +516,19 @@ Run(method: string, ...any): null;
 This class is used to illuminate areas in the darkness
 	ription
 */ 
- export declare interface Light extends PhysicalObject {
+export declare interface Light extends PhysicalObject {
 /**
 Its a property of PhysicalObject, in this class is marked as readonly and is set false to optimizate
 		
 */
 TrackCollisions: boolean;
+/**
+If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
+		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
+		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
+
+*/
+Track: boolean;
 /**
 
 */
@@ -515,12 +544,9 @@ Is the brightness of the light
 */
 Brightness: number;
 /**
-If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
-		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
-		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
 
 */
-Track: boolean;
+new(): Light;
 }
  
 
@@ -535,55 +561,12 @@ Track: boolean;
 
 	ription
 */ 
- export declare interface Particle extends BaseObject {
+export declare interface Particle extends BaseObject {
 /**
 Depending on the value the particles will be more dispersed
 		
 */
 Angle: Vector2;
-/**
-
-*/
-InstanceType: string;
-/**
-The subject which is going to be the center of emission of the particle, a character, sprite, etc...
-		
-*/
-Subject: Character;
-/**
-Is the maximum amount of particles that can exist at the same time
-		
-*/
-MaxRate: number;
-/**
-Is the amount of particles that are existing at this moment
-		
-*/
-Units: number;
-/**
-Is a table with the initial properties of the particle which is going to be generated
-		
-*/
-Properties: 	{
- /**
-@desc
-*/
-Image: string,
-	};
-/**
-Is a table with the goals of the particles
-		
-*/
-Goals: 	{
- /**
-@desc
-*/
-Size: UDim2,
-/**
-@desc
-*/
-ImageTransparency: number,
-	};
 /**
 Is the tween info of the tween which is going to be used to move the particles
 		
@@ -606,6 +589,16 @@ When its enabled new particles can be emitted
 		
 */
 Enabled: boolean;
+/**
+Is the maximum amount of particles that can exist at the same time
+		
+*/
+MaxRate: number;
+/**
+Is the amount of particles that are existing at this moment
+		
+*/
+Units: number;
 /**
 !!! warning 
 			Experimental, dont use
@@ -639,6 +632,25 @@ Is the amount of particles which is going to be generated
 */
 Rate: number;
 /**
+The subject which is going to be the center of emission of the particle, a character, sprite, etc...
+		
+*/
+Subject: Character;
+/**
+Is a table with the initial properties of the particle which is going to be generated
+		
+*/
+Properties: 	{ 	};
+/**
+Is a table with the goals of the particles
+		
+*/
+Goals: 	{ 	};
+/**
+
+*/
+new(): Particle;
+/**
 Sets the subject property
 	
 */
@@ -667,24 +679,22 @@ Emit(rate: number): null;
 This class is used to create objects with physics
 	ription
 */ 
- export declare interface PhysicalObject extends BaseObject {
-/**
-
-*/
-InstanceType: string;
-/**
-
-*/
-ChromaticAberrationIntensity: number;
-/**
-
-*/
-ChromaticAberrationDistance: number;
+export declare interface PhysicalObject extends BaseObject {
 /**
 This is the point which is being used as reference for the chromatic aberration
 		
 */
 ChromaticAberrationPoint: Vector2;
+/**
+Is the force which is applied in the moment to the object
+		
+*/
+Force: Vector2;
+/**
+Is the velocity applied to the object
+		
+*/
+Velocity: Vector2;
 /**
 The instances which makes the chromatic aberration effect
 		
@@ -695,10 +705,6 @@ This table stores all the active collisions
 		
 */
 Collisions: 	{ 	};
-/**
-
-*/
-ChromaticAberrationConnection: boolean;
 /**
 This dictionary stores all the blacklisted objects, to blacklist an object do it like this:
 		```lua
@@ -728,6 +734,14 @@ A number which indicates the collision group of the object, the object only can 
 */
 CollisionGroup: number;
 /**
+
+*/
+ChromaticAberrationIntensity: number;
+/**
+
+*/
+ChromaticAberrationDistance: number;
+/**
 This property defines if the object should have physics or not
 		
 */
@@ -748,21 +762,23 @@ This property defines if the object is going to have physics and collisions or n
 */
 TrackCollisions: boolean;
 /**
+
+*/
+ConstantVelocityEnabled: boolean;
+/**
+
+*/
+ChromaticAberrationConnection: boolean;
+/**
 !!! warning 
 			Experimental, dont use
 	
 */
 HitboxShape: string;
 /**
-Is the force which is applied in the moment to the object
-		
+
 */
-Force: Vector2;
-/**
-Is the velocity applied to the object
-		
-*/
-Velocity: Vector2;
+new(): PhysicalObject;
 /**
 !!! warning 
 		Sets the hitbox shape. Experimental, dont use
@@ -789,7 +805,7 @@ SetChromaticAberration(Intensity: number, Distance: number, Point: Vector2): nul
 This class is useful to have a workspace and manage your project more easily
 	ription
 */ 
- export declare interface Scene extends BaseObject {
+export declare interface Scene extends BaseObject {
 /**
 This table stores all the objects in the scene
 		
@@ -798,22 +814,26 @@ Objects: 	{ 	};
 /**
 
 */
-InstanceType: string;
+Camera: Camera;
 /**
-This is the SoundEnvironment of the scene
-		
+This is the LightingEnvironment of the scene
+
 */
-SoundEnvironment: SoundEnvironment;
+LightingEnvironment: LightingEnvironment;
 /**
 This is the ParticleEnvironment of the scene
 		
 */
 ParticleEnvironment: ParticleEnvironment;
 /**
-This is the LightingEnvironment of the scene
+This is the SoundEnvironment of the scene
+		
+*/
+SoundEnvironment: SoundEnvironment;
+/**
 
 */
-LightingEnvironment: LightingEnvironment;
+new(): Scene;
 /**
 Adds the specified object
 	
@@ -853,16 +873,7 @@ Raycast(info: Raycast2dParams): Raycast2dResult;
 This class is used to play sounds
 	ription
 */ 
- export declare interface Sound extends BaseObject {
-/**
-
-*/
-InstanceType: string;
-/**
-This table stores all the objects in the scene
-		
-*/
-Subject: Character;
+export declare interface Sound extends BaseObject {
 /**
 This is the SoundEnvironment of the scene
 		
@@ -879,6 +890,15 @@ The volume will depend on the player distance
 */
 DistanceFading: boolean;
 /**
+This table stores all the objects in the scene
+		
+*/
+Subject: Character;
+/**
+
+*/
+new(): Sound;
+/**
 Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	
 */
@@ -892,34 +912,12 @@ SetSubject(subject: Character, useSceneSoundGroup: boolean | void): null;
 This class is used to play sounds
 	ription
 */ 
- export declare interface Sprite extends PhysicalObject {
+export declare interface Sprite extends PhysicalObject {
 /**
 Indicates if the sprite is playing
 		
 */
 IsPlaying: boolean;
-/**
-This table stores information about the active spritesheet
-
-*/
-Active: 	{
- /**
-@desc
-*/
-Name: string,
-/**
-@desc
-*/
-CurrentFrame: Vector2,
-/**
-@desc
-*/
-SecondsPerFrame: number,
-/**
-@desc
-*/
-NextStepReady: boolean,
-	};
 /**
 This is the time to wait between frame and frame
 		
@@ -930,6 +928,16 @@ This table stores all sprite sheets and sprite lists
 		
 */
 Sprites: 	{ 	};
+/**
+This table stores information about the active spritesheet
+
+*/
+Active: 	{ 	};
+/**
+The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance 
+	
+*/
+new(): Sprite;
 /**
 Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2
 	
@@ -994,7 +1002,7 @@ end)
 
 	ription
 */ 
- export declare interface CrossPlatformService extends EventEmitter {
+export declare interface CrossPlatformService extends EventEmitter {
 /**
 Defines if the default movement system is enabled
 		
@@ -1006,15 +1014,15 @@ Defines if the character is going to be seen from the side or from the top
 */
 SideView: boolean;
 /**
-This is the character which is going to be tracked by the camera
-		
-*/
-Character: Character;
-/**
 This is the sensibility of the sticks in mobile and in game controllers
 		
 */
 StickSensibility: number;
+/**
+This is the character which is going to be tracked by the camera
+		
+*/
+Character: Character;
 /**
 This table stores the default controllers
 	
@@ -1023,44 +1031,7 @@ Configs: 	{
  /**
 @desc
 */
-Keyboard: 	{
- /**
-@desc
-*/
-W: string,
-/**
-@desc
-*/
-A: string,
-/**
-@desc
-*/
-S: string,
-/**
-@desc
-*/
-D: string,
-/**
-@desc
-*/
-Up: string,
-/**
-@desc
-*/
-Left: string,
-/**
-@desc
-*/
-Down: string,
-/**
-@desc
-*/
-Right: string,
-/**
-@desc
-*/
-Space: string,
-	},
+Keyboard: 	{ 	},
 /**
 @desc
 */
@@ -1068,28 +1039,7 @@ Gamepad: 	{
  /**
 @desc
 */
-ButtonA: string,
-/**
-@desc
-*/
-Thumbstick1: 	{
- /**
-@desc
-*/
-Up: string,
-/**
-@desc
-*/
-Left: string,
-/**
-@desc
-*/
-Down: string,
-/**
-@desc
-*/
-Right: string,
-	},
+Thumbstick1: 	{ 	},
 	},
 /**
 @desc
@@ -1098,30 +1048,13 @@ Mobile: 	{
  /**
 @desc
 */
-JumpButton: string,
-/**
-@desc
-*/
-Thumbstick1: 	{
- /**
-@desc
-*/
-Up: string,
-/**
-@desc
-*/
-Left: string,
-/**
-@desc
-*/
-Down: string,
-/**
-@desc
-*/
-Right: string,
-	},
+Thumbstick1: 	{ 	},
 	},
 	};
+/**
+
+*/
+new(): CrossPlatformService;
 /**
 Assigns an action to a device key, example:
 	```lua
@@ -1163,7 +1096,7 @@ SetPlayerCharacter(character: Character): null;
 This class is to replicate objects to other clients, for example the player character
 	ription
 */ 
- export declare interface NetworkingService extends EventEmitter {
+export declare interface NetworkingService extends EventEmitter {
 /**
 A dictionary with the replicated objects by the clients
 		
@@ -1174,6 +1107,10 @@ Defines if the replicated objects by other clients should be destroyed when they
 	
 */
 DestroyObjectsOnLeave: boolean;
+/**
+
+*/
+new(): NetworkingService;
 /**
 Replicates an object to other clients
 
@@ -1194,7 +1131,11 @@ ReplicateOnChange(object: BaseObject): LuaTuple<[Connection, Connection]>
 This class save and build the engine data
 ription
 */ 
- export declare interface PluginSupportService extends EventEmitter {
+export declare interface PluginSupportService extends EventEmitter {
+/**
+
+*/
+new(): PluginSupportService;
 /**
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	
@@ -1214,7 +1155,7 @@ SavePluginContent(content: {}): null;
 This class save and build the engine data
 	ription
 */ 
- export declare interface SceneManager extends EventEmitter {
+export declare interface SceneManager extends EventEmitter {
 /**
 
 */
@@ -1224,6 +1165,10 @@ This dictionary stores all the active scenes
 	
 */
 ActiveScenes: 	{ 	};
+/**
+
+*/
+new(): SceneManager;
 /**
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	
@@ -1252,23 +1197,23 @@ Get(Id: string): Scene;
 interface upsideEngine {
 	Version: string;
 	Workspace: {};
-	new: ((name: "PhysicalObject", data: BaseObjectParams) => PhysicalObject)
-		& ((name: "Sprite", data: SpriteParams) => Sprite)
-		& ((name: "Sound", data: BaseObjectParams) => Sound)
-		& ((name: "Environment", data: BaseObjectParams) => Environment)
-		& ((name: "Light", data: BaseObjectParams) => Light)
-		& ((name: "Character", data: SpriteParams) => Character)
-		& ((name: "Scene", data: SceneParams) => Scene)
-		& ((name: "Particle", data: BaseObjectParams) => Particle),
+	new: ((name: "PhysicalObject") => PhysicalObject)
+		& ((name: "Sprite") => Sprite)
+		& ((name: "Sound") => Sound)
+		& ((name: "Environment") => Environment)
+		& ((name: "Light") => Light)
+		& ((name: "Character") => Character)
+		& ((name: "Scene") => Scene)
+		& ((name: "Particle") => Particle),
 
-	Extend: ((name: "PhysicalObject", classData: ClassData) => PhysicalObject)
-		& ((name: "Sprite", classData: ClassData) => Sprite)
-		& ((name: "Sound", classData: ClassData) => Sound)
-		& ((name: "Environment", classData: ClassData) => Environment)
-		& ((name: "Light", classData: ClassData) => Light)
-		& ((name: "Character", classData: ClassData) => Character)
-		& ((name: "Scene", classData: ClassData) => Scene)
-		& ((name: "Particle", classData: ClassData) => Particle)
+	Extend: ((name: "PhysicalObject") => PhysicalObject)
+		& ((name: "Sprite") => Sprite)
+		& ((name: "Sound") => Sound)
+		& ((name: "Environment") => Environment)
+		& ((name: "Light") => Light)
+		& ((name: "Character") => Character)
+		& ((name: "Scene") => Scene)
+		& ((name: "Particle") => Particle)
 
 	GetService: ((name: "SceneManager") => SceneManager)
 		& ((name: "PluginSupportService") => PluginSupportService)

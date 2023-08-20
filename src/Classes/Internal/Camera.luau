@@ -9,26 +9,15 @@ camera.__index = camera
 	@link Camera.md
 }=]]
 
-function camera.new(data: BaseObjectParams): Camera
-	local scene = data.Parent
-	if not scene then
-		return {} :: Camera
-	end
-
-	local self = eventEmitter.new({
-		Parent = data.Parent,
-	})
-
+function camera.new(scene: Scene): Camera
+	local self = eventEmitter.new()
 	self:SetClassName(script.Name)
 	self.LocalPosition = Vector2.zero
 	self.Limits = Vector2.zero
 	self.FollowSubject = true
 	self.Scene = scene.Id
 	self.Instance = scene.Instance
-	self.Subject = character.new({
-		Parent = workspace,
-		SpriteSize = Vector2.zero,
-	})
+	self.Subject = character.new()
 
 	return setmetatable(self, camera)
 end

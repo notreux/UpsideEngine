@@ -69,12 +69,8 @@ local function moveTo(self, target)
 	end
 end
 
-function character.new(data: SpriteParams): Character
-	local self = sprite.new({
-		Parent = data.Parent,
-		SpriteSize = data.SpriteSize,
-	})
-
+function character.new(): Character
+	local self = sprite.new()
 	self.Health = 100
 	self.MaxHealth = 100
 	self.WalkSpeed = 50

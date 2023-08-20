@@ -26,12 +26,12 @@ end
 local request = {}
 request.__index = request
 
-function request.new(data: RequestParams): Request
+function request.new(clientId: number?, content: RequestContent?): Request
 	local self = eventEmitter.new()
 	self:SetClassName(script.Name)
 
-	self.ClientId = data.ClientId or players.LocalPlayer.UserId
-	self.Content = table.freeze(data.Content or {})
+	self.ClientId = clientId or players.LocalPlayer.UserId or 0
+	self.Content = content and table.freeze(content) or {}
 
 	return setmetatable(self, request)
 end
@@ -85,7 +85,7 @@ end
 	@link BaseObject.md
 }=]]
 
-function request:Accept(data: BaseObjectParams): BaseObject
+function request:Accept(): BaseObject
 	local content = self.Content
 	local class = classes[content.className]
 
@@ -93,7 +93,7 @@ function request:Accept(data: BaseObjectParams): BaseObject
 	local isFirstRequest = not replicated[content.id]
 
 	assert(class ~= nil, "Invalid class!")
-	local clon = replicated[content.id] or class.new(data)
+	local clon = replicated[content.id] or class.new()
 
 	if isFirstRequest then
 		networking.Players[self.ClientId][content.id] = clon

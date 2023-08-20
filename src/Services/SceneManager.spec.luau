@@ -2,7 +2,7 @@ local sceneManager = require(script.Parent.SceneManager)
 local scene = require(script.Parent.Parent.Classes.Public.Scene)
 
 return function()
-	local newScene = scene.new({ Parent = workspace })
+	local newScene = scene.new()
 	describe(":Load()", function()
 		it("should load a scene", function()
 			sceneManager:Load(newScene)

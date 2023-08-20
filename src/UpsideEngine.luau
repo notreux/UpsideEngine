@@ -8,14 +8,8 @@ local upsideEngine = {}
 upsideEngine.Version = "v1.1.0"
 upsideEngine.Workspace = upsideWorkspace
 
-function upsideEngine.new(name: string, data: any?)
-	if data then
-		return classes[name].new(data)
-	end
-
-	return function(data: any?)
-		return classes[name].new(data)
-	end
+function upsideEngine.new(name: string)
+	return classes[name].new()
 end
 
 function upsideEngine.GetService(name: string)

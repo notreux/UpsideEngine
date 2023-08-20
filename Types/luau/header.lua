@@ -4,38 +4,19 @@ export type Dictionary<k, v> = {}
 export type Array<v> = {}
 export type ChromaticAberrationConnection = {}
 
-export type BaseObjectParams = {
-	InstanceType: string?,
-	Parent: Scene,
+export type Event = {
+	Functions: table,
+	Threads: table,
 }
 
-export type SceneParams = {
-	Parent: Instance,
-}
-
-export type SpriteParams = BaseObjectParams & {
-	SpriteSize: Vector2,
-}
-
-export type ConnectionParams = {
-	EventId: number,
-	Event: {
-		Functions: table,
-		Threads: table,
+export type RequestContent = {
+	className: string,
+	id: string,
+	name: string,
+	properties: {
+		instance: table,
+		object: table,
 	},
-}
-
-export type RequestParams = {
-	ClientId: number?,
-	Content: {
-		className: string,
-		id: string,
-		name: string,
-		properties: {
-			instance: table,
-			object: table,
-		},
-	}?,
 }
 
 export type Raycast2dResult = {
@@ -49,7 +30,7 @@ export type Raycast2dParams = {
 	FilterType: string,
 	From: Vector2,
 	List: Array<BaseObject>,
-	To: any,
+	To: Vector2,
 }
 
 export type BaseClass = {

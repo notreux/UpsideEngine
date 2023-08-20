@@ -1,10 +1,7 @@
 local character = require(script.Parent.Character)
 
 return function()
-	local newCharacter = character.new({
-		Parent = workspace,
-		SpriteSize = Vector2.zero,
-	})
+	local newCharacter = character.new()
 
 	describe(":UpdateHealth()", function()
 		it("should update the health", function()

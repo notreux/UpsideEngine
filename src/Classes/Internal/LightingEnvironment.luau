@@ -40,17 +40,8 @@ end
 	@link LightingEnvironment.md
 }=]]
 
-function lightingEnvironment.new(data: BaseObjectParams): LightingEnvironment
-	local parent = data.Parent
-	if not parent then
-		return {} :: LightingEnvironment
-	end
-
-	local self = environment.new({
-		Parent = data.Parent,
-		InstanceType = "Frame",
-	})
-
+function lightingEnvironment.new(scene: Scene): LightingEnvironment
+	local self = environment.new("Frame")
 	self:SetClassName(script.Name)
 	self.AmbientColor = Color3.fromRGB()
 	self.AmbientTransparency = 0.02
@@ -60,6 +51,7 @@ function lightingEnvironment.new(data: BaseObjectParams): LightingEnvironment
 	self.Distance = 0
 	self.Pixels = {}
 
+	local parent = scene.Instance
 	local instance = self.Instance
 	instance.Parent = parent.Parent
 	instance.Name = "Lighting"

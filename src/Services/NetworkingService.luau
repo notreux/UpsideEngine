@@ -5,10 +5,17 @@ local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local request = require(upsideEngine.Classes.Internal.Request)
 local properties = require(upsideEngine.AppData.EssentialProperties)
 
-local networkingService = eventEmitter.new()
-networkingService.ClassName = "NetworkingService"
-networkingService.Players = {}
-networkingService.DestroyObjectsOnLeave = true
+local networkingService = {}
+networkingService.__index = networkingService
+
+function networkingService.new()
+	local self = eventEmitter.new()
+	self:SetClassName("NetworkingService")
+	self.Players = {}
+	self.DestroyObjectsOnLeave = true
+
+	return setmetatable(self, networkingService)
+end
 
 local function read(object, index)
 	return object[index]
@@ -38,7 +45,7 @@ function networkingService:Replicate(object: BaseObject)
 	local properties = getData(object)
 	self.Players[players.LocalPlayer.UserId][object.Id] = object
 
-	local req = request.new({} :: RequestParams)
+	local req = request.new()
 	req:Send({
 		className = object.ClassName,
 		id = object.Id,
@@ -55,16 +62,13 @@ end
 	@tsreturns LuaTuple<[Connection, Connection]>
 }=]]
 
-function networkingService:ReplicateOnChange(object: BaseObject): (Connection, Connection)
+function networkingService:ReplicateOnChange(object: BaseObject): RBXScriptConnection
 	local function wrapper()
 		self:Replicate(object)
 	end
 
-	local cn1 = object:On("Changed", wrapper)
-	local cn2 = object.Instance.Changed:Connect(wrapper)
 	wrapper()
-
-	return cn1, cn2
+	return object.Instance.Changed:Connect(wrapper)
 end
 
 --[[={
@@ -77,4 +81,4 @@ end
 		Fired when a request is received by the client
 }=]]
 
-return networkingService
+return setmetatable(networkingService, eventEmitter).new()

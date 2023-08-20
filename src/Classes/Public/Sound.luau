@@ -10,20 +10,13 @@ local function getSoundEnvironment(scene: string): SoundEnvironment
 	return objects[scene].SoundEnvironment
 end
 
-function sound.new(data): Sound
-	local self = baseObject.new({
-		Parent = data.Parent,
-		InstanceType = "Sound",
-	})
-
+function sound.new(): Sound
+	local self = baseObject.new("Sound")
 	self:SetClassName(script.Name)
 	self.Range = 1000
 	self.MaxVolume = 1
 	self.DistanceFading = true
-	self.Subject = character.new({
-		Parent = workspace,
-		SpriteSize = Vector2.zero,
-	})
+	self.Subject = character.new()
 
 	return setmetatable(self, sound)
 end

@@ -3,9 +3,12 @@ local scene = require(script.Parent.Scene)
 local PhysicalObject = require(script.Parent.PhysicalObject)
 
 return function()
-	local newScene = scene.new({ Parent = workspace})
-	local newSound = Sound.new({ Parent = newScene })
-	local newPhysicalObject = PhysicalObject.new({ Parent = newScene })
+	local newScene = scene.new()
+	local newSound = Sound.new()
+	newSound:SetScene(newScene)
+
+	local newPhysicalObject = PhysicalObject.new()
+	newPhysicalObject:SetScene(newScene)
 
 	describe(":SetSubject()", function()
 		it("should set a new subject", function()

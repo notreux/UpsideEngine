@@ -3,48 +3,53 @@ local classes = upsideEngine.Classes
 
 local character = require(script.Parent.Parent.Classes.Public.Character)
 local eventEmitter = require(classes.Internal.EventEmitter)
-local crossPlatformService = eventEmitter.new()
-crossPlatformService.ClassName = "CrossPlatformService"
-crossPlatformService.DefaultControllersEnabled = true
-crossPlatformService.SideView = true
-crossPlatformService.StickSensibility = 1
-crossPlatformService.Character = character.new({
-	Parent = workspace,
-	SpriteSize = Vector2.zero,
-})
+local crossPlatformService = {}
+crossPlatformService.__index = crossPlatformService
 
-crossPlatformService.Configs = {
-	Keyboard = {
-		W = "Up",
-		A = "Left",
-		S = "Down",
-		D = "Right",
+function crossPlatformService.new()
+	local self = eventEmitter.new()
+	self:SetClassName("CrossPlatformService")
 
-		Up = "Up",
-		Left = "Left",
-		Down = "Down",
-		Right = "Right",
-		Space = "Jump",
-	},
-	Gamepad = {
-		ButtonA = "Jump",
-		Thumbstick1 = {
+	self.DefaultControllersEnabled = true
+	self.SideView = true
+	self.StickSensibility = 1
+	self.Character = character.new()
+
+	self.Configs = {
+		Keyboard = {
+			W = "Up",
+			A = "Left",
+			S = "Down",
+			D = "Right",
+
 			Up = "Up",
 			Left = "Left",
 			Down = "Down",
 			Right = "Right",
+			Space = "Jump",
 		},
-	},
-	Mobile = {
-		JumpButton = "Jump",
-		Thumbstick1 = {
-			Up = "Up",
-			Left = "Left",
-			Down = "Down",
-			Right = "Right",
+		Gamepad = {
+			ButtonA = "Jump",
+			Thumbstick1 = {
+				Up = "Up",
+				Left = "Left",
+				Down = "Down",
+				Right = "Right",
+			},
 		},
-	},
-}
+		Mobile = {
+			JumpButton = "Jump",
+			Thumbstick1 = {
+				Up = "Up",
+				Left = "Left",
+				Down = "Down",
+				Right = "Right",
+			},
+		},
+	}
+
+	return setmetatable(self, crossPlatformService)
+end
 
 --[[={
 	@desc Assigns an action to a device key, example:
@@ -142,4 +147,4 @@ end)
 		Fired when one of the keys/sticks in the configuration finish to be pressed/moved
 }=]]
 
-return crossPlatformService
+return setmetatable(crossPlatformService, eventEmitter).new()

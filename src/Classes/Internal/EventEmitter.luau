@@ -16,7 +16,7 @@ local function getEvent(events, name)
 	return events[name]
 end
 
-function eventEmitter.new(data): EventEmitter
+function eventEmitter.new(): EventEmitter
 	local self = baseClass.new()
 	self:SetClassName(script.Name)
 	self.EventsStorage = {}
@@ -33,7 +33,7 @@ function eventEmitter:On(name: string, callback: () -> any): Connection
 	local event = getEvent(self.EventsStorage, name)
 	local id = #event.Functions + 1
 
-	local cn = connection.new({ EventId = id, Event = event })
+	local cn = connection.new(id, event)
 	event.Functions[id] = callback
 
 	return cn

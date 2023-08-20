@@ -1,7 +1,7 @@
 local PhysicalObject = require(script.Parent.PhysicalObject)
 
 return function()
-	local newPhysicalObject = PhysicalObject.new({ Parent = workspace })
+	local newPhysicalObject = PhysicalObject.new()
 
 	describe(":Load()", function()
 		it("should load the image id", function()

@@ -32,8 +32,8 @@ function baseClass.new(): BaseClass
 	return setmetatable(self, baseClass) :: any
 end
 
-function baseClass:Clone(params: BaseObjectParams?)
-	local clon = self.new(params)
+function baseClass:Clone()
+	local clon = self.new()
 	for _, index in ipairs(essentialProperties.instance) do
 		pcall(set, self.Instance, clon.Instance, index)
 	end

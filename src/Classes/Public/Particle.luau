@@ -9,12 +9,8 @@ local character = require(script.Parent.Character)
 local particle = {}
 particle.__index = particle
 
-function particle.new(data): Particle
-	local self = baseObject.new({
-		Parent = data.Parent,
-		InstanceType = "ImageLabel",
-	})
-
+function particle.new(): Particle
+	local self = baseObject.new()
 	self:SetClassName(script.Name)
 	self.Angle = Vector2.new(90, 90)
 	self.Info = TweenInfo.new(0.5)
@@ -32,6 +28,7 @@ function particle.new(data): Particle
 	self.Clock = 0
 	self.Rate = 55
 
+	self.Subject = character.new()
 	self.Properties = {
 		Image = "http://www.roblox.com/asset/?id=6904405933",
 	}
@@ -39,10 +36,6 @@ function particle.new(data): Particle
 		Size = UDim2.fromScale(0.05, 0.1),
 		ImageTransparency = 1,
 	}
-	self.Subject = character.new({
-		Parent = workspace,
-		SpriteSize = Vector2.zero,
-	})
 
 	return setmetatable(self, particle)
 end
@@ -62,7 +55,9 @@ function particle:SetSubject(subject: Character)
 	end
 
 	self.Subject = subject
-	sScene.ParticleEnvironment:AddOne(self, self.Id)
+	if not sScene.ParticleEnvironment:HasOne(self.Id) then
+		sScene.ParticleEnvironment:AddOne(self, self.Id)
+	end
 end
 
 --[[={
@@ -100,13 +95,16 @@ function particle:Emit(rate: number)
 			break
 		end
 
-		local unit = light.new({} :: BaseObjectParams)
+		local unit = light.new()
 		unit.CollisionBlacklist[self.Subject.Id] = true
 		unit.Track = self.TrackLight
 		unit.Range = self.LightRange
 		unit.Brightness = self.LightBrightness
-		unit:Set(self.Properties)
 		self.Units += 1
+
+		for property, value in self.Properties do
+			unit[property] = value
+		end
 
 		local subjectInstance = self.Subject.Instance
 		local instance = unit.Instance

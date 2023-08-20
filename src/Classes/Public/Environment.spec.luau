@@ -1,7 +1,7 @@
 local environment = require(script.Parent.Environment)
 
 return function()
-	local newEnvironment = environment.new({ Parent = workspace })
+	local newEnvironment = environment.new()
 
 	describe(":Get()", function()
 		it("should get an element", function()

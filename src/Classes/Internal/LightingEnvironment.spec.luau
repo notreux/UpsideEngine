@@ -1,7 +1,7 @@
 local SceneClass = require(script.Parent.Parent.Public.Scene)
 
 return function()
-	local newScene = SceneClass.new({ Parent = workspace })
+	local newScene = SceneClass.new()
 	local lightingEnvironment = newScene.LightingEnvironment
 
 	describe(":SetLightingIntensity()", function()

@@ -6,22 +6,14 @@ light.__index = light
 	@link Light.md
 }=]]
 
-function light.new(data: BaseObjectParams): Light
-	local scene = data.Parent
-	local self = physicalObject.new({
-		Parent = scene,
-	})
-
+function light.new(): Light
+	local self = physicalObject.new()
 	self:SetClassName(script.Name)
 	self.TrackCollisions = false
 	self.Track = true
 	self.Color = Color3.fromRGB(255, 255, 255)
 	self.Range = 50
 	self.Brightness = 1
-
-	if scene and scene.LightingEnvironment then
-		scene.LightingEnvironment:AddOne(self, self.Id)
-	end
 
 	return setmetatable(self, light)
 end

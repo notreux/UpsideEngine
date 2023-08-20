@@ -27,26 +27,14 @@ end
 	@link Scene.md
 }=]]
 
-function scene.new(data: SceneParams): Scene
-	local parent = data.Parent
-	local isInstance = typeof(parent) == "Instance"
-	local isLayerCollector = isInstance and parent:IsA("LayerCollector")
-
-	local layerCollector = isLayerCollector and parent or Instance.new("ScreenGui")
-	layerCollector.ZIndexBehavior = Enum.ZIndexBehavior.Global
-	layerCollector.ResetOnSpawn = false
-
-	local self = baseObject.new({
-		Parent = data.Parent,
-		InstanceType = "Frame",
-	})
-
+function scene.new(): Scene
+	local self = baseObject.new("Frame")
 	self:SetClassName(script.Name)
 	self.Objects = {}
-	self.Camera = camera.new({ Parent = self })
-	self.LightingEnvironment = lightingEnvironment.new({ Parent = self.Instance })
-	self.ParticleEnvironment = particleEnvironment.new({ Parent = self.Instance })
-	self.SoundEnvironment = soundEnvironment.new({ Parent = self.Instance })
+	self.Camera = camera.new(self)
+	self.LightingEnvironment = lightingEnvironment.new(self)
+	self.ParticleEnvironment = particleEnvironment.new()
+	self.SoundEnvironment = soundEnvironment.new()
 
 	local instance = self.Instance
 	instance.BorderSizePixel = 0
@@ -54,15 +42,6 @@ function scene.new(data: SceneParams): Scene
 	instance.Position = UDim2.fromScale(0.5, 0.5)
 	instance.AnchorPoint = Vector2.new(0.5, 0.5)
 	instance.BackgroundTransparency = 1
-	instance.Parent = layerCollector
-
-	if not isLayerCollector then
-		layerCollector.Parent = isInstance and parent or game.StarterGui
-	end
-
-	if isInstance and layerCollector:IsA("ScreenGui") then
-		layerCollector.IgnoreGuiInset = true
-	end
 
 	self:On("Destroy", function()
 		sceneManager.Scenes[self.Id] = nil

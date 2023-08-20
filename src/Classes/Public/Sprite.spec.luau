@@ -1,10 +1,7 @@
 local Sprite = require(script.Parent.Sprite)
 
 return function()
-	local newSprite = Sprite.new({
-		Parent = game.StarterGui,
-		SpriteSize = Vector2.new(100, 100),
-	})
+	local newSprite = Sprite.new()
 
 	describe(":SetSpriteSheet()", function()
 		it("should set a new sprite sheet", function()

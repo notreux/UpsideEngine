@@ -9,16 +9,8 @@ sprite.__index = sprite
 	@link Sprite.md
 }=]]
 
-function sprite.new(data: SpriteParams)
-	if typeof(data.SpriteSize) ~= "Vector2" then
-		return
-	end
-
-	local self = physicalObject.new({
-		Parent = data.Parent,
-		InstanceType = "ImageLabel",
-	})
-
+function sprite.new()
+	local self = physicalObject.new()
 	self:SetClassName(script.Name)
 	self.IsPlaying = false
 	self.SecondsPerFrame = 0.05
@@ -29,9 +21,6 @@ function sprite.new(data: SpriteParams)
 		SecondsPerFrame = 0,
 		NextStepReady = true,
 	}
-
-	local instance = self.Instance
-	instance.ImageRectSize = data.SpriteSize
 
 	return setmetatable(self, sprite)
 end

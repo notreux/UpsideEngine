@@ -11,14 +11,13 @@ end
 	@link Connection.md
 }=]]
 
-function connection.new(data: ConnectionParams)
+function connection.new(eventId: number, event: table)
 	local self = baseClass.new()
-
 	self:SetClassName(script.Name)
 	self.Active = true
-	self.EventId = data.EventId
-	self.Event = data.Event
-	
+	self.EventId = eventId or 0
+	self.Event = event or {}
+
 	return setmetatable(self, connection)
 end
 

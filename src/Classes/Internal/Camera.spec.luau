@@ -1,8 +1,8 @@
 local Scene = require(script.Parent.Parent.Public.Scene)
-local PhysicalObject = require(script.Parent.Parent.Public.PhysicalObject)
+local physicalObject = require(script.Parent.Parent.Public.PhysicalObject)
 
 return function()
-	local newScene = Scene.new({ Parent = workspace })
+	local newScene = Scene.new()
 	local camera = newScene.Camera
 
 	describe(":GetPosition()", function()
@@ -13,17 +13,17 @@ return function()
 
 	describe(":SetPosition()", function()
 		it("should set the camera position", function()
-			local Position = UDim2.fromScale(0.45, 0.45)
-			camera:SetPosition(Position)
-			expect(camera:GetPosition()).to.equal(Position)
+			local position = UDim2.fromScale(0.45, 0.45)
+			camera:SetPosition(position)
+			expect(camera:GetPosition()).to.equal(position)
 		end)
 	end)
 
 	describe(":SetSubject()", function()
 		it("should set the camera subject", function()
-			local Subject = PhysicalObject.new({ Parent = newScene })
-			camera:SetSubject(Subject)
-			expect(camera.Subject).to.equal(Subject)
+			local subject = physicalObject.new()
+			camera:SetSubject(subject)
+			expect(camera.Subject).to.equal(subject)
 		end)
 	end)
 end

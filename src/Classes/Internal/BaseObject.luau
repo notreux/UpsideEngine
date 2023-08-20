@@ -1,40 +1,41 @@
 local eventEmitter = require(script.Parent.EventEmitter)
+local classEnvironments = {
+	Sound = "SoundEnvironment",
+	Light = "LightingEnvironment",
+	Particle = "ParticleEnvironment",
+}
+
 local baseObject = {}
 baseObject.__index = baseObject
 --[[={
 	@link BaseObject.md
 }=]]
 
-function baseObject.new(data: BaseObjectParams): BaseObject
-	local parent = data.Parent
-	local parentType = typeof(parent)
-
-	local parentInstance = parentType == "Instance" and parent or nil
+function baseObject.new(instanceType: string?): BaseObject
 	local self = eventEmitter.new()
-
 	self:SetClassName(script.Name)
-	self.Instance = Instance.new(data.InstanceType or "ImageLabel")
-	self.ClassName = script.Name
+	self.Instance = Instance.new(instanceType or "ImageLabel")
 	self.Scene = "SceneId"
 	self.Tags = {}
-
-	if parentInstance then
-		self.Instance.Parent = parentInstance
-	elseif parent and parent.ClassName == "Scene" then
-		parent:AddObject(self)
-	end
 
 	return setmetatable(self, baseObject)
 end
 
 --[[={
-	@desc Sets the properties of the object instance
+	@desc Sets the object scene
 	@link void.link
 }=]]
 
-function baseObject:Set(properties: Dictionary<string, any>)
-	for index, value in properties do
-		self.Instance[index] = value
+function baseObject:SetScene(scene: Scene)
+	local environment = classEnvironments[self.ClassName]
+	scene.Objects[self.Id] = self
+
+	self.Scene = scene.Id
+	self.Instance.Parent = scene.Instance
+
+	if environment then
+		environment = (scene :: table)[environment]
+		environment:AddOne(self, self.Id)
 	end
 end
 

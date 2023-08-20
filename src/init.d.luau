@@ -4,38 +4,19 @@ export type Dictionary<k, v> = {}
 export type Array<v> = {}
 export type ChromaticAberrationConnection = {}
 
-export type BaseObjectParams = {
-	InstanceType: string?,
-	Parent: Scene,
+export type Event = {
+	Functions: table,
+	Threads: table,
 }
 
-export type SceneParams = {
-	Parent: Instance,
-}
-
-export type SpriteParams = BaseObjectParams & {
-	SpriteSize: Vector2,
-}
-
-export type ConnectionParams = {
-	EventId: number,
-	Event: {
-		Functions: {},
-		Threads: {},
+export type RequestContent = {
+	className: string,
+	id: string,
+	name: string,
+	properties: {
+		instance: table,
+		object: table,
 	},
-}
-
-export type RequestParams = {
-	ClientId: number?,
-	Content: {
-		className: string,
-		id: string,
-		name: string,
-		properties: {
-			instance: table,
-			object: table,
-		},
-	}?,
 }
 
 export type Raycast2dResult = {
@@ -49,7 +30,7 @@ export type Raycast2dParams = {
 	FilterType: string,
 	From: Vector2,
 	List: Array<BaseObject>,
-	To: any,
+	To: Vector2,
 }
 
 export type BaseClass = {
@@ -62,7 +43,6 @@ export type BaseClass = {
 	Clone: (self: BaseClass, ...any) -> BaseClass,
 	Destroy: (self: BaseClass) -> (),
 }
-
 --[[
 This class is the base class of the majority of classes
 	]]
@@ -76,17 +56,16 @@ The object scene ID
 		]]
 	Scene: string,
 	--[[
-The class name of the object instance
-		]]
-	InstanceType: string,
-	--[[
 This table stores all the tags of the object
 ]]
 	Tags: {},
 	--[[
-Sets the properties of the object instance
+]]
+	new: (instanceType: string?) -> BaseObject,
+	--[[
+Sets the object scene
 	]]
-	Set: (self: BaseObject, properties: Dictionary<string, any>) -> nil,
+	SetScene: (self: BaseObject, scene: Scene) -> nil,
 	--[[
 Adds a tag to the object
 	]]
@@ -106,13 +85,30 @@ This class is included on every scene, it's used to move you around the scene
 	]]
 export type Camera = EventEmitter & {
 	--[[
-This property defines the object which is going to follow the camera
+This property is used to move the camera internally
 		]]
-	Subject: Character,
+	LocalPosition: Vector2,
+	--[[
+This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
+		]]
+	Limits: Vector2,
 	--[[
 This property defines if the camera is going to follow the defined subject
 ]]
 	FollowSubject: boolean,
+	--[[
+]]
+	Scene: string,
+	--[[
+]]
+	Instance: string,
+	--[[
+This property defines the object which is going to follow the camera
+		]]
+	Subject: Character,
+	--[[
+]]
+	new: (scene: Scene) -> Camera,
 	--[[
 Gets the camera position
 	]]
@@ -139,6 +135,15 @@ Defines if the connection is active or not
 ]]
 	Active: boolean,
 	--[[
+]]
+	EventId: number,
+	--[[
+]]
+	Event: {},
+	--[[
+]]
+	new: (eventId: number, event: table) -> Connection,
+	--[[
 Wait until the event gets fired, if seconds were specified, once the specified seconds have elapsed, it will stop waiting
 	]]
 	Wait: (self: Connection, seconds: number?) -> thread?,
@@ -156,6 +161,9 @@ export type EventEmitter = BaseClass & {
 This table store all the events of the class
 ]]
 	EventsStorage: {},
+	--[[
+]]
+	new: () -> EventEmitter,
 	--[[
 ]]
 	On: (self: EventEmitter, name: string, callback: () -> any) -> Connection,
@@ -178,6 +186,9 @@ This is the transparency of the ambient, we can say is the darkness transparency
 		]]
 	AmbientTransparency: number,
 	--[[
+]]
+	LightingIntensity: number,
+	--[[
 This is the seconds between every update of the pixels in the screen
 		]]
 	UpdateFrequency: number,
@@ -190,15 +201,12 @@ This is the distance between every large pixel, used for internal purposes
 ]]
 	Distance: number,
 	--[[
-]]
-	InstanceType: string,
-	--[[
 Stores all the ambient pixels
 		]]
 	Pixels: {},
 	--[[
 ]]
-	LightingIntensity: number,
+	new: (scene: Scene) -> LightingEnvironment,
 	--[[
 Draws the pixels for the scene with the specified settings
 	```lua
@@ -226,20 +234,27 @@ Updates the position, the transparency and the color of the ambient
 
 --[[
 ]]
-export type ParticleEnvironment = Environment & {}
+export type ParticleEnvironment = Environment & {
+	--[[
+]]
+	new: () -> ParticleEnvironment,
+}
 
 --[[
 This class is used for the client replication
 	]]
 export type Request = EventEmitter & {
 	--[[
+The UserId of the client which sent the request if exists 
+	]]
+	ClientId: number,
+	--[[
 The content of the request
 		]]
 	Content: {},
 	--[[
-The UserId of the client which sent the request if exists 
-	]]
-	ClientId: number,
+]]
+	new: (clientId: number?, content: RequestContent?) -> Request,
 	--[[
 Sends the request to the server
 	]]
@@ -251,7 +266,7 @@ The request is approved and its replicated to the specified clients, if none is 
 	--[[
 Accepts the request and builds the object to be replicated
 	]]
-	Accept: (self: Request, data: BaseObjectParams) -> BaseObject,
+	Accept: (self: Request) -> nil,
 	--[[
 Returns the player which sent the request
 	]]
@@ -263,7 +278,7 @@ Returns the player which sent the request
 export type SoundEnvironment = Environment & {
 	--[[
 ]]
-	InstanceType: string,
+	new: () -> SoundEnvironment,
 }
 
 --[[
@@ -286,6 +301,9 @@ The walk speed of the character
 The jump power of the character
 ]]
 	JumpPower: number,
+	--[[
+]]
+	new: () -> Character,
 	--[[
 Updates the amount of health of the character 
 	]]
@@ -313,7 +331,7 @@ The amount of objects in this environment
 	Count: number,
 	--[[
 ]]
-	InstanceType: string,
+	new: (instanceType: string?) -> Environment,
 	--[[
 Gets the object with the specified index
 	]]
@@ -388,6 +406,12 @@ Its a property of PhysicalObject, in this class is marked as readonly and is set
 		]]
 	TrackCollisions: boolean,
 	--[[
+If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
+		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
+		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
+]]
+	Track: boolean,
+	--[[
 ]]
 	Color: Color3,
 	--[[
@@ -399,11 +423,8 @@ Is the brightness of the light
 		]]
 	Brightness: number,
 	--[[
-If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
-		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
-		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
 ]]
-	Track: boolean,
+	new: () -> Light,
 }
 
 --[[
@@ -419,40 +440,6 @@ export type Particle = BaseObject & {
 Depending on the value the particles will be more dispersed
 		]]
 	Angle: Vector2,
-	--[[
-]]
-	InstanceType: string,
-	--[[
-The subject which is going to be the center of emission of the particle, a character, sprite, etc...
-		]]
-	Subject: Character,
-	--[[
-Is the maximum amount of particles that can exist at the same time
-		]]
-	MaxRate: number,
-	--[[
-Is the amount of particles that are existing at this moment
-		]]
-	Units: number,
-	--[[
-Is a table with the initial properties of the particle which is going to be generated
-		]]
-	Properties: {
-		--[[
-@desc]]
-		Image: string,
-	},
-	--[[
-Is a table with the goals of the particles
-		]]
-	Goals: {
-		--[[
-@desc]]
-		Size: UDim2,
-		--[[
-@desc]]
-		ImageTransparency: number,
-	},
 	--[[
 Is the tween info of the tween which is going to be used to move the particles
 		]]
@@ -471,6 +458,14 @@ Is the tween info of the tween which is going to be used to move the particles
 When its enabled new particles can be emitted
 		]]
 	Enabled: boolean,
+	--[[
+Is the maximum amount of particles that can exist at the same time
+		]]
+	MaxRate: number,
+	--[[
+Is the amount of particles that are existing at this moment
+		]]
+	Units: number,
 	--[[
 !!! warning 
 			Experimental, dont use
@@ -498,6 +493,21 @@ Is the amount of particles which is going to be generated
 		]]
 	Rate: number,
 	--[[
+The subject which is going to be the center of emission of the particle, a character, sprite, etc...
+		]]
+	Subject: Character,
+	--[[
+Is a table with the initial properties of the particle which is going to be generated
+		]]
+	Properties: {},
+	--[[
+Is a table with the goals of the particles
+		]]
+	Goals: {},
+	--[[
+]]
+	new: () -> Particle,
+	--[[
 Sets the subject property
 	]]
 	SetSubject: (self: Particle, subject: Character) -> nil,
@@ -520,18 +530,17 @@ This class is used to create objects with physics
 	]]
 export type PhysicalObject = BaseObject & {
 	--[[
-]]
-	InstanceType: string,
-	--[[
-]]
-	ChromaticAberrationIntensity: number,
-	--[[
-]]
-	ChromaticAberrationDistance: number,
-	--[[
 This is the point which is being used as reference for the chromatic aberration
 		]]
 	ChromaticAberrationPoint: Vector2,
+	--[[
+Is the force which is applied in the moment to the object
+		]]
+	Force: Vector2,
+	--[[
+Is the velocity applied to the object
+		]]
+	Velocity: Vector2,
 	--[[
 The instances which makes the chromatic aberration effect
 		]]
@@ -540,9 +549,6 @@ The instances which makes the chromatic aberration effect
 This table stores all the active collisions
 		]]
 	Collisions: {},
-	--[[
-]]
-	ChromaticAberrationConnection: boolean,
 	--[[
 This dictionary stores all the blacklisted objects, to blacklist an object do it like this:
 		```lua
@@ -567,6 +573,12 @@ A number which indicates the collision group of the object, the object only can 
 		]]
 	CollisionGroup: number,
 	--[[
+]]
+	ChromaticAberrationIntensity: number,
+	--[[
+]]
+	ChromaticAberrationDistance: number,
+	--[[
 This property defines if the object should have physics or not
 		]]
 	Anchored: boolean,
@@ -583,18 +595,19 @@ This property defines if the object is going to have physics and collisions or n
 		]]
 	TrackCollisions: boolean,
 	--[[
+]]
+	ConstantVelocityEnabled: boolean,
+	--[[
+]]
+	ChromaticAberrationConnection: boolean,
+	--[[
 !!! warning 
 			Experimental, dont use
 	]]
 	HitboxShape: string,
 	--[[
-Is the force which is applied in the moment to the object
-		]]
-	Force: Vector2,
-	--[[
-Is the velocity applied to the object
-		]]
-	Velocity: Vector2,
+]]
+	new: () -> PhysicalObject,
 	--[[
 !!! warning 
 		Sets the hitbox shape. Experimental, dont use
@@ -621,19 +634,22 @@ This table stores all the objects in the scene
 	Objects: {},
 	--[[
 ]]
-	InstanceType: string,
+	Camera: Camera,
 	--[[
-This is the SoundEnvironment of the scene
-		]]
-	SoundEnvironment: SoundEnvironment,
+This is the LightingEnvironment of the scene
+]]
+	LightingEnvironment: LightingEnvironment,
 	--[[
 This is the ParticleEnvironment of the scene
 		]]
 	ParticleEnvironment: ParticleEnvironment,
 	--[[
-This is the LightingEnvironment of the scene
+This is the SoundEnvironment of the scene
+		]]
+	SoundEnvironment: SoundEnvironment,
+	--[[
 ]]
-	LightingEnvironment: LightingEnvironment,
+	new: () -> Scene,
 	--[[
 Adds the specified object
 	]]
@@ -665,13 +681,6 @@ This class is used to play sounds
 	]]
 export type Sound = BaseObject & {
 	--[[
-]]
-	InstanceType: string,
-	--[[
-This table stores all the objects in the scene
-		]]
-	Subject: Character,
-	--[[
 This is the SoundEnvironment of the scene
 		]]
 	Range: number,
@@ -683,6 +692,13 @@ This is the ParticleEnvironment of the scene
 The volume will depend on the player distance
 ]]
 	DistanceFading: boolean,
+	--[[
+This table stores all the objects in the scene
+		]]
+	Subject: Character,
+	--[[
+]]
+	new: () -> Sound,
 	--[[
 Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	]]
@@ -698,23 +714,6 @@ Indicates if the sprite is playing
 		]]
 	IsPlaying: boolean,
 	--[[
-This table stores information about the active spritesheet
-]]
-	Active: {
-		--[[
-@desc]]
-		Name: string,
-		--[[
-@desc]]
-		CurrentFrame: Vector2,
-		--[[
-@desc]]
-		SecondsPerFrame: number,
-		--[[
-@desc]]
-		NextStepReady: boolean,
-	},
-	--[[
 This is the time to wait between frame and frame
 		]]
 	SecondsPerFrame: number,
@@ -722,6 +721,14 @@ This is the time to wait between frame and frame
 This table stores all sprite sheets and sprite lists 
 		]]
 	Sprites: {},
+	--[[
+This table stores information about the active spritesheet
+]]
+	Active: {},
+	--[[
+The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance 
+	]]
+	new: () -> Sprite,
 	--[[
 Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2
 	]]
@@ -788,95 +795,38 @@ Defines if the character is going to be seen from the side or from the top
 		]]
 	SideView: boolean,
 	--[[
-This is the character which is going to be tracked by the camera
-		]]
-	Character: Character,
-	--[[
 This is the sensibility of the sticks in mobile and in game controllers
 		]]
 	StickSensibility: number,
+	--[[
+This is the character which is going to be tracked by the camera
+		]]
+	Character: Character,
 	--[[
 This table stores the default controllers
 	]]
 	Configs: {
 		--[[
 @desc]]
-		Keyboard: {
-			--[[
-@desc]]
-			W: string,
-			--[[
-@desc]]
-			A: string,
-			--[[
-@desc]]
-			S: string,
-			--[[
-@desc]]
-			D: string,
-			--[[
-@desc]]
-			Up: string,
-			--[[
-@desc]]
-			Left: string,
-			--[[
-@desc]]
-			Down: string,
-			--[[
-@desc]]
-			Right: string,
-			--[[
-@desc]]
-			Space: string,
-		},
+		Keyboard: {},
 		--[[
 @desc]]
 		Gamepad: {
 			--[[
 @desc]]
-			ButtonA: string,
-			--[[
-@desc]]
-			Thumbstick1: {
-				--[[
-@desc]]
-				Up: string,
-				--[[
-@desc]]
-				Left: string,
-				--[[
-@desc]]
-				Down: string,
-				--[[
-@desc]]
-				Right: string,
-			},
+			Thumbstick1: {},
 		},
 		--[[
 @desc]]
 		Mobile: {
 			--[[
 @desc]]
-			JumpButton: string,
-			--[[
-@desc]]
-			Thumbstick1: {
-				--[[
-@desc]]
-				Up: string,
-				--[[
-@desc]]
-				Left: string,
-				--[[
-@desc]]
-				Down: string,
-				--[[
-@desc]]
-				Right: string,
-			},
+			Thumbstick1: {},
 		},
 	},
+	--[[
+]]
+	new: () -> CrossPlatformService,
 	--[[
 Assigns an action to a device key, example:
 	```lua
@@ -921,19 +871,25 @@ Defines if the replicated objects by other clients should be destroyed when they
 	]]
 	DestroyObjectsOnLeave: boolean,
 	--[[
+]]
+	new: () -> NetworkingService,
+	--[[
 Replicates an object to other clients
 ]]
 	Replicate: (self: NetworkingService, object: BaseObject) -> nil,
 	--[[
 Replicates an object and each change on it, and returns the connections that detect each change of the object
 	]]
-	ReplicateOnChange: (self: NetworkingService, object: BaseObject) -> (Connection, Connection),
+	ReplicateOnChange: (self: NetworkingService, object: BaseObject) -> RBXScriptConnection,
 }
 
 --[[
 This class save and build the engine data
 ]]
 export type PluginSupportService = EventEmitter & {
+	--[[
+]]
+	new: () -> PluginSupportService,
 	--[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
@@ -956,6 +912,9 @@ This dictionary stores all the active scenes
 	]]
 	ActiveScenes: {},
 	--[[
+]]
+	new: () -> SceneManager,
+	--[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
 	Load: (self: SceneManager, scene: Scene) -> nil,
@@ -976,14 +935,14 @@ Loads the engine data stored in the "UpsideEngineDB" attribute of replicated sto
 export type upsideEngine = {
 	Version: string,
 	Workspace: {},
-	new: ((name: "PhysicalObject") -> (data: BaseObjectParams) -> PhysicalObject)
-		& ((name: "Sprite") -> (data: SpriteParams) -> Sprite)
-		& ((name: "Sound") -> (data: BaseObjectParams) -> Sound)
-		& ((name: "Environment") -> (data: BaseObjectParams) -> Environment)
-		& ((name: "Light") -> (data: BaseObjectParams) -> Light)
-		& ((name: "Character") -> (data: SpriteParams) -> Character)
-		& ((name: "Scene") -> (data: SceneParams) -> Scene)
-		& ((name: "Particle") -> (data: BaseObjectParams) -> Particle),
+	new: ((name: "PhysicalObject") -> PhysicalObject)
+		& ((name: "Sprite") -> Sprite)
+		& ((name: "Sound") -> Sound)
+		& ((name: "Environment") -> Environment)
+		& ((name: "Light") -> Light)
+		& ((name: "Character") -> Character)
+		& ((name: "Scene") -> Scene)
+		& ((name: "Particle") -> Particle),
 
 	GetService: ((name: "SceneManager") -> SceneManager)
 		& ((name: "PluginSupportService") -> PluginSupportService)

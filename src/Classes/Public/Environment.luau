@@ -7,28 +7,11 @@ end
 
 local environment = {}
 environment.__index = environment
-function environment.new(data: BaseObjectParams): Environment
-	local self = baseObject.new({
-		Parent = data.Parent,
-		InstanceType = data.InstanceType or "Folder",
-	})
-
+function environment.new(instanceType: string?): Environment
+	local self = baseObject.new(instanceType or "Folder")
+	self:SetClassName(script.Name)
 	self.Content = {}
 	self.Count = 0
-	
-	self:SetClassName(script.Name)
-	self:On("Changed", function(property)
-		if property ~= "Content" or self.Count ~= 0 then
-			return
-		end
-
-		local count = 0
-		for _ in self.Content do
-			count += 1
-		end
-
-		self.Count = count
-	end)
 
 	return setmetatable(self, environment)
 end

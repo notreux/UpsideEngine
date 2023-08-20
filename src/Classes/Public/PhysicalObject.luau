@@ -54,11 +54,8 @@ end
 	@link PhysicalObject.md
 }=]]
 
-function physicalObject.new(data: BaseObjectParams): PhysicalObject
-	local self = baseObject.new({
-		Parent = data.Parent,
-	})
-
+function physicalObject.new(): PhysicalObject
+	local self = baseObject.new()
 	self:SetClassName(script.Name)
 	self.ChromaticAberrationPoint = Vector2.new(0.5, 0.5)
 	self.Force = Vector2.zero

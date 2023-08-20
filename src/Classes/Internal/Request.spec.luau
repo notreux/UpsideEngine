@@ -1,16 +1,13 @@
 local Request = require(script.Parent.Request)
 
 return function()
-	local newRequest = Request.new({
-		ClientId = 1,
-		Content = {
-			name = "aa",
-			id = 2,
-			className = "Sprite",
-			properties = {
-				object = { SpriteSpeed = 0.5 },
-				instance = { BackgroundTransparency = 0.5 },
-			},
+	local newRequest = Request.new(1, {
+		name = "aa",
+		id = 2,
+		className = "Sprite",
+		properties = {
+			object = { SpriteSpeed = 0.5 },
+			instance = { BackgroundTransparency = 0.5 },
 		},
 	})
 

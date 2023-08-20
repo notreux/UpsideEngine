@@ -1,9 +1,17 @@
 local upsideEngine = script.Parent.Parent
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 
-local sceneManager = eventEmitter.new()
-sceneManager.Scenes = {}
-sceneManager.ActiveScenes = {}
+local sceneManager = {}
+sceneManager.__index = sceneManager
+
+function sceneManager.new()
+	local self = eventEmitter.new()
+	self.Scenes = {}
+	self.ActiveScenes = {}
+
+	return setmetatable(self, sceneManager)
+end
+
 --[[={
 	@desc Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	@link void.link
@@ -66,4 +74,4 @@ end
 		Fired when a scene is unloaded
 }=]]
 
-return sceneManager
+return setmetatable(sceneManager, eventEmitter).new()

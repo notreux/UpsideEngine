@@ -17,13 +17,7 @@ local function onEvent(server, client)
 		return
 	end
 
-	networkingService:Fire(
-		"ReplicationRequest",
-		request.new({
-			ClientId = data.ClientId,
-			Content = data.Content,
-		})
-	)
+	networkingService:Fire("ReplicationRequest", request.new(data.ClientId, data.Content))
 end
 
 local function onPlayerAdded(player)

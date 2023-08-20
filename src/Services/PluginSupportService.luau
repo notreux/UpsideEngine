@@ -13,7 +13,13 @@ local isStudio = runService:IsStudio()
 local isClient = runService:IsClient()
 
 local sceneManager = require(ue.Services.SceneManager)
-local pluginSupportService = eventEmitter.new()
+local pluginSupportService = {}
+pluginSupportService.__index = pluginSupportService
+
+function pluginSupportService.new()
+	local self = eventEmitter.new()
+	return setmetatable(self, pluginSupportService)
+end
 
 function getData(data)
 	local result = {}
@@ -71,8 +77,13 @@ local function rebuild(parent, index, value)
 			return
 		end
 
-		object = class.new({ Parent = parent })
+		object = class.new()
 		parent[index] = object
+		
+		pcall(function()
+			object:SetScene(parent)
+			object.Instance.Parent = object
+		end)
 	elseif not object then
 		object = {}
 	end
@@ -136,4 +147,4 @@ end
 	@desc This class save and build the engine data
 }=]]
 
-return pluginSupportService
+return setmetatable(pluginSupportService, eventEmitter).new()

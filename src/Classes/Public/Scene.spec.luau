@@ -2,9 +2,10 @@ local Scene = require(script.Parent.Scene)
 local PhysicalObject = require(script.Parent.PhysicalObject)
 
 return function()
-	local newScene = Scene.new({ Parent = workspace })
-	local newPhysicalObject = PhysicalObject.new({ Parent = workspace })
+	local newScene = Scene.new()
+	local newPhysicalObject = PhysicalObject.new()
 	newPhysicalObject:AddTag("NewTag")
+	newPhysicalObject:SetScene(newScene)
 
 	describe(":AddObject()", function()
 		it("should add an object", function()
