@@ -1,3 +1,4 @@
+local isOutSceen = require(script.Parent.Parent.Parent.Private.Util).IsOutSceen
 local normalize = require(script.Parent.Parent.Parent.Private.Util).Normalize
 local clock = os.clock
 local ms = clock()
@@ -24,12 +25,6 @@ end
 local function getDistance(v1, v2)
 	local direction = v1 - v2
 	return direction:Dot(direction)
-end
-
-local function isOutScreen(ap, absoluteSize)
-	local resolution = workspace.CurrentCamera.ViewportSize
-	local fakeRes = resolution + absoluteSize
-	return ap.X < -absoluteSize.X or ap.Y < -absoluteSize.Y or ap.X > fakeRes.X or ap.Y > fakeRes.Y
 end
 
 local function draw(lighting, largePixel, light)
@@ -65,7 +60,7 @@ return function(scene)
 		local absoluteSize = Vector2.new(range, range)
 		local absolutePosition = instance.AbsolutePosition + (absoluteSize / resolution)
 
-		if not light.Track or isOutScreen(absolutePosition, absoluteSize * 2) then
+		if not light.Track or isOutSceen(absolutePosition, absoluteSize * 2) then
 			continue
 		end
 
