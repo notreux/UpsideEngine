@@ -79,7 +79,7 @@ local function rebuild(parent, index, value)
 
 		object = class.new()
 		parent[index] = object
-		
+
 		pcall(function()
 			object:SetScene(parent)
 			object.Instance.Parent = object
@@ -121,8 +121,8 @@ function pluginSupportService:LoadPluginContent()
 
 	for _, scene in pairs(sceneManager.Scenes) do
 		for _, object in pairs(scene.Objects) do
-			object.Instance.Parent = scene.Instance
-			scene:AddObject(object)
+			object.Instance.Parent = scene.Instance.GameFrame
+			object:SetScene(scene)
 		end
 	end
 

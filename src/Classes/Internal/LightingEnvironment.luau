@@ -51,13 +51,13 @@ function lightingEnvironment.new(scene: Scene): LightingEnvironment
 	self.Distance = 0
 	self.Pixels = {}
 
-	local parent = scene.Instance
+	local gameFrame = scene.Instance:WaitForChild("GameFrame")
 	local instance = self.Instance
-	instance.Parent = parent.Parent
+	instance.Parent = gameFrame.Parent
 	instance.Name = "Lighting"
-	instance.Size = parent.Size
-	instance.Position = parent.Position
-	instance.AnchorPoint = parent.AnchorPoint
+	instance.Size = gameFrame.Size
+	instance.Position = gameFrame.Position
+	instance.AnchorPoint = gameFrame.AnchorPoint
 	instance.BackgroundTransparency = 1
 
 	return setmetatable(self, lightingEnvironment)

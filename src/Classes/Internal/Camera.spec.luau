@@ -7,7 +7,7 @@ return function()
 
 	describe(":GetPosition()", function()
 		it("should get the camera position", function()
-			expect(camera:GetPosition()).to.equal(newScene.Instance.Position)
+			expect(camera:GetPosition()).to.equal(newScene.Instance.GameFrame.Position)
 		end)
 	end)
 

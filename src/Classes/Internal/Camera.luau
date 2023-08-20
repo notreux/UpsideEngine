@@ -16,7 +16,7 @@ function camera.new(scene: Scene): Camera
 	self.Limits = Vector2.zero
 	self.FollowSubject = true
 	self.Scene = scene.Id
-	self.Instance = scene.Instance
+	self.Instance = scene.Instance:WaitForChild("GameFrame")
 	self.Subject = character.new()
 
 	return setmetatable(self, camera)

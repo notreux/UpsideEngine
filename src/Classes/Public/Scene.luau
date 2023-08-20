@@ -28,54 +28,49 @@ end
 }=]]
 
 function scene.new(): Scene
-	local self = baseObject.new("Frame")
+	local self = baseObject.new("Folder")
 	self:SetClassName(script.Name)
+
+	local gameFrame = Instance.new("Frame")
+	gameFrame.Name = "GameFrame"
+	gameFrame.Parent = self.Instance
+	gameFrame.BorderSizePixel = 0
+	gameFrame.Size = UDim2.fromScale(1, 1)
+	gameFrame.Position = UDim2.fromScale(0.5, 0.5)
+	gameFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	gameFrame.BackgroundTransparency = 1
+
 	self.Objects = {}
 	self.Camera = camera.new(self)
 	self.LightingEnvironment = lightingEnvironment.new(self)
 	self.ParticleEnvironment = particleEnvironment.new()
 	self.SoundEnvironment = soundEnvironment.new()
 
-	local instance = self.Instance
-	instance.BorderSizePixel = 0
-	instance.Size = UDim2.fromScale(1, 1)
-	instance.Position = UDim2.fromScale(0.5, 0.5)
-	instance.AnchorPoint = Vector2.new(0.5, 0.5)
-	instance.BackgroundTransparency = 1
-
+	sceneManager.Scenes[self.Id] = self
 	self:On("Destroy", function()
 		sceneManager.Scenes[self.Id] = nil
 		sceneManager.ActiveScenes[self.Id] = nil
 	end)
 
-	sceneManager.Scenes[self.Id] = self
 	return setmetatable(self, scene)
 end
 
---[[={
-	@desc Adds the specified object
-	@link void.link
-}=]]
+function scene:Enable()
+	local instance = self.Instance
+	instance.GameFrame.Visible = true
+	instance.Lighting.Visible = true
 
-function scene:AddObject(object: BaseObject)
-	local instance = object.Instance
-	instance.Parent = self.Instance
-
-	self.Objects[object.Id] = object
-	object.Scene = self.Id
+	sceneManager.ActiveScenes[self.Id] = self
+	sceneManager:Fire("SceneEnable", scene)
 end
 
---[[={
-	@desc Removes the specified object
-	@link void.link
-}=]]
+function scene:Disable()
+	local instance = self.Instance
+	instance.GameFrame.Visible = false
+	instance.Lighting.Visible = false
 
-function scene:RemoveObject(object: BaseObject)
-	local instance = object.Instance
-	instance.Parent = nil
-
-	self.Objects[object.Id] = nil
-	object.Scene = "SceneId"
+	sceneManager.ActiveScenes[self.Id] = nil
+	sceneManager:Fire("SceneDisable", scene)
 end
 
 --[[={

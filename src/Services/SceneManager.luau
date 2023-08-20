@@ -13,33 +13,7 @@ function sceneManager.new()
 end
 
 --[[={
-	@desc Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
-	@link void.link
-}=]]
-
-function sceneManager:Load(scene: Scene)
-	local instance = scene.Instance :: Frame
-	instance.Visible = true
-
-	self.ActiveScenes[scene.Id] = scene
-	self:Fire("SceneLoaded", scene)
-end
-
---[[={
-	@desc Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
-	@link void.link
-}=]]
-
-function sceneManager:Unload(scene: Scene)
-	local instance = scene.Instance :: Frame
-	instance.Visible = false
-
-	self.ActiveScenes[scene.Id] = nil
-	self:Fire("SceneUnloaded", scene)
-end
-
---[[={
-	@desc Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
+	@desc Finds a scene by the name
 	@link void.link
 }=]]
 
@@ -54,8 +28,8 @@ function sceneManager:FindByName(name: string): Scene?
 end
 
 --[[={
-	@desc Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
-	@link void.link
+	@desc Returns the scene with the specified Id
+	@link Scene.md
 }=]]
 
 function sceneManager:Get(Id: string): Scene

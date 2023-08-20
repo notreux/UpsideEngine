@@ -108,7 +108,7 @@ function particle:Emit(rate: number)
 
 		local subjectInstance = self.Subject.Instance
 		local instance = unit.Instance
-		instance.Parent = scene.Instance
+		instance.Parent = scene.Instance.GameFrame
 		instance.Position = subjectInstance.Position
 
 		local info = TweenInfo.new(
