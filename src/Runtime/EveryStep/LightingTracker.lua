@@ -5,7 +5,7 @@ local ms = clock()
 local function mixChannel(c1, c2, amount)
 	c1 = (c1 * 255) * amount
 	c2 = (c2 * 255) * (255 - amount)
-	
+
 	return c1 + c2
 end
 
@@ -38,11 +38,11 @@ local function draw(lighting, largePixel, light)
 		if light.range < distance then
 			continue
 		end
-		
+
 		local transparency = (light.range * 1.05 - distance) * (light.brightness * lighting.LightingIntensity)
 		pixel.transparency += transparency
 		pixel.color = pixel.color and mixColors(pixel.color, light.color, normalize(distance, 0, light.range))
-		or light.color
+			or light.color
 	end
 end
 
@@ -53,15 +53,15 @@ return function(scene)
 		return
 	end
 
-	local resolution = workspace.CurrentCamera.ViewportSize
+	local resolution = scene.Instance.GameFrame.AbsoluteSize
 	local pixels = lighting.Pixels
 	local lights = {}
 	ms = current
-	
+
 	for _, light in pairs(lighting.Content) do
 		local instance = light.Instance
 		local range = light.Range * resolution.X
-		
+
 		local absoluteSize = Vector2.new(range, range)
 		local absolutePosition = instance.AbsolutePosition + (absoluteSize / resolution)
 
