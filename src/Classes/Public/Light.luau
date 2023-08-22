@@ -13,7 +13,8 @@ function light.new(): Light
 	self.Track = true
 	self.Color = Color3.fromRGB(255, 255, 255)
 	self.Range = 50
-	self.Brightness = 1
+	self.Brightness = 0
+	self.Transparency = 0.85
 
 	return setmetatable(self, light)
 end
