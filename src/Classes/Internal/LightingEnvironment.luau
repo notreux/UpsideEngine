@@ -1,41 +1,12 @@
 local upsideEngine = script.Parent.Parent.Parent
+local lightingTracker = upsideEngine.Runtime.EveryStep.LightingTracker
+
+local actor = require(script.Parent.Actor)
+local actrees = require(script.Parent.Actrees)
 local environment = require(upsideEngine.Classes.Public.Environment)
 
 local lightingEnvironment = {}
 lightingEnvironment.__index = lightingEnvironment
-
-local function drawLine(self, details, x)
-	local bigPixel = details.bigPixel
-	local bigPixelSize = details.bigPixelSize
-
-	for y = 0, details.screenSize.Y / bigPixelSize do
-		local px = bigPixel:Clone()
-		px.Position = UDim2.fromOffset(x * bigPixelSize, y * bigPixelSize)
-		px.Parent = details.screen
-
-		local childs = px.Canvas:GetChildren()
-		for i = 1, #childs do
-			local instance = childs[i]
-			childs[i] = {
-				color = self.AmbientColor,
-				transparency = self.AmbientTransparency,
-				instance = instance,
-				position = instance.AbsolutePosition,
-				size = instance.AbsoluteSize,
-			}
-		end
-
-		self.__Pixels[px] = childs
-		task.wait()
-	end
-
-	if self.ready then
-		return
-	end
-
-	self.ready = true
-	--self:UpdateScreen()
-end
 
 --[[={
 	@link LightingEnvironment.md
@@ -48,8 +19,7 @@ function lightingEnvironment.new(scene: Scene): LightingEnvironment
 	self.AmbientTransparency = 0.2
 	self.UpdateFrequency = 0.025
 	self.LightIntensity = 1.2
-	self.__UpdateMemory = {}
-	self.__Pixels = {}
+	self.__actrees = actrees.new()
 
 	local gameFrame = scene.Instance:WaitForChild("GameFrame")
 	local instance = self.Instance
@@ -79,7 +49,7 @@ function lightingEnvironment:DrawPixels(pixelSize)
 	instance.Position = gameFrame.Position
 	instance.AnchorPoint = gameFrame.AnchorPoint
 
-	local size = math.clamp(pixelSize, 10, 50)
+	local size = math.clamp(pixelSize, 5, 50)
 	local bigPixelSize = size * 10
 	local bigPixel = Instance.new("Frame")
 	bigPixel.Size = UDim2.fromOffset(bigPixelSize, bigPixelSize)
@@ -108,17 +78,32 @@ function lightingEnvironment:DrawPixels(pixelSize)
 		end
 	end
 
-	local details = {
-		bigPixel = bigPixel,
-		bigPixelSize = bigPixelSize,
-		canvas = canvas,
-		screen = self.Instance,
-		screenSize = self.Instance.AbsoluteSize,
-	}
+	local xAxe = self.Instance.AbsoluteSize.X / bigPixelSize
+	for x = 0, xAxe do
+		local bpxActor = actor.new(lightingTracker)
+		self.__actrees:AddActor(bpxActor)
 
-	for x = 0, details.screenSize.X / bigPixelSize do
-		task.wait()
-		coroutine.wrap(drawLine)(self, details, x)
+		bpxActor:SetVariable("pixels", {})
+		bpxActor:SetVariable("lights", {})
+		bpxActor:SetVariable("resolution", self.Instance.AbsoluteSize)
+		bpxActor:SetVariable("details", {
+			x = x,
+			bigPixel = bigPixel,
+			bigPixelSize = bigPixelSize,
+			canvas = canvas,
+			screen = self.Instance,
+			screenSize = self.Instance.AbsoluteSize,
+		})
+		bpxActor:SetVariable("lighting", {
+			ambientColor = self.AmbientColor,
+			ambientTransparency = self.AmbientTransparency,
+			updateFrequency = self.UpdateFrequency,
+			updateMemory = {},
+			lightIntensity = self.LightIntensity,
+		})
+
+		bpxActor:Execute("build")
+		bpxActor:ExecuteEveryStep("draw")
 	end
 end
 

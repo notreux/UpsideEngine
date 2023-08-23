@@ -10,7 +10,6 @@ function light.new(): Light
 	local self = physicalObject.new()
 	self:SetClassName(script.Name)
 	self.TrackCollisions = false
-	self.Track = true
 	self.Color = Color3.fromRGB(255, 255, 255)
 	self.Range = 50
 	self.Brightness = 0

@@ -8,13 +8,16 @@ local trackers = {}
 local childs = stepFolder:GetChildren()
 
 for _, tracker in ipairs(childs) do
-	if not tracker.Name:match(".spec") then
+	if not tracker.Name:match(".spec") and tracker.Name ~= "LightingTracker" then
 		table.insert(trackers, require(tracker))
 	end
 end
 
 local function everyStep(deltaTime)
 	for _, scene in pairs(sceneManager.ActiveScenes) do
+		local lighting = scene.LightingEnvironment
+		lighting.__actrees:SetVariable("lights", lighting.Content)
+
 		for _, tracker in ipairs(trackers) do
 			tracker(scene, deltaTime)
 		end
