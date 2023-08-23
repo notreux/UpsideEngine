@@ -4,9 +4,10 @@ local default = {}
 
 function delete(obj)
 	for key, val in (obj or default) do
-		if typeof(val) ~= "table" then
+		local valueType = typeof(val)
+		if valueType ~= "table" and valueType ~= "Instance" then
 			obj[key] = nil
-		elseif val.Id and data.objects[val.Id] or typeof(val) == "Instance" then
+		elseif valueType == "Instance" or val.Id and data.objects[val.Id] == val then
 			val:Destroy()
 		else
 			delete(obj[key])
