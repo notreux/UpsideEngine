@@ -1,5 +1,5 @@
 local upsideEngine = script.Parent.Parent.Parent
-local lightingTracker = upsideEngine.Runtime.EveryStep.LightingTracker
+local lightingSystem = upsideEngine.Systems.Lighting
 
 local actor = require(script.Parent.Actor)
 local actrees = require(script.Parent.Actrees)
@@ -80,7 +80,7 @@ function lightingEnvironment:DrawPixels(pixelSize)
 
 	local xAxe = self.Instance.AbsoluteSize.X / bigPixelSize
 	for x = 0, xAxe do
-		local bpxActor = actor.new(lightingTracker)
+		local bpxActor = actor.new(lightingSystem)
 		self.__actrees:AddActor(bpxActor)
 
 		bpxActor:SetVariable("pixels", {})

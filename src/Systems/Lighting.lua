@@ -1,5 +1,5 @@
-local isOutSceen = require(script.Parent.Parent.Parent.Private.Util).IsOutSceen
-local normalize = require(script.Parent.Parent.Parent.Private.Util).Normalize
+local isOutSceen = require(script.Parent.Parent.Private.Util).IsOutSceen
+local normalize = require(script.Parent.Parent.Private.Util).Normalize
 local clock = os.clock
 local ms = clock()
 

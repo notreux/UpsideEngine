@@ -8,7 +8,7 @@ local trackers = {}
 local childs = stepFolder:GetChildren()
 
 for _, tracker in ipairs(childs) do
-	if not tracker.Name:match(".spec") and tracker.Name ~= "LightingTracker" then
+	if not tracker.Name:match(".spec") then
 		table.insert(trackers, require(tracker))
 	end
 end
