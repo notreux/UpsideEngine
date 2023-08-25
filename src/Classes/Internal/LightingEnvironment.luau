@@ -98,7 +98,6 @@ function lightingEnvironment:DrawPixels(pixelSize)
 			ambientColor = self.AmbientColor,
 			ambientTransparency = self.AmbientTransparency,
 			updateFrequency = self.UpdateFrequency,
-			updateMemory = {},
 			lightIntensity = self.LightIntensity,
 		})
 
@@ -113,13 +112,13 @@ end
 }=]]
 
 function lightingEnvironment:UpdateScreen()
-	for _, largePixel in self.Pixels do
-		for _, pixel in largePixel do
-			local instance = pixel.instance
-			instance.BackgroundColor3 = self.AmbientColor
-			pixel.absolutePosition = instance.AbsolutePosition
-			pixel.transparency = self.AmbientTransparency
-		end
+	for _, actor in self.__actrees do
+		actor:SetVariable("lighting", {
+			ambientColor = self.AmbientColor,
+			ambientTransparency = self.AmbientTransparency,
+			updateFrequency = self.UpdateFrequency,
+			lightIntensity = self.LightIntensity,
+		})
 	end
 end
 

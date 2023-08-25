@@ -168,7 +168,7 @@ function self.draw(data)
 		end
 	end
 
-	for bigPixel, childs in lighting.updateMemory do
+	for _, bigPixel in pixels do
 		if update[bigPixel] then
 			continue
 		end
@@ -178,8 +178,6 @@ function self.draw(data)
 		instance.BackgroundTransparency = lighting.ambientTransparency
 		instance.BackgroundColor3 = lighting.ambientColor
 	end
-
-	lighting.updateMemory = update
 end
 
 return self
