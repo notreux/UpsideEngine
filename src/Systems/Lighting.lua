@@ -69,7 +69,7 @@ function self.build(data)
 	local bigPixel = details.bigPixel
 	local bigPixelSize = details.bigPixelSize
 
-	for y = 1, details.screenSize.Y / bigPixelSize do
+	for y = 0, details.screenSize.Y / bigPixelSize do
 		local px = bigPixel:Clone()
 		px.Position = UDim2.fromOffset(details.x * bigPixelSize, y * bigPixelSize)
 		px.Parent = details.screen
