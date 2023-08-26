@@ -120,7 +120,7 @@ function pluginSupportService:LoadPluginContent()
 	end
 
 	for _, scene in pairs(sceneManager.Scenes) do
-		for _, object in pairs(scene.Objects) do
+		for _, object in scene.Objects do
 			object.Instance.Parent = scene.Instance.GameFrame
 			object:SetScene(scene)
 		end

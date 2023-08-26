@@ -16,7 +16,7 @@ return function()
 			obj:SetScene(scene)
 
 			expect(obj.Scene).to.equal(scene.Id)
-			expect(scene.Objects[obj.Id].Id).to.equal(obj.Id)
+			expect(scene.Objects.Content[obj.Id].Id).to.equal(obj.Id)
 		end)
 	end)
 

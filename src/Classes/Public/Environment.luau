@@ -7,6 +7,7 @@ end
 
 local environment = {}
 environment.__index = environment
+
 function environment.new(instanceType: string?): Environment
 	local self = baseObject.new(instanceType or "Folder")
 	self:SetClassName(script.Name)
@@ -14,6 +15,10 @@ function environment.new(instanceType: string?): Environment
 	self.Count = 0
 
 	return setmetatable(self, environment)
+end
+
+function environment:__iter()
+	return next, self.Content
 end
 
 --[[={

@@ -28,7 +28,7 @@ end
 
 function baseObject:SetScene(scene: Scene)
 	local environment = classEnvironments[self.ClassName]
-	scene.Objects[self.Id] = self
+	scene.Objects:AddOne(self, self.Id)
 
 	self.Scene = scene.Id
 	self.Instance.Parent = scene.Instance:WaitForChild("GameFrame")

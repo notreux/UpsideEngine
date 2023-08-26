@@ -32,8 +32,8 @@ local function isInsideBigPixel(bpx, light, range)
 		and bpx.position.Y + bpx.size.Y > light.Position.Y - range
 end
 
-local self = {}
-function self.onSetData(data, name, value)
+local lightingSystem = {}
+function lightingSystem.onSetData(data, name, value)
 	if name ~= "lights" or not value then
 		return value
 	end
@@ -64,7 +64,7 @@ function self.onSetData(data, name, value)
 	return value
 end
 
-function self.build(data)
+function lightingSystem.build(data)
 	local details = data.details
 	local bigPixel = details.bigPixel
 	local bigPixelSize = details.bigPixelSize
@@ -93,7 +93,7 @@ function self.build(data)
 	end
 end
 
-function self.draw(data)
+function lightingSystem.draw(data)
 	local current = clock()
 	local lighting = data.lighting
 
@@ -180,4 +180,4 @@ function self.draw(data)
 	end
 end
 
-return self
+return lightingSystem

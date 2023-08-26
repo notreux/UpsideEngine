@@ -1,5 +1,6 @@
 local upsideEngine = script.Parent.Parent.Parent
 
+local objectEnvironment = require(script.Parent.Parent.Internal.ObjectEnvironment)
 local camera = require(upsideEngine.Classes.Internal.Camera)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 
@@ -31,20 +32,21 @@ function scene.new(): Scene
 	local self = baseObject.new("Folder")
 	self:SetClassName(script.Name)
 
+	local instance = self.Instance
 	local gameFrame = Instance.new("Frame")
 	gameFrame.Name = "GameFrame"
-	gameFrame.Parent = self.Instance
+	gameFrame.Parent = instance
 	gameFrame.BorderSizePixel = 0
 	gameFrame.Size = UDim2.fromScale(1, 1)
 	gameFrame.Position = UDim2.fromScale(0.5, 0.5)
 	gameFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 	gameFrame.BackgroundTransparency = 1
 
-	self.Objects = {}
 	self.Camera = camera.new(self)
 	self.LightingEnvironment = lightingEnvironment.new(self)
 	self.ParticleEnvironment = particleEnvironment.new()
 	self.SoundEnvironment = soundEnvironment.new()
+	self.Objects = objectEnvironment.new()
 
 	sceneManager.Scenes[self.Id] = self
 	self:On("Destroy", function()
@@ -71,32 +73,6 @@ function scene:Disable()
 
 	sceneManager.ActiveScenes[self.Id] = nil
 	sceneManager:Fire("SceneDisable", scene)
-end
-
---[[={
-	@desc Finds an object by his name
-	@link BaseObject.md
-}=]]
-
-function scene:FindByName(name: string): BaseObject?
-	for _, object in self.Objects do
-		if object.Name ~= name then
-			continue
-		end
-
-		return object
-	end
-
-	return
-end
-
---[[={
-	@desc Checks if the object is in the scene
-	@link boolean.link
-}=]]
-
-function scene:HasObject(object: BaseObject): boolean
-	return self.Objects[object.Id] and true or false
 end
 
 --[[={

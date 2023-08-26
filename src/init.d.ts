@@ -119,10 +119,6 @@ FollowSubject: boolean;
 */
 Scene: string;
 /**
-
-*/
-Instance: string;
-/**
 This property defines the object which is going to follow the camera
 		
 */
@@ -236,60 +232,42 @@ This is the transparency of the ambient, we can say is the darkness transparency
 */
 AmbientTransparency: number;
 /**
-
-*/
-LightingIntensity: number;
-/**
 This is the seconds between every update of the pixels in the screen
 		
 */
 UpdateFrequency: number;
 /**
-This is the pixel in the middle of every large pixel, used for internal purposes
-		
-*/
-PixelIndex: number;
-/**
-This is the distance between every large pixel, used for internal purposes
+This is the intensity for all the lights in the scene
 
 */
-Distance: number;
-/**
-Stores all the ambient pixels
-		
-*/
-Pixels: 	{ 	};
+LightIntensity: number;
 /**
 
 */
 new(scene: Scene): LightingEnvironment;
 /**
-Draws the pixels for the scene with the specified settings
-	```lua
-		settings = {
-			Pixels = 800, -- We can say that is the resolution for the ambient, is limited to 2000
-			Resolution = Vector2.new(1080, 1920) -- Defines the resolution to take as reference, is going to use the screen resolution if none is specified
-			AutoScale = true -- Defines if the amount of pixels is going to be scaled depending on the resolution
-		}
-	```
+Draws the pixels for the scene with the specified pixel size
 	
 */
-DrawPixels(settings: any): null;
-/**
-Sets the base intensity for all the lights in the scene
-	
-*/
-SetLightingIntensity(value: number): null;
-/**
-Gets the base intensity for all the lights in the scene 
-	
-*/
-GetLightingIntensity(): null;
+DrawPixels(pixelSize: number): null;
 /**
 Updates the position, the transparency and the color of the ambient
 	
 */
 UpdateScreen(): null;
+}
+ 
+
+
+
+/**
+ription
+*/ 
+export declare interface ObjectEnvironment extends Environment {
+/**
+
+*/
+new(): ObjectEnvironment;
 }
  
 
@@ -433,6 +411,10 @@ Count: number;
 */
 new(instanceType: string | void): Environment;
 /**
+
+*/
+__iter(): null;
+/**
 Gets the object with the specified index
 	
 */
@@ -523,13 +505,6 @@ Its a property of PhysicalObject, in this class is marked as readonly and is set
 */
 TrackCollisions: boolean;
 /**
-If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
-		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
-		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
-
-*/
-Track: boolean;
-/**
 
 */
 Color: Color3;
@@ -543,6 +518,10 @@ Is the brightness of the light
 		
 */
 Brightness: number;
+/**
+
+*/
+Transparency: number;
 /**
 
 */
@@ -807,11 +786,6 @@ This class is useful to have a workspace and manage your project more easily
 */ 
 export declare interface Scene extends BaseObject {
 /**
-This table stores all the objects in the scene
-		
-*/
-Objects: 	{ 	};
-/**
 
 */
 Camera: Camera;
@@ -831,29 +805,22 @@ This is the SoundEnvironment of the scene
 */
 SoundEnvironment: SoundEnvironment;
 /**
+This table stores all the objects in the scene
+		
+*/
+Objects: ObjectEnvironment;
+/**
 
 */
 new(): Scene;
 /**
-Adds the specified object
-	
+
 */
-AddObject(object: BaseObject): null;
+Enable(): null;
 /**
-Removes the specified object
-	
+
 */
-RemoveObject(object: BaseObject): null;
-/**
-Finds an object by his name
-	
-*/
-FindByName(name: string): BaseObject | void;
-/**
-Checks if the object is in the scene
-	
-*/
-HasObject(object: BaseObject): boolean;
+Disable(): null;
 /**
 Gets all the objects with the provided tags in the scene
 	
@@ -1170,22 +1137,12 @@ ActiveScenes: 	{ 	};
 */
 new(): SceneManager;
 /**
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
-	
-*/
-Load(scene: Scene): null;
-/**
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
-	
-*/
-Unload(scene: Scene): null;
-/**
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
+Finds a scene by the name
 	
 */
 FindByName(name: string): Scene | void;
 /**
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
+Returns the scene with the specified Id
 	
 */
 Get(Id: string): Scene;

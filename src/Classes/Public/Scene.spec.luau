@@ -9,7 +9,6 @@ return function()
 
 	describe(":GetTaggedObjects()", function()
 		it("should get all tagged objects", function()
-			newPhysicalObject:SetScene(newScene)
 			expect(newScene:GetTaggedObjects("NewTag")[1].Id).to.equal(newPhysicalObject.Id)
 		end)
 	end)

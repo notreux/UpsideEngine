@@ -38,7 +38,7 @@ end
 	@link void.link
 }=]]
 
-function lightingEnvironment:DrawPixels(pixelSize)
+function lightingEnvironment:DrawPixels(pixelSize: number)
 	if self.ready then
 		return
 	end
