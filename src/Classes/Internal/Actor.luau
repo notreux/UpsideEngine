@@ -1,3 +1,4 @@
+local runService = game:GetService("RunService")
 local private = script.Parent.Parent.Parent.Private
 local player = game:GetService("Players").LocalPlayer
 
@@ -7,12 +8,13 @@ local util = require(private.Util)
 local copyTable = util.CopyTable
 local isEqual = util.isEqual
 
+local isClient = runService:IsClient()
 local actor = {}
 actor.__index = actor
 
 function actor.new(module: ModuleScript)
 	local instance = Instance.new("Actor")
-	instance.Parent = player:FindFirstChild("PlayerScripts")
+	instance.Parent = if isClient then player:FindFirstChild("PlayerScripts") else workspace
 
 	local loader = actorLoader:Clone()
 	loader.Parent = instance
