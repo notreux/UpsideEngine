@@ -102,14 +102,14 @@ function particle:Emit(rate: number)
 		unit.Brightness = self.LightBrightness
 		self.Units += 1
 
-		for property, value in self.Properties do
-			unit[property] = value
-		end
-
 		local subjectInstance = self.Subject.Instance
 		local instance = unit.Instance
 		instance.Parent = scene.Instance.GameFrame
 		instance.Position = subjectInstance.Position
+
+		for property, value in self.Properties do
+			instance[property] = value
+		end
 
 		local info = TweenInfo.new(
 			self.LifeTime,

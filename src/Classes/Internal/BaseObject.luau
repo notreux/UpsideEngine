@@ -28,14 +28,14 @@ end
 
 function baseObject:SetScene(scene: Scene)
 	local environment = classEnvironments[self.ClassName]
-	scene.Objects:AddOne(self, self.Id)
+	scene.Objects:SetOne(self, self.Id)
 
 	self.Scene = scene.Id
 	self.Instance.Parent = scene.Instance:WaitForChild("GameFrame")
 
 	if environment then
 		environment = (scene :: table)[environment]
-		environment:AddOne(self, self.Id)
+		environment:SetOne(self, self.Id)
 	end
 end
 

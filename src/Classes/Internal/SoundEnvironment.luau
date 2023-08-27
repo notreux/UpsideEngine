@@ -8,7 +8,7 @@ soundEnvironment.__index = soundEnvironment
 }=]]
 
 function soundEnvironment.new(): SoundEnvironment
-	local self = environment.new()
+	local self = environment.new("SoundGroup")
 	self.Instance.Parent = game.SoundService
 	self:SetClassName(script.Name)
 

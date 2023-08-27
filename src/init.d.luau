@@ -351,6 +351,10 @@ Get: (self: Environment, index: string) -> any,
 --[[
 Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
 	]]
+SetOne: (self: Environment, value: any, index: string) -> nil,
+--[[
+Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
+	]]
 AddOne: (self: Environment, value: any, index: string) -> nil,
 --[[
 Removes the object with the specified index
@@ -618,11 +622,6 @@ ConstantVelocityEnabled: boolean,
 --[[
 ]]
 ChromaticAberrationConnection: boolean,
---[[
-!!! warning 
-			Experimental, dont use
-	]]
-HitboxShape: string,
 --[[
 ]]
 new: () -> PhysicalObject,

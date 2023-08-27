@@ -1,4 +1,4 @@
-local isOutSceen = require(script.Parent.Parent.Private.Util).IsOutSceen
+local IsOutScreen = require(script.Parent.Parent.Private.Util).IsOutScreen
 local normalize = require(script.Parent.Parent.Private.Util).Normalize
 local clock = os.clock
 local ms = clock()
@@ -45,7 +45,7 @@ function lightingSystem.onSetData(data, name, value)
 		local absoluteSize = Vector2.new(range, range)
 		local absolutePosition = instance.AbsolutePosition + (absoluteSize / data.resolution)
 
-		if isOutSceen(absolutePosition, absoluteSize * 2) then
+		if IsOutScreen(absolutePosition, absoluteSize * 2) then
 			continue
 		end
 

@@ -68,7 +68,7 @@ function baseClass:Destroy()
 	if scene then
 		local environment = classEnvironments[self.ClassName or ""]
 
-		if scene.Objects:Has(id) then
+		if scene.Objects:HasOne(id) then
 			scene.Objects:RemoveOne(id)
 		end
 		if environment then

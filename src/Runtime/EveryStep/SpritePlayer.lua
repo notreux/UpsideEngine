@@ -1,4 +1,4 @@
-local isOutSceen = require(script.Parent.Parent.Parent.Private.Util.Math.IsOutSceen)
+local IsOutScreen = require(script.Parent.Parent.Parent.Private.Util).IsOutScreen
 local function axeStep(active, axe, max)
 	local index = active.CurrentFrame[axe]
 	local value = index <= max - 1 and index + 1 or 0
@@ -48,7 +48,7 @@ end
 
 local function shouldSkip(object, active)
 	return not (object:IsA("Sprite") and object.IsPlaying and active.NextStepReady and object.Sprites[active.Name])
-		or isOutSceen(object.Instance.AbsolutePosition, object.Instance.AbsoluteSize)
+		or IsOutScreen(object.Instance.AbsolutePosition, object.Instance.AbsoluteSize)
 end
 
 return function(scene, delta)

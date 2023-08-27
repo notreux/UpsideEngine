@@ -24,10 +24,11 @@ end
 function getData(data)
 	local result = {}
 
-	for index, value in data do
+	for index, value in pairs(data) do
 		local valueType = typeof(value)
+		local isSimple = valueType ~= "table" and valueType ~= "Instance"
 
-		if valueType ~= "table" and valueType ~= "Instance" then
+		if isSimple then
 			result[index] = value
 			continue
 		elseif valueType == "Instance" then
@@ -65,7 +66,9 @@ local function setObjectIds(object, id, name)
 	objects[object.Id] = nil
 
 	object.Id = id
-	object:SetName(name)
+	if object.Instance and object.Instance.Parent and object.Instance.Parent.ClassName ~= "Folder" then
+		object:SetName(name)
+	end
 end
 
 local function rebuild(parent, index, value)
@@ -82,7 +85,6 @@ local function rebuild(parent, index, value)
 
 		pcall(function()
 			object:SetScene(parent)
-			object.Instance.Parent = object
 		end)
 	elseif not object then
 		object = {}
@@ -115,12 +117,22 @@ end
 function pluginSupportService:LoadPluginContent()
 	local db = encoder.Decode(game.ReplicatedStorage:GetAttribute("UpsideEngineDB") or "{}")
 	for _, sceneData in pairs(db) do
+		if not sceneData.Objects.Content then
+			sceneData.Objects = {
+				Content = sceneData.Objects,
+			}
+		end
+
 		local scene = rebuild({}, 0, sceneData)
 		scene.Camera.Scene = scene.Id
 	end
 
 	for _, scene in pairs(sceneManager.Scenes) do
 		for _, object in scene.Objects do
+			if not object.SetScene then
+				continue
+			end
+
 			object.Instance.Parent = scene.Instance.GameFrame
 			object:SetScene(scene)
 		end

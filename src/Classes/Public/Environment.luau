@@ -35,6 +35,21 @@ end
 	@link any.link
 }=]]
 
+function environment:SetOne(value: any, index: string)
+	if not self.Content[index] and value then
+		self.Count += 1
+	elseif self.Content[index] and not value then
+		self.Count -= 1
+	end
+
+	self.Content[index] = value
+end
+
+--[[={
+	@desc Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
+	@link any.link
+}=]]
+
 function environment:AddOne(value: any, index: string)
 	assert(self.Content[index] == nil, "This value already exist!")
 

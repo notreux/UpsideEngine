@@ -5,6 +5,10 @@ local data = {}
 local running = {}
 local module = nil
 
+if not actor then
+	return
+end
+
 actor:BindToMessage("init", function(moduleScript)
 	module = require(moduleScript)
 end)

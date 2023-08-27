@@ -423,6 +423,11 @@ Get(index: string): any;
 Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
 	
 */
+SetOne(value: any, index: string): null;
+/**
+Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
+	
+*/
 AddOne(value: any, index: string): null;
 /**
 Removes the object with the specified index
@@ -748,12 +753,6 @@ ConstantVelocityEnabled: boolean;
 
 */
 ChromaticAberrationConnection: boolean;
-/**
-!!! warning 
-			Experimental, dont use
-	
-*/
-HitboxShape: string;
 /**
 
 */
