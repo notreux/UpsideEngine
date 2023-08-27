@@ -63,7 +63,13 @@ function physicalObject.new(): PhysicalObject
 	self.ChromaticAberration = {}
 	self.Collisions = {}
 	self.CollisionBlacklist = {}
-	self.Hitbox = {}
+	self.Hitbox = {
+		Vector2.zero,
+		Vector2.new(1, 0),
+		Vector2.new(1, 1),
+		Vector2.new(0, 1),
+	}
+
 	self.Mass = 200
 	self.HitboxScale = 1
 	self.CollisionGroup = 0
@@ -75,7 +81,6 @@ function physicalObject.new(): PhysicalObject
 	self.TrackCollisions = true
 	self.ConstantVelocityEnabled = false
 	self.ChromaticAberrationConnection = false
-	self.HitboxShape = "Box"
 
 	local instance = self.Instance
 	instance.AnchorPoint = Vector2.new(0.5, 0.5)

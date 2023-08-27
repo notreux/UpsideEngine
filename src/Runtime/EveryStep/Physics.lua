@@ -25,7 +25,6 @@ local function emit(self, meta, active)
 
 	if current == active then
 		recentC[meta.Id] = 5
-		iterations = 5
 		return
 	elseif iterations > 0 then
 		return
@@ -33,13 +32,12 @@ local function emit(self, meta, active)
 
 	self.Collisions[meta.Id] = active or nil
 	self:Fire(active and "Collision" or "CollisionEnd", meta)
-
 	rawset(recentC, meta.Id, 5)
 end
 
 return function(scene, deltaTime)
 	for _, object in scene.Objects do
-		if not (object:IsA("PhysicalObject") and object.TrackCollisions) then
+		if not object:IsA("PhysicalObject") or (not object.TrackCollisions or object.Anchored) then
 			continue
 		end
 
@@ -50,16 +48,15 @@ return function(scene, deltaTime)
 		local distance = (object.Force + object.Velocity) * deltaTime
 
 		local smtv, position = Vector2.zero, nil
-		local stop, collisions = nil, nil
+		local stop, collisions, dis = nil, nil, nil
 
-		local steps = object.Anchored and 1 or 4
-		for i = steps, 1, -1 do
-			local dis = distance / i
+		for i = 4, 1, -1 do
+			dis = distance / i
 			position = absolutePosition + dis
 			collisions, stop = util.GetCollidingObjects(object, position, scene)
 
 			if stop and object.CanCollide then
-				distance = dis
+				dis = dis
 				break
 			end
 		end
@@ -71,16 +68,18 @@ return function(scene, deltaTime)
 			end
 
 			colliding[collision.object.Id] = true
-			emit(object, collision.object, true)
+			emit(meta, object, true)
+			emit(object, meta, true)
 		end
 
 		for id in object.Collisions do
-			local obj = scene.Objects[id]
-			if not obj then
+			local meta = scene.Objects:Get(id)
+			if not meta then
 				continue
 			end
 
-			emit(object, obj, colliding[id])
+			emit(object, meta, colliding[id])
+			emit(meta, object, colliding[id])
 		end
 
 		for id, iterations in recentC do
@@ -97,8 +96,8 @@ return function(scene, deltaTime)
 		end
 
 		adaptToCollisions(object, "Force", smtv)
-		distance -= smtv
-		instance.Position += util.ToUDim2(distance)
+		distance = Vector2.new(smtv.X == 0 and distance.X or dis.X, smtv.Y == 0 and distance.Y or dis.Y)
+		instance.Position += util.ToUDim2(distance - smtv)
 
 		object.IsGrounded = object.Force.Y == 0
 		object.Force += Vector2.new(0, math.clamp(object.Mass * 10, -max, max)) * deltaTime

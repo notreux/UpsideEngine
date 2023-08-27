@@ -1,18 +1,20 @@
 return function(object)
-	local size, position = object.AbsoluteSize, object.AbsolutePosition
-	local center = position + size * 0.5
-	local corners = {
-		position,
-		Vector2.new(position.X + size.X, position.Y),
-		position + size,
-		Vector2.new(position.X, position.Y + size.Y),
-	}
+	local instance = object.Instance
+	local size, position = instance.AbsoluteSize, instance.AbsolutePosition
 
-	if object.Rotation == 0 then
+	local center = position + size * 0.5
+	local corners = {}
+
+	for i = 1, #object.Hitbox do
+		local point = object.Hitbox[i]
+		table.insert(corners, position + size * point)
+	end
+
+	if instance.Rotation == 0 then
 		return corners
 	end
 
-	local rotation = math.rad(object.Rotation)
+	local rotation = math.rad(instance.Rotation)
 	local sin, cos = math.sin(rotation), math.cos(rotation)
 
 	for i = 1, #corners do
