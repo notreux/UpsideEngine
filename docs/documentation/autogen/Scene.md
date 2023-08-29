@@ -4,7 +4,8 @@ This class is useful to have a workspace and manage your project more easily
 # Properties
 
 ## [Camera](Camera.md) Camera
-
+The scene camera
+		
 ## [LightingEnvironment](LightingEnvironment.md) LightingEnvironment
 This is the LightingEnvironment of the scene
 
@@ -15,7 +16,7 @@ This is the ParticleEnvironment of the scene
 This is the SoundEnvironment of the scene
 		
 ## [ObjectEnvironment](ObjectEnvironment.md) Objects
-This table stores all the objects in the scene
+This environment stores all the objects in the scene
 		
 
 
@@ -23,14 +24,16 @@ This table stores all the objects in the scene
 
 ## [Scene](Scene.md) Constructor() 
  
-## [void](void.md) Enable() 
- 
-## [void](void.md) Disable() 
- 
-## [Array<string>](https://create.roblox.com/docs/scripting/luau/tables#arrays) GetTaggedObjects(tag: string) 
+## [void](https://create.roblox.com/docs/scripting/luau/tables#arrays) Enable() 
+ Enables the scene, which will make it process physics, lights, sounds and sprites
+	
+## [void](https://create.roblox.com/docs/scripting/luau/tables#arrays) Disable() 
+ Disables the scene
+	
+## [Array<string>](https://create.roblox.com/docs/scripting/luau/tables#arrays) GetTaggedObjects(`tag: string`) 
  Gets all the objects with the provided tags in the scene
 	
-## [Raycast2dResult](/documentation/datatypes/Raycast2DResult.html) Raycast(info: Raycast2dParams) 
+## [Raycast2dResult](/documentation/datatypes/Raycast2DResult.html) Raycast(`info: Raycast2dParams`) 
  Casts a ray using the Raycast2dParams. If it finds an elegible object a Raycast2dResult is returned containing the results of the operations
 	
 

@@ -6,9 +6,9 @@ The parameters for a raycast operation
 
 ```lua
 {
-    FilterType = "Whitelist", -- Whitelist/Blacklist
-    From = Vector2.new(),
-    To = Vector2.new(),
-    List = { ... } -- Dictionary<objectID, object>
+    FilterType -> "Whitelist", -- Whitelist/Blacklist
+    From -> Vector2.new(),
+    To -> Vector2.new(),
+    List -> { ... } -- Dictionary<objectID, object>
 }
 ```

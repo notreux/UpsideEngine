@@ -53,47 +53,69 @@ This is the character which is going to be tracked by the camera
 ## [table](table.md) Configs 
 This table stores the default controllers
 	 
-	```lua 
-	{
- 		Keyboard: 	{ 	},
-		Gamepad: 	{
- 		Thumbstick1: 	{ 	},
-	},
-		Mobile: 	{
- 		Thumbstick1: 	{ 	},
-	},
-	} 
-	```
+```lua
+{
+    Keyboard:   {
+        W: string,
+        A: string,
+        S: string,
+        D: string,
+        Up: string,
+        Left: string,
+        Down: string,
+        Right: string,
+        Space: string,
+    },
+    Gamepad:    {
+        ButtonA: string,
+        Thumbstick1:    {
+            Up: string,
+            Left: string,
+            Down: string,
+            Right: string,
+        },
+    },
+    Mobile:     {
+        JumpButton: string,
+        Thumbstick1:    {
+            Up: string,
+            Left: string,
+            Down: string,
+            Right: string,
+        },
+    },
+} 
+```
 
 
 # Methods
 
 ## [CrossPlatformService](CrossPlatformService.md) Constructor() 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey(device: string, key: string, action: string) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey(`device: string, key: string, action: string`) 
  Assigns an action to a device key, example:
-	```lua
-	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
-	```
+```lua
+CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
+```
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceConfig(device: string, controls: Dictionary<string, string>) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceConfig(`device: string, controls: Dictionary<string, string>`) 
  Sets the entire configuration of a device, example:
-	```lua
-	CrossPlatformService:SetDeviceConfig("Keyboard", {
-		W = "Up",
-		A = "Left",
-		S = "Down",
-		D = "Right",
+```lua
+CrossPlatformService:SetDeviceConfig("Keyboard", {
+	W = "Up",
+	A = "Left",
+	S = "Down",
+	D = "Right",
 
-		Up = "Up",
-		Left = "Left",
-		Down = "Down",
-		Right = "Right",
-		Space = "Jump",
-	})
-	```
+	Up = "Up",
+	Left = "Left",
+	Down = "Down",
+	Right = "Right",
+	Space = "Jump",
+})
+```
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPlayerCharacter(character: Character) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPlayerCharacter(`character: Character`) 
  Sets the player character
 	
 

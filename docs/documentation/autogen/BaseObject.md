@@ -12,25 +12,25 @@ The object scene ID
 ## [table](table.md) Tags 
 This table stores all the tags of the object
  
-	```lua 
-	{ 	} 
-	```
+```lua
+{ }
+```
 
 
 # Methods
 
-## [BaseObject](BaseObject.md) Constructor(instanceType: string?) 
+## [BaseObject](BaseObject.md) Constructor(`instanceType: string?`) 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetScene(scene: Scene) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetScene(`scene: Scene`) 
  Sets the object scene
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) AddTag(tag: string) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) AddTag(`tag: string`) 
  Adds a tag to the object
 	
-## [boolean](https://create.roblox.com/docs/scripting/luau/booleans) HasTag(tag: string) 
+## [boolean](https://create.roblox.com/docs/scripting/luau/booleans) HasTag(`tag: string`) 
  Checks if the object contain the specified tag
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) RemoveTag(tag: string) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) RemoveTag(`tag: string`) 
  Removes a tag from the object
 	
 

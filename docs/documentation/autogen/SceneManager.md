@@ -5,25 +5,25 @@ This class save and build the engine data
 
 ## [table](table.md) Scenes 
  
-	```lua 
-	{ 	} 
-	```
+```lua
+{ }
+```
 ## [table](table.md) ActiveScenes 
 This dictionary stores all the active scenes
 	 
-	```lua 
-	{ 	} 
-	```
+```lua
+{ }
+```
 
 
 # Methods
 
 ## [SceneManager](SceneManager.md) Constructor() 
  
-## [Scene?](https://create.roblox.com/docs/scripting/luau/nil) FindByName(name: string) 
+## [Scene?](https://create.roblox.com/docs/scripting/luau/nil) FindByName(`name: string`) 
  Finds a scene by the name
 	
-## [Scene](Scene.md) Get(Id: string) 
+## [Scene](Scene.md) Get(`Id: string`) 
  Returns the scene with the specified Id
 	
 

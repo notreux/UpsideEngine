@@ -12,7 +12,7 @@ This class save and build the engine data
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) LoadPluginContent() 
  Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SavePluginContent(content: {}) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SavePluginContent(`content: {}`) 
  Saves the engine data in replicated storage as attribute with the name "UpsideEngineDB" can be useful to create plugins
 	
 

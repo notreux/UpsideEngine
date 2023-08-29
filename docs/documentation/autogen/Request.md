@@ -9,19 +9,19 @@ The UserId of the client which sent the request if exists
 ## [table](table.md) Content 
 The content of the request
 		 
-	```lua 
-	{ 	} 
-	```
+```lua
+{ }
+```
 
 
 # Methods
 
-## [Request](Request.md) Constructor(clientId: number?, content: RequestContent?) 
+## [Request](Request.md) Constructor(`clientId: number?, content: RequestContent?`) 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Send(content: Dictionary<string, any>) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Send(`content: Dictionary<string, any>`) 
  Sends the request to the server
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Approve(clients: table) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Approve(`clients: table`) 
  The request is approved and its replicated to the specified clients, if none is specified it will be replicated to all the clients except to the client who sent the request
 	
 ## [void](BaseObject.md) Accept() 

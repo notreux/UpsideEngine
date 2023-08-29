@@ -7,6 +7,7 @@ This class is used to illuminate areas in the darkness
 Its a property of PhysicalObject, in this class is marked as readonly and is set false to optimizate
 		
 ## [Color3](Color3.md) Color
+Is the light color
 
 ## [number](number.md) Range
 Is the range of the light
@@ -15,7 +16,8 @@ Is the range of the light
 Is the brightness of the light
 		
 ## [number](number.md) Transparency
-
+Is the transparency of the light
+		
 
 
 # Methods
