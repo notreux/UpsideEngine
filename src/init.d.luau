@@ -88,6 +88,9 @@ This class is included on every scene, it's used to move you around the scene
 	]]
 export type Camera = EventEmitter & {
 --[[
+]]
+OffsetPosition: UDim2,
+--[[
 This property is used to move the camera internally
 		]]
 LocalPosition: Vector2,

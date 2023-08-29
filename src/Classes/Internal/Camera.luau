@@ -12,6 +12,7 @@ camera.__index = camera
 function camera.new(scene: Scene): Camera
 	local self = eventEmitter.new()
 	self:SetClassName(script.Name)
+	self.OffsetPosition = UDim2.fromOffset(0, 0)
 	self.LocalPosition = Vector2.zero
 	self.Limits = Vector2.zero
 	self.FollowSubject = true
@@ -38,7 +39,7 @@ end
 
 function camera:SetPosition(udim2: UDim2)
 	self.LocalPosition = Vector2.new(udim2.X.Offset, udim2.Y.Offset)
-	self.Instance.Position = udim2
+	self.Instance.Position = udim2 + self.OffsetPosition
 end
 
 --[[={

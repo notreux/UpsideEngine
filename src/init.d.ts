@@ -100,6 +100,10 @@ This class is included on every scene, it's used to move you around the scene
 */ 
 export declare interface Camera extends EventEmitter {
 /**
+
+*/
+OffsetPosition: UDim2;
+/**
 This property is used to move the camera internally
 		
 */
