@@ -57,11 +57,12 @@ local function onUserInput(state, input)
 	elseif action == "idle" then
 		character.Velocity = Vector2.zero
 	end
+
 	if jumping and begin and character.IsGrounded then
 		return character:Jump()
 	elseif not begin and controls[action] and not jumping then
 		character.Velocity -= value
-	elseif begin and not controls[action] then
+	elseif begin and not controls[action] and not jumping then
 		character.Velocity += value
 	end
 
