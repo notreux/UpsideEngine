@@ -57,6 +57,11 @@ function scene.new(): Scene
 	return setmetatable(self, scene)
 end
 
+--[[={
+	@desc Enables the scene, which will make it process physics, lights, sounds and sprites
+	@link array.link
+}=]]
+
 function scene:Enable()
 	local instance = self.Instance
 	instance.GameFrame.Visible = true
@@ -65,6 +70,11 @@ function scene:Enable()
 	sceneManager.ActiveScenes[self.Id] = self
 	sceneManager:Fire("SceneEnable", scene)
 end
+
+--[[={
+	@desc Disables the scene
+	@link array.link
+}=]]
 
 function scene:Disable()
 	local instance = self.Instance
@@ -139,7 +149,8 @@ end
 --[[={
 	@desc This class is useful to have a workspace and manage your project more easily
 	@about
-		@Objects This table stores all the objects in the scene
+		@Objects This environment stores all the objects in the scene
+		@Camera The scene camera
 		@SoundEnvironment This is the SoundEnvironment of the scene
 		@ParticleEnvironment This is the ParticleEnvironment of the scene
 		@LightingEnvironment This is the LightingEnvironment of the scene
