@@ -1,21 +1,16 @@
-# SceneManager
-!!! info 
-	 This object was [Extended from EventEmitter](EventEmitter.md)
+# [Extended from EventEmitter](EventEmitter.md) SceneManager 
 This class save and build the engine data
 	 
- 
 # Properties
 
-## [readonly](readonly.md) [table](table.md) <u>Scenes</u> 
+## [table](table.md) Scenes 
  
-???+ Content 
 	```lua 
 	{ 	} 
 	```
-## [readonly](readonly.md) [table](table.md) <u>ActiveScenes</u> 
+## [table](table.md) ActiveScenes 
 This dictionary stores all the active scenes
 	 
-???+ Content 
 	```lua 
 	{ 	} 
 	```
@@ -23,22 +18,14 @@ This dictionary stores all the active scenes
 
 # Methods
 
-### [void](https://create.roblox.com/docs/scripting/luau/nil) Load`(scene: Scene)` 
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
+## [SceneManager](SceneManager.md) Constructor() 
+ 
+## [Scene?](https://create.roblox.com/docs/scripting/luau/nil) FindByName(name: string) 
+ Finds a scene by the name
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) Unload`(scene: Scene)` 
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
+## [Scene](Scene.md) Get(Id: string) 
+ Returns the scene with the specified Id
 	
-___
-### [Scene?](https://create.roblox.com/docs/scripting/luau/nil) FindByName`(name: string)` 
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
-	
-___
-### [Scene](https://create.roblox.com/docs/scripting/luau/nil) Get`(Id: string)` 
-Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
-	
-___
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|

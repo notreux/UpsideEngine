@@ -8,27 +8,29 @@ local packages = replicatedStorage.packages
 
 -- Require the upside engine module
 local upsideEngine = require(packages.UpsideEngine)
-local sceneManager = upsideEngine:GetService("SceneManager")
+local sceneManager = upsideEngine.GetService("SceneManager")
 local scene = sceneManager:FindByName("MyFirstScene")
 
 -- Create the radio
-local radio = upsideEngine:Create("Sprite", scene, Vector2.new(37, 64)) -- we pass 37x64 as resolution
-radio:SetSpriteSheet("default", "rbxassetid://12908065852", Vector2.new(1, 14)) -- We pass 1, 14 to say we have 1 row and 14 columns
+local radio = upsideEngine.new("Sprite")
+radio.Instance.ImageRectSize = Vector2.new(37, 64)
+radio.TrackCollisions = false
+radio:SetScene(scene)
+radio:SetSpriteSheet("default", "rbxassetid://12908065852", Vector2.new(14, 1)) -- We pass 14, 1 to say we have 1 row and 14 columns
 radio:Play("default")
-radio:Set({
-	Size = UDim2.fromOffset(128, 128),
-	Position = UDim2.fromOffset(1540, 490),
-	ZIndex = 3,
-})
+
+local radioInstance = radio.Instance
+radioInstance.Size = UDim2.fromOffset(128, 128)
+radioInstance.Position = UDim2.fromOffset(1540, 865)
+radioInstance.ZIndex = 1
 
 -- Create a new sound
-local music = upsideEngine:Create("Sound", scene)
-music.DistanceFading = true
+local music = upsideEngine.new("Sound")
+music.Instance.SoundId = "rbxassetid://1844102827"
 music.Instance:Play()
+music.Range = 1500
+music:SetScene(scene)
 music:SetSubject(radio)
-music:Set({
-	SoundId = "rbxassetid://1844102827",
-})
 ```
 
 ____

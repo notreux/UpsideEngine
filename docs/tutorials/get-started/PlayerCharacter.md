@@ -7,22 +7,25 @@ local runService = game:GetService("RunService")
 local packages = replicatedStorage.packages
 
 local upsideEngine = require(packages.UpsideEngine)
-local sceneManager = upsideEngine:GetService("SceneManager")
-local crossPlatformService = upsideEngine:GetService("CrossPlatformService")
+local sceneManager = upsideEngine.GetService("SceneManager")
+local crossPlatformService = upsideEngine.GetService("CrossPlatformService")
 
 local scene = sceneManager:FindByName("MyFirstScene")
 local spawn_position = UDim2.fromOffset(350, 800)
-local player = upsideEngine:Create("Character", scene, Vector2.new(37, 64))
+
+local player = upsideEngine.new("Character")
 player.Anchored = false
+player.JumpPower = 100
+player:SetScene(scene)
 player:SetSpriteSheet("idle", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("right", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("jump", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("left", "rbxassetid://12970115106", Vector2.new(12, 1))
-player:Set({
-	Position = spawn_position,
-	Size = UDim2.fromOffset(128, 128),
-	ZIndex = 4,
-})
+
+local plrInstance = player.Instance
+plrInstance.ZIndex = 2
+plrInstance.ImageRectSize = Vector2.new(37, 64)
+plrInstance.Size = UDim2.fromOffset(100, 100)
 ```
 This code creates a new character object in the game's scene using the Upside Engine framework. The character object is stored in a variable named "player".
 
@@ -30,7 +33,7 @@ This code creates a new character object in the game's scene using the Upside En
 !!! tip
 	Some words like "idle", "left" or "jump" can be played automatically by CrossPlatformService, which means that it is not necessary to play them if `CrossPlatformService.DefaultControllersEnabled` is set to true.
 
-We can add animations to our player character using sprite sheets.
+As we saw in the previous code example, we can add animations to our player character using sprite sheets.
 ```lua
 player:SetSpriteSheet("idle", "rbxassetid://12908048527", Vector2.new(1, 12))
 ```
@@ -51,7 +54,21 @@ To make the camera follow the character, we will need to define the player as th
 ```lua
 scene.Camera:SetSubject(player)
 ```
-____
+
+## Avoid infinity fall
+To avoid that when our character falls, it stays falling infinitely, we will use the following code:
+
+```lua
+runService.Heartbeat:Connect(function()
+	local instance = player.Instance
+	if instance.Position.Y.Offset < 1000 then
+		return
+	end
+
+	instance.Position = spawn_position
+end)
+```
+___
 
 !!! bug
 	Remember that you are using a module script, don't forget to return a value at the end of the script!

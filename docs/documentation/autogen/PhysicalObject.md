@@ -1,120 +1,90 @@
-# PhysicalObject
-!!! info 
-	 This object was [Extended from BaseObject](BaseObject.md)
+# [Extended from BaseObject](BaseObject.md) PhysicalObject 
 This class is used to create objects with physics
 	 
- 
 # Properties
 
-## [readonly](readonly.md) [string](string.md) <u>InstanceType</u> 
-
-___
-## [readonly](readonly.md) [number](number.md) <u>ChromaticAberrationIntensity</u> 
-
-___
-## [readonly](readonly.md) [number](number.md) <u>ChromaticAberrationDistance</u> 
-
-___
-## [readonly](readonly.md) [Vector2](Vector2.md) <u>ChromaticAberrationPoint</u> 
+## [Vector2](Vector2.md) ChromaticAberrationPoint
 This is the point which is being used as reference for the chromatic aberration
 		
-___
-## [readonly](readonly.md) [table](table.md) <u>ChromaticAberration</u> 
+## [Vector2](Vector2.md) Force
+Is the force which is applied in the moment to the object
+		
+## [Vector2](Vector2.md) Velocity
+Is the velocity applied to the object
+		
+## [table](table.md) ChromaticAberration 
 The instances which makes the chromatic aberration effect
 		 
-???+ Content 
 	```lua 
 	{ 	} 
 	```
-## [readonly](readonly.md) [table](table.md) <u>Collisions</u> 
+## [table](table.md) Collisions 
 This table stores all the active collisions
 		 
-???+ Content 
 	```lua 
 	{ 	} 
 	```
-## [readonly](readonly.md) [boolean](boolean.md) <u>ChromaticAberrationConnection</u> 
-
-___
-## [rules](rules.md) [table](table.md) <u>CollisionBlacklist</u> 
+## [table](table.md) CollisionBlacklist 
 This dictionary stores all the blacklisted objects, to blacklist an object do it like this:
 		```lua
 		CollisionBlacklist[object.Id] = true
 		```
 		 
-???+ Content 
 	```lua 
 	{ 	} 
 	```
-## [rules](rules.md) [table](table.md) <u>Hitbox</u> 
+## [table](table.md) Hitbox 
 !!! warning 
 			Experimental, dont use
 		 
-???+ Content 
 	```lua 
 	{ 	} 
 	```
-## [rules](rules.md) [number](number.md) <u>Mass</u> 
+## [number](number.md) Mass
 The object mass
 		
-___
-## [rules](rules.md) [number](number.md) <u>HitboxScale</u> 
+## [number](number.md) HitboxScale
 
-___
-## [rules](rules.md) [number](number.md) <u>CollisionGroup</u> 
+## [number](number.md) CollisionGroup
 A number which indicates the collision group of the object, the object only can collide with other objects with the same CollisionGroup
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>Anchored</u> 
+## [number](number.md) ChromaticAberrationIntensity
+
+## [number](number.md) ChromaticAberrationDistance
+
+## [boolean](boolean.md) Anchored
 This property defines if the object should have physics or not
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>CanCollide</u> 
+## [boolean](boolean.md) CanCollide
 This property defines if the object can collide with other objects
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>IsGrounded</u> 
+## [boolean](boolean.md) IsGrounded
 This property indicates if the object is touching the ground
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>TrackCollisions</u> 
+## [boolean](boolean.md) TrackCollisions
 This property defines if the object is going to have physics and collisions or not
 		
-___
-## [rules](rules.md) [string](string.md) <u>HitboxShape</u> 
-!!! warning 
-			Experimental, dont use
-	
-___
-## [rules](rules.md) [Vector2](Vector2.md) <u>Force</u> 
-Is the force which is applied in the moment to the object
-		
-___
-## [rules](rules.md) [Vector2](Vector2.md) <u>Velocity</u> 
-Is the velocity applied to the object
-		
-___
+## [boolean](boolean.md) ConstantVelocityEnabled
+
+## [boolean](boolean.md) ChromaticAberrationConnection
+
 
 
 # Methods
 
-### [PhysicalObject](PhysicalObject.md) Constructor`()` 
-
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetHitboxShape`(shape: string)` 
-!!! warning 
+## [PhysicalObject](PhysicalObject.md) Constructor() 
+ 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetHitboxShape(shape: string) 
+ !!! warning 
 		Sets the hitbox shape. Experimental, dont use
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) Load`(url: string)` 
-Loads an image for the current object and is set as the instance image
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Load(url: string) 
+ Loads an image for the current object and is set as the instance image
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetChromaticAberration`(Intensity: number, Distance: number, Point: Vector2)` 
-Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetChromaticAberration(Intensity: number, Distance: number, Point: Vector2) 
+ Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
 	to disable the chromatic aberration send 0 as first parameter
 	
-___
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|

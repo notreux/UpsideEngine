@@ -80,9 +80,9 @@ Click on "Add Item" and then enter this path `packages/UpsideEngine/upside-engin
 
 ## An important step
 
-To ensure that the Upside Engine functions correctly, it is important to initialize the engine on the server, even if you are not using any server-side functionality. This is because some services, such as `NetworkingService`, depend on the server side.
+To ensure that the Upside Engine works correctly, it is important to initialize the engine on the server, even if you are not using any server-side functionality. This is because some services, such as `NetworkingService`, depend on the server side.
 
-Here is an example of how to initialize the engine:
+Here is an example of how to initialize upside engine:
 
 ```lua
 local replicatedStorage = game:GetService("ReplicatedStorage")

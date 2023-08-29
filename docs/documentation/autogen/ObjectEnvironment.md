@@ -1,4 +1,4 @@
-# [Extended from Environment](Environment.md) SoundEnvironment 
+# [Extended from Environment](Environment.md) ObjectEnvironment 
  
 # Properties
 
@@ -6,7 +6,7 @@
 
 # Methods
 
-## [SoundEnvironment](SoundEnvironment.md) Constructor() 
+## [ObjectEnvironment](ObjectEnvironment.md) Constructor() 
  
 
 # Events

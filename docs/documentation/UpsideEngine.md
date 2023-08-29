@@ -34,16 +34,3 @@ ___
 This method returns any of these services:
 
 ` SceneManager, NetworkingService, CrossPlatformService, PluginSupportService `
-
-___
-
-## [void]() `Optimizate(Options: dictionary)` 
-Removes innecesary roblox scripts
-
-???+ info
-    ```lua
-    UpsideEngine:Optimizate({
-        TimeOut = 1, -- The maximum yield time for waiting every roblox script
-        DeleteChat = true
-    })
-    ```

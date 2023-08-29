@@ -61,9 +61,6 @@ nav:
       - Graphic inteface: tutorials/get-started/GraphicInterface.md
       - License: tutorials/get-started/LicensePage.md
 
-    - Others: 
-      - Introduction: tutorials/others/Introduction.md
-
   - Documentation:
     - Welcome: documentation/Welcome.md
     - Upside Engine: documentation/UpsideEngine.md

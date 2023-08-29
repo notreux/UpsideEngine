@@ -1,6 +1,4 @@
-# Particle
-!!! info 
-	 This object was [Extended from BaseObject](BaseObject.md)
+# [Extended from BaseObject](BaseObject.md) Particle 
 !!! warning 
 		Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
 
@@ -8,111 +6,84 @@
 		This class is used for vfx
 
 	 
- 
 # Properties
 
-## [readonly](readonly.md) [Vector2](Vector2.md) <u>Angle</u> 
+## [Vector2](Vector2.md) Angle
 Depending on the value the particles will be more dispersed
 		
-___
-## [readonly](readonly.md) [string](string.md) <u>InstanceType</u> 
-
-___
-## [readonly](readonly.md) [Character](Character.md) <u>Subject</u> 
-The subject which is going to be the center of emission of the particle, a character, sprite, etc...
-		
-___
-## [readonly](readonly.md) [number](number.md) <u>MaxRate</u> 
-Is the maximum amount of particles that can exist at the same time
-		
-___
-## [readonly](readonly.md) [number](number.md) <u>Units</u> 
-Is the amount of particles that are existing at this moment
-		
-___
-## [rules](rules.md) [table](table.md) <u>Properties</u> 
-Is a table with the initial properties of the particle which is going to be generated
-		 
-???+ Content 
-	```lua 
-	{
- 		Image: string,
-	} 
-	```
-## [rules](rules.md) [table](table.md) <u>Goals</u> 
-Is a table with the goals of the particles
-		 
-???+ Content 
-	```lua 
-	{
- 		Size: UDim2,
-		ImageTransparency: number,
-	} 
-	```
-## [rules](rules.md) [TweenInfo](TweenInfo.md) <u>Info</u> 
+## [TweenInfo](TweenInfo.md) Info
 Is the tween info of the tween which is going to be used to move the particles
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>TrackLight</u> 
+## [boolean](boolean.md) TrackLight
 !!! warning 
 			Experimental, dont use
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>CanCollide</u> 
+## [boolean](boolean.md) CanCollide
 !!! warning 
 			Experimental, dont use
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>Enabled</u> 
+## [boolean](boolean.md) Enabled
 When its enabled new particles can be emitted
 		
-___
-## [rules](rules.md) [number](number.md) <u>LightBrightness</u> 
+## [number](number.md) MaxRate
+Is the maximum amount of particles that can exist at the same time
+		
+## [number](number.md) Units
+Is the amount of particles that are existing at this moment
+		
+## [number](number.md) LightBrightness
 !!! warning 
 			Experimental, dont use
 		
-___
-## [rules](rules.md) [number](number.md) <u>LightRange</u> 
+## [number](number.md) LightRange
 !!! warning 
 			Experimental, dont use
 
-___
-## [rules](rules.md) [number](number.md) <u>Range</u> 
+## [number](number.md) Range
 Is the distance that can be traveled by each particle 
 		
-___
-## [rules](rules.md) [number](number.md) <u>LifeTime</u> 
+## [number](number.md) LifeTime
 The number of seconds the particle will be active before being destroyed
 		
-___
-## [rules](rules.md) [number](number.md) <u>Clock</u> 
+## [number](number.md) Clock
 Used for internal purposes
 		
-___
-## [rules](rules.md) [number](number.md) <u>Rate</u> 
+## [number](number.md) Rate
 Is the amount of particles which is going to be generated
 		
-___
+## [Character](Character.md) Subject
+The subject which is going to be the center of emission of the particle, a character, sprite, etc...
+		
+## [table](table.md) Properties 
+Is a table with the initial properties of the particle which is going to be generated
+		 
+	```lua 
+	{ 	} 
+	```
+## [table](table.md) Goals 
+Is a table with the goals of the particles
+		 
+	```lua 
+	{ 	} 
+	```
 
 
 # Methods
 
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject`(subject: Character)` 
-Sets the subject property
+## [Particle](Particle.md) Constructor() 
+ 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(subject: Character) 
+ Sets the subject property
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetAngle`(Angle: Vector2)` 
-Sets the angle property of the particle
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetAngle(Angle: Vector2) 
+ Sets the angle property of the particle
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetMaxRate`(maxRate: number)` 
-Sets the maximum amount of particles that can exist at the same time
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetMaxRate(maxRate: number) 
+ Sets the maximum amount of particles that can exist at the same time
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) Emit`(rate: number)` 
-Emits the specified amount of particles, if none is provided then will use as amount the Rate property
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Emit(rate: number) 
+ Emits the specified amount of particles, if none is provided then will use as amount the Rate property
 	
-___
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|

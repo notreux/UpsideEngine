@@ -1,6 +1,4 @@
-# CrossPlatformService
-!!! info 
-	 This object was [Extended from EventEmitter](EventEmitter.md)
+# [Extended from EventEmitter](EventEmitter.md) CrossPlatformService 
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
 	to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`
 	property, here is an example to make our player jumps in every device:
@@ -38,59 +36,31 @@ end)
 ```
 
 	 
- 
 # Properties
 
-## [rules](rules.md) [boolean](boolean.md) <u>DefaultControllersEnabled</u> 
+## [boolean](boolean.md) DefaultControllersEnabled
 Defines if the default movement system is enabled
 		
-___
-## [rules](rules.md) [boolean](boolean.md) <u>SideView</u> 
+## [boolean](boolean.md) SideView
 Defines if the character is going to be seen from the side or from the top
 		
-___
-## [readonly](readonly.md) [Character](Character.md) <u>Character</u> 
-This is the character which is going to be tracked by the camera
-		
-___
-## [readonly](readonly.md) [number](number.md) <u>StickSensibility</u> 
+## [number](number.md) StickSensibility
 This is the sensibility of the sticks in mobile and in game controllers
 		
-___
-## [readonly](readonly.md) [table](table.md) <u>Configs</u> 
+## [Character](Character.md) Character
+This is the character which is going to be tracked by the camera
+		
+## [table](table.md) Configs 
 This table stores the default controllers
 	 
-???+ Content 
 	```lua 
 	{
- 		Keyboard: 	{
- 		W: string,
-		A: string,
-		S: string,
-		D: string,
-		Up: string,
-		Left: string,
-		Down: string,
-		Right: string,
-		Space: string,
-	},
+ 		Keyboard: 	{ 	},
 		Gamepad: 	{
- 		ButtonA: string,
-		Thumbstick1: 	{
- 		Up: string,
-		Left: string,
-		Down: string,
-		Right: string,
-	},
+ 		Thumbstick1: 	{ 	},
 	},
 		Mobile: 	{
- 		JumpButton: string,
-		Thumbstick1: 	{
- 		Up: string,
-		Left: string,
-		Down: string,
-		Right: string,
-	},
+ 		Thumbstick1: 	{ 	},
 	},
 	} 
 	```
@@ -98,15 +68,16 @@ This table stores the default controllers
 
 # Methods
 
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey`(device: string, key: string, action: string)` 
-Assigns an action to a device key, example:
+## [CrossPlatformService](CrossPlatformService.md) Constructor() 
+ 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey(device: string, key: string, action: string) 
+ Assigns an action to a device key, example:
 	```lua
 	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
 	```
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceConfig`(device: string, controls: Dictionary<string, string?>)` 
-Sets the entire configuration of a device, example:
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceConfig(device: string, controls: Dictionary<string, string>) 
+ Sets the entire configuration of a device, example:
 	```lua
 	CrossPlatformService:SetDeviceConfig("Keyboard", {
 		W = "Up",
@@ -122,11 +93,9 @@ Sets the entire configuration of a device, example:
 	})
 	```
 	
-___
-### [void](https://create.roblox.com/docs/scripting/luau/nil) SetPlayerCharacter`(character: Character)` 
-Sets the player character
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPlayerCharacter(character: Character) 
+ Sets the player character
 	
-___
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
