@@ -23,6 +23,7 @@ end
 	@about
 		@TrackCollisions Its a property of PhysicalObject, in this class is marked as readonly and is set false to optimizate
 		@Range Is the range of the light
+		@Transparency Is the transparency of the light
 		@Brightness Is the brightness of the light
 		@Track If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
 		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
