@@ -439,7 +439,8 @@ Is the brightness of the light
 		]]
 Brightness: number,
 --[[
-]]
+Is the transparency of the light
+		]]
 Transparency: number,
 --[[
 ]]
@@ -652,7 +653,8 @@ This class is useful to have a workspace and manage your project more easily
 	]]
 export type Scene = BaseObject & {
 --[[
-]]
+The scene camera
+		]]
 Camera: Camera,
 --[[
 This is the LightingEnvironment of the scene
@@ -667,17 +669,19 @@ This is the SoundEnvironment of the scene
 		]]
 SoundEnvironment: SoundEnvironment,
 --[[
-This table stores all the objects in the scene
+This environment stores all the objects in the scene
 		]]
 Objects: ObjectEnvironment,
 --[[
 ]]
 new: () -> Scene,
 --[[
-]]
+Enables the scene, which will make it process physics, lights, sounds and sprites
+	]]
 Enable: (self: Scene) -> nil,
 --[[
-]]
+Disables the scene
+	]]
 Disable: (self: Scene) -> nil,
 --[[
 Gets all the objects with the provided tags in the scene

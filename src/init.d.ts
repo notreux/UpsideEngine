@@ -528,7 +528,8 @@ Is the brightness of the light
 */
 Brightness: number;
 /**
-
+Is the transparency of the light
+		
 */
 Transparency: number;
 /**
@@ -789,7 +790,8 @@ This class is useful to have a workspace and manage your project more easily
 */ 
 export declare interface Scene extends BaseObject {
 /**
-
+The scene camera
+		
 */
 Camera: Camera;
 /**
@@ -808,7 +810,7 @@ This is the SoundEnvironment of the scene
 */
 SoundEnvironment: SoundEnvironment;
 /**
-This table stores all the objects in the scene
+This environment stores all the objects in the scene
 		
 */
 Objects: ObjectEnvironment;
@@ -817,11 +819,13 @@ Objects: ObjectEnvironment;
 */
 new(): Scene;
 /**
-
+Enables the scene, which will make it process physics, lights, sounds and sprites
+	
 */
 Enable(): null;
 /**
-
+Disables the scene
+	
 */
 Disable(): null;
 /**
