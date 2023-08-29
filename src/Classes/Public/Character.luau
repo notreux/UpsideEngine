@@ -74,7 +74,7 @@ function character.new(): Character
 	self.Health = 100
 	self.MaxHealth = 100
 	self.WalkSpeed = 50
-	self.JumpPower = 250
+	self.JumpPower = 100
 
 	self:SetClassName(script.Name)
 	return setmetatable(self, character)
