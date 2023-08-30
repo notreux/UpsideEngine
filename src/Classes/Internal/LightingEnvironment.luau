@@ -56,6 +56,7 @@ function lightingEnvironment:DrawPixels(pixelSize: number)
 	bigPixel.BackgroundTransparency = self.AmbientTransparency
 	bigPixel.BackgroundColor3 = self.AmbientColor
 	bigPixel.BorderSizePixel = 0
+	bigPixel.ZIndex = 1000
 
 	local canvas = Instance.new("Frame")
 	canvas.Name = "Canvas"
@@ -74,6 +75,7 @@ function lightingEnvironment:DrawPixels(pixelSize: number)
 		for y = 0, iterations - 1 do
 			local px = pixel:Clone()
 			px.Parent = canvas
+			px.ZIndex = 1000
 			px.Position = UDim2.fromOffset(x * size, y * size)
 		end
 	end
