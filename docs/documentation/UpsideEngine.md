@@ -16,15 +16,8 @@ ___
 
 # Methods
 
-## [void]() `Create(ClassName: string, ...any)` 
+## [void]() `new(ClassName: string)` 
 This method creates any of these classes:
-
-` Scene, Environment, Character, Sprite, Particle, PhysicalObject, Sound, Light `
-
-___
-
-## [void]() `Extend(ClassName: string, ClassData: ClassData)` 
-This method extends any of these classes:
 
 ` Scene, Environment, Character, Sprite, Particle, PhysicalObject, Sound, Light `
 
