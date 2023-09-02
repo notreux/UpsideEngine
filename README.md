@@ -43,6 +43,10 @@ Many things have been changed for the long term health of the project, the follo
     - Impact: Any use of the "Load" and "Unload" methods in your code will cause errors.
     - Action required: You have to use the scene "Enable" and "Disable" methods instead.
 
+- The "FindByName" and "HasOne" methods has been removed from the scene object
+    - Impact: Any use of the "FindByName" and "HasOne" methods in your code will cause errors.
+    - Action required: You can use the same methods in the property "Objects".
+
 ## Features
 - Added collision masks 
 - Added parallel lighting system
