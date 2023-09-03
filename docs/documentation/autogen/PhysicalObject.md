@@ -34,9 +34,7 @@ This dictionary stores all the blacklisted objects, to blacklist an object do it
 { }
 ```
 ## [table](table.md) Hitbox 
-!!! warning 
-			Experimental, dont use
-		 
+The collision mask of the object
 ```lua
 { }
 ```
@@ -74,10 +72,6 @@ This property defines if the object is going to have physics and collisions or n
 
 ## [PhysicalObject](PhysicalObject.md) Constructor() 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetHitboxShape(`shape: string`) 
- !!! warning 
-		Sets the hitbox shape. Experimental, dont use
-	
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) Load(`url: string`) 
  Loads an image for the current object and is set as the instance image
 	
