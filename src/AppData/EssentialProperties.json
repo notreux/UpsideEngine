@@ -4,7 +4,7 @@
 		"Anchored",
 		"CanCollide",
 		"TrackCollisions",
-		"HitboxShape",
+		"Hitbox",
 		"CollisionGroup",
 		"Tags"
 	],

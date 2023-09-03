@@ -13,40 +13,6 @@ local function shouldSkip(object, meta)
 		or object.Id == meta.Id
 end
 
-local function toOffset(instance, vertex)
-	return instance.AbsoluteSize * vertex
-end
-
-local function checkByPoint(object, position, scene)
-	local instance = object.Instance
-	local hitbox = object.Hitbox
-	local collisions = {}
-
-	for i = 1, #hitbox do
-		local rayParams = {
-			From = position + toOffset(instance, hitbox[i]),
-			To = position + toOffset(instance, hitbox[i + 1] or hitbox[1]),
-			FilterType = "Blacklist",
-			List = { object },
-		}
-
-		local _, results = scene:Raycast(rayParams)
-		for _, result in results do
-			local meta = result.Object
-			if shouldSkip(object, result.Object) then
-				continue
-			end
-
-			table.insert(collisions, {
-				object = meta,
-				mtv = result.Object.AbsolutePosition - result.Position - result.Object.AbsoluteSize / 2,
-			})
-		end
-	end
-
-	return collisions
-end
-
 local function checkByShape(object, position, scene)
 	local stop = false
 	local instance = object.Instance
@@ -80,9 +46,5 @@ local function checkByShape(object, position, scene)
 end
 
 return function(object, ...)
-	if object.HitboxShape == "Custom" then
-		return checkByPoint(object, ...)
-	else
-		return checkByShape(object, ...)
-	end
+	return checkByShape(object, ...)
 end

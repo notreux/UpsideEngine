@@ -703,9 +703,8 @@ This dictionary stores all the blacklisted objects, to blacklist an object do it
 */
 CollisionBlacklist: 	{ 	};
 /**
-!!! warning 
-			Experimental, dont use
-		
+This the CollisionMask of the object
+	
 */
 Hitbox: 	{ 	};
 /**
@@ -762,12 +761,6 @@ ChromaticAberrationConnection: boolean;
 
 */
 new(): PhysicalObject;
-/**
-!!! warning 
-		Sets the hitbox shape. Experimental, dont use
-	
-*/
-SetHitboxShape(shape: string): null;
 /**
 Loads an image for the current object and is set as the instance image
 	

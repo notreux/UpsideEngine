@@ -92,19 +92,6 @@ function physicalObject.new(): PhysicalObject
 	return setmetatable(self, physicalObject)
 end
 
---[[={
-	@desc 
-	!!! warning 
-		Sets the hitbox shape. Experimental, dont use
-	@link void.link
-}=]]
-
-function physicalObject:SetHitboxShape(shape: string)
-	assert(typeof(shape) == "string", "The Shape must be a string")
-	self.HitboxShape = shape:lower()
-
-	return
-end
 
 --[[={
 	@desc Loads an image for the current object and is set as the instance image
@@ -187,12 +174,7 @@ end
 		@Force Is the force which is applied in the moment to the object
 		@Velocity Is the velocity applied to the object
 		@ConstantVelocity This property defines whether the object will maintain velocity after a collision or not
-		@Hitbox 
-		!!! warning 
-			Experimental, dont use
-		@HitboxShape 
-		!!! warning 
-			Experimental, dont use
+		@Hitbox This the CollisionMask of the object
 	@events 
 		@Collision Params -> [PhysicalObject](PhysicalObject.md)
 		This event is fired when the object collides with other object
