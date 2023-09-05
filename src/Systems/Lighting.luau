@@ -1,3 +1,4 @@
+local getDistance = require(script.Parent.Parent.Private.Util.Math.GetDistance)
 local IsOutScreen = require(script.Parent.Parent.Private.Util).IsOutScreen
 local normalize = require(script.Parent.Parent.Private.Util).Normalize
 local clock = os.clock
@@ -18,11 +19,6 @@ end
 
 local function sortf(l1, l2)
 	return l1.range > l2.range
-end
-
-local function getDistance(v1, v2)
-	local direction = v1 - v2
-	return direction:Dot(direction)
 end
 
 local function isInsideBigPixel(bpx, light, range)
