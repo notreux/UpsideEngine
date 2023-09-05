@@ -1,5 +1,4 @@
 local solvers = {}
-
 for _, solver in script:GetChildren() do
 	solvers[solver.Name] = require(solver)
 end
@@ -13,7 +12,7 @@ local function shouldSkip(object, meta)
 		or object.Id == meta.Id
 end
 
-local function checkByShape(object, position, scene)
+local function checkByShape(object, position, objects)
 	local stop = false
 	local instance = object.Instance
 
@@ -27,7 +26,7 @@ local function checkByShape(object, position, scene)
 		},
 	}
 
-	for _, meta in scene.Objects do
+	for _, meta in objects do
 		if shouldSkip(object, meta) then
 			continue
 		end
@@ -35,7 +34,7 @@ local function checkByShape(object, position, scene)
 		local isColliding, mtv = solve(fakeObject, meta)
 		if isColliding then
 			stop = stop or (meta.CanCollide and not meta.Collisions[object.Id])
-			table.insert(collisions, {
+			table.insert(collisions, meta.Id, {
 				object = meta,
 				mtv = mtv,
 			})
@@ -45,6 +44,4 @@ local function checkByShape(object, position, scene)
 	return collisions, stop
 end
 
-return function(object, ...)
-	return checkByShape(object, ...)
-end
+return checkByShape

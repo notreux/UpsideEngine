@@ -35,33 +35,58 @@ local function emit(self, meta, active)
 	rawset(recentC, meta.Id, 5)
 end
 
+local function getCollidingObjects(distance, object, objects)
+	local absolutePosition = object.Instance.AbsolutePosition
+	local stop, collisions, dis, position = nil, nil, nil, nil
+
+	for x = 4, 1, -1 do
+		dis = distance / x
+		position = absolutePosition + dis
+		collisions, stop = util.GetCollidingObjects(object, position, objects)
+
+		if stop and object.CanCollide then
+			break
+		end
+	end
+
+	return dis, collisions
+end
+
 return function(scene, deltaTime)
-	for _, object in scene.Objects do
-		if not object:IsA("PhysicalObject") or (not object.TrackCollisions or object.Anchored) then
+	local objects = {}
+	local freefall = {}
+
+	for index, object in scene.Objects do
+		if not object:IsA("PhysicalObject") or not object.TrackCollisions then
+			continue
+		elseif object.Anchored then
+			objects[index] = object
 			continue
 		end
 
+		freefall[index] = object
+	end
+
+	for _, object in freefall do
 		local instance = object.Instance
-		local absolutePosition = instance.AbsolutePosition
+		local smtv = Vector2.zero
 
 		local colliding, recentC = {}, getRecentCollisions(object)
 		local distance = (object.Force + object.Velocity) * deltaTime
 
-		local smtv, position = Vector2.zero, nil
-		local stop, collisions, dis = nil, nil, nil
+		local xDis, xCollisions = getCollidingObjects(Vector2.new(distance.X, 0), object, objects)
+		local yDis, yCollisions = getCollidingObjects(Vector2.new(0, distance.Y), object, objects)
 
-		for i = 4, 1, -1 do
-			dis = distance / i
-			position = absolutePosition + dis
-			collisions, stop = util.GetCollidingObjects(object, position, scene)
-
-			if stop and object.CanCollide then
-				dis = dis
-				break
+		for index, collision in yCollisions do
+			local xCollision = xCollisions[index]
+			if not xCollision then
+				continue
 			end
+
+			xCollision.mtv = Vector2.new(xCollision.mtv.X, collision.mtv.Y)
 		end
 
-		for _, collision in collisions do
+		for _, collision in xCollisions do
 			local meta = collision.object
 			if object.CanCollide and meta.CanCollide then
 				smtv += collision.mtv
@@ -89,14 +114,12 @@ return function(scene, deltaTime)
 			end
 		end
 
-		if object.Anchored then
-			continue
-		elseif not object.ConstantVelocityEnabled then
+		if not object.ConstantVelocityEnabled then
 			adaptToCollisions(object, "Velocity", smtv)
 		end
 
 		adaptToCollisions(object, "Force", smtv)
-		distance = Vector2.new(smtv.X == 0 and distance.X or dis.X, smtv.Y == 0 and distance.Y or dis.Y)
+		distance = Vector2.new(smtv.X == 0 and distance.X or xDis.X, smtv.Y == 0 and distance.Y or yDis.Y)
 		instance.Position += util.ToUDim2(distance - smtv)
 
 		object.IsGrounded = object.Force.Y == 0
