@@ -1388,10 +1388,15 @@
 </code></pre></div>
 <h2 id="table-active"><a href="table.md">table</a> Active<a class="headerlink" href="#table-active" title="Anchor link to this section for reference">&para;</a></h2>
 <p>This table stores information about the active spritesheet</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="n">Name</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">CurrentFrame</span><span class="p">:</span> <span class="n">Vector2</span><span class="p">,</span>
+    <span class="n">SecondsPerFrame</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="n">NextStepReady</span><span class="p">:</span> <span class="n">boolean</span><span class="p">,</span>
+<span class="p">}</span>
 </code></pre></div>
 <h1 id="methods">Methods<a class="headerlink" href="#methods" title="Anchor link to this section for reference">&para;</a></h1>
-<h2 id="sprite-constructor"><a href="Sprite.html">Sprite</a> Constructor()<a class="headerlink" href="#sprite-constructor" title="Anchor link to this section for reference">&para;</a></h2>
+<h2 id="sprite-constructor"><a href="Sprite.html">Sprite</a> Constructor(<code></code>)<a class="headerlink" href="#sprite-constructor" title="Anchor link to this section for reference">&para;</a></h2>
 <p>The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance </p>
 <h2 id="void-setspritesheetname-string-url-string-frames-vector2"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> SetSpriteSheet(<code>name: string, url: string, frames: Vector2</code>)<a class="headerlink" href="#void-setspritesheetname-string-url-string-frames-vector2" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2</p>
@@ -1399,7 +1404,7 @@
 <p>Adds a new sprite list to the object, it will play the animation using the order in the provided list, this list must contain the urls of every frame</p>
 <h2 id="void-playname-string-secondsperframe-number"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> Play(<code>name: string, secondsPerFrame: number?</code>)<a class="headerlink" href="#void-playname-string-secondsperframe-number" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Plays the specified sprite if exists, if secondsEveryFrame is specified it will be used instead of .SecondsPerFrame</p>
-<h2 id="void-stop"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> Stop()<a class="headerlink" href="#void-stop" title="Anchor link to this section for reference">&para;</a></h2>
+<h2 id="void-stop"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> Stop(<code></code>)<a class="headerlink" href="#void-stop" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Stops the reproduction of the current playing sprite sheet or sprite list</p>
 <h1 id="events">Events<a class="headerlink" href="#events" title="Anchor link to this section for reference">&para;</a></h1>
 <table>

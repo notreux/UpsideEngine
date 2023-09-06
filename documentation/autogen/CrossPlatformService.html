@@ -1392,10 +1392,10 @@
 <p>We assigned an action for our devices but how can we detect when an action is triggered? well we can listen to three events
 "InputBegin", "InputChange", "InputEnd", example of use:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">-- If the movement belongs to a stick, the second parameter will give the current position of the stick</span>
-<span class="n">CrossPlatformService</span><span class="p">:</span><span class="n">On</span><span class="p">(</span><span class="s2">&quot;InputBegin&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+<span class="n">CrossPlatformService</span><span class="p">:</span><span class="n">On</span><span class="p">(</span><span class="s2">&quot;InputBegin&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">inputObject</span><span class="p">)</span>
     <span class="kd">local</span> <span class="n">character</span> <span class="o">=</span> <span class="n">CrossPlatformService</span><span class="p">.</span><span class="n">Character</span>
 
-    <span class="kr">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;Jump&quot;</span> <span class="kr">then</span>
+    <span class="kr">if</span> <span class="n">inputObject</span><span class="p">.</span><span class="n">Action</span> <span class="o">==</span> <span class="s2">&quot;Jump&quot;</span> <span class="kr">then</span>
         <span class="n">character</span><span class="p">:</span><span class="n">Jump</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
     <span class="kr">end</span>
 <span class="kr">end</span><span class="p">)</span>
@@ -1412,46 +1412,46 @@
 <h2 id="table-configs"><a href="table.md">table</a> Configs<a class="headerlink" href="#table-configs" title="Anchor link to this section for reference">&para;</a></h2>
 <p>This table stores the default controllers</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-    <span class="n">Keyboard</span><span class="p">:</span>   <span class="p">{</span>
-        <span class="n">W</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">A</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">S</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">D</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">Up</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">Left</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">Down</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">Right</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">Space</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">Gamepad</span><span class="p">:</span>    <span class="p">{</span>
-        <span class="n">ButtonA</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">Thumbstick1</span><span class="p">:</span>    <span class="p">{</span>
-            <span class="n">Up</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-            <span class="n">Left</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-            <span class="n">Down</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-            <span class="n">Right</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">},</span>
-    <span class="n">Mobile</span><span class="p">:</span>     <span class="p">{</span>
-        <span class="n">JumpButton</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">Thumbstick1</span><span class="p">:</span>    <span class="p">{</span>
-            <span class="n">Up</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-            <span class="n">Left</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-            <span class="n">Down</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-            <span class="n">Right</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">},</span>
-<span class="p">}</span> 
+    <span class="n">Keyboard</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">W</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">A</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">S</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">D</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Up</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Left</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Down</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Right</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Space</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+<span class="p">},</span>
+    <span class="n">Gamepad</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">ButtonA</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Thumbstick1</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">Up</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Left</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Down</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Right</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+<span class="p">},</span>
+<span class="p">},</span>
+    <span class="n">Mobile</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">JumpButton</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Thumbstick1</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">Up</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Left</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Down</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="n">Right</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+<span class="p">},</span>
+<span class="p">},</span>
+<span class="p">}</span>
 </code></pre></div>
 <h1 id="methods">Methods<a class="headerlink" href="#methods" title="Anchor link to this section for reference">&para;</a></h1>
-<h2 id="crossplatformservice-constructor"><a href="CrossPlatformService.html">CrossPlatformService</a> Constructor()<a class="headerlink" href="#crossplatformservice-constructor" title="Anchor link to this section for reference">&para;</a></h2>
+<h2 id="crossplatformservice-constructor"><a href="CrossPlatformService.html">CrossPlatformService</a> Constructor(<code></code>)<a class="headerlink" href="#crossplatformservice-constructor" title="Anchor link to this section for reference">&para;</a></h2>
 <h2 id="void-setdevicekeydevice-string-key-string-action-string"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> SetDeviceKey(<code>device: string, key: string, action: string</code>)<a class="headerlink" href="#void-setdevicekeydevice-string-key-string-action-string" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Assigns an action to a device key, example:
-<div class="highlight"><pre><span></span><code><span class="n">CrossPlatformService</span><span class="p">:</span><span class="n">SetDeviceKey</span><span class="p">(</span><span class="s2">&quot;Keyboard&quot;</span><span class="p">,</span> <span class="s2">&quot;Space&quot;</span><span class="p">,</span> <span class="s2">&quot;Jump&quot;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="n">CrossPlatformService</span><span class="p">:</span><span class="n">SetDeviceKey</span><span class="p">(</span><span class="s2">&quot;Keyboard&quot;</span><span class="p">,</span> <span class="s2">&quot;Space&quot;</span><span class="p">,</span> <span class="s2">&quot;Jump&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <h2 id="void-setdeviceconfigdevice-string-controls-dictionarystring-string"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> SetDeviceConfig(<code>device: string, controls: Dictionary&lt;string, string&gt;</code>)<a class="headerlink" href="#void-setdeviceconfigdevice-string-controls-dictionarystring-string" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Sets the entire configuration of a device, example:
-<div class="highlight"><pre><span></span><code><span class="n">CrossPlatformService</span><span class="p">:</span><span class="n">SetDeviceConfig</span><span class="p">(</span><span class="s2">&quot;Keyboard&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <div class="highlight"><pre><span></span><code><span class="n">CrossPlatformService</span><span class="p">:</span><span class="n">SetDeviceConfig</span><span class="p">(</span><span class="s2">&quot;Keyboard&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="n">W</span> <span class="o">=</span> <span class="s2">&quot;Up&quot;</span><span class="p">,</span>
     <span class="n">A</span> <span class="o">=</span> <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
     <span class="n">S</span> <span class="o">=</span> <span class="s2">&quot;Down&quot;</span><span class="p">,</span>

@@ -1379,7 +1379,7 @@
 <p>This class is used to storage objects and interact with them in an easier way</p>
 <h1 id="properties">Properties<a class="headerlink" href="#properties" title="Anchor link to this section for reference">&para;</a></h1>
 <h2 id="table-content"><a href="table.md">table</a> Content<a class="headerlink" href="#table-content" title="Anchor link to this section for reference">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>   <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="p">}</span>
 </code></pre></div>
 <h2 id="number-count"><a href="number.md">number</a> Count<a class="headerlink" href="#number-count" title="Anchor link to this section for reference">&para;</a></h2>
 <p>The amount of objects in this environment</p>
@@ -1396,16 +1396,15 @@
 <h2 id="boolean-hasoneindex-string"><a href="https://create.roblox.com/docs/scripting/luau/booleans">boolean</a> HasOne(<code>index: string</code>)<a class="headerlink" href="#boolean-hasoneindex-string" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Checks if the environment has a value with the specified index</p>
 <h2 id="boolean-dictionary-hasobjects-arraystring"><a href="https://create.roblox.com/docs/scripting/luau/booleans">(boolean, Dictionary<string, boolean>)</a> Has(<code>objects: Array&lt;string&gt;</code>)<a class="headerlink" href="#boolean-dictionary-hasobjects-arraystring" title="Anchor link to this section for reference">&para;</a></h2>
-<p><div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">hasAll</span><span class="p">,</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="n">treeEnv</span><span class="p">:</span><span class="n">Has</span><span class="p">({</span>        
+<p>Checks if the environment contains every specified index and returns a boolean and a dictionary with boolean values, example:
+    <div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">hasAll</span><span class="p">,</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="n">treeEnv</span><span class="p">:</span><span class="n">Has</span><span class="p">({</span>
     <span class="s2">&quot;Tree1&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Tree2&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Tree4&quot;</span> 
-    <span class="p">})</span>  
+    <span class="s2">&quot;Tree4&quot;</span>
+<span class="p">})</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">hasAll</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)</span> 
-<span class="c1">-- output: false, { Tree1 = true, Tree2 = true, Tree4 = false } </span>
-</code></pre></div>
- Checks if the environment contains every specified index and returns a boolean and a dictionary with boolean values, example:</p>
+<span class="nb">print</span><span class="p">(</span><span class="n">hasAll</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)</span> <span class="c1">-- output: false, { Tree1 = true, Tree2 = true, Tree4 = false }</span>
+</code></pre></div></p>
 <h2 id="void-addobjects-dictionarystring-any"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> Add(<code>objects: Dictionary&lt;string, any&gt;</code>)<a class="headerlink" href="#void-addobjects-dictionarystring-any" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Adds objects with the specified index
     <div class="highlight"><pre><span></span><code><span class="n">treeEnv</span><span class="p">:</span><span class="n">Add</span><span class="p">({</span>
@@ -1423,7 +1422,7 @@
 </code></pre></div></p>
 <h2 id="void-updateobjects-dictionarystring-any"><a href="https://create.roblox.com/docs/scripting/luau/nil">void</a> Update(<code>objects: Dictionary&lt;string, any&gt;</code>)<a class="headerlink" href="#void-updateobjects-dictionarystring-any" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Updates the objects with the specified index, example:
-<div class="highlight"><pre><span></span><code><span class="n">treeEnv</span><span class="p">:</span><span class="n">Update</span><span class="p">({</span>
+    <div class="highlight"><pre><span></span><code><span class="n">treeEnv</span><span class="p">:</span><span class="n">Update</span><span class="p">({</span>
     <span class="n">Tree1</span> <span class="o">=</span> <span class="n">treeEnv</span><span class="p">:</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;Tree2&quot;</span><span class="p">),</span>
     <span class="n">Tree2</span> <span class="o">=</span> <span class="n">treeEnv</span><span class="p">:</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;Tree1&quot;</span><span class="p">),</span>
 <span class="p">})</span>
