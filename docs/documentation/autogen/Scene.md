@@ -3,6 +3,9 @@ This class is useful to have a workspace and manage your project more easily
 	 
 # Properties
 
+## [boolean](boolean.md) OnlyTrackVisible
+This property defines whether physics should be calculated only for visible objects
+		
 ## [Camera](Camera.md) Camera
 The scene camera
 		
@@ -22,18 +25,18 @@ This environment stores all the objects in the scene
 
 # Methods
 
-## [Scene](Scene.md) Constructor() 
+## [Scene](Scene.md) Constructor(` `) 
  
-## [void](https://create.roblox.com/docs/scripting/luau/tables#arrays) Enable() 
+## [void](https://create.roblox.com/docs/scripting/luau/tables#arrays) Enable(` `) 
  Enables the scene, which will make it process physics, lights, sounds and sprites
 	
-## [void](https://create.roblox.com/docs/scripting/luau/tables#arrays) Disable() 
+## [void](https://create.roblox.com/docs/scripting/luau/tables#arrays) Disable(` `) 
  Disables the scene
 	
-## [Array<string>](https://create.roblox.com/docs/scripting/luau/tables#arrays) GetTaggedObjects(`tag: string`) 
+## [Array<string>](https://create.roblox.com/docs/scripting/luau/tables#arrays) GetTaggedObjects(`tag: string `) 
  Gets all the objects with the provided tags in the scene
 	
-## [Raycast2dResult](/documentation/datatypes/Raycast2DResult.html) Raycast(`info: Raycast2dParams`) 
+## [Raycast2dResult](/documentation/datatypes/Raycast2DResult.html) Raycast(`info: Raycast2dParams `) 
  Casts a ray using the Raycast2dParams. If it finds an elegible object a Raycast2dResult is returned containing the results of the operations
 	
 

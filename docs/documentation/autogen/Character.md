@@ -19,15 +19,15 @@ The jump power of the character
 
 # Methods
 
-## [Character](Character.md) Constructor() 
+## [Character](Character.md) Constructor(` `) 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) UpdateHealth(`Health: number`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) UpdateHealth(`Health: number `) 
  Updates the amount of health of the character 
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Jump(`jumpPower: number?`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Jump(`jumpPower: number? `) 
  The character jumps with the provided jump power, if none is provided it will use the JumpPower property as value 
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) MoveTo(`target: Vector2`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) MoveTo(`target: Vector2 `) 
  The character walks directly to the provided position
 	
 

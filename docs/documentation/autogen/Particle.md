@@ -58,30 +58,35 @@ The subject which is going to be the center of emission of the particle, a chara
 Is a table with the initial properties of the particle which is going to be generated
 		 
 ```lua
-{ }
+{
+ 	Image: string,
+}
 ```
 ## [table](table.md) Goals 
 Is a table with the goals of the particles
 		 
 ```lua
-{ }
+{
+ 	Size: UDim2,
+	ImageTransparency: number,
+}
 ```
 
 
 # Methods
 
-## [Particle](Particle.md) Constructor() 
+## [Particle](Particle.md) Constructor(` `) 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character `) 
  Sets the subject property
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetAngle(`Angle: Vector2`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetAngle(`Angle: Vector2 `) 
  Sets the angle property of the particle
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetMaxRate(`maxRate: number`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetMaxRate(`maxRate: number `) 
  Sets the maximum amount of particles that can exist at the same time
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Emit(`rate: number`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Emit(`rate: number `) 
  Emits the specified amount of particles, if none is provided then will use as amount the Rate property
 	
 

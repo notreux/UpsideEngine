@@ -17,12 +17,12 @@ Defines if the connection is active or not
 
 # Methods
 
-## [Connection](Connection.md) Constructor(`eventId: number, event: table`) 
+## [Connection](Connection.md) Constructor(`eventId: number, event: table `) 
  
-## [thread?](https://create.roblox.com/docs/reference/engine/libraries/coroutine) Wait(`seconds: number?`) 
+## [thread?](https://create.roblox.com/docs/reference/engine/libraries/coroutine) Wait(`seconds: number? `) 
  Wait until the event gets fired, if seconds were specified, once the specified seconds have elapsed, it will stop waiting
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Disconnect() 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Disconnect(` `) 
  Deletes the connection and the listener
 	
 

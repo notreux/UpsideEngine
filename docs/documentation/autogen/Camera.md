@@ -4,7 +4,7 @@ This class is included on every scene, it's used to move you around the scene
 # Properties
 
 ## [UDim2](UDim2.md) OffsetPosition
-This property is used to move as many pixels as you want the camera to adjust it to a desired position
+
 ## [Vector2](Vector2.md) LocalPosition
 This property is used to move the camera internally
 		
@@ -23,18 +23,18 @@ This property defines the object which is going to follow the camera
 
 # Methods
 
-## [Camera](Camera.md) Constructor(`scene: Scene`) 
+## [Camera](Camera.md) Constructor(`scene: Scene `) 
  
-## [void](https://create.roblox.com/docs/reference/engine/datatypes/UDim2) GetPosition() 
+## [void](https://create.roblox.com/docs/reference/engine/datatypes/UDim2) GetPosition(` `) 
  Gets the camera position
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPosition(`udim2: UDim2`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPosition(`udim2: UDim2 `) 
  Sets the camera position
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character `) 
  Sets the camera subject
 	
-## [void](void.md) LookTo(`object: PhysicalObject`) 
+## [void](void.md) LookTo(`object: PhysicalObject `) 
  
 
 # Events

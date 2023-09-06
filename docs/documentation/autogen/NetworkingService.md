@@ -16,12 +16,12 @@ Defines if the replicated objects by other clients should be destroyed when they
 
 # Methods
 
-## [NetworkingService](NetworkingService.md) Constructor() 
+## [NetworkingService](NetworkingService.md) Constructor(` `) 
  
-## [void](void.md) Replicate(`object: BaseObject`) 
+## [void](void.md) Replicate(`object: BaseObject `) 
  Replicates an object to other clients
 
-## [RBXScriptConnection](Connection.md	) ReplicateOnChange(`object: BaseObject`) 
+## [RBXScriptConnection](Connection.md	) ReplicateOnChange(`object: BaseObject `) 
  Replicates an object and each change on it, and returns the connections that detect each change of the object
 	
 

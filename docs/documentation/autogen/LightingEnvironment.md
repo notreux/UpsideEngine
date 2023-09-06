@@ -19,12 +19,12 @@ This is the intensity for all the lights in the scene
 
 # Methods
 
-## [LightingEnvironment](LightingEnvironment.md) Constructor(`scene: Scene`) 
+## [LightingEnvironment](LightingEnvironment.md) Constructor(`scene: Scene `) 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) DrawPixels(`pixelSize: number`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) DrawPixels(`pixelSize: number `) 
  Draws the pixels for the scene with the specified pixel size
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) UpdateScreen() 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) UpdateScreen(` `) 
  Updates the position, the transparency and the color of the ambient
 	
 

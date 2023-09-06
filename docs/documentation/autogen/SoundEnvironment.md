@@ -6,7 +6,7 @@
 
 # Methods
 
-## [SoundEnvironment](SoundEnvironment.md) Constructor() 
+## [SoundEnvironment](SoundEnvironment.md) Constructor(` `) 
  
 
 # Events

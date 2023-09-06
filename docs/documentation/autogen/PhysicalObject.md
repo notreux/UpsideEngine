@@ -34,7 +34,8 @@ This dictionary stores all the blacklisted objects, to blacklist an object do it
 { }
 ```
 ## [table](table.md) Hitbox 
-The collision mask of the object
+This the CollisionMask of the object
+	 
 ```lua
 { }
 ```
@@ -70,12 +71,12 @@ This property defines if the object is going to have physics and collisions or n
 
 # Methods
 
-## [PhysicalObject](PhysicalObject.md) Constructor() 
+## [PhysicalObject](PhysicalObject.md) Constructor(` `) 
  
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Load(`url: string`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Load(`url: string `) 
  Loads an image for the current object and is set as the instance image
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetChromaticAberration(`Intensity: number, Distance: number, Point: Vector2`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetChromaticAberration(`Intensity: number, Distance: number, Point: Vector2 `) 
  Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
 	to disable the chromatic aberration send 0 as first parameter
 	
