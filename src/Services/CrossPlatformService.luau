@@ -123,10 +123,10 @@ We assigned an action for our devices but how can we detect when an action is tr
 
 ```lua
 -- If the movement belongs to a stick, the second parameter will give the current position of the stick
-CrossPlatformService:On("InputBegin", function(action, position)
+CrossPlatformService:On("InputBegin", function(inputObject)
 	local character = CrossPlatformService.Character
 
-	if action == "Jump" then
+	if inputObject.Action == "Jump" then
 		character:Jump(150)
 	end
 end)
