@@ -634,12 +634,26 @@ Subject: Character;
 Is a table with the initial properties of the particle which is going to be generated
 		
 */
-Properties: { };
+Properties: {
+ /**
+@desc
+*/
+Image: string,
+};
 /**
 Is a table with the goals of the particles
 		
 */
-Goals: { };
+Goals: {
+ /**
+@desc
+*/
+Size: UDim2,
+/**
+@desc
+*/
+ImageTransparency: number,
+};
 /**
 
 */
@@ -909,7 +923,24 @@ Sprites: { };
 This table stores information about the active spritesheet
 
 */
-Active: { };
+Active: {
+ /**
+@desc
+*/
+Name: string,
+/**
+@desc
+*/
+CurrentFrame: Vector2,
+/**
+@desc
+*/
+SecondsPerFrame: number,
+/**
+@desc
+*/
+NextStepReady: boolean,
+};
 /**
 The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance 
 	
@@ -1008,7 +1039,44 @@ Configs: {
  /**
 @desc
 */
-Keyboard: { },
+Keyboard: {
+ /**
+@desc
+*/
+W: string,
+/**
+@desc
+*/
+A: string,
+/**
+@desc
+*/
+S: string,
+/**
+@desc
+*/
+D: string,
+/**
+@desc
+*/
+Up: string,
+/**
+@desc
+*/
+Left: string,
+/**
+@desc
+*/
+Down: string,
+/**
+@desc
+*/
+Right: string,
+/**
+@desc
+*/
+Space: string,
+},
 /**
 @desc
 */
@@ -1016,7 +1084,28 @@ Gamepad: {
  /**
 @desc
 */
-Thumbstick1: { },
+ButtonA: string,
+/**
+@desc
+*/
+Thumbstick1: {
+ /**
+@desc
+*/
+Up: string,
+/**
+@desc
+*/
+Left: string,
+/**
+@desc
+*/
+Down: string,
+/**
+@desc
+*/
+Right: string,
+},
 },
 /**
 @desc
@@ -1025,7 +1114,28 @@ Mobile: {
  /**
 @desc
 */
-Thumbstick1: { },
+JumpButton: string,
+/**
+@desc
+*/
+Thumbstick1: {
+ /**
+@desc
+*/
+Up: string,
+/**
+@desc
+*/
+Left: string,
+/**
+@desc
+*/
+Down: string,
+/**
+@desc
+*/
+Right: string,
+},
 },
 };
 /**
