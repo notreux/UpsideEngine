@@ -450,10 +450,6 @@ Count: number;
 */
 new(instanceType: string | void): Environment;
 /**
-
-*/
-__iter(): null;
-/**
 Gets the object with the specified index
 	
 */

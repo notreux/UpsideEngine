@@ -373,9 +373,6 @@ Count: number,
 ]]
 new: (instanceType: string?) -> Environment,
 --[[
-]]
-__iter: (self: Environment) -> nil,
---[[
 Gets the object with the specified index
 	]]
 Get: (self: Environment, index: string) -> any,
