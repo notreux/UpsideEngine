@@ -50,7 +50,11 @@ export type BaseObject = EventEmitter & {
 --[[
 The object instance
 		]]
-Instance: Instance,
+Instance: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 The object scene ID
 		]]
@@ -89,26 +93,46 @@ This class is included on every scene, it's used to move you around the scene
 export type Camera = EventEmitter & {
 --[[
 ]]
-OffsetPosition: UDim2,
+OffsetPosition: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This property is used to move the camera internally
 		]]
-LocalPosition: Vector2,
+LocalPosition: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
 		]]
-Limits: Vector2,
+Limits: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This property defines if the camera is going to follow the defined subject
 ]]
 FollowSubject: boolean,
 --[[
 ]]
-Scene: string,
+Scene: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This property defines the object which is going to follow the camera
 		]]
-Subject: Character,
+Subject: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 ]]
 new: (scene: Scene) -> Camera,
@@ -192,7 +216,11 @@ export type LightingEnvironment = Environment & {
 --[[
 This is the color of every pixel of the ambient, we can say is the darkness color
 		]]
-AmbientColor: Color3,
+AmbientColor: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This is the transparency of the ambient, we can say is the darkness transparency
 		]]
@@ -369,6 +397,15 @@ Checks if the environment has a value with the specified index
 HasOne: (self: Environment, index: string) -> boolean,
 --[[
 Checks if the environment contains every specified index and returns a boolean and a dictionary with boolean values, example:
+	```lua
+	local hasAll, dictionary = treeEnv:Has({
+		"Tree1",
+		"Tree2",
+		"Tree4"
+	})
+
+	print(hasAll, dictionary) -- output: false, { Tree1 = true, Tree2 = true, Tree4 = false }
+	```
 	]]
 Has: (self: Environment, objects: Array<string>) -> (boolean, Dictionary<string, boolean>),
 --[[
@@ -429,7 +466,11 @@ Its a property of PhysicalObject, in this class is marked as readonly and is set
 TrackCollisions: boolean,
 --[[
 ]]
-Color: Color3,
+Color: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 Is the range of the light
 		]]
@@ -462,11 +503,19 @@ export type Particle = BaseObject & {
 --[[
 Depending on the value the particles will be more dispersed
 		]]
-Angle: Vector2,
+Angle: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 Is the tween info of the tween which is going to be used to move the particles
 		]]
-Info: TweenInfo,
+Info: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 !!! warning 
 			Experimental, dont use
@@ -518,7 +567,11 @@ Rate: number,
 --[[
 The subject which is going to be the center of emission of the particle, a character, sprite, etc...
 		]]
-Subject: Character,
+Subject: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 Is a table with the initial properties of the particle which is going to be generated
 		]]
@@ -558,15 +611,27 @@ export type PhysicalObject = BaseObject & {
 --[[
 This is the point which is being used as reference for the chromatic aberration
 		]]
-ChromaticAberrationPoint: Vector2,
+ChromaticAberrationPoint: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 Is the force which is applied in the moment to the object
 		]]
-Force: Vector2,
+Force: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 Is the velocity applied to the object
 		]]
-Velocity: Vector2,
+Velocity: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 The instances which makes the chromatic aberration effect
 		]]
@@ -647,25 +712,49 @@ This class is useful to have a workspace and manage your project more easily
 	]]
 export type Scene = BaseObject & {
 --[[
+This property defines whether physics should be calculated only for visible objects
+		]]
+OnlyTrackVisible: boolean,
+--[[
 The scene camera
 		]]
-Camera: Camera,
+Camera: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This is the LightingEnvironment of the scene
 ]]
-LightingEnvironment: LightingEnvironment,
+LightingEnvironment: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This is the ParticleEnvironment of the scene
 		]]
-ParticleEnvironment: ParticleEnvironment,
+ParticleEnvironment: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This is the SoundEnvironment of the scene
 		]]
-SoundEnvironment: SoundEnvironment,
+SoundEnvironment: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This environment stores all the objects in the scene
 		]]
-Objects: ObjectEnvironment,
+Objects: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 ]]
 new: () -> Scene,
@@ -709,7 +798,11 @@ DistanceFading: boolean,
 --[[
 This table stores all the objects in the scene
 		]]
-Subject: Character,
+Subject: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 ]]
 new: () -> Sound,
@@ -795,10 +888,10 @@ We assigned an action for our devices but how can we detect when an action is tr
 
 ```lua
 -- If the movement belongs to a stick, the second parameter will give the current position of the stick
-CrossPlatformService:On("InputBegin", function(action, position)
+CrossPlatformService:On("InputBegin", function(inputObject)
 	local character = CrossPlatformService.Character
 
-	if action == "Jump" then
+	if inputObject.Action == "Jump" then
 		character:Jump(150)
 	end
 end)
@@ -821,27 +914,31 @@ StickSensibility: number,
 --[[
 This is the character which is going to be tracked by the camera
 		]]
-Character: Character,
+Character: 	{
+ --[[
+@desc]]
+	className: string,
+	},
 --[[
 This table stores the default controllers
 	]]
 Configs: 	{
  --[[
 @desc]]
-Keyboard: 	{ 	},
+	Keyboard: 	{ 	},
 --[[
 @desc]]
-Gamepad: 	{
+	Gamepad: 	{
  --[[
 @desc]]
-Thumbstick1: 	{ 	},
+		Thumbstick1: 	{ 	},
 	},
 --[[
 @desc]]
-Mobile: 	{
+	Mobile: 	{
  --[[
 @desc]]
-Thumbstick1: 	{ 	},
+		Thumbstick1: 	{ 	},
 	},
 	},
 --[[

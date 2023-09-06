@@ -79,8 +79,6 @@ end
 
 --[[={
 	@desc Checks if the environment contains every specified index and returns a boolean and a dictionary with boolean values, example:
-	@tsreturns LuaTuple<[boolean, Dictionary<any, boolean>]>
-	@link boolean.link
 	```lua
 	local hasAll, dictionary = treeEnv:Has({
 		"Tree1",
@@ -90,6 +88,8 @@ end
 
 	print(hasAll, dictionary) -- output: false, { Tree1 = true, Tree2 = true, Tree4 = false }
 	```
+	@tsreturns LuaTuple<[boolean, Dictionary<any, boolean>]>
+	@link boolean.link
 }=]]
 
 function environment:Has(objects: Array<string>): (boolean, Dictionary<string, boolean>)
