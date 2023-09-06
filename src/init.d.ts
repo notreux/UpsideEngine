@@ -54,12 +54,7 @@ export declare interface BaseObject extends EventEmitter {
 The object instance
 		
 */
-Instance: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Instance: Instance;
 /**
 The object scene ID
 		
@@ -69,7 +64,7 @@ Scene: string;
 This table stores all the tags of the object
 
 */
-Tags: 	{ 	};
+Tags: { };
 /**
 
 */
@@ -107,32 +102,17 @@ export declare interface Camera extends EventEmitter {
 /**
 
 */
-OffsetPosition: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+OffsetPosition: UDim2;
 /**
 This property is used to move the camera internally
 		
 */
-LocalPosition: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+LocalPosition: Vector2;
 /**
 This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
 		
 */
-Limits: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Limits: Vector2;
 /**
 This property defines if the camera is going to follow the defined subject
 
@@ -141,22 +121,12 @@ FollowSubject: boolean;
 /**
 
 */
-Scene: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Scene: string;
 /**
 This property defines the object which is going to follow the camera
 		
 */
-Subject: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Subject: Character;
 /**
 
 */
@@ -202,7 +172,7 @@ EventId: number;
 /**
 
 */
-Event: 	{ 	};
+Event: { };
 /**
 
 */
@@ -231,7 +201,7 @@ export declare interface EventEmitter extends BaseClass {
 This table store all the events of the class
 
 */
-EventsStorage: 	{ 	};
+EventsStorage: { };
 /**
 
 */
@@ -259,12 +229,7 @@ export declare interface LightingEnvironment extends Environment {
 This is the color of every pixel of the ambient, we can say is the darkness color
 		
 */
-AmbientColor: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+AmbientColor: Color3;
 /**
 This is the transparency of the ambient, we can say is the darkness transparency
 		
@@ -339,7 +304,7 @@ ClientId: number;
 The content of the request
 		
 */
-Content: 	{ 	};
+Content: { };
 /**
 
 */
@@ -439,7 +404,7 @@ export declare interface Environment extends BaseObject {
 /**
 
 */
-Content: 	{ 	};
+Content: { };
 /**
 The amount of objects in this environment
 
@@ -556,12 +521,7 @@ TrackCollisions: boolean;
 /**
 
 */
-Color: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Color: Color3;
 /**
 Is the range of the light
 		
@@ -600,22 +560,12 @@ export declare interface Particle extends BaseObject {
 Depending on the value the particles will be more dispersed
 		
 */
-Angle: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Angle: Vector2;
 /**
 Is the tween info of the tween which is going to be used to move the particles
 		
 */
-Info: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Info: TweenInfo;
 /**
 !!! warning 
 			Experimental, dont use
@@ -679,22 +629,17 @@ Rate: number;
 The subject which is going to be the center of emission of the particle, a character, sprite, etc...
 		
 */
-Subject: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Subject: Character;
 /**
 Is a table with the initial properties of the particle which is going to be generated
 		
 */
-Properties: 	{ 	};
+Properties: { };
 /**
 Is a table with the goals of the particles
 		
 */
-Goals: 	{ 	};
+Goals: { };
 /**
 
 */
@@ -733,42 +678,27 @@ export declare interface PhysicalObject extends BaseObject {
 This is the point which is being used as reference for the chromatic aberration
 		
 */
-ChromaticAberrationPoint: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+ChromaticAberrationPoint: Vector2;
 /**
 Is the force which is applied in the moment to the object
 		
 */
-Force: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Force: Vector2;
 /**
 Is the velocity applied to the object
 		
 */
-Velocity: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Velocity: Vector2;
 /**
 The instances which makes the chromatic aberration effect
 		
 */
-ChromaticAberration: 	{ 	};
+ChromaticAberration: { };
 /**
 This table stores all the active collisions
 		
 */
-Collisions: 	{ 	};
+Collisions: { };
 /**
 This dictionary stores all the blacklisted objects, to blacklist an object do it like this:
 		```lua
@@ -776,12 +706,12 @@ This dictionary stores all the blacklisted objects, to blacklist an object do it
 		```
 		
 */
-CollisionBlacklist: 	{ 	};
+CollisionBlacklist: { };
 /**
 This the CollisionMask of the object
 	
 */
-Hitbox: 	{ 	};
+Hitbox: { };
 /**
 The object mass
 		
@@ -866,52 +796,27 @@ OnlyTrackVisible: boolean;
 The scene camera
 		
 */
-Camera: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Camera: Camera;
 /**
 This is the LightingEnvironment of the scene
 
 */
-LightingEnvironment: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+LightingEnvironment: LightingEnvironment;
 /**
 This is the ParticleEnvironment of the scene
 		
 */
-ParticleEnvironment: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+ParticleEnvironment: ParticleEnvironment;
 /**
 This is the SoundEnvironment of the scene
 		
 */
-SoundEnvironment: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+SoundEnvironment: SoundEnvironment;
 /**
 This environment stores all the objects in the scene
 		
 */
-Objects: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Objects: ObjectEnvironment;
 /**
 
 */
@@ -965,12 +870,7 @@ DistanceFading: boolean;
 This table stores all the objects in the scene
 		
 */
-Subject: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Subject: Character;
 /**
 
 */
@@ -1004,12 +904,12 @@ SecondsPerFrame: number;
 This table stores all sprite sheets and sprite lists 
 		
 */
-Sprites: 	{ 	};
+Sprites: { };
 /**
 This table stores information about the active spritesheet
 
 */
-Active: 	{ 	};
+Active: { };
 /**
 The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance 
 	
@@ -1099,40 +999,35 @@ StickSensibility: number;
 This is the character which is going to be tracked by the camera
 		
 */
-Character: 	{
- /**
-@desc
-*/
-	className: string,
-	};
+Character: Character;
 /**
 This table stores the default controllers
 	
 */
-Configs: 	{
+Configs: {
  /**
 @desc
 */
-	Keyboard: 	{ 	},
+Keyboard: { },
 /**
 @desc
 */
-	Gamepad: 	{
+Gamepad: {
  /**
 @desc
 */
-		Thumbstick1: 	{ 	},
-	},
+Thumbstick1: { },
+},
 /**
 @desc
 */
-	Mobile: 	{
+Mobile: {
  /**
 @desc
 */
-		Thumbstick1: 	{ 	},
-	},
-	};
+Thumbstick1: { },
+},
+};
 /**
 
 */
@@ -1183,7 +1078,7 @@ export declare interface NetworkingService extends EventEmitter {
 A dictionary with the replicated objects by the clients
 		
 */
-Players: 	{ 	};
+Players: { };
 /**
 Defines if the replicated objects by other clients should be destroyed when they leaves
 	
@@ -1241,12 +1136,12 @@ export declare interface SceneManager extends EventEmitter {
 /**
 
 */
-Scenes: 	{ 	};
+Scenes: { };
 /**
 This dictionary stores all the active scenes
 	
 */
-ActiveScenes: 	{ 	};
+ActiveScenes: { };
 /**
 
 */
