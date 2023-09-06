@@ -42,6 +42,7 @@ function scene.new(): Scene
 	gameFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 	gameFrame.BackgroundTransparency = 1
 
+	self.OnlyTrackVisible = false
 	self.Camera = camera.new(self)
 	self.LightingEnvironment = lightingEnvironment.new(self)
 	self.ParticleEnvironment = particleEnvironment.new()
@@ -149,6 +150,7 @@ end
 --[[={
 	@desc This class is useful to have a workspace and manage your project more easily
 	@about
+		@OnlyTrackVisible This property defines whether physics should be calculated only for visible objects
 		@Objects This environment stores all the objects in the scene
 		@Camera The scene camera
 		@SoundEnvironment This is the SoundEnvironment of the scene

@@ -57,7 +57,12 @@ return function(scene, deltaTime)
 	local freefall = {}
 
 	for index, object in scene.Objects do
-		if not object:IsA("PhysicalObject") or not object.TrackCollisions then
+		if
+			not object:IsA("PhysicalObject")
+			or not object.TrackCollisions
+			or scene.OnlyTrackVisible
+				and util.IsOutScreen(object.Instance.AbsolutePosition, object.Instance.AbsoluteSize)
+		then
 			continue
 		elseif object.Anchored then
 			objects[index] = object
