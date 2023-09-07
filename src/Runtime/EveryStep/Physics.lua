@@ -60,6 +60,7 @@ return function(scene, deltaTime)
 		if
 			not object:IsA("PhysicalObject")
 			or not object.TrackCollisions
+			or not object.Instance.Visible
 			or scene.OnlyTrackVisible
 				and util.IsOutScreen(object.Instance.AbsolutePosition, object.Instance.AbsoluteSize)
 		then
