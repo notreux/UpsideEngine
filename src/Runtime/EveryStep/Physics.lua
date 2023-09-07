@@ -85,10 +85,11 @@ return function(scene, deltaTime)
 		for index, collision in yCollisions do
 			local xCollision = xCollisions[index]
 			if not xCollision then
+				xCollisions[index] = collision
 				continue
 			end
 
-			xCollision.mtv = Vector2.new(xCollision.mtv.X, collision.mtv.Y)
+			xCollision.mtv += Vector2.new(xCollision.mtv.X, collision.mtv.Y)
 		end
 
 		for _, collision in xCollisions do
@@ -124,7 +125,10 @@ return function(scene, deltaTime)
 		end
 
 		adaptToCollisions(object, "Force", smtv)
-		distance = Vector2.new(smtv.X == 0 and distance.X or xDis.X, smtv.Y == 0 and distance.Y or yDis.Y)
+		distance = Vector2.new(
+			smtv.X == 0 and math.round(distance.X) or math.round(xDis.X),
+			smtv.Y == 0 and math.round(distance.Y) or math.round(yDis.Y)
+		)
 		instance.Position += util.ToUDim2(distance - smtv)
 
 		object.IsGrounded = object.Force.Y == 0

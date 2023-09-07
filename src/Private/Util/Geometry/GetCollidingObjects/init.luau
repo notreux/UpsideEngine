@@ -6,10 +6,14 @@ end
 
 local solve = solvers.Polygon
 local function isFar(object, meta)
-	local osize = object.AbsoluteSize * 2
-	local msize = meta.AbsoluteSize * 2
+	local osize = object.AbsoluteSize * 4
+	local msize = meta.AbsoluteSize * 4
 
-	return getDistance(object.AbsolutePosition, meta.AbsolutePosition) > getDistance(osize, msize)
+	local distance = getDistance(object.AbsolutePosition, meta.AbsolutePosition)
+	local x = osize.X + msize.X
+	local y = osize.Y + msize.Y
+
+	return distance > x * x and distance > y * y
 end
 
 local function shouldSkip(object, meta)
@@ -43,10 +47,10 @@ local function checkByShape(object, position, objects)
 		local isColliding, mtv = solve(fakeObject, meta)
 		if isColliding then
 			stop = stop or (meta.CanCollide and not meta.Collisions[object.Id])
-			table.insert(collisions, meta.Id, {
+			collisions[meta.Id] = {
 				object = meta,
 				mtv = mtv,
-			})
+			}
 		end
 	end
 
