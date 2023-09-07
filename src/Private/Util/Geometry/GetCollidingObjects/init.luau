@@ -18,7 +18,7 @@ end
 
 local function shouldSkip(object, meta)
 	return not meta.TrackCollisions
-		or not object.Instance.Visible
+		or not meta.Instance.Visible
 		or isFar(object.Instance, meta.Instance)
 		or object.Id == meta.Id
 		or meta.CollisionGroup ~= object.CollisionGroup
