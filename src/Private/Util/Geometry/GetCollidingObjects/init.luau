@@ -61,7 +61,6 @@ local function checkByShape(object, distance, objects)
 		local isYFar = isFar(yFakeObject.Instance, meta.Instance)
 
 		if shouldSkip(object, meta) or isXFar and isYFar then
-			meta.Instance.ImageColor3 = Color3.fromRGB(255, 255, 255)
 			continue
 		end
 
@@ -76,7 +75,6 @@ local function checkByShape(object, distance, objects)
 			yStop, yMtv = isColliding(yFakeObject, meta, yStop)
 		end
 
-		meta.Instance.ImageColor3 = Color3.fromRGB(47, 47, 47)
 		collisions[meta.Id] = {
 			object = meta,
 			mtv = Vector2.new(xMtv.X, yMtv.Y),
