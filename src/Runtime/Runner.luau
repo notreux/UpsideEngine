@@ -51,7 +51,7 @@ local function everyStep()
 	end
 end
 
-if runService:IsRunning() then
+if runService:IsRunning() and runService:IsClient() then
 	runService.Heartbeat:Connect(everyStep)
 end
 
