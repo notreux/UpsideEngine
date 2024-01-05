@@ -11,14 +11,9 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 ⬜ Beams
 ⬜ Spotlights
 
-# Changelog v2.0.1
-Some changes were made to improve the project performance,
-## Features
-- Added OnlyTrackVisible property to the scene object
-
-## Improvements
-- Physics optimization
+# Changelog v2.0.2
+Some changes have been made before a major update to make the public version more stable in the meantime.
 
 ## Fixes
-- Physics fix: x and y axes are now calculated separately and not together as before, as this caused them not to work correctly
-- Some documentation examples were outdated
+- Delta time was unstable
+- Runtime was executed in server unnecessarily
