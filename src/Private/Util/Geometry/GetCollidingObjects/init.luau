@@ -42,6 +42,7 @@ local function checkByShape(object, distance, objects)
 	local collisions = {}
 	local xFakeObject = {
 		Hitbox = object.Hitbox,
+		HitboxScale = object.HitboxScale,
 		Instance = {
 			AbsolutePosition = instance.AbsolutePosition,
 			AbsoluteSize = instance.AbsoluteSize,
