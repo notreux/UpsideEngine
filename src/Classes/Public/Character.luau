@@ -7,12 +7,6 @@ local function check(greater, axePos, targetAxe)
 	return if greater then axePos >= targetAxe else axePos <= targetAxe
 end
 
-local function jump(self, jumpPower)
-	self.Velocity -= Vector2.new(0, jumpPower)
-	task.wait(0.3)
-	self.Velocity += Vector2.new(0, jumpPower)
-end
-
 local function getAxeData(self, target, axe)
 	local absPos = self.Instance.Position
 	absPos = Vector2.new(absPos.X.Offset, absPos.Y.Offset)
@@ -108,7 +102,7 @@ function character:Jump(jumpPower: number?)
 	end
 
 	jumpPower = (jumpPower or self.JumpPower) * 10
-	coroutine.wrap(jump)(self, jumpPower)
+	self.Velocity -= Vector2.new(0, jumpPower)
 end
 
 --[[={
