@@ -63,8 +63,6 @@ This property indicates if the object is touching the ground
 ## [boolean](boolean.md) TrackCollisions
 This property defines if the object is going to have physics and collisions or not
 		
-## [boolean](boolean.md) ConstantVelocityEnabled
-
 ## [boolean](boolean.md) ChromaticAberrationConnection
 
 
