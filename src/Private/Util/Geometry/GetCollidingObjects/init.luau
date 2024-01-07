@@ -17,8 +17,7 @@ local function isFar(object, meta)
 end
 
 local function shouldSkip(object, meta)
-	return not meta.TrackCollisions
-		or object.Id == meta.Id
+	return object.Id == meta.Id
 		or meta.CollisionGroup ~= object.CollisionGroup
 		or meta.CollisionBlacklist[object.Id]
 		or object.CollisionBlacklist[meta.Id]
@@ -26,6 +25,7 @@ end
 
 local function isColliding(object, meta, stop)
 	local isColliding, mtv = solve(object, meta)
+
 	if isColliding then
 		stop = stop or (meta.CanCollide and not meta.Collisions[object.Id])
 		return stop, mtv
@@ -65,15 +65,11 @@ local function checkByShape(object, distance, objects)
 			continue
 		end
 
-		xMtv = Vector2.zero
-		yMtv = Vector2.zero
+		xStop, xMtv = isColliding(xFakeObject, meta, xStop)
+		yStop, yMtv = isColliding(yFakeObject, meta, yStop)
 
-		if not isXFar then
-			xStop, xMtv = isColliding(xFakeObject, meta, xStop)
-		end
-
-		if not isYFar then
-			yStop, yMtv = isColliding(yFakeObject, meta, yStop)
+		if xMtv == Vector2.zero and yMtv == Vector2.zero then
+			continue
 		end
 
 		collisions[meta.Id] = {
