@@ -14,7 +14,7 @@
         "$className": "ServerScriptService",
         "$ignoreUnknownInstances": true,
         "Initilalizer": {
-          "$path": "bin/start.server.lua"
+          "$path": "bin/start.server.luau"
         }
       }
     }

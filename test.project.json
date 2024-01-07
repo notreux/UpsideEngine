@@ -12,7 +12,7 @@
         "$path": "default.project.json"
       },
       "Test-Runner": {
-        "$path": "bin/tests-runner.server.lua"
+        "$path": "bin/tests-runner.server.luau"
       }
     }
   }
