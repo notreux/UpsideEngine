@@ -53,6 +53,7 @@ return function(scene, deltaTime)
 			continue
 		end
 
+		objects[index] = object
 		freefall[index] = object
 	end
 
