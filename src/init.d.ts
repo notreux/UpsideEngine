@@ -771,10 +771,6 @@ TrackCollisions: boolean;
 /**
 
 */
-ConstantVelocityEnabled: boolean;
-/**
-
-*/
 ChromaticAberrationConnection: boolean;
 /**
 

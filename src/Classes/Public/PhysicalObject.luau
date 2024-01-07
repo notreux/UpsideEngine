@@ -79,7 +79,6 @@ function physicalObject.new(): PhysicalObject
 	self.CanCollide = true
 	self.IsGrounded = false
 	self.TrackCollisions = true
-	self.ConstantVelocityEnabled = false
 	self.ChromaticAberrationConnection = false
 
 	local instance = self.Instance
@@ -173,7 +172,6 @@ end
 		@TrackCollisions This property defines if the object is going to have physics and collisions or not
 		@Force Is the force which is applied in the moment to the object
 		@Velocity Is the velocity applied to the object
-		@ConstantVelocity This property defines whether the object will maintain velocity after a collision or not
 		@Hitbox This the CollisionMask of the object
 	@events 
 		@Collision Params -> [PhysicalObject](PhysicalObject.md)

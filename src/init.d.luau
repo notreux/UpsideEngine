@@ -638,9 +638,6 @@ This property defines if the object is going to have physics and collisions or n
 TrackCollisions: boolean,
 --[[
 ]]
-ConstantVelocityEnabled: boolean,
---[[
-]]
 ChromaticAberrationConnection: boolean,
 --[[
 ]]

@@ -101,10 +101,7 @@ return function(scene, deltaTime)
 			end
 		end
 
-		if not object.ConstantVelocityEnabled then
-			adaptToCollisions(object, "Velocity", smtv)
-		end
-
+		adaptToCollisions(object, "Velocity", smtv)
 		adaptToCollisions(object, "Force", smtv)
 		distance = Vector2.new(
 			math.round(smtv.X == 0 and distance.X or dis.X),
