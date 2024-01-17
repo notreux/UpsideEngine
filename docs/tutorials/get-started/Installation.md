@@ -9,21 +9,27 @@ To install the Upside Engine Framework, use the following command to create a ne
 git submodule add https://github.com/TheHackerPuppy/UpsideEngine packages/UpsideEngine
 ```
 
-??? Download-for-roblox-studio
+??? working-with-roblox-studio
 
-    !!! warning inline end 
-        This tutorial is oriented to an external editor so might you have some problems following the tutorial if you use roblox studio to code
+    
+    This tutorial is oriented to external code editors, so there are probably some terms that you do not understand if you only use roblox studio, so here are some clarifications:
+        
+    - When the tutorial talks about `somefile.client.luau` or `somefile.server.luau`:
+        - in the .client case is talking about a <u>local script</u> inside StarterPlayerScripts.
+        - in the .server case is talking about a <u>script</u> inside ServerScriptService.
+    - When the tutorial doesn't specify if a file is from client side or server side in the file name (example: `somefile.luau`), the tutorial is talking about a module script.
+    - When we talk about `src/client` we are are talking about `StarterPlayerScripts`.
+    - You may skip the Rojo and LSP sections of this page, but <u>don't skip</u> the ["An important step"](#an-important-step) section.
 
-    If you don't use an external editor and you just prefer to program directly on roblox follow please these steps:
+    ___
+
+
+    Follow this steps to "install" the package
 
      - Create a folder in ReplicatedStorage and then name it as "packages"
      - Place the upside engine module in the packages folder
-
-    Download the upside engine module script clicking on the button below 
-
-    [Download](https://create.roblox.com/marketplace/asset/13243857410){ .md-button .md-basic-button }
-
-
+    
+    [Download Upside Engine](https://create.roblox.com/marketplace/asset/13243857410){ .md-button .md-basic-button }
 
 ## Recommended Rojo Template
 
