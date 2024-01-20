@@ -11,15 +11,8 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 ⬜ Beams
 ⬜ Spotlights
 
-# Changelog v2.1.0
-
-## Breaking changes
-- The `ConstantVelocityEnabled` property has been removed
-    - Impact: Any use or reference to the `ConstantVelocityEnabled` property in your code will cause errors.
-    - Action required: Remove all the references to the `ConstantVelocityEnabled` property. To emulate the behaviour of this property you can set the property constantly to a specific value.
+# Changelog v2.1.1
+Small fix
 
 ## Fixes
-- Collisions wasn't working when ConstantVelocityEnabled property was enabled
-- There were some files with .lua instead of .luau, which was incoherent
-- HitboxScale wasn't working properly
-- Jump looks forced
+- False values are not loaded when loading plugin content
