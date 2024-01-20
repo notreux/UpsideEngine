@@ -1,0 +1,5 @@
+.spritesheet {
+    width: 400px;
+    height: 50px !important;
+    image-rendering: pixelated;
+}

@@ -386,6 +386,8 @@
       
         
       
+        
+      
     
     
     
@@ -679,6 +681,168 @@
   
   <span class="md-ellipsis">
     License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Plugin Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Plugin Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugin-guide/FirstSteps.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    First steps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugin-guide/TileEditor.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using tile editor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugin-guide/SpriteEditor.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using sprite editor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugin-guide/CollisionEditor.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using collision editor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugin-guide/PluginScripts.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plugin Scripts
   </span>
   
 
@@ -1500,19 +1664,26 @@
 <p>To install the Upside Engine Framework, use the following command to create a new folder named "packages" with the Upside Engine Framework inside:</p>
 <div class="highlight"><pre><span></span><code>git submodule add https://github.com/TheHackerPuppy/UpsideEngine packages/UpsideEngine
 </code></pre></div>
-<details class="download-for-roblox-studio">
-<summary>Download-for-roblox-studio</summary>
-<div class="admonition warning inline end">
-<p class="admonition-title">Warning</p>
-<p>This tutorial is oriented to an external editor so might you have some problems following the tutorial if you use roblox studio to code</p>
-</div>
-<p>If you don't use an external editor and you just prefer to program directly on roblox follow please these steps:</p>
+<details class="working-with-roblox-studio">
+<summary>Working-with-roblox-studio</summary>
+<p>This tutorial is oriented to external code editors, so there are probably some terms that you do not understand if you only use roblox studio, so here are some clarifications:</p>
+<ul>
+<li>When the tutorial talks about <code>somefile.client.luau</code> or <code>somefile.server.luau</code>:<ul>
+<li>in the .client case is talking about a <u>local script</u> inside StarterPlayerScripts.</li>
+<li>in the .server case is talking about a <u>script</u> inside ServerScriptService.</li>
+</ul>
+</li>
+<li>When the tutorial doesn't specify if a file is from client side or server side in the file name (example: <code>somefile.luau</code>), the tutorial is talking about a module script.</li>
+<li>When we talk about <code>src/client</code> we are are talking about <code>StarterPlayerScripts</code>.</li>
+<li>You may skip the Rojo and LSP sections of this page, but <u>don't skip</u> the <a href="#an-important-step">"An important step"</a> section.</li>
+</ul>
+<hr />
+<p>Follow this steps to "install" the package</p>
 <ul>
 <li>Create a folder in ReplicatedStorage and then name it as "packages"</li>
 <li>Place the upside engine module in the packages folder</li>
 </ul>
-<p>Download the upside engine module script clicking on the button below </p>
-<p><a class="md-button md-basic-button" href="https://create.roblox.com/marketplace/asset/13243857410">Download</a></p>
+<p><a class="md-button md-basic-button" href="https://create.roblox.com/marketplace/asset/13243857410">Download Upside Engine</a></p>
 </details>
 <h2 id="recommended-rojo-template">Recommended Rojo Template<a class="headerlink" href="#recommended-rojo-template" title="Anchor link to this section for reference">&para;</a></h2>
 <p>To install the Upside Engine Framework, use the following command to create a new folder named "packages" with the Upside Engine Framework inside:</p>
