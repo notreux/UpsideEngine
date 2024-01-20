@@ -61,6 +61,13 @@ nav:
       - Graphic inteface: tutorials/get-started/GraphicInterface.md
       - License: tutorials/get-started/LicensePage.md
 
+    - Plugin Guide: 
+      - First steps: tutorials/plugin-guide/FirstSteps.md
+      - Using tile editor: tutorials/plugin-guide/TileEditor.md
+      - Using sprite editor: tutorials/plugin-guide/SpriteEditor.md
+      - Using collision editor: tutorials/plugin-guide/CollisionEditor.md
+      - Plugin Scripts: tutorials/plugin-guide/PluginScripts.md
+
   - Documentation:
     - Welcome: documentation/Welcome.md
     - Upside Engine: documentation/UpsideEngine.md
