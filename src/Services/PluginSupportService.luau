@@ -102,7 +102,7 @@ local function rebuild(parent, index, value)
 end
 
 function set(object, index, value)
-	object[index] = typeof(value) ~= "table" and value or rebuild(object, index, value)
+	object[index] = if typeof(value) ~= "table" then value else rebuild(object, index, value)
 end
 
 function read(object, index)
