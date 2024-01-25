@@ -248,13 +248,13 @@ This class is used for the client replication
 	]]
 export type Request = EventEmitter & {
 --[[
-The UserId of the client which sent the request if exists 
-	]]
-ClientId: number,
---[[
 The content of the request
 		]]
 Content: { },
+--[[
+The UserId of the client which sent the request if exists 
+	]]
+ClientId: ClientId,
 --[[
 ]]
 new: (clientId: number?, content: RequestContent?) -> Request,
@@ -263,9 +263,9 @@ Sends the request to the server
 	]]
 Send: (self: Request, content: Dictionary<string, any>) -> nil,
 --[[
-The request is approved and its replicated to the specified clients, if none is specified it will be replicated to all the clients except to the client who sent the request
+The request is approved and its replicated all the clients
 	]]
-Approve: (self: Request, clients: table) -> nil,
+Approve: (self: Request) -> nil,
 --[[
 Accepts the request and builds the object to be replicated
 	]]
@@ -977,13 +977,13 @@ This class is to replicate objects to other clients, for example the player char
 	]]
 export type NetworkingService = EventEmitter & {
 --[[
-A dictionary with the replicated objects by the clients
-		]]
-Players: { },
---[[
 Defines if the replicated objects by other clients should be destroyed when they leaves
 	]]
 DestroyObjectsOnLeave: boolean,
+--[[
+A dictionary with the replicated objects by the clients
+		]]
+Players: { },
 --[[
 ]]
 new: () -> NetworkingService,

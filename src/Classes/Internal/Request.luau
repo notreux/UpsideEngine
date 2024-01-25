@@ -27,11 +27,17 @@ local request = {}
 request.__index = request
 
 function request.new(clientId: number?, content: RequestContent?): Request
+	local data = if content then table.freeze(content) else {}
+	local playerId = if clientId ~= nil
+		then clientId
+		elseif players.LocalPlayer ~= nil then players.LocalPlayer.UserId
+		else 0
+
 	local self = eventEmitter.new()
 	self:SetClassName(script.Name)
 
-	self.ClientId = clientId or players.LocalPlayer.UserId or 0
-	self.Content = content and table.freeze(content) or {}
+	self.Content = data
+	self.ClientId = playerId
 
 	return setmetatable(self, request)
 end
@@ -46,38 +52,24 @@ end
 }=]]
 
 function request:Send(content: Dictionary<string, any>)
-	local args = {
+	local id = (content :: any).Id or tostring(content)
+	networking.Pending[id] = {
 		ClientId = self.ClientId,
 		Content = content,
 	}
-
-	if isServer then
-		socket:FireClient(self:GetClient(), args)
-	else
-		socket:FireServer(args)
-	end
 end
 
 --[[={
-	@desc The request is approved and its replicated to the specified clients, if none is specified it will be replicated to all the clients except to the client who sent the request
+	@desc The request is approved and its replicated all the clients
 	@link void.link
 }=]]
 
-function request:Approve(clients: table)
+function request:Approve()
 	if not isServer then
 		return
 	end
 
-	local args = {
-		ClientId = self.ClientId,
-		Content = self.Content,
-	}
-
-	for _, player in (clients or players:GetPlayers()) do
-		if player.UserId ~= self.ClientId then
-			socket:FireClient(player, args)
-		end
-	end
+	self:Send(self.Content)
 end
 
 --[[={
@@ -87,26 +79,25 @@ end
 
 function request:Accept(): BaseObject
 	local content = self.Content
-	local class = classes[content.className]
+	local class = classes[content.ClassName]
 
 	local replicated = networking.Players[self.ClientId] or {}
-	local isFirstRequest = not replicated[content.id]
+	local isFirstRequest = not replicated[content.Id]
 
 	assert(class ~= nil, "Invalid class!")
-	local clon = replicated[content.id] or class.new()
-
+	local clon = replicated[content.Id] or class.new()
 	if isFirstRequest then
-		networking.Players[self.ClientId][content.id] = clon
+		networking.Players[self.ClientId][content.Id] = clon
 
-		clon:SetName(content.name)
+		clon:SetName(content.Name)
 		networking:Fire("Build", clon)
 	end
 
-	for index, value in pairs(content.properties.object) do
+	for index, value in pairs(content.Properties.Object) do
 		pcall(setProperty, clon, index, value)
 	end
 
-	for index, value in pairs(content.properties.instance) do
+	for index, value in pairs(content.Properties.Instance) do
 		pcall(setProperty, clon.Instance, index, value)
 	end
 

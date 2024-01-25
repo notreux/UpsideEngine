@@ -296,15 +296,15 @@ This class is used for the client replication
 */ 
 export declare interface Request extends EventEmitter {
 /**
-The UserId of the client which sent the request if exists 
-	
-*/
-ClientId: number;
-/**
 The content of the request
 		
 */
 Content: { };
+/**
+The UserId of the client which sent the request if exists 
+	
+*/
+ClientId: ClientId;
 /**
 
 */
@@ -315,10 +315,10 @@ Sends the request to the server
 */
 Send(content: Dictionary<string, any>): null;
 /**
-The request is approved and its replicated to the specified clients, if none is specified it will be replicated to all the clients except to the client who sent the request
+The request is approved and its replicated all the clients
 	
 */
-Approve(clients: table): null;
+Approve(): null;
 /**
 Accepts the request and builds the object to be replicated
 	
@@ -1181,15 +1181,15 @@ This class is to replicate objects to other clients, for example the player char
 */ 
 export declare interface NetworkingService extends EventEmitter {
 /**
-A dictionary with the replicated objects by the clients
-		
-*/
-Players: { };
-/**
 Defines if the replicated objects by other clients should be destroyed when they leaves
 	
 */
 DestroyObjectsOnLeave: boolean;
+/**
+A dictionary with the replicated objects by the clients
+		
+*/
+Players: { };
 /**
 
 */

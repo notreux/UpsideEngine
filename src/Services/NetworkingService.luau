@@ -11,8 +11,9 @@ networkingService.__index = networkingService
 function networkingService.new()
 	local self = eventEmitter.new()
 	self:SetClassName("NetworkingService")
-	self.Players = {}
 	self.DestroyObjectsOnLeave = true
+	self.Players = {}
+	self.Pending = {}
 
 	return setmetatable(self, networkingService)
 end
@@ -22,15 +23,15 @@ local function read(object, index)
 end
 
 local function getData(object)
-	local data = { object = {}, instance = {} }
+	local data = { Object = {}, Instance = {} }
 	for _, index in ipairs(properties.object) do
-		data.object[index] = object[index]
+		data.Object[index] = object[index]
 	end
 
 	for _, index in ipairs(properties.instance) do
 		local sucess, value = pcall(read, object.Instance, index)
 		if sucess then
-			data.instance[index] = value
+			data.Instance[index] = value
 		end
 	end
 
@@ -47,10 +48,10 @@ function networkingService:Replicate(object: BaseObject)
 
 	local req = request.new()
 	req:Send({
-		className = object.ClassName,
-		id = object.Id,
-		name = object.Name,
-		properties = properties,
+		ClassName = object.ClassName,
+		Id = object.Id,
+		Name = object.Name,
+		Properties = properties,
 	})
 
 	req:Destroy()
