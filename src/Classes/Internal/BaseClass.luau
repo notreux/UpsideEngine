@@ -1,6 +1,7 @@
 local upsideEngine = script.Parent.Parent.Parent
 local appData = upsideEngine.AppData
 
+local copyTable = require(script.Parent.Parent.Parent.Private.Util.Internal.CopyTable)
 local data = require(appData.Data)
 local essentialProperties = require(appData.EssentialProperties)
 
@@ -34,7 +35,11 @@ end
 
 function baseClass:Clone()
 	local clon = self.new()
-	for _, index in ipairs(essentialProperties.instance) do
+	local id = clon.Id
+	copyTable(self, clon)
+
+	clon.Id = id
+	for _, index in essentialProperties.instance do
 		pcall(set, self.Instance, clon.Instance, index)
 	end
 
