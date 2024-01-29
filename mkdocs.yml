@@ -68,6 +68,11 @@ nav:
       - Using collision editor: tutorials/plugin-guide/CollisionEditor.md
       - Plugin Scripts: tutorials/plugin-guide/PluginScripts.md
 
+    - Multiplayer Tutorial: 
+      - Client Side: tutorials/multiplayer-game/client.md
+      - Server Side: tutorials/multiplayer-game/server.md
+
+
   - Documentation:
     - Welcome: documentation/Welcome.md
     - Upside Engine: documentation/UpsideEngine.md
