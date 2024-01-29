@@ -254,7 +254,7 @@ Content: { },
 --[[
 The UserId of the client which sent the request if exists 
 	]]
-ClientId: ClientId,
+ClientId: string,
 --[[
 ]]
 new: (clientId: number?, content: RequestContent?) -> Request,
