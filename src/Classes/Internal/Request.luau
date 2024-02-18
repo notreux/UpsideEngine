@@ -4,6 +4,7 @@ local runService = game:GetService("RunService")
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
+local copyTable = require(script.Parent.Parent.Parent.Private.Util.Internal.CopyTable)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local classes = {}
 local networking
@@ -26,6 +27,20 @@ end
 local request = {}
 request.__index = request
 
+local function setProperty(object, property, value)
+	object[property] = value
+end
+
+local function applyProperties(object, properties)
+	for index, value in properties do
+		if index == "Position" then
+			continue
+		end
+
+		pcall(setProperty, object, index, value)
+	end
+end
+
 function request.new(clientId: number?, content: RequestContent?): Request
 	local data = if content then table.freeze(content) else {}
 	local playerId = if clientId ~= nil
@@ -42,17 +57,13 @@ function request.new(clientId: number?, content: RequestContent?): Request
 	return setmetatable(self, request)
 end
 
-local function setProperty(object, property, value)
-	object[property] = value
-end
-
 --[[={
 	@desc Sends the request to the server
 	@link void.link
 }=]]
 
 function request:Send(content: Dictionary<string, any>)
-	local id = (content :: any).Id or tostring(content)
+	local id = tostring((content :: any).Id)
 	networking.Pending[id] = {
 		ClientId = self.ClientId,
 		Content = content,
@@ -81,25 +92,28 @@ function request:Accept(): BaseObject
 	local content = self.Content
 	local class = classes[content.ClassName]
 
-	local replicated = networking.Players[self.ClientId] or {}
-	local isFirstRequest = not replicated[content.Id]
+	local playerData = networking.PlayersData[self.ClientId] or {}
+	local exists = playerData[content.Id] ~= nil
 
-	assert(class ~= nil, "Invalid class!")
-	local clon = replicated[content.Id] or class.new()
-	if isFirstRequest then
-		networking.Players[self.ClientId][content.Id] = clon
+	local clon = playerData[content.Id] or class.new()
+	local instance = clon.Instance
 
-		clon:SetName(content.Name)
-		networking:Fire("Build", clon)
+	applyProperties(instance, content.Instance)
+	copyTable(content.ObjectProperties, clon)
+
+	local this = networking.ReplicationTarget[clon] or {}
+	local position = content.Instance.Position or this.Position
+
+	this.Position = position
+	networking.ReplicationTarget[clon] = this
+
+	if exists then
+		return clon
 	end
 
-	for index, value in pairs(content.Properties.Object) do
-		pcall(setProperty, clon, index, value)
-	end
-
-	for index, value in pairs(content.Properties.Instance) do
-		pcall(setProperty, clon.Instance, index, value)
-	end
+	playerData[content.Id] = clon
+	clon:SetName(content.Name)
+	networking:Fire("Build", clon)
 
 	return clon
 end

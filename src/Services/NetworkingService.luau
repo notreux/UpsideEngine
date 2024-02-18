@@ -3,8 +3,9 @@ local players = game:GetService("Players")
 
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local request = require(upsideEngine.Classes.Internal.Request)
-local properties = require(upsideEngine.AppData.EssentialProperties)
+local instanceProperties = require(upsideEngine.AppData.InstanceProperties)
 
+local toSkip = { "ImageRectOffset" }
 local networkingService = {}
 networkingService.__index = networkingService
 
@@ -12,7 +13,8 @@ function networkingService.new()
 	local self = eventEmitter.new()
 	self:SetClassName("NetworkingService")
 	self.DestroyObjectsOnLeave = true
-	self.Players = {}
+	self.ReplicationTarget = {}
+	self.PlayersData = {}
 	self.Pending = {}
 
 	return setmetatable(self, networkingService)
@@ -22,20 +24,46 @@ local function read(object, index)
 	return object[index]
 end
 
-local function getData(object)
-	local data = { Object = {}, Instance = {} }
-	for _, index in ipairs(properties.object) do
-		data.Object[index] = object[index]
-	end
+local function getInstanceData(object)
+	local instance = object.Instance
+	local data = {}
 
-	for _, index in ipairs(properties.instance) do
-		local sucess, value = pcall(read, object.Instance, index)
-		if sucess then
-			data.Instance[index] = value
+	for _, index in instanceProperties do
+		local sucess, value = pcall(read, instance, index)
+		if not sucess or table.find(toSkip, index) then
+			continue
 		end
+
+		data[index] = value
 	end
 
 	return data
+end
+
+local function replicate(self, object, instance)
+	local clientId = players.LocalPlayer.UserId
+	local playerData = self.PlayersData[clientId]
+
+	local req = request.new()
+	local objectProperties = {
+		Sprites = object.Sprites,
+		IsPlaying = object.IsPlaying,
+		Active = {
+			Name = object.Active.Name,
+			SecondsPerFrame = object.Active.SecondsPerFrame,
+		},
+	}
+
+	playerData[object.Id] = object
+	req:Send({
+		ClassName = object.ClassName,
+		Id = object.Id,
+		Name = object.Name,
+		Instance = instance,
+		ObjectProperties = objectProperties,
+	})
+
+	req:Destroy()
 end
 
 --[[={
@@ -43,18 +71,8 @@ end
 }=]]
 
 function networkingService:Replicate(object: BaseObject)
-	local properties = getData(object)
-	self.Players[players.LocalPlayer.UserId][object.Id] = object
-
-	local req = request.new()
-	req:Send({
-		ClassName = object.ClassName,
-		Id = object.Id,
-		Name = object.Name,
-		Properties = properties,
-	})
-
-	req:Destroy()
+	local instance = getInstanceData(object)
+	replicate(self, object, instance)
 end
 
 --[[={
@@ -64,11 +82,15 @@ end
 }=]]
 
 function networkingService:ReplicateOnChange(object: BaseObject): RBXScriptConnection
-	local function wrapper()
+	local function wrapper(property)
+		if table.find(toSkip, property) then
+			return
+		end
+
 		self:Replicate(object)
 	end
 
-	wrapper()
+	wrapper("none")
 	return object.Instance.Changed:Connect(wrapper)
 end
 

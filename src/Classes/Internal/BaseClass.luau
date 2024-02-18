@@ -1,9 +1,9 @@
 local upsideEngine = script.Parent.Parent.Parent
 local appData = upsideEngine.AppData
 
-local copyTable = require(script.Parent.Parent.Parent.Private.Util.Internal.CopyTable)
+local copyTable = require(upsideEngine.Private.Util.Internal.CopyTable)
+local instanceProperties = require(appData.InstanceProperties)
 local data = require(appData.Data)
-local essentialProperties = require(appData.EssentialProperties)
 
 local classEnvironments = {
 	Sound = "SoundEnvironment",
@@ -39,7 +39,7 @@ function baseClass:Clone()
 	copyTable(self, clon)
 
 	clon.Id = id
-	for _, index in essentialProperties.instance do
+	for _, index in instanceProperties do
 		pcall(set, self.Instance, clon.Instance, index)
 	end
 
