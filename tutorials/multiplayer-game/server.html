@@ -1770,13 +1770,18 @@
     <span class="kd">local</span> <span class="n">instance</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">Instance</span>
     <span class="kd">local</span> <span class="n">clientId</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">ClientId</span>
 
+    <span class="kr">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">.</span><span class="n">Position</span> <span class="kr">then</span>
+        <span class="n">request</span><span class="p">:</span><span class="n">Approve</span><span class="p">()</span>
+        <span class="kr">return</span>
+    <span class="kr">end</span>
+
     <span class="kd">local</span> <span class="n">currentPosition</span> <span class="o">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">Position</span><span class="p">.</span><span class="n">X</span><span class="p">.</span><span class="n">Offset</span><span class="p">,</span> <span class="n">instance</span><span class="p">.</span><span class="n">Position</span><span class="p">.</span><span class="n">Y</span><span class="p">.</span><span class="n">Offset</span><span class="p">)</span>
     <span class="kd">local</span> <span class="n">previousPosition</span> <span class="o">=</span> <span class="n">pastPositions</span><span class="p">[</span><span class="n">clientId</span><span class="p">]</span> <span class="ow">or</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">zero</span>
 
     <span class="kd">local</span> <span class="n">distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">currentPosition</span> <span class="o">-</span> <span class="n">previousPosition</span><span class="p">).</span><span class="n">Magnitude</span>
     <span class="n">pastPositions</span><span class="p">[</span><span class="n">clientId</span><span class="p">]</span> <span class="o">=</span> <span class="n">currentPosition</span>
 
-    <span class="kr">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="mi">500</span> <span class="kr">then</span>
+    <span class="kr">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="mi">1100</span> <span class="kr">then</span>
         <span class="n">request</span><span class="p">:</span><span class="n">Approve</span><span class="p">()</span>
         <span class="kr">return</span>
     <span class="kr">end</span>

@@ -1822,7 +1822,9 @@
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">networkingService</span><span class="p">:</span><span class="n">ReplicateOnChange</span><span class="p">(</span><span class="n">character</span><span class="p">)</span>
 <span class="n">networkingService</span><span class="p">:</span><span class="n">On</span><span class="p">(</span><span class="s2">&quot;Build&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
-    <span class="n">object</span><span class="p">.</span><span class="n">Anchored</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="c1">-- Its recomended to unanchor the object, it will make the movement smoother</span>
+    <span class="c1">-- that&#39;s because the Anchor property is not replicated by default</span>
+    <span class="n">object</span><span class="p">.</span><span class="n">Anchored</span> <span class="o">=</span> <span class="kc">false</span>
     <span class="n">object</span><span class="p">:</span><span class="n">SetScene</span><span class="p">(</span><span class="n">scene</span><span class="p">)</span>
 <span class="kr">end</span><span class="p">)</span>
 
