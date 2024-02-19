@@ -28,23 +28,28 @@ local pastPositions = {}
 
 networkingService:On("ReplicationRequest", function(request)
 	local instance = request.Content.Instance
-    local clientId = request.ClientId
+	local clientId = request.ClientId
 
-    local currentPosition = Vector2.new(instance.Position.X.Offset, instance.Position.Y.Offset)
+	if not instance.Position then
+		request:Approve()
+		return
+	end
+
+	local currentPosition = Vector2.new(instance.Position.X.Offset, instance.Position.Y.Offset)
 	local previousPosition = pastPositions[clientId] or Vector2.zero
 
-    local distance = (currentPosition - previousPosition).Magnitude
-    pastPositions[clientId] = currentPosition
+	local distance = (currentPosition - previousPosition).Magnitude
+	pastPositions[clientId] = currentPosition
 
-    if distance < 500 then
-        request:Approve()
-        return
-    end
+	if distance < 1100 then
+		request:Approve()
+		return
+	end
 
-    -- The player is moving faster than expected, so is probably exploiting
-    -- maybe players with lag can have false positives, so be carefull with the distance check
+	-- The player is moving faster than expected, so is probably exploiting
+	-- maybe players with lag can have false positives, so be carefull with the distance check
 
-    local player = players:GetPlayerByUserId(clientId)
-    player:Kick("please don't exploit")
+	local player = players:GetPlayerByUserId(clientId)
+	player:Kick("please don't exploit")
 end)
 ```

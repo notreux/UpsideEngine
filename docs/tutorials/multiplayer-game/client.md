@@ -71,7 +71,9 @@ Events information:
 ```lua
 networkingService:ReplicateOnChange(character)
 networkingService:On("Build", function(object)
-	object.Anchored = true
+	-- Its recomended to unanchor the object, it will make the movement smoother
+	-- that's because the Anchor property is not replicated by default
+	object.Anchored = false
 	object:SetScene(scene)
 end)
 
