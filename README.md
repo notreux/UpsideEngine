@@ -11,8 +11,12 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 ⬜ Beams
 ⬜ Spotlights
 
-# Changelog v2.1.2
-Some optimizations
+# Changelog v2.1.3
+Some optimizations and fixes
 
 ## Refactor
 - Network optimization
+
+## Fixes
+- Clone doesn't work correctly
+- ClientId type causes error

@@ -981,9 +981,11 @@ Defines if the replicated objects by other clients should be destroyed when they
 	]]
 DestroyObjectsOnLeave: boolean,
 --[[
-A dictionary with the replicated objects by the clients
-		]]
-Players: { },
+]]
+ReplicationTarget: { },
+--[[
+]]
+PlayersData: { },
 --[[
 ]]
 new: () -> NetworkingService,
