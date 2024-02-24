@@ -36,9 +36,12 @@ end
 function baseClass:Clone()
 	local clon = self.new()
 	local id = clon.Id
-	copyTable(self, clon)
+	local instance = clon.Instance
 
+	copyTable(self, clon)
+	clon.Instance = instance
 	clon.Id = id
+
 	for _, index in instanceProperties do
 		pcall(set, self.Instance, clon.Instance, index)
 	end
