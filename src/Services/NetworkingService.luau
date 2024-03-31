@@ -95,7 +95,7 @@ function networkingService:ReplicateOnChange(object: BaseObject): RBXScriptConne
 end
 
 --[[={
-	@desc This class is to replicate objects to other clients, for example the player character
+	@desc This class is used to replicate objects to other clients, for example the player character
 	@about
 		@Players A dictionary with the replicated objects by the clients
 		@DestroyObjectsOnLeave Defines if the replicated objects by other clients should be destroyed when they leaves

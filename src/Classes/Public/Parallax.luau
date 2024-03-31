@@ -33,7 +33,7 @@ end
 	@link void.link
 }=]]
 
-function parallax:SetTexture(texture)
+function parallax:SetTexture(texture: string)
 	self.Instance.Content.Image = texture
 end
 
@@ -73,6 +73,7 @@ end
 		@CanvasSize Defines the image zoom, if the value is 1X, 1Y it will see the whole image as expected, if you set it to 2X, 2Y you only will be able see half of the image
 		@Offset Defines the scroll position of the parallax object
 		@Track Defines if Update method should be called automatically
+		@LockToCamera Locks the Parallax object to the camera position
 }=]]
 
 return setmetatable(parallax, baseObject)

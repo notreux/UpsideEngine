@@ -47,7 +47,7 @@ declare interface BaseClass {
     Destroy(): any;
 }/**
 This class is the base class of the majority of classes
-	ription
+	
 */ 
 export declare interface BaseObject extends EventEmitter {
 /**
@@ -65,10 +65,6 @@ This table stores all the tags of the object
 
 */
 Tags: { };
-/**
-
-*/
-new(instanceType: string | void): BaseObject;
 /**
 Sets the object scene
 	
@@ -96,7 +92,7 @@ RemoveTag(tag: string): null;
 
 /**
 This class is included on every scene, it's used to move you around the scene
-	ription
+	
 */ 
 export declare interface Camera extends EventEmitter {
 /**
@@ -128,10 +124,6 @@ This property defines the object which is going to follow the camera
 */
 Subject: Character;
 /**
-
-*/
-new(scene: Scene): Camera;
-/**
 Gets the camera position
 	
 */
@@ -157,7 +149,7 @@ LookTo(object: PhysicalObject): null;
 
 /**
 This class is used in the event emitter class, its used to manage a listener
-	ription
+	
 */ 
 export declare interface Connection extends BaseClass {
 /**
@@ -173,10 +165,6 @@ EventId: number;
 
 */
 Event: { };
-/**
-
-*/
-new(eventId: number, event: table): Connection;
 /**
 Wait until the event gets fired, if seconds were specified, once the specified seconds have elapsed, it will stop waiting
 	
@@ -194,7 +182,7 @@ Disconnect(): null;
 
 /**
 The event emitter is used to manage the events of a class
-	ription
+	
 */ 
 export declare interface EventEmitter extends BaseClass {
 /**
@@ -202,10 +190,6 @@ This table store all the events of the class
 
 */
 EventsStorage: { };
-/**
-
-*/
-new(): EventEmitter;
 /**
 
 */
@@ -222,7 +206,7 @@ Fire(name: string, ...any): null;
 
 /**
 This class is one of the most important components of a scene, is used to manage everything related with the light 
-	ription
+	
 */ 
 export declare interface LightingEnvironment extends Environment {
 /**
@@ -246,10 +230,6 @@ This is the intensity for all the lights in the scene
 */
 LightIntensity: number;
 /**
-
-*/
-new(scene: Scene): LightingEnvironment;
-/**
 Draws the pixels for the scene with the specified pixel size
 	
 */
@@ -265,26 +245,18 @@ UpdateScreen(): null;
 
 
 /**
-ription
+
 */ 
 export declare interface ObjectEnvironment extends Environment {
-/**
-
-*/
-new(): ObjectEnvironment;
 }
  
 
 
 
 /**
-ription
+
 */ 
 export declare interface ParticleEnvironment extends Environment {
-/**
-
-*/
-new(): ParticleEnvironment;
 }
  
 
@@ -292,7 +264,7 @@ new(): ParticleEnvironment;
 
 /**
 This class is used for the client replication
-	ription
+	
 */ 
 export declare interface Request extends EventEmitter {
 /**
@@ -305,10 +277,6 @@ The UserId of the client which sent the request if exists
 	
 */
 ClientId: string;
-/**
-
-*/
-new(clientId: number | void, content: RequestContent | void): Request;
 /**
 Sends the request to the server
 	
@@ -335,13 +303,9 @@ GetClient(): null;
 
 
 /**
-ription
+
 */ 
 export declare interface SoundEnvironment extends Environment {
-/**
-
-*/
-new(): SoundEnvironment;
 }
  
 
@@ -349,7 +313,7 @@ new(): SoundEnvironment;
 
 /**
 This class is used for the player character and for npcs
-	ription
+	
 */ 
 export declare interface Character extends Sprite {
 /**
@@ -373,10 +337,6 @@ The jump power of the character
 */
 JumpPower: number;
 /**
-
-*/
-new(): Character;
-/**
 Updates the amount of health of the character 
 	
 */
@@ -398,7 +358,7 @@ MoveTo(target: Vector2): null;
 
 /**
 This class is used to storage objects and interact with them in an easier way
-	ription
+	
 */ 
 export declare interface Environment extends BaseObject {
 /**
@@ -410,10 +370,6 @@ The amount of objects in this environment
 
 */
 Count: number;
-/**
-
-*/
-new(instanceType: string | void): Environment;
 /**
 Gets the object with the specified index
 	
@@ -510,7 +466,7 @@ Run(method: string, ...any): null;
 
 /**
 This class is used to illuminate areas in the darkness
-	ription
+	
 */ 
 export declare interface Light extends PhysicalObject {
 /**
@@ -537,10 +493,50 @@ Is the transparency of the light
 		
 */
 Transparency: number;
+}
+ 
+
+
+
+/**
+This class is used to create inmersive backgrounds
+	
+*/ 
+export declare interface Parallax extends BaseObject {
+/**
+Defines the image zoom, if the value is 1X, 1Y it will see the whole image as expected, if you set it to 2X, 2Y you only will be able see half of the image
+		
+*/
+CanvasSize: Vector2;
+/**
+Defines the scroll position of the parallax object
+		
+*/
+Offset: Vector2;
+/**
+Defines if Update method should be called automatically
+		
+*/
+Track: boolean;
+/**
+Locks the Parallax object to the camera position
+
+*/
+LockToCamera: boolean;
 /**
 
 */
-new(): Light;
+AnchorPoint: Vector2;
+/**
+Sets the tile texture
+	
+*/
+SetTexture(texture: string): null;
+/**
+Updates the parallax properties (position, canvasSize, etc.), its automatically called when Track is enabled
+	
+*/
+UpdateTiles(): null;
 }
  
 
@@ -553,7 +549,7 @@ new(): Light;
 		_____
 		This class is used for vfx
 
-	ription
+	
 */ 
 export declare interface Particle extends BaseObject {
 /**
@@ -655,10 +651,6 @@ Size: UDim2,
 ImageTransparency: number,
 };
 /**
-
-*/
-new(): Particle;
-/**
 Sets the subject property
 	
 */
@@ -685,7 +677,7 @@ Emit(rate: number): null;
 
 /**
 This class is used to create objects with physics
-	ription
+	
 */ 
 export declare interface PhysicalObject extends BaseObject {
 /**
@@ -773,10 +765,6 @@ TrackCollisions: boolean;
 */
 ChromaticAberrationConnection: boolean;
 /**
-
-*/
-new(): PhysicalObject;
-/**
 Loads an image for the current object and is set as the instance image
 	
 */
@@ -794,7 +782,7 @@ SetChromaticAberration(Intensity: number, Distance: number, Point: Vector2): nul
 
 /**
 This class is useful to have a workspace and manage your project more easily
-	ription
+	
 */ 
 export declare interface Scene extends BaseObject {
 /**
@@ -828,10 +816,6 @@ This environment stores all the objects in the scene
 */
 Objects: ObjectEnvironment;
 /**
-
-*/
-new(): Scene;
-/**
 Enables the scene, which will make it process physics, lights, sounds and sprites
 	
 */
@@ -858,7 +842,7 @@ Raycast(info: Raycast2dParams): Raycast2dResult;
 
 /**
 This class is used to play sounds
-	ription
+	
 */ 
 export declare interface Sound extends BaseObject {
 /**
@@ -882,10 +866,6 @@ This table stores all the objects in the scene
 */
 Subject: Character;
 /**
-
-*/
-new(): Sound;
-/**
 Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	
 */
@@ -897,7 +877,7 @@ SetSubject(subject: Character, useSceneSoundGroup: boolean | void): null;
 
 /**
 This class is used to play sounds
-	ription
+	
 */ 
 export declare interface Sprite extends PhysicalObject {
 /**
@@ -937,11 +917,6 @@ SecondsPerFrame: number,
 */
 NextStepReady: boolean,
 };
-/**
-The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance 
-	
-*/
-new(): Sprite;
 /**
 Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2
 	
@@ -1004,7 +979,7 @@ CrossPlatformService:On("InputBegin", function(inputObject)
 end)
 ```
 
-	ription
+	
 */ 
 export declare interface CrossPlatformService extends EventEmitter {
 /**
@@ -1135,10 +1110,6 @@ Right: string,
 },
 };
 /**
-
-*/
-new(): CrossPlatformService;
-/**
 Assigns an action to a device key, example:
 	```lua
 	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
@@ -1176,8 +1147,8 @@ SetPlayerCharacter(character: Character): null;
 
 
 /**
-This class is to replicate objects to other clients, for example the player character
-	ription
+This class is used to replicate objects to other clients, for example the player character
+	
 */ 
 export declare interface NetworkingService extends EventEmitter {
 /**
@@ -1193,10 +1164,6 @@ ReplicationTarget: { };
 
 */
 PlayersData: { };
-/**
-
-*/
-new(): NetworkingService;
 /**
 Replicates an object to other clients
 
@@ -1215,13 +1182,9 @@ ReplicateOnChange(object: BaseObject): LuaTuple<[Connection, Connection]>
 
 /**
 This class save and build the engine data
-ription
+
 */ 
 export declare interface PluginSupportService extends EventEmitter {
-/**
-
-*/
-new(): PluginSupportService;
 /**
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	
@@ -1239,7 +1202,7 @@ SavePluginContent(content: {}): null;
 
 /**
 This class save and build the engine data
-	ription
+	
 */ 
 export declare interface SceneManager extends EventEmitter {
 /**
@@ -1251,10 +1214,6 @@ This dictionary stores all the active scenes
 	
 */
 ActiveScenes: { };
-/**
-
-*/
-new(): SceneManager;
 /**
 Finds a scene by the name
 	

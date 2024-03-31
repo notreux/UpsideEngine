@@ -60,9 +60,6 @@ This table stores all the tags of the object
 ]]
 Tags: { },
 --[[
-]]
-new: (instanceType: string?) -> BaseObject,
---[[
 Sets the object scene
 	]]
 SetScene: (self: BaseObject, scene: Scene) -> nil,
@@ -110,9 +107,6 @@ This property defines the object which is going to follow the camera
 		]]
 Subject: Character,
 --[[
-]]
-new: (scene: Scene) -> Camera,
---[[
 Gets the camera position
 	]]
 GetPosition: (self: Camera) -> nil,
@@ -147,9 +141,6 @@ EventId: number,
 ]]
 Event: { },
 --[[
-]]
-new: (eventId: number, event: table) -> Connection,
---[[
 Wait until the event gets fired, if seconds were specified, once the specified seconds have elapsed, it will stop waiting
 	]]
 Wait: (self: Connection, seconds: number?) -> thread?,
@@ -170,9 +161,6 @@ export type EventEmitter = BaseClass & {
 This table store all the events of the class
 ]]
 EventsStorage: { },
---[[
-]]
-new: () -> EventEmitter,
 --[[
 ]]
 On: (self: EventEmitter, name: string, callback: () -> any) -> Connection,
@@ -206,9 +194,6 @@ This is the intensity for all the lights in the scene
 ]]
 LightIntensity: number,
 --[[
-]]
-new: (scene: Scene) -> LightingEnvironment,
---[[
 Draws the pixels for the scene with the specified pixel size
 	]]
 DrawPixels: (self: LightingEnvironment, pixelSize: number) -> nil,
@@ -224,9 +209,6 @@ UpdateScreen: (self: LightingEnvironment) -> nil,
 --[[
 ]]
 export type ObjectEnvironment = Environment & {
---[[
-]]
-new: () -> ObjectEnvironment,
 }
 
 
@@ -235,9 +217,6 @@ new: () -> ObjectEnvironment,
 --[[
 ]]
 export type ParticleEnvironment = Environment & {
---[[
-]]
-new: () -> ParticleEnvironment,
 }
 
 
@@ -255,9 +234,6 @@ Content: { },
 The UserId of the client which sent the request if exists 
 	]]
 ClientId: string,
---[[
-]]
-new: (clientId: number?, content: RequestContent?) -> Request,
 --[[
 Sends the request to the server
 	]]
@@ -282,9 +258,6 @@ GetClient: (self: Request) -> nil,
 --[[
 ]]
 export type SoundEnvironment = Environment & {
---[[
-]]
-new: () -> SoundEnvironment,
 }
 
 
@@ -310,9 +283,6 @@ WalkSpeed: number,
 The jump power of the character
 ]]
 JumpPower: number,
---[[
-]]
-new: () -> Character,
 --[[
 Updates the amount of health of the character 
 	]]
@@ -341,9 +311,6 @@ Content: { },
 The amount of objects in this environment
 ]]
 Count: number,
---[[
-]]
-new: (instanceType: string?) -> Environment,
 --[[
 Gets the object with the specified index
 	]]
@@ -448,9 +415,42 @@ Brightness: number,
 Is the transparency of the light
 		]]
 Transparency: number,
+}
+
+
+
+
+--[[
+This class is used to create inmersive backgrounds
+	]]
+export type Parallax = BaseObject & {
+--[[
+Defines the image zoom, if the value is 1X, 1Y it will see the whole image as expected, if you set it to 2X, 2Y you only will be able see half of the image
+		]]
+CanvasSize: Vector2,
+--[[
+Defines the scroll position of the parallax object
+		]]
+Offset: Vector2,
+--[[
+Defines if Update method should be called automatically
+		]]
+Track: boolean,
+--[[
+Locks the Parallax object to the camera position
+]]
+LockToCamera: boolean,
 --[[
 ]]
-new: () -> Light,
+AnchorPoint: Vector2,
+--[[
+Sets the tile texture
+	]]
+SetTexture: (self: Parallax, texture: string) -> nil,
+--[[
+Updates the parallax properties (position, canvasSize, etc.), its automatically called when Track is enabled
+	]]
+UpdateTiles: (self: Parallax) -> nil,
 }
 
 
@@ -545,9 +545,6 @@ Size: UDim2,
 ImageTransparency: number,
 },
 --[[
-]]
-new: () -> Particle,
---[[
 Sets the subject property
 	]]
 SetSubject: (self: Particle, subject: Character) -> nil,
@@ -640,9 +637,6 @@ TrackCollisions: boolean,
 ]]
 ChromaticAberrationConnection: boolean,
 --[[
-]]
-new: () -> PhysicalObject,
---[[
 Loads an image for the current object and is set as the instance image
 	]]
 Load: (self: PhysicalObject, url: string) -> nil,
@@ -685,9 +679,6 @@ This environment stores all the objects in the scene
 		]]
 Objects: ObjectEnvironment,
 --[[
-]]
-new: () -> Scene,
---[[
 Enables the scene, which will make it process physics, lights, sounds and sprites
 	]]
 Enable: (self: Scene) -> nil,
@@ -728,9 +719,6 @@ DistanceFading: boolean,
 This table stores all the objects in the scene
 		]]
 Subject: Character,
---[[
-]]
-new: () -> Sound,
 --[[
 Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	]]
@@ -773,10 +761,6 @@ SecondsPerFrame: number,
 @desc]]
 NextStepReady: boolean,
 },
---[[
-The second parameter is the size of a cell of every frame of an sprite sheet, this can be changed using the .ImageRectSize property of the object Instance 
-	]]
-new: () -> Sprite,
 --[[
 Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2
 	]]
@@ -936,9 +920,6 @@ Right: string,
 },
 },
 --[[
-]]
-new: () -> CrossPlatformService,
---[[
 Assigns an action to a device key, example:
 	```lua
 	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
@@ -973,7 +954,7 @@ SetPlayerCharacter: (self: CrossPlatformService, character: Character) -> nil,
 
 
 --[[
-This class is to replicate objects to other clients, for example the player character
+This class is used to replicate objects to other clients, for example the player character
 	]]
 export type NetworkingService = EventEmitter & {
 --[[
@@ -986,9 +967,6 @@ ReplicationTarget: { },
 --[[
 ]]
 PlayersData: { },
---[[
-]]
-new: () -> NetworkingService,
 --[[
 Replicates an object to other clients
 ]]
@@ -1006,9 +984,6 @@ ReplicateOnChange: (self: NetworkingService, object: BaseObject) -> RBXScriptCon
 This class save and build the engine data
 ]]
 export type PluginSupportService = EventEmitter & {
---[[
-]]
-new: () -> PluginSupportService,
 --[[
 Loads the engine data stored in the "UpsideEngineDB" attribute of replicated storage, when it ends sets the attribute as an empty table
 	]]
@@ -1033,9 +1008,6 @@ Scenes: { },
 This dictionary stores all the active scenes
 	]]
 ActiveScenes: { },
---[[
-]]
-new: () -> SceneManager,
 --[[
 Finds a scene by the name
 	]]
