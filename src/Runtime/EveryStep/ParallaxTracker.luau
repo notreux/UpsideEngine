@@ -1,3 +1,4 @@
+local setSmoothPosition = require(script.Parent.Parent.Parent.Private.Util.Math.SetSmoothPosition)
 return function(scene: Scene)
 	local camera = scene.Camera
 	local subject = camera.Subject.Instance
@@ -13,8 +14,7 @@ return function(scene: Scene)
 			continue
 		end
 
-		local instance = parallax.Instance
 		local position = subject.Position - camera.OffsetPosition
-		instance.Position = position
+		setSmoothPosition(parallax, camera.Smoothness, position)
 	end
 end

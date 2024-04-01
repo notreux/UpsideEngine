@@ -1,5 +1,6 @@
 local upsideEngine = script.Parent.Parent.Parent
 
+local setSmoothPosition = require(script.Parent.Parent.Parent.Private.Util.Math.SetSmoothPosition)
 local character = require(script.Parent.Parent.Public.Character)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local camera = {}
@@ -17,6 +18,7 @@ function camera.new(scene: Scene): Camera
 	self.Limits = Vector2.zero
 	self.FollowSubject = true
 	self.Scene = scene.Id
+	self.Smoothness = 0.7
 	self.Instance = scene.Instance:WaitForChild("GameFrame")
 	self.Subject = character.new()
 
@@ -38,8 +40,9 @@ end
 }=]]
 
 function camera:SetPosition(udim2: UDim2)
+	local position = udim2 + self.OffsetPosition
 	self.LocalPosition = Vector2.new(udim2.X.Offset, udim2.Y.Offset)
-	self.Instance.Position = udim2 + self.OffsetPosition
+	setSmoothPosition(self, self.Smoothness, position)
 end
 
 --[[={
@@ -71,6 +74,7 @@ end
 		@LocalPosition This property is used to move the camera internally
 		@Limits This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
 		@FollowSubject This property defines if the camera is going to follow the defined subject
+		@Smoothness This property defines the smoothness with which the camera will move, it only works in a range between 0 and 1
 }=]]
 
 return setmetatable(camera, eventEmitter)

@@ -97,11 +97,15 @@ This property marks the limits to move the camera, for example, if you set `Vect
 Limits: Vector2,
 --[[
 This property defines if the camera is going to follow the defined subject
-]]
+		]]
 FollowSubject: boolean,
 --[[
 ]]
 Scene: string,
+--[[
+This property defines the smoothness with which the camera will move, it only works in a range between 0 and 1
+]]
+Smoothness: number,
 --[[
 This property defines the object which is going to follow the camera
 		]]
