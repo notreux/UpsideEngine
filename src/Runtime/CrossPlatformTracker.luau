@@ -11,7 +11,7 @@ local util = require(upsideEngine.Private.Util)
 local configs = crossPlatformService.Configs
 local wrap = util.Wrap
 
-local controls = {
+local actions = {
 	up = false,
 	left = false,
 	right = false,
@@ -45,28 +45,28 @@ local function onUserInput(state, input)
 
 	for _, key in { "X", "Y" } do
 		if not begin and character.Velocity[key] == 0 and value[key] ~= 0 then
-			controls[action] = false
+			actions[action] = false
 			return
 		end
 	end
 
 	if isLateral and begin then
 		character.Velocity = Vector2.new(0, character.Velocity.Y)
-		controls.left = false
-		controls.right = false
+		actions.left = false
+		actions.right = false
 	elseif action == "idle" then
 		character.Velocity = Vector2.zero
 	end
 
 	if jumping and begin and character.IsGrounded then
 		return character:Jump()
-	elseif not begin and controls[action] and not jumping then
+	elseif not begin and actions[action] and not jumping then
 		character.Velocity -= value
-	elseif begin and not controls[action] and not jumping then
+	elseif begin and not actions[action] and not jumping then
 		character.Velocity += value
 	end
 
-	controls[action] = begin
+	actions[action] = begin
 	return
 end
 
@@ -179,29 +179,37 @@ inputSetup(uis, inputDetector)
 crossPlatformService:On("InputBegin", wrap(onUserInput, "Begin"))
 crossPlatformService:On("InputChange", wrap(onUserInput, "Begin"))
 crossPlatformService:On("InputEnd", wrap(onUserInput, "Ended"))
-local last = ""
-RunService.Heartbeat:Connect(function()
-	local character = crossPlatformService.Character
-	local action = "idle"
 
-	for control, enabled in controls do
-		if not enabled or not character.Sprites[action] then
+local lastAction = ""
+RunService.Heartbeat:Connect(function()
+	local defaultIdle = if crossPlatformService.SideView then "idle_right" else "idle_down"
+	local character = crossPlatformService.Character
+
+	local action = "none"
+	local animation = "idle"
+
+	for control, enabled in actions do
+		if not enabled then
 			continue
 		end
 
 		action = control
+		animation = control
 	end
 
-	if action == "up" and crossPlatformService.SideView then
-		action = "jump"
-	end
-
-	if action == last then
+	if action == lastAction and character.IsGrounded then
 		return
+	elseif action == "none" and not lastAction:match("idle") then
+		animation = ("idle_%s"):format(lastAction)
 	end
 
-	last = action
-	return character:Play(action)
+	lastAction = action
+	animation = if animation == "up" and crossPlatformService.SideView
+		then "jump"
+		elseif animation == "idle" then defaultIdle
+		else animation
+
+	return character:Play(animation)
 end)
 
 return {}
