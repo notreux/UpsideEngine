@@ -1,4 +1,5 @@
 local util = require(script.Parent.Parent.Parent.Private.Util)
+local getDistance = require(script.Parent.Parent.Parent.Private.Util.Math.GetDistance)
 local normalize = util.Normalize
 
 return function(scene)
@@ -11,11 +12,12 @@ return function(scene)
 		local soundInstance = sound.Instance
 
 		local player = scene.Camera.Subject.Instance
-		local distance = (player.AbsolutePosition - soundSubject.AbsolutePosition).Magnitude
+		local range = sound.Range * sound.Range
+		local distance = getDistance(player.AbsolutePosition, soundSubject.AbsolutePosition)
 
-		if distance <= sound.Range and sound.DistanceFading then
-			soundInstance.Volume = sound.MaxVolume - normalize(distance, 0, sound.Range)
-		elseif distance <= sound.Range then
+		if distance <= range and sound.DistanceFading then
+			soundInstance.Volume = sound.MaxVolume - normalize(distance, 0, range)
+		elseif distance <= range then
 			soundInstance.Volume = sound.MaxVolume
 		elseif sound.Volume ~= 0 then
 			soundInstance.Volume = 0
