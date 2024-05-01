@@ -12,9 +12,9 @@ local function spriteListStep(self, sprite, seconds)
 	local instance = self.Instance
 
 	local list = sprite.List
-	axeStep(active, "X", #list)
+	axeStep(active, "X", #list - 1)
 
-	instance.Image = list[active.CurrentFrame.X]
+	instance.Image = list[active.CurrentFrame.X + 1]
 end
 
 local function SpriteSheetStep(self, sprite, active)
