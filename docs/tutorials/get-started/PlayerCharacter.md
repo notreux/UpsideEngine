@@ -17,7 +17,8 @@ local player = upsideEngine.new("Character")
 player.Anchored = false
 player.JumpPower = 100
 player:SetScene(scene)
-player:SetSpriteSheet("idle", "rbxassetid://12908048527", Vector2.new(12, 1))
+player:SetSpriteSheet("idle_right", "rbxassetid://12908048527", Vector2.new(12, 1))
+player:SetSpriteSheet("idle_left", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("right", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("jump", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("left", "rbxassetid://12970115106", Vector2.new(12, 1))
@@ -31,11 +32,11 @@ This code creates a new character object in the game's scene using the Upside En
 
 ## Adding Animations
 !!! tip
-	Some words like "idle", "left" or "jump" can be played automatically by CrossPlatformService, which means that it is not necessary to play them if `CrossPlatformService.DefaultControllersEnabled` is set to true.
+	Some words like "idle_right", "idle_left", "left" or "jump" can be played automatically by CrossPlatformService, which means that it is not necessary to play them if `CrossPlatformService.DefaultControllersEnabled` is set to true.
 
 As we saw in the previous code example, we can add animations to our player character using sprite sheets.
 ```lua
-player:SetSpriteSheet("idle", "rbxassetid://12908048527", Vector2.new(1, 12))
+player:SetSpriteSheet("idle_right", "rbxassetid://12908048527", Vector2.new(1, 12))
 ```
 
 This sets the sprite sheet for the "idle" animation, using the ID of the asset and also pass the number of rows and columns as a Vector2, for example we have 5 frames in the in two lines, the expected Vector2 would be `Vector2.new(2, 5)`.

@@ -23,12 +23,16 @@ Within the Sprite Editor, you'll find some fields:
     
     If you choose one of the following names from the list when setting your animation name, it will be played automatically with the proper direction (this only works if you use the integrated player movement):
     
-    - idle
+    - idle_left
+    - idle_right
+    - idle_up
+    - idle_down
     - left
     - right
     - up
     - jump
     - down
+
 Lets create a basic animation, for this, select an sprite and then click on "Add Sprite sheet", in this example we will fill the fields like this:
 
 ![](../../assets/spriteeditorfill.png)
