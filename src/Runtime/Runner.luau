@@ -1,3 +1,4 @@
+--!native
 local upsideEngine = script.Parent.Parent
 local stepFolder = script:FindFirstAncestorOfClass("Folder").EveryStep
 

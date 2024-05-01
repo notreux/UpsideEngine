@@ -1,3 +1,4 @@
+--!native
 local getDistance = require(script.Parent.Parent.Private.Util.Math.GetDistance)
 local IsOutScreen = require(script.Parent.Parent.Private.Util).IsOutScreen
 local normalize = require(script.Parent.Parent.Private.Util).Normalize

@@ -1,3 +1,4 @@
+--!native
 local getCorners = require(script.Parent.Parent.GetCorners)
 local function perpendicular(vec)
 	return Vector2.new(-vec.Y, vec.X).Unit

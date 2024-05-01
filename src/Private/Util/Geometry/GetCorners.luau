@@ -1,3 +1,4 @@
+--!native
 return function(object)
 	local instance = object.Instance
 	local size, position = instance.AbsoluteSize, instance.AbsolutePosition

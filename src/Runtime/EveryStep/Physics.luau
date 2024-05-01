@@ -1,3 +1,4 @@
+--!native
 local upsideEngine = script.Parent.Parent.Parent
 local util = require(upsideEngine.Private.Util)
 
