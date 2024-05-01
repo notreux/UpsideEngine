@@ -55,14 +55,13 @@ local function getRotatedAngle(light, origin)
 end
 
 local function isSpotInsideBigPixel(bpx, light, range)
-	local lightAngle = light.Angle * 1
+	local lightAngle = math.clamp(light.Angle, 60, 360)
 	for _, axe in axes do
 		local position = bpx.position + bpx.size * axe
 		local rotatedAngle = getRotatedAngle(light, position)
 
 		local insideAngle = -lightAngle <= rotatedAngle and rotatedAngle <= lightAngle
-		local insideRange = getDistance(position + bpx.size * 0.5, light.Position + light.Size * 0.5)
-			< light.AbsoluteRange * 1.6
+		local insideRange = getDistance(position, light.Position + light.Size * 0.5) < light.AbsoluteRange * 1.6
 
 		if insideAngle and insideRange then
 			return true
