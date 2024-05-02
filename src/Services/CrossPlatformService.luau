@@ -26,10 +26,10 @@ function crossPlatformService.new()
 			Left = "Left",
 			Down = "Down",
 			Right = "Right",
-			Space = "Jump",
+			Space = "Up",
 		},
 		Gamepad = {
-			ButtonA = "Jump",
+			ButtonA = "Up",
 			Thumbstick1 = {
 				Up = "Up",
 				Left = "Left",
@@ -38,7 +38,7 @@ function crossPlatformService.new()
 			},
 		},
 		Mobile = {
-			JumpButton = "Jump",
+			JumpButton = "Up",
 			Thumbstick1 = {
 				Up = "Up",
 				Left = "Left",
@@ -54,7 +54,7 @@ end
 --[[={
 	@desc Assigns an action to a device key, example:
 	```lua
-	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
+	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Up")
 	```
 	@link void.link
 }=]]
@@ -76,7 +76,7 @@ end
 		Left = "Left",
 		Down = "Down",
 		Right = "Right",
-		Space = "Jump",
+		Space = "Up",
 	})
 	```
 	@link void.link
@@ -101,9 +101,9 @@ end
 	property, here is an example to make our player jumps in every device:
 ```lua
 --  								Device,	    Key, 	Action
-CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
-CrossPlatformService:SetDeviceKey("Mobile", "JumpButton", "Jump")
-CrossPlatformService:SetDeviceKey("Gamepad", "ButtonA", "Jump")
+CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Up")
+CrossPlatformService:SetDeviceKey("Mobile", "JumpButton", "Up")
+CrossPlatformService:SetDeviceKey("Gamepad", "ButtonA", "Up")
 ```
 
 
@@ -126,7 +126,7 @@ We assigned an action for our devices but how can we detect when an action is tr
 CrossPlatformService:On("InputBegin", function(inputObject)
 	local character = CrossPlatformService.Character
 
-	if inputObject.Action == "Jump" then
+	if inputObject.Action == "Up" then
 		character:Jump(150)
 	end
 end)

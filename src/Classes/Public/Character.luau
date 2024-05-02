@@ -69,6 +69,7 @@ function character.new(): Character
 	self.MaxHealth = 100
 	self.WalkSpeed = 50
 	self.JumpPower = 100
+	self.IsJumping = false
 
 	self:SetClassName(script.Name)
 	return setmetatable(self, character)
@@ -103,6 +104,12 @@ function character:Jump(jumpPower: number?)
 
 	jumpPower = (jumpPower or self.JumpPower) * 10
 	self.Velocity -= Vector2.new(0, jumpPower)
+	self.IsJumping = true
+
+	task.defer(function()
+		self:On("Collision"):Wait()
+		self.IsJumping = false
+	end)
 end
 
 --[[={
@@ -121,6 +128,7 @@ end
 		@MaxHealth The maximum amount of health of the character 
 		@WalkSpeed The walk speed of the character
 		@JumpPower The jump power of the character
+		@IsJumping Set to true when the character is jumping
 }=]]
 
 return setmetatable(character, sprite)

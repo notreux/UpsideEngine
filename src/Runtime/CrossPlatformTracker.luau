@@ -16,54 +16,25 @@ local actions = {
 	left = false,
 	right = false,
 	down = false,
-	jump = false,
 }
+
 local directions = {
 	up = Vector2.new(0, -1),
 	left = Vector2.new(-1, 0),
 	right = Vector2.new(1, 0),
 	down = Vector2.new(0, 1),
-	jump = Vector2.zero,
-	idle = Vector2.zero,
 }
 
 local function onUserInput(state, input)
+	local controlsEnabled = crossPlatformService.DefaultControllersEnabled
 	local character = crossPlatformService.Character
-	local activated = crossPlatformService.DefaultControllersEnabled
-
 	local action = input.Action:lower()
-	if not activated or not character.Sprites or not directions[action] then
-		return
-	end
 
+	local isValid = not character.Sprites or not directions[action]
 	local begin = state == "Begin"
-	local value = directions[action] or Vector2.zero
 
-	local jumping = (action == "jump" or action == "up") and crossPlatformService.SideView
-	local isLateral = (action == "left" or action == "right")
-	value *= character.WalkSpeed * 10
-
-	for _, key in { "X", "Y" } do
-		if not begin and character.Velocity[key] == 0 and value[key] ~= 0 then
-			actions[action] = false
-			return
-		end
-	end
-
-	if isLateral and begin then
-		character.Velocity = Vector2.new(0, character.Velocity.Y)
-		actions.left = false
-		actions.right = false
-	elseif action == "idle" then
-		character.Velocity = Vector2.zero
-	end
-
-	if jumping and begin and character.IsGrounded then
-		return character:Jump()
-	elseif not begin and actions[action] and not jumping then
-		character.Velocity -= value
-	elseif begin and not actions[action] and not jumping then
-		character.Velocity += value
+	if not controlsEnabled or isValid then
+		return
 	end
 
 	actions[action] = begin
@@ -181,10 +152,8 @@ crossPlatformService:On("InputChange", wrap(onUserInput, "Begin"))
 crossPlatformService:On("InputEnd", wrap(onUserInput, "Ended"))
 
 local lastAction = ""
-RunService.Heartbeat:Connect(function()
-	local defaultIdle = if crossPlatformService.SideView then "idle_right" else "idle_down"
-	local character = crossPlatformService.Character
-
+local function animationPlayer(character, sideView)
+	local defaultIdle = if sideView then "idle_right" else "idle_down"
 	local action = "none"
 	local animation = "idle"
 
@@ -197,19 +166,47 @@ RunService.Heartbeat:Connect(function()
 		animation = control
 	end
 
-	if action == lastAction and character.IsGrounded then
+	if action == lastAction or sideView and character.IsJumping and lastAction == "up" then
 		return
 	elseif action == "none" and not lastAction:match("idle") then
 		animation = ("idle_%s"):format(lastAction)
 	end
 
 	lastAction = action
-	animation = if animation == "up" and crossPlatformService.SideView
-		then "jump"
-		elseif animation == "idle" then defaultIdle
-		else animation
+	animation = if animation == "idle" then defaultIdle else animation
 
-	return character:Play(animation)
+	character:Play(animation)
+end
+
+local function characterController(character, sideView)
+	local velocity = Vector2.zero
+	if actions.up and sideView and character.IsGrounded then
+		character:Jump()
+	end
+
+	for key, direction in directions do
+		local active = actions[key]
+		if not active or key == "up" and sideView then
+			continue
+		end
+
+		velocity += direction
+	end
+
+	velocity = if velocity ~= Vector2.zero then velocity.Unit else velocity
+	velocity = velocity * character.WalkSpeed * 10
+
+	character.Velocity = if character.IsJumping and sideView
+		then Vector2.new(velocity.X, character.Velocity.Y)
+		else velocity
+end
+
+RunService.Heartbeat:Connect(function()
+	local character = crossPlatformService.Character
+	local sideView = crossPlatformService.SideView
+
+	animationPlayer(character, sideView)
+	characterController(character, sideView)
 end)
 
 return {}
