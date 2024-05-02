@@ -30,7 +30,6 @@ Within the Sprite Editor, you'll find some fields:
     - left
     - right
     - up
-    - jump
     - down
 
 Lets create a basic animation, for this, select an sprite and then click on "Add Sprite sheet", in this example we will fill the fields like this:

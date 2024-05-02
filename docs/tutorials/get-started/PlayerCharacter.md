@@ -20,7 +20,7 @@ player:SetScene(scene)
 player:SetSpriteSheet("idle_right", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("idle_left", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("right", "rbxassetid://12908048527", Vector2.new(12, 1))
-player:SetSpriteSheet("jump", "rbxassetid://12908048527", Vector2.new(12, 1))
+player:SetSpriteSheet("up", "rbxassetid://12908048527", Vector2.new(12, 1))
 player:SetSpriteSheet("left", "rbxassetid://12970115106", Vector2.new(12, 1))
 
 local plrInstance = player.Instance
@@ -32,7 +32,7 @@ This code creates a new character object in the game's scene using the Upside En
 
 ## Adding Animations
 !!! tip
-	Some words like "idle_right", "idle_left", "left" or "jump" can be played automatically by CrossPlatformService, which means that it is not necessary to play them if `CrossPlatformService.DefaultControllersEnabled` is set to true.
+	Some words like "idle_right", "idle_left", "left" or "up" can be played automatically by CrossPlatformService, which means that it is not necessary to play them if `CrossPlatformService.DefaultControllersEnabled` is set to true.
 
 As we saw in the previous code example, we can add animations to our player character using sprite sheets.
 ```lua
