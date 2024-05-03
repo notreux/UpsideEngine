@@ -3,7 +3,9 @@ local actor = script:GetActor()
 
 local data = {}
 local running = {}
+
 local module = nil
+local ready = script:WaitForChild("ready")
 
 if not actor then
 	return
@@ -37,3 +39,5 @@ actor:BindToMessage("executeEveryStep", function(name)
 		func(data, deltaTime)
 	end)
 end)
+
+ready:Fire()

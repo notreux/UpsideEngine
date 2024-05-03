@@ -19,7 +19,14 @@ function actor.new(module: ModuleScript)
 	local loader = actorLoader:Clone()
 	loader.Parent = instance
 
+	local ready = Instance.new("BindableEvent")
+	ready.Name = "ready"
+	ready.Parent = loader
+
+	ready.Event:Wait()
+	ready:Destroy()
 	instance:SendMessage("init", module)
+
 	return setmetatable({
 		instance = instance,
 		__cache = {},
