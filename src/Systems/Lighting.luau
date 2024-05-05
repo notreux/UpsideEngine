@@ -5,10 +5,10 @@ local normalize = require(script.Parent.Parent.Private.Util).Normalize
 local clock = os.clock
 local ms = clock()
 local axes = {
-	Vector2.zero,
-	Vector2.new(0, 1),
-	Vector2.new(1, 0),
-	Vector2.new(1, 1),
+	Vector3.zero,
+	Vector3.new(0, 1),
+	Vector3.new(1, 0),
+	Vector3.new(1, 1),
 }
 
 local function interpolateColor(startColor, endColor, t)
@@ -28,11 +28,11 @@ local function sortf(l1, l2)
 	return l1.range > l2.range
 end
 
-local function isBallInsideBigPixel(bpx, light, range)
-	return bpx.position.X < light.Position.X + range
-		and bpx.position.X + bpx.size.X > light.Position.X - range
-		and bpx.position.Y < light.Position.Y + range
-		and bpx.position.Y + bpx.size.Y > light.Position.Y - range
+local function isBallInsidechunk(chk, light, range)
+	return chk.position.X < light.Position.X + range
+		and chk.position.X + chk.size.X > light.Position.X - range
+		and chk.position.Y < light.Position.Y + range
+		and chk.position.Y + chk.size.Y > light.Position.Y - range
 end
 
 
@@ -55,10 +55,10 @@ local function getRotatedAngle(light, origin)
 	return normalizeAngle(rotatedAngle)
 end
 
-local function isSpotInsideBigPixel(bpx, light, range)
+local function isSpotInsidechunk(chk, light, range)
 	local lightAngle = math.clamp(light.Angle, 60, 360)
 	for _, axe in axes do
-		local position = bpx.position + bpx.size * axe
+		local position = chk.position + chk.size * axe
 		local rotatedAngle = getRotatedAngle(light, position)
 
 		local insideAngle = -lightAngle <= rotatedAngle and rotatedAngle <= lightAngle
@@ -72,20 +72,17 @@ local function isSpotInsideBigPixel(bpx, light, range)
 	return false
 end
 
-local function drawSpotLight(bpxData, light, staticData)
-	local update = staticData.update
+local function drawSpotLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
 	local angle = light.Angle * 0.5
 
-	if not isSpotInsideBigPixel(bpxData, light, light.Range) then
+	if not isSpotInsidechunk(chkData, light, light.Range) then
 		return
-	elseif not update[bpxData] then
-		update[bpxData] = {}
 	end
 
-	for _, px in bpxData.childs do
-		local distance = getDistance(px.position + px.size * 0.5, light.Position + light.Size * 0.5)
+	for _, px in chkData.content do
+		local distance = getDistance(px.position, light.Position + light.Size * 0.5)
 		local rotatedAngle = getRotatedAngle(light, px.position)
 
 		if distance > absRange or (rotatedAngle <= -angle or rotatedAngle >= angle) then
@@ -98,25 +95,21 @@ local function drawSpotLight(bpxData, light, staticData)
 		local lightTransparency = (light.Transparency + (px.lightTransparency or light.Transparency)) * 0.5
 		local color = if px.color then interpolateColor(px.color, light.Color, 1 - nDistance) else light.Color
 
-		update[bpxData][px] = true
 		px.lightTransparency = lightTransparency
 		px.transparency = transparency
 		px.color = color
 	end
 end
 
-local function drawPointLight(bpxData, light, staticData)
-	local update = staticData.update
+local function drawPointLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
 
-	if not isBallInsideBigPixel(bpxData, light, light.Range) then
+	if not isBallInsidechunk(chkData, light, light.Range) then
 		return
-	elseif not update[bpxData] then
-		update[bpxData] = {}
 	end
 
-	for _, px in bpxData.childs do
+	for _, px in chkData.content do
 		local distance = getDistance(px.position, light.Position)
 		if distance > absRange then
 			continue
@@ -128,10 +121,55 @@ local function drawPointLight(bpxData, light, staticData)
 		local lightTransparency = (light.Transparency + (px.lightTransparency or light.Transparency)) * 0.5
 		local color = if px.color then interpolateColor(px.color, light.Color, 1 - nDistance) else light.Color
 
-		update[bpxData][px] = true
 		px.lightTransparency = lightTransparency
 		px.transparency = transparency
 		px.color = color
+	end
+end
+
+local function buildCanvas(chunk, position, size)
+	local canvas = chunk.Canvas.Size
+	local pixels = table.create((canvas.Y - 1) * (canvas.X - 1))
+
+	for y = 0, canvas.Y - 1 do
+		for x = 0, canvas.X - 1 do
+			local normalPosition = Vector3.new(x / canvas.X, y / canvas.Y)
+			table.insert(pixels, {
+				position = position + normalPosition * size,
+			})
+		end
+	end
+
+	return pixels
+end
+
+local function serializeChunk(chunks, chkData, lighting)
+	local chkPixels = {}
+	chunks[chkData] = chkPixels
+
+	for index, px in chkData.content do
+		local isDrawn = px.transparency ~= 0 and px.transparency ~= nil
+		local transparency = if isDrawn and px.lightTransparency > lighting.ambientTransparency
+			then math.clamp(px.transparency, lighting.ambientTransparency, px.lightTransparency)
+			else lighting.ambientTransparency
+
+		local color = if isDrawn
+			then interpolateColor(
+				px.color,
+				lighting.ambientColor,
+				math.clamp(lighting.lightIntensity - px.transparency, 0, lighting.lightIntensity)
+			)
+			else lighting.ambientColor
+
+		local pxIndex = 1 + ((index - 1) * 4)
+		chkPixels[pxIndex] = color.R
+		chkPixels[pxIndex + 1] = color.G
+		chkPixels[pxIndex + 2] = color.B
+		chkPixels[pxIndex + 3] = 1 - transparency
+
+		px.color = nil
+		px.lightTransparency = nil
+		px.transparency = 0
 	end
 end
 
@@ -145,24 +183,25 @@ function lightingSystem.onSetData(data, name, value)
 		local instance = light.Instance
 		local range = light.Range * light.Range
 
-		local absoluteSize = Vector2.new(range, range)
+		local v2Range = Vector2.new(range, range)
 		local absolutePosition = instance.AbsolutePosition
+		local absoluteSize = instance.AbsoluteSize
 
-		if IsOutScreen(absolutePosition, absoluteSize * 2) then
+		if IsOutScreen(instance.AbsolutePosition, v2Range * 2) then
 			continue
 		end
 
 		value[index] = {
-			Instance = light.Instance,
-			Brightness = light.Brightness,
-			Position = absolutePosition,
-			Size = light.Instance.AbsoluteSize,
-			AbsoluteRange = range,
-			Angle = math.rad(light.Angle),
+			Position = Vector3.new(absolutePosition.X, absolutePosition.Y),
+			Size = Vector3.new(absoluteSize.X, absoluteSize.Y),
 			Rotation = math.rad(light.Rotation),
+			Angle = math.rad(light.Angle),
 			Shape = light.Shape:lower(),
+			Instance = light.Instance,
+			AbsoluteRange = range,
 			Range = light.Range,
 			Color = light.Color,
+			Brightness = light.Brightness,
 			Transparency = light.Transparency,
 		}
 	end
@@ -173,29 +212,25 @@ end
 
 function lightingSystem.build(data)
 	local details = data.details
-	local bigPixel = details.bigPixel
-	local bigPixelSize = details.bigPixelSize
+	local chunk = details.chunk
+	local chunkSize = details.chunkSize
 
-	for y = 0, details.screenSize.Y / bigPixelSize do
-		local px = bigPixel:Clone()
-		px.Position = UDim2.fromOffset(details.x * bigPixelSize, y * bigPixelSize)
-		px.Parent = details.screen
+	local yFrames = math.round(details.screenSize.Y / chunkSize)
+	for y = 0, yFrames do
+		local chk = chunk:Clone()
+		chk.Position = UDim2.fromOffset(details.x * chunkSize, y * chunkSize)
+		chk.Parent = details.screen
 
-		local childs = px.Canvas:GetChildren()
-		for i = 1, #childs do
-			local instance = childs[i]
-			childs[i] = {
-				instance = instance,
-				position = instance.AbsolutePosition,
-				size = instance.AbsoluteSize,
-			}
-		end
+		local size = Vector3.new(chk.AbsoluteSize.X, chk.AbsoluteSize.Y)
+		local position = Vector3.new(chk.AbsolutePosition.X, chk.AbsolutePosition.Y)
+		local pixels = buildCanvas(chunk, position, size)
 
 		table.insert(data.pixels, {
-			instance = px,
-			position = px.AbsolutePosition,
-			size = px.AbsoluteSize,
-			childs = childs,
+			instance = chk,
+			canvas = chk.Canvas,
+			position = position,
+			size = size,
+			content = pixels,
 		})
 	end
 end
@@ -212,63 +247,37 @@ function lightingSystem.draw(data)
 	ms = current
 
 	local lights = data.lights
-	local update = {}
-
 	local staticData = {
-		update = update,
 		ambientTransparency = lighting.ambientTransparency,
 	}
 
-	for bigPixel, bpxData in pixels do
+	local chunks = {}
+	for _, chkData in pixels do
 		for _, light in lights do
 			if light.Shape == "pointlight" then
-				drawPointLight(bpxData, light, staticData)
+				drawPointLight(chkData, light, staticData)
 				continue
 			end
 
-			drawSpotLight(bpxData, light, staticData)
+			drawSpotLight(chkData, light, staticData)
 		end
+
+		serializeChunk(chunks, chkData, lighting)
 	end
 
 	task.synchronize()
-	for bigPixel, drawn in update do
-		local bpxInstance = bigPixel.instance
-		bpxInstance.BackgroundTransparency = 1
-		bpxInstance.Canvas.Visible = true
-
-		for _, px in bigPixel.childs do
-			local isDrawn = drawn[px]
-			local instance = px.instance
-
-			local transparency = if isDrawn and px.lightTransparency > lighting.ambientTransparency
-				then math.clamp(px.transparency, lighting.ambientTransparency, px.lightTransparency)
-				else lighting.ambientTransparency
-
-			local color = if isDrawn
-				then interpolateColor(
-					px.color,
-					lighting.ambientColor,
-					math.clamp(lighting.lightIntensity - px.transparency, 0, lighting.lightIntensity)
-				)
-				else lighting.ambientColor
-
-			px.color = nil
-			px.transparency = nil
-
-			instance.BackgroundTransparency = transparency
-			instance.BackgroundColor3 = color
-		end
+	for _, chkData in pixels do
+		local canvas = chkData.canvas
+		canvas:WritePixels(Vector2.zero, canvas.Size, chunks[chkData])
 	end
+end
 
-	for _, bigPixel in pixels do
-		if update[bigPixel] then
-			continue
-		end
-
-		local instance = bigPixel.instance
-		instance.Canvas.Visible = false
-		instance.BackgroundTransparency = lighting.ambientTransparency
-		instance.BackgroundColor3 = lighting.ambientColor
+function lightingSystem.updateScreen(data)
+	local lighting = data.lighting
+	for _, chkData in data.pixels do
+		chkData.instance.ResampleMode = lighting.lightStyle
+		chkData.canvas:Resize(lighting.chunkResolution)
+		chkData.content = buildCanvas(chkData.instance, chkData.position, chkData.size)
 	end
 end
 

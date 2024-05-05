@@ -18,7 +18,9 @@ function lightingEnvironment.new(scene: Scene): LightingEnvironment
 	self.AmbientColor = Color3.fromRGB()
 	self.AmbientTransparency = 0.2
 	self.UpdateFrequency = 0.025
-	self.LightIntensity = 1.2
+	self.LightIntensity = 1
+	self.LightStyle = Enum.ResamplerMode.Pixelated
+	self.ChunkResolution = Vector2.new(15, 15)
 	self.__actrees = actrees.new()
 
 	local gameFrame = scene.Instance:WaitForChild("GameFrame")
@@ -38,73 +40,54 @@ end
 	@link void.link
 }=]]
 
-function lightingEnvironment:DrawPixels(pixelSize: number)
-	if self.ready then
-		return
-	end
-
+function lightingEnvironment:DrawPixels()
 	local gameFrame = self.Instance.Parent:WaitForChild("GameFrame")
 	local instance = self.Instance
 	instance.Size = gameFrame.Size
 	instance.Position = gameFrame.Position
 	instance.AnchorPoint = gameFrame.AnchorPoint
 
-	local size = math.clamp(pixelSize, 5, 50)
-	local bigPixelSize = size * 10
-	local bigPixel = Instance.new("Frame")
-	bigPixel.Size = UDim2.fromOffset(bigPixelSize, bigPixelSize)
-	bigPixel.BackgroundTransparency = self.AmbientTransparency
-	bigPixel.BackgroundColor3 = self.AmbientColor
-	bigPixel.BorderSizePixel = 0
-	bigPixel.ZIndex = 1000
+	local chunkSize = 200
+	local chunkX = math.clamp(self.ChunkResolution.X, 0, 80)
+	local chunkY = math.clamp(self.ChunkResolution.Y, 0, 80)
+	local chunkResolution = Vector2.new(chunkX, chunkY)
 
-	local canvas = Instance.new("Frame")
+	local chunk = Instance.new("ImageLabel")
+	chunk.Size = UDim2.fromOffset(chunkSize, chunkSize)
+	chunk.BackgroundTransparency = 1
+	chunk.BorderSizePixel = 0
+	chunk.ZIndex = 1000
+	chunk.ResampleMode = self.LightStyle
+
+	local xChunks = math.round(self.Instance.AbsoluteSize.X / chunkSize)
+	local canvas = Instance.new("EditableImage")
 	canvas.Name = "Canvas"
-	canvas.BackgroundTransparency = 1
-	canvas.Parent = bigPixel
-	canvas.Visible = false
+	canvas.Parent = chunk
+	canvas:Resize(chunkResolution)
 
-	local pixel = Instance.new("Frame")
-	pixel.Size = UDim2.fromOffset(size, size)
-	pixel.BorderSizePixel = 0
-	pixel.BackgroundTransparency = self.AmbientTransparency
-	pixel.BackgroundColor3 = self.AmbientColor
+	for x = 0, xChunks do
+		local chkActor = actor.new(lightingSystem)
+		self.__actrees:AddActor(chkActor)
 
-	local iterations = bigPixelSize / size
-	for x = 0, iterations - 1 do
-		for y = 0, iterations - 1 do
-			local px = pixel:Clone()
-			px.Parent = canvas
-			px.ZIndex = 1000
-			px.Position = UDim2.fromOffset(x * size, y * size)
-		end
-	end
-
-	local xAxe = self.Instance.AbsoluteSize.X / bigPixelSize
-	for x = 0, xAxe do
-		local bpxActor = actor.new(lightingSystem)
-		self.__actrees:AddActor(bpxActor)
-
-		bpxActor:SetVariable("pixels", {})
-		bpxActor:SetVariable("lights", {})
-		bpxActor:SetVariable("resolution", self.Instance.AbsoluteSize)
-		bpxActor:SetVariable("details", {
+		chkActor:SetVariable("pixels", {})
+		chkActor:SetVariable("lights", {})
+		chkActor:SetVariable("resolution", self.Instance.AbsoluteSize)
+		chkActor:SetVariable("details", {
 			x = x,
-			bigPixel = bigPixel,
-			bigPixelSize = bigPixelSize,
-			canvas = canvas,
+			chunk = chunk,
+			chunkSize = chunkSize,
 			screen = self.Instance,
 			screenSize = self.Instance.AbsoluteSize,
 		})
-		bpxActor:SetVariable("lighting", {
+		chkActor:SetVariable("lighting", {
 			ambientColor = self.AmbientColor,
 			ambientTransparency = self.AmbientTransparency,
 			updateFrequency = self.UpdateFrequency,
 			lightIntensity = self.LightIntensity,
 		})
 
-		bpxActor:Execute("build")
-		bpxActor:ExecuteEveryStep("draw")
+		chkActor:Execute("build")
+		chkActor:ExecuteEveryStep("draw")
 	end
 end
 
@@ -114,13 +97,18 @@ end
 }=]]
 
 function lightingEnvironment:UpdateScreen()
+	local actree = self.__actrees
+	actree:SetVariable("lighting", {
+		ambientColor = self.AmbientColor,
+		ambientTransparency = self.AmbientTransparency,
+		updateFrequency = self.UpdateFrequency,
+		lightIntensity = self.LightIntensity,
+		lightStyle = self.LightStyle,
+		chunkResolution = self.ChunkResolution,
+	})
+
 	for _, actor in self.__actrees do
-		actor:SetVariable("lighting", {
-			ambientColor = self.AmbientColor,
-			ambientTransparency = self.AmbientTransparency,
-			updateFrequency = self.UpdateFrequency,
-			lightIntensity = self.LightIntensity,
-		})
+		actor:Execute("updateScreen")
 	end
 end
 
