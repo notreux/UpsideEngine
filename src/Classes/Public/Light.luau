@@ -33,6 +33,22 @@ end
 		@Track If this property is set to true the light is tracked, so it appears on the screen, if it is disabled and it was tracked at some point,
 		it will appear on the screen but if at any time another light enters in the range of this light, this light will start to modify the shape of the initial light, that's because we can say that when we disable the
 		the shape of the initial light, that is because it could be said that when we disable the Track property what remains on the screen is the trace of the light.
+		@Rotation
+		!!!warning
+			Only works on Spotlights
+
+		Determines how many degrees the Light is rotated
+		@Angle
+		!!!warning
+			Only works on Spotlights
+
+		Determines the light area size
+
+		@Inverted 
+		!!!warning
+			Only works on Pointlights
+
+		Inverts the light source
 }=]]
 
 return setmetatable(light, physicalObject)
