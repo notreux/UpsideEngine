@@ -1,7 +1,7 @@
 --!native
 local getDistance = require(script.Parent.Parent.Private.Util.Math.GetDistance)
+local normalize = require(script.Parent.Parent.Private.Util.Math.Normalize)
 local IsOutScreen = require(script.Parent.Parent.Private.Util).IsOutScreen
-local normalize = require(script.Parent.Parent.Private.Util).Normalize
 local clock = os.clock
 local ms = clock()
 local axes = {
@@ -89,11 +89,11 @@ local function drawSpotLight(chkData, light, staticData)
 			continue
 		end
 
-		local nDistance = normalize(distance, 0, absRange)
+		local nDistance = math.log(distance, absRange)
 		local transparency = (px.transparency or ambientTransparency) - nDistance + light.Brightness + 1
 
 		local lightTransparency = (light.Transparency + (px.lightTransparency or light.Transparency)) * 0.5
-		local color = if px.color then interpolateColor(px.color, light.Color, 1 - nDistance) else light.Color
+		local color = if px.color then interpolateColor(px.color, light.Color, 0.5) else light.Color
 
 		px.lightTransparency = lightTransparency
 		px.transparency = transparency
@@ -115,11 +115,11 @@ local function drawPointLight(chkData, light, staticData)
 			continue
 		end
 
-		local nDistance = normalize(distance, 0, absRange)
+		local nDistance = if light.Inverted then normalize(distance, 0, absRange) else math.log(distance, absRange)
 		local transparency = (px.transparency or ambientTransparency) - nDistance + light.Brightness + 1
 
 		local lightTransparency = (light.Transparency + (px.lightTransparency or light.Transparency)) * 0.5
-		local color = if px.color then interpolateColor(px.color, light.Color, 1 - nDistance) else light.Color
+		local color = if px.color then interpolateColor(px.color, light.Color, 0.5) else light.Color
 
 		px.lightTransparency = lightTransparency
 		px.transparency = transparency
@@ -201,6 +201,7 @@ function lightingSystem.onSetData(data, name, value)
 			AbsoluteRange = range,
 			Range = light.Range,
 			Color = light.Color,
+			Inverted = light.Inverted,
 			Brightness = light.Brightness,
 			Transparency = light.Transparency,
 		}

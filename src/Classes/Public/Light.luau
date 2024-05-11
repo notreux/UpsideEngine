@@ -17,6 +17,7 @@ function light.new(): Light
 	self.Range = 50
 	self.Brightness = 0
 	self.Transparency = 0.85
+	self.Inverted = false
 
 	return setmetatable(self, light)
 end
