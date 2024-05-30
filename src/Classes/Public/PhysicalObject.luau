@@ -2,6 +2,7 @@ local upsideEngine = script.Parent.Parent.Parent
 local contentProvider = game:GetService("ContentProvider")
 local colorProperties = { "ImageColor3", "TextColor3", "TextStrokeColor3" }
 
+local sceneManager = require(script.Parent.Parent.Parent.Services.SceneManager)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 local util = require(upsideEngine.Private.Util)
 local physicalObject = {}
@@ -90,6 +91,22 @@ function physicalObject.new(): PhysicalObject
 	instance.ResampleMode = Enum.ResamplerMode.Pixelated
 
 	return setmetatable(self, physicalObject)
+end
+
+--[[={
+	@desc Sets the shader for this object
+	@link void.link
+}=]]
+
+function physicalObject:SetShader(shader)
+	local scene = sceneManager.Scenes[self.Scene]
+	if not scene then
+		return
+	end
+
+	local shaderEnv = scene.ShaderEnvironment.Content
+	self.Shader = shader
+	shaderEnv[self.Id] = self
 end
 
 --[[={

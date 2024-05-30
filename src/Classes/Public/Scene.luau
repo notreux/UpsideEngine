@@ -1,6 +1,7 @@
 local upsideEngine = script.Parent.Parent.Parent
 
 local objectEnvironment = require(script.Parent.Parent.Internal.ObjectEnvironment)
+local shaderEnvironment = require(script.Parent.Parent.Internal.ShaderEnvironment)
 local camera = require(upsideEngine.Classes.Internal.Camera)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 
@@ -47,6 +48,7 @@ function scene.new(): Scene
 	self.LightingEnvironment = lightingEnvironment.new(self)
 	self.ParticleEnvironment = particleEnvironment.new()
 	self.SoundEnvironment = soundEnvironment.new()
+	self.ShaderEnvironment = shaderEnvironment.new()
 	self.Objects = objectEnvironment.new()
 
 	sceneManager.Scenes[self.Id] = self

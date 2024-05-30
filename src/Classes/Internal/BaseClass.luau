@@ -5,10 +5,12 @@ local copyTable = require(upsideEngine.Private.Util.Internal.CopyTable)
 local instanceProperties = require(appData.InstanceProperties)
 local data = require(appData.Data)
 
-local classEnvironments = {
-	Sound = "SoundEnvironment",
-	Light = "LightingEnvironment",
-	Particle = "ParticleEnvironment",
+local environments = {
+	"SoundEnvironment",
+	"LightingEnvironment",
+	"ParticleEnvironment",
+	"ShaderEnvironment",
+	"Objects",
 }
 
 local baseClass = {}
@@ -73,19 +75,19 @@ function baseClass:Destroy()
 		data.workSpace[self.Name or ""] = nil
 	end
 
-	if scene then
-		local environment = classEnvironments[self.ClassName or ""]
-
-		if scene.Objects:HasOne(id) then
-			scene.Objects:RemoveOne(id)
-		end
-		if environment then
-			scene[environment]:RemoveOne(id)
-		end
+	table.clear(self)
+	if not scene then
+		return
 	end
 
-	table.clear(self)
-	rawset(self, "Id", id)
+	for _, environment in environments do
+		local env = scene[environment]
+		if not env:HasOne(id) then
+			continue
+		end
+
+		env:RemoveOne(id)
+	end
 end
 
 function baseClass:IsA(className: string)
