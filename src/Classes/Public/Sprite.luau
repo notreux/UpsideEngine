@@ -31,7 +31,7 @@ end
 }=]]
 
 function sprite:SetSpriteSheet(name: string, url: string, frames: Vector2)
-	contentProvider:PreloadAsync({ url })
+	task.defer(contentProvider.PreloadAsync, contentProvider, { url })
 	self.Sprites[name] = {
 		Url = url,
 		Frames = frames - Vector2.one,
@@ -44,7 +44,7 @@ end
 }=]]
 
 function sprite:SetSpriteList(name: string, list: Array<string>)
-	contentProvider:PreloadAsync(list)
+	task.defer(contentProvider.PreloadAsync, contentProvider, list)
 	self.Sprites[name] = {
 		List = list,
 	}
