@@ -44,7 +44,19 @@ local function everyStep()
 
 	for _, scene in pairs(sceneManager.ActiveScenes) do
 		local lighting = scene.LightingEnvironment
+		local objects = scene.Objects
+		local shadable = {}
+
+		for _, object in objects do
+			if not object.Shader.Enabled then
+				continue
+			end
+
+			shadable[object.Id] = object
+		end
+
 		lighting.__actrees:SetVariable("lights", lighting.Content)
+		objects.__actor:SetVariable("shadable", shadable)
 
 		for _, tracker in ipairs(trackers) do
 			tracker(scene, deltaTime)

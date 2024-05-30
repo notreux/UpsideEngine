@@ -6,7 +6,7 @@ local actorLoader = private:WaitForChild("ActorLoader")
 local util = require(private.Util)
 
 local copyTable = util.CopyTable
-local isEqual = util.isEqual
+local isEqual = util.IsEqual
 
 local isClient = runService:IsClient()
 local actor = {}

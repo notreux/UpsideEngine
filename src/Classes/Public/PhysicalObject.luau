@@ -63,6 +63,7 @@ function physicalObject.new(): PhysicalObject
 	self.ChromaticAberration = {}
 	self.Collisions = {}
 	self.CollisionBlacklist = {}
+	self.Shader = {}
 	self.Hitbox = {
 		Vector2.zero,
 		Vector2.new(1, 0),
@@ -90,7 +91,6 @@ function physicalObject.new(): PhysicalObject
 
 	return setmetatable(self, physicalObject)
 end
-
 
 --[[={
 	@desc Loads an image for the current object and is set as the instance image

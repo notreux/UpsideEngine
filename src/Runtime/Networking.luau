@@ -2,15 +2,15 @@ local upsideEngine = script.Parent.Parent
 local runService = game:GetService("RunService")
 local players = game:GetService("Players")
 
-local isServer = runService:IsServer()
-
-local socket = game.ReplicatedStorage:WaitForChild("UpsideEngineSocket")
 local ToVector2 = require(script.Parent.Parent.Private.Util.DataType.ToVector2)
 local copyTable = require(script.Parent.Parent.Private.Util.Internal.CopyTable)
-local isEqual = require(script.Parent.Parent.Private.Util.Internal.isEqual)
+local isEqual = require(script.Parent.Parent.Private.Util.Internal.IsEqual)
 local getDistance = require(script.Parent.Parent.Private.Util.Math.GetDistance)
 local request = require(upsideEngine.Classes.Internal.Request)
 local networkingService = require(upsideEngine.Services.NetworkingService)
+
+local socket = game.ReplicatedStorage:WaitForChild("UpsideEngineSocket")
+local isServer = runService:IsServer()
 
 local playersData = networkingService.PlayersData
 local replicationTarget = networkingService.ReplicationTarget
