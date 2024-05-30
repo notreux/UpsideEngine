@@ -3,8 +3,13 @@ local contentProvider = game:GetService("ContentProvider")
 local colorProperties = { "ImageColor3", "TextColor3", "TextStrokeColor3" }
 
 local sceneManager = require(script.Parent.Parent.Parent.Services.SceneManager)
+local Shader = require(script.Parent.Shader)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 local util = require(upsideEngine.Private.Util)
+
+local defaultShader = Shader.new()
+defaultShader.Enabled = false
+
 local physicalObject = {}
 physicalObject.__index = physicalObject
 
@@ -64,7 +69,7 @@ function physicalObject.new(): PhysicalObject
 	self.ChromaticAberration = {}
 	self.Collisions = {}
 	self.CollisionBlacklist = {}
-	self.Shader = {}
+	self.Shader = defaultShader
 	self.Hitbox = {
 		Vector2.zero,
 		Vector2.new(1, 0),
