@@ -195,6 +195,7 @@ end
 		@Force Is the force which is applied in the moment to the object
 		@Velocity Is the velocity applied to the object
 		@Hitbox This the CollisionMask of the object
+		@Shader Is the shader of the object
 	@events 
 		@Collision Params -> [PhysicalObject](PhysicalObject.md)
 		This event is fired when the object collides with other object

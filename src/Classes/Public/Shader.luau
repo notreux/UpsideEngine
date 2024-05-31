@@ -22,11 +22,19 @@ function shader:SetSource(file: ModuleScript)
 end
 
 --[[={
-	@desc The event emitter is used to manage the events of a class
+	@desc 
+	!!! warning 
+		Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
+		and not to use too many shaders.
+
+		If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
+		this will lighten a lot the work for the cpu.	
+
+		_____
+		This class is used to modify how an object is renderized
 	@about
 		@Path This property stores the shader path
         @Enabled This property determines if the shader is enabled
-        @Canvas This property stores the shader information to draw
 }=]]
 
 return setmetatable(shader, baseClass)
