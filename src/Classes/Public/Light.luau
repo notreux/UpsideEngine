@@ -1,4 +1,4 @@
-local physicalObject = require(script.Parent.PhysicalObject)
+local staticObject = require(script.Parent.StaticObject)
 local light = {}
 light.__index = light
 
@@ -7,9 +7,8 @@ light.__index = light
 }=]]
 
 function light.new(): Light
-	local self = physicalObject.new()
+	local self = staticObject.new()
 	self:SetClassName(script.Name)
-	self.TrackCollisions = false
 	self.Shape = "PointLight"
 	self.Rotation = 0
 	self.Angle = 90
@@ -51,4 +50,4 @@ end
 		Inverts the light source
 }=]]
 
-return setmetatable(light, physicalObject)
+return setmetatable(light, staticObject)
