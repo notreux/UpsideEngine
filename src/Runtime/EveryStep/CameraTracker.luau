@@ -18,11 +18,9 @@ return function(scene, deltaTime)
 		return camera:LookTo(subject)
 	end
 
-	local force = subject.IsGrounded and Vector2.zero or subject.Force * deltaTime
 	local velocity = subject.Velocity * deltaTime
-
 	local limits = (camera.Limits / 2)
-	local target = (subject.Instance.AbsolutePosition + force + velocity) / resolution
+	local target = (subject.Instance.AbsolutePosition + velocity) / resolution
 
 	if not isOutsideLimits(target, limits, 0) then
 		return
@@ -30,6 +28,6 @@ return function(scene, deltaTime)
 		return camera:LookTo(subject)
 	end
 
-	local position = camera.LocalPosition - force - velocity
+	local position = camera.LocalPosition - velocity
 	return camera:SetPosition(ToUDim2(position))
 end

@@ -1,39 +1,54 @@
---!native
 local upsideEngine = script.Parent.Parent.Parent
+local ToUDim2 = require(script.Parent.Parent.Parent.Private.Util.DataType.ToUDim2)
+local getCollidingObjects = require(script.Parent.Parent.Parent.Private.Util.Geometry.GetCollidingObjects)
 local util = require(upsideEngine.Private.Util)
 
-local max = 10000
-local recentCollisions = {}
-
-local function adaptToCollisions(object, property, smtv)
-	object[property] = Vector2.new(smtv.X == 0 and object[property].X or 0, smtv.Y == 0 and object[property].Y or 0)
-end
-
-local function getRecentCollisions(object)
-	local recent = recentCollisions[object.Id]
-	if not recent then
-		recent = {}
-		recentCollisions[object.Id] = recent
-	end
-
-	return recent
-end
-
 local function emit(self, meta, active)
-	local current = self.Collisions[meta.Id]
-	local recentC = getRecentCollisions(self)
-	local iterations = recentC[meta.Id] or 0
-
-	if current == active then
-		recentC[meta.Id] = 5
-		return
-	elseif iterations > 0 then
+	local oldState = self.Collisions[meta.Id]
+	if oldState == active then
 		return
 	end
 
+	local eventName = if active then "Collision" else "CollisionEnd"
 	self.Collisions[meta.Id] = active or nil
-	self:Fire(active and "Collision" or "CollisionEnd", meta)
-	rawset(recentC, meta.Id, 5)
+	self:Fire(eventName, meta)
+end
+
+function applyBuoyancy(scene, object, fluid)
+	local height = object.Instance.AbsoluteSize.Y
+	local bottom = object.Instance.AbsolutePosition.Y + height
+	local top = fluid.Instance.AbsolutePosition.Y
+
+	local submergedVolume = math.min(bottom - top, height)
+	local submergedRatio = submergedVolume / height
+
+	if object:IsA("Fluid") or object.Anchored then
+		return
+	end
+
+	local tideEffect = fluid.WavesAmplitude * (math.sin(fluid.WavesSpeed * os.clock()))
+	local buoyancyForce = fluid.Density * submergedRatio * height * scene.Gravity.Y + tideEffect
+	local dragForce = -fluid.Viscosity * object.Velocity
+
+	object:ApplyForce(Vector2.new(0, -buoyancyForce))
+	object:ApplyForce(dragForce)
+end
+
+local function update(scene, object, deltaTime)
+	if object.Anchored then
+		return
+	end
+
+	object:ApplyForce(scene.Gravity * object.Mass)
+	object.Acceleration = object.Force * (1 / object.Mass)
+	object.Velocity += object.Acceleration * deltaTime
+
+	local velocity = object.Velocity * deltaTime
+	local linearFriction = 1 - object.Friction * deltaTime
+	object.Velocity = Vector2.new(object.Velocity.X * math.max(linearFriction, 0), object.Velocity.Y)
+	object.Force = Vector2.zero
+
+	return velocity
 end
 
 return function(scene, deltaTime)
@@ -59,31 +74,45 @@ return function(scene, deltaTime)
 	end
 
 	for _, object in freefall do
+		local x, y = 0, 0
 		local instance = object.Instance
-		local smtv = Vector2.zero
+		local velocity = update(scene, object, deltaTime)
+		local iterations = (object.Velocity / instance.AbsoluteSize).Magnitude
+		iterations = math.round(1 + iterations * deltaTime * 10)
 
-		local colliding, recentC = {}, getRecentCollisions(object)
-		local distance = (object.Force + object.Velocity) * deltaTime
-		local stop, collisions, dis = nil, nil, nil
+		local collisionCount, collisions = 0, {}
+		local colliding
 
-		for i = 4, 1, -1 do
-			dis = distance / i
-			collisions, stop = util.GetCollidingObjects(object, dis, objects)
+		for i = iterations, 1, -1 do
+			local vel = velocity / i
+			colliding = getCollidingObjects(objects, object, vel)
 
-			if stop and object.CanCollide then
+			if #colliding < collisionCount then
+				velocity = velocity / (i + 1)
 				break
 			end
+
+			collisionCount = #colliding
 		end
 
-		for _, collision in collisions do
-			local meta = collision.object
-			if object.CanCollide and meta.CanCollide then
-				smtv += collision.mtv
+		for _, collision in colliding do
+			local other = collision.object
+			local mv = collision.moveVector
+			local isFluid = other:IsA("Fluid")
+
+			collisions[collision.object.Id] = true
+			emit(other, object, true)
+			emit(object, other, true)
+
+			if isFluid then
+				applyBuoyancy(scene, object, other)
+				continue
+			elseif not object.CanCollide or not other.CanCollide then
+				continue
 			end
 
-			colliding[collision.object.Id] = true
-			emit(meta, object, true)
-			emit(object, meta, true)
+			x = math.abs(mv.X) > math.abs(x) and mv.X or x
+			y = math.abs(mv.Y) > math.abs(y) and mv.Y or y
 		end
 
 		for id in object.Collisions do
@@ -92,26 +121,17 @@ return function(scene, deltaTime)
 				continue
 			end
 
-			emit(object, meta, colliding[id])
-			emit(meta, object, colliding[id])
+			emit(object, meta, collisions[id])
+			emit(meta, object, collisions[id])
 		end
 
-		for id, iterations in recentC do
-			recentC[id] -= 1
-			if iterations < 0 then
-				recentC[id] = nil
-			end
+		if object.Anchored then
+			continue
 		end
 
-		adaptToCollisions(object, "Velocity", smtv)
-		adaptToCollisions(object, "Force", smtv)
-		distance = Vector2.new(
-			math.round(smtv.X == 0 and distance.X or dis.X),
-			math.round(smtv.Y == 0 and distance.Y or dis.Y)
-		)
-
-		instance.Position += util.ToUDim2(distance - smtv)
-		object.IsGrounded = object.Force.Y == 0
-		object.Force += Vector2.new(0, math.clamp(object.Mass * 10, -max, max)) * deltaTime
+		local moveVector = Vector2.new(x, y)
+		instance.Position += ToUDim2(velocity - moveVector)
+		object.IsGrounded = y > 0
+		object.Velocity -= moveVector
 	end
 end

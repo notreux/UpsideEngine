@@ -13,18 +13,21 @@ function physicalObject.new(): PhysicalObject
 	self:SetClassName(script.Name)
 	self.Force = Vector2.zero
 	self.Velocity = Vector2.zero
+	self.Acceleration = Vector2.zero
 	self.Collisions = {}
 	self.CollisionBlacklist = {}
 	self.Hitbox = {
-		Vector2.zero,
-		Vector2.new(1, 0),
-		Vector2.new(1, 1),
-		Vector2.new(0, 1),
+		Vector3.zero,
+		Vector3.new(1, 0),
+		Vector3.new(1, 1),
+		Vector3.new(0, 1),
 	}
 
-	self.Mass = 200
+	self.Shape = "Custom"
+	self.Mass = 100
 	self.HitboxScale = 1
 	self.CollisionGroup = 0
+	self.Friction = 4
 	self.Anchored = true
 	self.CanCollide = true
 	self.IsGrounded = false
@@ -33,6 +36,14 @@ function physicalObject.new(): PhysicalObject
 	return setmetatable(self, physicalObject)
 end
 
+--[[={
+	@desc Applies force to the object
+	@link PhysicalObject.md
+}=]]
+
+function physicalObject:ApplyForce(force)
+	self.Force += force
+end
 
 --[[={
 	@desc This class is used to create objects with physics
@@ -51,6 +62,9 @@ end
 		@Force Is the force which is applied in the moment to the object
 		@Velocity Is the velocity applied to the object
 		@Hitbox This the CollisionMask of the object
+		@Shape Specifies the geometric shape of the physical object, which can be "circle" and "custom" for polygons, custom is has box hitbox by default, also is the default shape.
+		@Friction Determines the resistance to sliding motion between this object and another surface, influencing how quickly it slows down.
+		@Acceleration Defines the rate of change of velocity for the physical object, initially set to zero.
 	@events 
 		@Collision Params -> [PhysicalObject](PhysicalObject.md)
 		This event is fired when the object collides with other object

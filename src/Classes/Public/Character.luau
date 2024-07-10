@@ -102,8 +102,8 @@ function character:Jump(jumpPower: number?)
 		return
 	end
 
-	jumpPower = (jumpPower or self.JumpPower) * 10
-	self.Velocity -= Vector2.new(0, jumpPower)
+	jumpPower = (jumpPower or self.JumpPower) * self.Mass * 250
+	self:ApplyForce(-Vector2.new(0, jumpPower))
 	self.IsJumping = true
 
 	task.defer(function()

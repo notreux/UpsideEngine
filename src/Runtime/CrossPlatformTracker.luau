@@ -194,9 +194,13 @@ local function characterController(character, sideView)
 	end
 
 	velocity = if velocity ~= Vector2.zero then velocity.Unit else velocity
-	velocity = velocity * character.WalkSpeed * 10
+	velocity = velocity * character.WalkSpeed * 5
 
-	character.Velocity = if character.IsJumping and sideView
+	if velocity == Vector2.zero then
+		return
+	end
+
+	character.Velocity = if not character.IsGrounded and sideView
 		then Vector2.new(velocity.X, character.Velocity.Y)
 		else velocity
 end
