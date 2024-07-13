@@ -71,6 +71,98 @@ function shadingSystem.onSetData(data, name, value)
 	return result
 end
 
+local function getPixel(bmp, idx)
+	return bmp[idx], bmp[idx + 1], bmp[idx + 2], bmp[idx + 3]
+end
+
+local function isEmpty(pixels, iterations, position)
+	local x = position.X
+	local y = position.Y
+	local width = iterations.X + 1
+
+	if x < 0 or x > iterations.X or y < 0 or y > iterations.Y then
+		return true
+	end
+
+	local index = 1 + ((y * width) + x) * 4
+	local result = pixels[index + 3] == 0
+
+	return result
+end
+
+local function getAproximatedColor(pixels, position, iterations)
+	local count = 0
+	local sumR, sumG, sumB, sumA = 0, 0, 0, 0
+	local width = iterations.X + 1
+
+	for sx = -1, 1 do
+		for sy = -1, 1 do
+			local nx = position.X + sx
+			local ny = position.Y + sy
+			local nPosition = Vector3.new(nx, ny)
+
+			if isEmpty(pixels, iterations, nPosition) then
+				continue
+			end
+
+			local index = 1 + ((ny * width) + nx) * 4
+			local r, g, b, a = getPixel(pixels, index)
+			sumR += r
+			sumG += g
+			sumB += b
+			sumA += a
+			count += 1
+		end
+	end
+
+	return sumR / count, sumG / count, sumB / count, sumA / count
+end
+
+local function countPaintedNeighbors(pixels, iterations, position)
+	local count = 0
+	local range = 2
+
+	for sx = -range, range do
+		for sy = -range, range do
+			local nx = position.X + sx
+			local ny = position.Y + sy
+			local nPosition = Vector3.new(nx, ny)
+
+			if isEmpty(pixels, iterations, nPosition) then
+				continue
+			end
+
+			count += 1
+		end
+	end
+
+	return count
+end
+
+local function scanGaps(pixels, iterations, width)
+	for y = 0, iterations.Y do
+		for x = 0, iterations.X do
+			local idx = 1 + ((y * width) + x) * 4
+			if pixels[idx + 3] ~= 0 then
+				continue
+			end
+
+			local position = Vector3.new(x, y)
+			local count = countPaintedNeighbors(pixels, iterations, position)
+
+			if count < 11 then
+				continue
+			end
+
+			local r, g, b, a = getAproximatedColor(pixels, position, iterations)
+			pixels[idx] = r
+			pixels[idx + 1] = g
+			pixels[idx + 2] = b
+			pixels[idx + 3] = a
+		end
+	end
+end
+
 function shadingSystem.draw(details)
 	local shaders = details.shadable
 	local shaderResults = {}
@@ -94,18 +186,39 @@ function shadingSystem.draw(details)
 			continue
 		end
 
-		local pixels = table.create(math.round(rectSize.X * rectSize.Y * 4))
+		local pixels = table.create(math.round(rectSize.X * rectSize.Y * 4), 0)
 		local bmp = shader.ImageData:ReadPixels(position, rectSize)
 
-		for iteration = 0, rectSize.X * rectSize.Y - 1 do
-			local i = 1 + (iteration * 4)
-			local r, g, b, a = bmp[i], bmp[i + 1], bmp[i + 2], bmp[i + 3]
-			r, g, b, a = run(r, g, b, a)
+		local iterations = Vector3.new(rectSize.X - 1, rectSize.Y - 1)
+		local width, checkGaps = rectSize.X, false
 
-			pixels[i] = r
-			pixels[i + 1] = g
-			pixels[i + 2] = b
-			pixels[i + 3] = a
+		for y = 0, iterations.Y do
+			for x = 0, iterations.X do
+				local idx = 1 + ((y * width) + x) * 4
+				local sx, sy
+
+				local r, g, b, a = getPixel(bmp, idx)
+				sx, sy, r, g, b, a = run(x, y, r, g, b, a)
+
+				sx = math.floor(sx)
+				sy = math.floor(sy)
+
+				if sx < 0 or sx > iterations.X or sy < 0 or sy > iterations.Y then
+					continue
+				end
+
+				checkGaps = checkGaps or sx ~= x or sy ~= y
+				idx = 1 + ((sy * rectSize.X) + sx) * 4
+
+				pixels[idx] = r
+				pixels[idx + 1] = g
+				pixels[idx + 2] = b
+				pixels[idx + 3] = a
+			end
+		end
+
+		if checkGaps then
+			scanGaps(pixels, iterations, width)
 		end
 
 		shaderResults[canvas] = {
