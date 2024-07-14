@@ -20,59 +20,8 @@ local function loadImage(id)
 	return Instance.new("EditableImage")
 end
 
-function shadingSystem.onSetData(data, name, value)
-	local result = {}
-	for index, object in value do
-		local instance = object.Instance
-		local old = (data[name] or data)[index]
-
-		local isEqual = old and old.Image == instance.Image
-		local outScreen = isOutScreen(instance.AbsolutePosition, instance.AbsoluteSize)
-
-		if (outScreen or isEqual) and old then
-			old.Track = not outScreen
-			result[index] = old
-			continue
-		end
-
-		local shaderSource = path.readRoute(object.Shader.Path)
-		local shadingFunction = require(shaderSource)
-		local rectSize = instance.ImageRectSize
-
-		local id = instance.Image
-		local imageData = cache[id] or loadImage(id)
-		local canvas = instance:FindFirstChild("Canvas")
-
-		if not canvas then
-			canvas = imageData:Clone()
-			canvas.Parent = instance
-			canvas.Name = "Canvas"
-		end
-
-		canvas:Resize(imageData.Size)
-		rectSize = Vector2.new(
-			math.clamp(math.floor(rectSize.X) + 1, 0, imageData.Size.X),
-			math.clamp(math.floor(rectSize.Y) + 1, 0, imageData.Size.Y)
-		)
-
-		result[index] = {
-			RectSize = if rectSize.X > 1 then rectSize else canvas.Size,
-			Instance = object.Instance,
-			Shader = object.Shader,
-			Run = shadingFunction,
-			Canvas = canvas,
-			ImageData = imageData,
-			Image = id,
-			Track = true,
-			Enabled = object.Shader.Enabled,
-		}
-	end
-
-	return result
-end
-
 local function getPixel(bmp, idx)
-	return bmp[idx], bmp[idx + 1], bmp[idx + 2], bmp[idx + 3]
+	return bmp[idx] or 0, bmp[idx + 1] or 0, bmp[idx + 2] or 0, bmp[idx + 3] or 0
 end
 
 local function isEmpty(pixels, iterations, position)
@@ -150,7 +99,7 @@ local function scanGaps(pixels, iterations, width)
 			local position = Vector3.new(x, y)
 			local count = countPaintedNeighbors(pixels, iterations, position)
 
-			if count < 11 then
+			if count < 9 then
 				continue
 			end
 
@@ -161,6 +110,106 @@ local function scanGaps(pixels, iterations, width)
 			pixels[idx + 3] = a
 		end
 	end
+end
+
+local function texture(imageLabel: ImageLabel, position: Vector2 | Vector3)
+	local id = imageLabel.Image
+	local canvas = cache[id]
+
+	if not canvas then
+		task.synchronize()
+		canvas = loadImage(id)
+		task.desynchronize()
+	end
+
+	local size = canvas.Size
+	local offset = imageLabel.ImageRectOffset
+	local rectSize = imageLabel.ImageRectSize
+	rectSize = Vector2.new(
+		math.round(math.min(size.X - offset.X, rectSize.X)),
+		math.round(math.min(size.Y - offset.Y, rectSize.Y))
+	)
+
+	local x = math.floor(position.X - offset.X)
+	local y = math.floor(position.Y - offset.Y)
+
+	if x < 0 or x >= rectSize.X or y < 0 or y >= rectSize.Y then
+		return 0, 0, 0, 0
+	end
+
+	local bmp = canvas:ReadPixels(offset, rectSize)
+	local idx = 1 + ((y * rectSize.X) + x) * 4
+
+	return getPixel(bmp, idx)
+end
+
+local function rotate(centre, position, degrees)
+	local rotation = math.rad(degrees)
+	local sin, cos = math.sin(rotation), math.cos(rotation)
+
+	local XDistance = position.X - centre.X
+	local YDistance = position.Y - centre.Y
+
+	local x = centre.X + XDistance * cos - YDistance * sin
+	local y = centre.Y + XDistance * sin + YDistance * cos
+
+	return x, y
+end
+
+function shadingSystem.onSetData(data, name, value)
+	local result = {}
+	for index, object in value do
+		local instance = object.Instance
+		local old = (data[name] or data)[index]
+
+		local isEqual = old and old.Image == instance.Image
+		local outScreen = isOutScreen(instance.AbsolutePosition, instance.AbsoluteSize)
+
+		if (outScreen or isEqual) and old then
+			old.Track = not outScreen
+			result[index] = old
+			continue
+		end
+
+		local shaderSource = path.readRoute(object.Shader.Path)
+		local shadingFunction = require(shaderSource)
+		local rectSize = instance.ImageRectSize
+
+		local id = instance.Image
+		local imageData = cache[id] or loadImage(id)
+		local canvas = instance:FindFirstChild("Canvas")
+
+		if not canvas then
+			canvas = imageData:Clone()
+			canvas.Parent = instance
+			canvas.Name = "Canvas"
+		end
+
+		canvas:Resize(imageData.Size)
+		rectSize = Vector2.new(
+			math.clamp(math.round(rectSize.X), 0, imageData.Size.X),
+			math.clamp(math.round(rectSize.Y), 0, imageData.Size.Y)
+		)
+
+		local env = getfenv(shadingFunction)
+		env.texture = texture
+		env.rotate = rotate
+
+		setfenv(shadingFunction, env)
+		result[index] = {
+			RectSize = if rectSize.X > 1 then rectSize else canvas.Size,
+			Instance = object.Instance,
+			Shader = object.Shader,
+			Run = shadingFunction,
+			Canvas = canvas,
+			ImageData = imageData,
+			Image = id,
+			Track = true,
+			Enabled = object.Shader.Enabled,
+		}
+	end
+
+	return result
 end
 
 function shadingSystem.draw(details)
@@ -180,9 +229,7 @@ function shadingSystem.draw(details)
 		local rectSize = shader.RectSize
 
 		local position = instance.ImageRectOffset
-		local area = position + rectSize
-
-		if size.X < area.X or size.Y < area.Y then
+		if size.X < position.X or size.Y < position.Y then
 			continue
 		end
 
@@ -198,10 +245,24 @@ function shadingSystem.draw(details)
 				local sx, sy
 
 				local r, g, b, a = getPixel(bmp, idx)
-				sx, sy, r, g, b, a = run(x, y, r, g, b, a)
+				local env = getfenv(run)
+				env.opacity = a
+				env.red = r
+				env.green = g
+				env.blue = b
+				env.x = x
+				env.y = y
 
-				sx = math.floor(sx)
-				sy = math.floor(sy)
+				setfenv(run, env)
+				run(x, y, r, g, b, a)
+				env = getfenv(run)
+
+				sx = math.floor(env.x)
+				sy = math.floor(env.y)
+				r = env.red
+				g = env.green
+				b = env.blue
+				a = env.opacity
 
 				if sx < 0 or sx > iterations.X or sy < 0 or sy > iterations.Y then
 					continue
