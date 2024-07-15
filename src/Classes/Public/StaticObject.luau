@@ -86,7 +86,7 @@ end
 	@link void.link
 }=]]
 
-function staticObject:SetShader(shader)
+function staticObject:SetShader(shader: Shader)
 	local scene = sceneManager.Scenes[self.Scene]
 	if not scene then
 		return

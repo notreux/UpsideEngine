@@ -41,7 +41,7 @@ end
 	@link PhysicalObject.md
 }=]]
 
-function physicalObject:ApplyForce(force)
+function physicalObject:ApplyForce(force: Vector2)
 	self.Force += force
 end
 

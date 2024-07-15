@@ -195,12 +195,21 @@ This is the seconds between every update of the pixels in the screen
 UpdateFrequency: number,
 --[[
 This is the intensity for all the lights in the scene
-]]
+		]]
 LightIntensity: number,
 --[[
-Draws the pixels for the scene with the specified pixel size
+Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated" and Enum.ResamplerMode.Default
+		]]
+LightStyle: Enum,
+--[[
+Determines the resolution for every chunk of the screen
+		
+]]
+ChunkResolution: Vector2,
+--[[
+Draws the pixels for the scene with the specified resolution
 	]]
-DrawPixels: (self: LightingEnvironment, pixelSize: number) -> nil,
+DrawPixels: (self: LightingEnvironment) -> nil,
 --[[
 Updates the position, the transparency and the color of the ambient
 	]]
@@ -261,6 +270,14 @@ GetClient: (self: Request) -> nil,
 
 --[[
 ]]
+export type ShaderEnvironment = Environment & {
+}
+
+
+
+
+--[[
+]]
 export type SoundEnvironment = Environment & {
 }
 
@@ -285,8 +302,12 @@ The walk speed of the character
 WalkSpeed: number,
 --[[
 The jump power of the character
-]]
+		]]
 JumpPower: number,
+--[[
+Set to true when the character is jumping
+]]
+IsJumping: boolean,
 --[[
 Updates the amount of health of the character 
 	]]
@@ -397,13 +418,46 @@ Run: (self: Environment, method: string, ...any) -> nil,
 
 
 --[[
+This class is used to simulate fluids
+	]]
+export type Fluid = PhysicalObject & {
+--[[
+Indicates how much dense the fluid should be. Higher values indicate a denser fluid, 
+        affecting buoyancy and movement of objects within the fluid
+		]]
+Density: number,
+--[[
+Determines the flow resistance of the fluid. Higher values indicate a thicker fluid, 
+        affecting the speed at which objects can move through it
+		]]
+Viscosity: number,
+--[[
+Specifies the magnitude of the fluid waves. These waves are not visible but influence buoyancy and object stability.
+		]]
+WavesAmplitude: number,
+--[[
+Determines how fast the waves should move
+]]
+WavesSpeed: number,
+}
+
+
+
+
+--[[
 This class is used to illuminate areas in the darkness
 	]]
-export type Light = PhysicalObject & {
+export type Light = StaticObject & {
 --[[
-Its a property of PhysicalObject, in this class is marked as readonly and is set false to optimizate
+Is how the light should be shown, there are two modes "PointLight" and "SpotLight"
 		]]
-TrackCollisions: boolean,
+Shape: string,
+--[[
+]]
+Rotation: number,
+--[[
+]]
+Angle: number,
 --[[
 ]]
 Color: Color3,
@@ -419,6 +473,13 @@ Brightness: number,
 Is the transparency of the light
 		]]
 Transparency: number,
+--[[
+!!!warning
+			Only works on Pointlights
+
+		Inverts the light source
+]]
+Inverted: boolean,
 }
 
 
@@ -572,11 +633,7 @@ Emit: (self: Particle, rate: number) -> nil,
 --[[
 This class is used to create objects with physics
 	]]
-export type PhysicalObject = BaseObject & {
---[[
-This is the point which is being used as reference for the chromatic aberration
-		]]
-ChromaticAberrationPoint: Vector2,
+export type PhysicalObject = StaticObject & {
 --[[
 Is the force which is applied in the moment to the object
 		]]
@@ -586,9 +643,9 @@ Is the velocity applied to the object
 		]]
 Velocity: Vector2,
 --[[
-The instances which makes the chromatic aberration effect
-		]]
-ChromaticAberration: { },
+Defines the rate of change of velocity for the physical object, initially set to zero.
+	]]
+Acceleration: Vector2,
 --[[
 This table stores all the active collisions
 		]]
@@ -602,8 +659,12 @@ This dictionary stores all the blacklisted objects, to blacklist an object do it
 CollisionBlacklist: { },
 --[[
 This the CollisionMask of the object
-	]]
+		]]
 Hitbox: { },
+--[[
+Specifies the geometric shape of the physical object, which can be "circle" and "custom" for polygons, custom is has box hitbox by default, also is the default shape.
+		]]
+Shape: string,
 --[[
 The object mass
 		]]
@@ -616,11 +677,9 @@ A number which indicates the collision group of the object, the object only can 
 		]]
 CollisionGroup: number,
 --[[
-]]
-ChromaticAberrationIntensity: number,
---[[
-]]
-ChromaticAberrationDistance: number,
+Determines the resistance to sliding motion between this object and another surface, influencing how quickly it slows down.
+		]]
+Friction: number,
 --[[
 This property defines if the object should have physics or not
 		]]
@@ -638,17 +697,9 @@ This property defines if the object is going to have physics and collisions or n
 		]]
 TrackCollisions: boolean,
 --[[
-]]
-ChromaticAberrationConnection: boolean,
---[[
-Loads an image for the current object and is set as the instance image
+Applies force to the object
 	]]
-Load: (self: PhysicalObject, url: string) -> nil,
---[[
-Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
-	to disable the chromatic aberration send 0 as first parameter
-	]]
-SetChromaticAberration: (self: PhysicalObject, Intensity: number, Distance: number, Point: Vector2) -> nil,
+ApplyForce: (self: PhysicalObject, force: Vector2) -> nil,
 }
 
 
@@ -658,6 +709,10 @@ SetChromaticAberration: (self: PhysicalObject, Intensity: number, Distance: numb
 This class is useful to have a workspace and manage your project more easily
 	]]
 export type Scene = BaseObject & {
+--[[
+The scene gravity
+		]]
+Gravity: Vector2,
 --[[
 This property defines whether physics should be calculated only for visible objects
 		]]
@@ -679,6 +734,9 @@ This is the SoundEnvironment of the scene
 		]]
 SoundEnvironment: SoundEnvironment,
 --[[
+]]
+ShaderEnvironment: ShaderEnvironment,
+--[[
 This environment stores all the objects in the scene
 		]]
 Objects: ObjectEnvironment,
@@ -698,6 +756,35 @@ GetTaggedObjects: (self: Scene, tag: string) -> Array<string>,
 Casts a ray using the Raycast2dParams. If it finds an elegible object a Raycast2dResult is returned containing the results of the operations
 	]]
 Raycast: (self: Scene, info: Raycast2dParams) -> Raycast2dResult,
+}
+
+
+
+
+--[[
+!!! warning 
+		Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
+		and not to use too many shaders.
+
+		If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
+		this will lighten a lot the work for the cpu.	
+
+		_____
+		This class is used to modify how an object is renderized
+	]]
+export type Shader = BaseClass & {
+--[[
+This property determines if the shader is enabled
+]]
+Enabled: boolean,
+--[[
+This property stores the shader path
+        ]]
+Path: string,
+--[[
+Sets the module script which is going to be used as shader source
+	]]
+SetSource: (self: Shader, file: ModuleScript) -> nil,
 }
 
 
@@ -787,14 +874,57 @@ Stop: (self: Sprite) -> nil,
 
 
 --[[
+This class is used to create a basic object, without physics or animations
+	]]
+export type StaticObject = BaseObject & {
+--[[
+This is the point which is being used as reference for the chromatic aberration
+		]]
+ChromaticAberrationPoint: Vector2,
+--[[
+The instances which makes the chromatic aberration effect
+		]]
+ChromaticAberration: { },
+--[[
+Is the shader of the object
+]]
+Shader: Shader,
+--[[
+]]
+ChromaticAberrationIntensity: number,
+--[[
+]]
+ChromaticAberrationDistance: number,
+--[[
+]]
+ChromaticAberrationConnection: boolean,
+--[[
+Sets the shader for this object
+	]]
+SetShader: (self: StaticObject, shader: Shader) -> nil,
+--[[
+Loads an image for the current object and is set as the instance image
+	]]
+Load: (self: StaticObject, url: string) -> nil,
+--[[
+Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
+	to disable the chromatic aberration send 0 as first parameter
+	]]
+SetChromaticAberration: (self: StaticObject, Intensity: number, Distance: number, Point: Vector2) -> nil,
+}
+
+
+
+
+--[[
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
 	to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`
 	property, here is an example to make our player jumps in every device:
 ```lua
 --  								Device,	    Key, 	Action
-CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
-CrossPlatformService:SetDeviceKey("Mobile", "JumpButton", "Jump")
-CrossPlatformService:SetDeviceKey("Gamepad", "ButtonA", "Jump")
+CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Up")
+CrossPlatformService:SetDeviceKey("Mobile", "JumpButton", "Up")
+CrossPlatformService:SetDeviceKey("Gamepad", "ButtonA", "Up")
 ```
 
 
@@ -817,7 +947,7 @@ We assigned an action for our devices but how can we detect when an action is tr
 CrossPlatformService:On("InputBegin", function(inputObject)
 	local character = CrossPlatformService.Character
 
-	if inputObject.Action == "Jump" then
+	if inputObject.Action == "Up" then
 		character:Jump(150)
 	end
 end)
@@ -926,7 +1056,7 @@ Right: string,
 --[[
 Assigns an action to a device key, example:
 	```lua
-	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
+	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Up")
 	```
 	]]
 SetDeviceKey: (self: CrossPlatformService, device: string, key: string, action: string) -> nil,
@@ -943,7 +1073,7 @@ Sets the entire configuration of a device, example:
 		Left = "Left",
 		Down = "Down",
 		Right = "Right",
-		Space = "Jump",
+		Space = "Up",
 	})
 	```
 	]]
