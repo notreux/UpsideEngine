@@ -49,6 +49,7 @@ local function replicate(self, object, instance)
 		Sprites = object.Sprites,
 		IsPlaying = object.IsPlaying,
 		Shader = object.Shader,
+		Tags = object.Tags,
 		Active = {
 			Name = object.Active.Name,
 			SecondsPerFrame = object.Active.SecondsPerFrame,
