@@ -90,11 +90,22 @@ function staticObject:SetShader(shader)
 	local scene = sceneManager.Scenes[self.Scene]
 	if not scene then
 		return
+	elseif not shader then
+		local canvas = self.Instance:FindFirstChild("Canvas")
+		local shaderEnv = scene.ShaderEnvironment
+		shaderEnv:RemoveOne(self.Id)
+		self.Shader = {}
+
+		if canvas then
+			self.Instance.Canvas:Destroy()
+		end
+
+		return
 	end
 
-	local shaderEnv = scene.ShaderEnvironment.Content
+	local shaderEnv = scene.ShaderEnvironment
+	shaderEnv:SetOne(self, self.Id)
 	self.Shader = shader
-	shaderEnv[self.Id] = self
 end
 
 --[[={
