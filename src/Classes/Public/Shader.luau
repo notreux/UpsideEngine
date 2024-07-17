@@ -7,6 +7,7 @@ function shader.new(): EventEmitter
 	local self = baseClass.new()
 	self:SetClassName(script.Name)
 	self.Enabled = true
+	self.Precision = 0.6
 	self.Path = ""
 
 	return setmetatable(self, shader)
@@ -35,6 +36,10 @@ end
 	@about
 		@Path This property stores the shader path
         @Enabled This property determines if the shader is enabled
+        @Precision Sometimes, modifying the position of pixels in an image can create gaps.
+		Upside Engine automatically fills these gaps, but this can occasionally 
+		lead to unwanted effects. Therefore, adjust this property according to your needs, 
+		the value of this property ranges between 0 and 1.
 }=]]
 
 return setmetatable(shader, baseClass)

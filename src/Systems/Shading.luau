@@ -88,7 +88,10 @@ local function countPaintedNeighbors(pixels, iterations, position)
 	return count
 end
 
-local function scanGaps(pixels, iterations, width)
+local function scanGaps(pixels, iterations, preicision)
+	local width = iterations.X + 1
+	preicision = preicision * 16
+
 	for y = 0, iterations.Y do
 		for x = 0, iterations.X do
 			local idx = 1 + ((y * width) + x) * 4
@@ -99,7 +102,7 @@ local function scanGaps(pixels, iterations, width)
 			local position = Vector3.new(x, y)
 			local count = countPaintedNeighbors(pixels, iterations, position)
 
-			if count < 9 then
+			if count < preicision then
 				continue
 			end
 
@@ -125,6 +128,7 @@ local function texture(imageLabel: ImageLabel, position: Vector2 | Vector3)
 	local size = canvas.Size
 	local offset = imageLabel.ImageRectOffset
 	local rectSize = imageLabel.ImageRectSize
+	rectSize = if rectSize.X ~= 0 then rectSize else size
 	rectSize = Vector2.new(
 		math.round(math.min(size.X - offset.X, rectSize.X)),
 		math.round(math.min(size.Y - offset.Y, rectSize.Y))
@@ -200,6 +204,7 @@ function shadingSystem.onSetData(data, name, value)
 			RectSize = if rectSize.X > 1 then rectSize else canvas.Size,
 			Instance = object.Instance,
 			Shader = object.Shader,
+			Precision = object.Shader.Precision,
 			Run = shadingFunction,
 			Canvas = canvas,
 			ImageData = imageData,
@@ -279,7 +284,7 @@ function shadingSystem.draw(details)
 		end
 
 		if checkGaps then
-			scanGaps(pixels, iterations, width)
+			scanGaps(pixels, iterations, shader.Precision)
 		end
 
 		shaderResults[canvas] = {
