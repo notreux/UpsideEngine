@@ -2,7 +2,7 @@
 To create a multiplayer game we will need to [import](../get-started/Installation.md) upside engine.
 
 ## A basic setup
-Lets do a basic setup of our multiplayer game game
+Let's do a basic setup of our multiplayer game game
 
 ```lua
 local players = game:GetService("Players")
@@ -28,7 +28,7 @@ scene:Enable()
 ```
 
 ## Creating the scenario
-Lets create a basic scenario for our players
+Let's create a basic scenario for our players
 ```lua
 local Terrain = upsideEngine.new "PhysicalObject"
 Terrain:SetScene(scene)
@@ -41,7 +41,7 @@ terrInstance.Image = "rbxassetid://12980969571"
 ```
 
 ## Creating the character
-Lets create our player character
+Let's create our player character
 ```lua
 local character = upsideEngine.new "Character"
 character.Anchored = false
@@ -81,5 +81,5 @@ networkingService:On("ReplicationRequest", function(request)
 	request:Accept() -- It returns the replicated object
 end)
 ```
-
-##### Congratulations you finished the replication tutorial in the client side, lets see next page 🎉🎉
+___
+##### Congratulations you finished the replication tutorial in the client side, Let's see next page 🎉🎉

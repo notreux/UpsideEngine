@@ -68,10 +68,14 @@ nav:
       - Using collision editor: tutorials/plugin-guide/CollisionEditor.md
       - Plugin Scripts: tutorials/plugin-guide/PluginScripts.md
 
-    - Multiplayer Tutorial: 
+    - Multiplayer Integration: 
       - Client Side: tutorials/multiplayer-game/client.md
       - Server Side: tutorials/multiplayer-game/server.md
 
+    - Shader Guide: 
+      - First Steps: tutorials/shader-guide/FirstSteps.md
+      - Basic effect: tutorials/shader-guide/BasicEffect.md
+      - Integrated Functions: tutorials/shader-guide/IntegratedFunctions.md
 
   - Documentation:
     - Welcome: documentation/Welcome.md
@@ -93,6 +97,7 @@ nav:
       - Scene: documentation/autogen/Scene.md
       - Sound: documentation/autogen/Sound.md
       - SoundEnvironment: documentation/autogen/SoundEnvironment.md
+      - ShaderEnvironment: documentation/autogen/ShaderEnvironment.md
       - Sprite: documentation/autogen/Sprite.md
     - Services:
       - CrossPlatformService: documentation/autogen/CrossPlatformService.md

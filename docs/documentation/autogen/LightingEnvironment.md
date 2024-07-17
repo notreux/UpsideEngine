@@ -14,17 +14,22 @@ This is the seconds between every update of the pixels in the screen
 		
 ## [number](number.md) LightIntensity
 This is the intensity for all the lights in the scene
+		
+## [Enum](Enum.md) LightStyle
+Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
+		
+## [Vector2](Vector2.md) ChunkResolution
+Determines the resolution for every chunk of the screen
+		
 
 
 
 # Methods
 
-## [LightingEnvironment](LightingEnvironment.md) Constructor(`scene: Scene `) 
- 
-## [void](https://create.roblox.com/docs/scripting/luau/nil) DrawPixels(`pixelSize: number `) 
- Draws the pixels for the scene with the specified pixel size
+## [void](https://create.roblox.com/docs/scripting/luau/nil) DrawPixels() 
+ Draws the pixels for the scene with the specified resolution
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) UpdateScreen(` `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) UpdateScreen() 
  Updates the position, the transparency and the color of the ambient
 	
 

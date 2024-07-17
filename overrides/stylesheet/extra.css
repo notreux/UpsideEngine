@@ -159,3 +159,7 @@ a {
 h1, h2, h3, h4 {
     font-family: "Roboto-Light";
 }
+
+.pixelated {
+    image-rendering: pixelated;
+}

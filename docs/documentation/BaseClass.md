@@ -43,12 +43,6 @@ Destroys the object
 
 # Events
 
-## Changed
-
-| Parameters | DataType |
-| ---------- | -------- |
-| Property   | String   |
-
 ## Destroy
 
 | Parameters | DataType |

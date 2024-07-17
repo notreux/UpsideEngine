@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="../../stylesheet/plugin_guide.css">
 
-In this page, you will learn an essential tool to create characters.
+On this page, you will learn an essential tool to create characters.
 
 ![](../../assets/upsideenginebar.png)
 
@@ -32,7 +32,7 @@ Within the Sprite Editor, you'll find some fields:
     - up
     - down
 
-Lets create a basic animation, for this, select an sprite and then click on "Add Sprite sheet", in this example we will fill the fields like this:
+Let's create a basic animation, for this, select an sprite and then click on "Add Sprite sheet", in this example we will fill the fields like this:
 
 ![](../../assets/spriteeditorfill.png)
 

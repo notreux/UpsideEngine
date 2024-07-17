@@ -16,11 +16,11 @@ Is the tween info of the tween which is going to be used to move the particles
 		
 ## [boolean](boolean.md) TrackLight
 !!! warning 
-			Experimental, dont use
+		Experimental, dont use
 		
 ## [boolean](boolean.md) CanCollide
 !!! warning 
-			Experimental, dont use
+		Experimental, dont use
 		
 ## [boolean](boolean.md) Enabled
 When its enabled new particles can be emitted
@@ -33,11 +33,11 @@ Is the amount of particles that are existing at this moment
 		
 ## [number](number.md) LightBrightness
 !!! warning 
-			Experimental, dont use
+		Experimental, dont use
 		
 ## [number](number.md) LightRange
 !!! warning 
-			Experimental, dont use
+		Experimental, dont use
 
 ## [number](number.md) Range
 Is the distance that can be traveled by each particle 
@@ -75,18 +75,16 @@ Is a table with the goals of the particles
 
 # Methods
 
-## [Particle](Particle.md) Constructor(` `) 
- 
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character`) 
  Sets the subject property
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetAngle(`Angle: Vector2 `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetAngle(`Angle: Vector2`) 
  Sets the angle property of the particle
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetMaxRate(`maxRate: number `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetMaxRate(`maxRate: number`) 
  Sets the maximum amount of particles that can exist at the same time
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Emit(`rate: number `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Emit(`rate: number`) 
  Emits the specified amount of particles, if none is provided then will use as amount the Rate property
 	
 

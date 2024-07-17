@@ -30,7 +30,7 @@ Upside Engine is the ultimate 2d framework to make your own 2d games!
 </figure>
 <figure markdown>
   ![Image title](assets/stars.svg){ width="50" align=left }
-  <figcaption>Upside Engine lets you create immersive 2D particles for your games. Whether you need fire, smoke, sparks, or magic effects, Upside Engine has you covered.</figcaption>
+  <figcaption>Upside Engine Let's you create immersive 2D particles for your games. Whether you need fire, smoke, sparks, or magic effects, Upside Engine has you covered.</figcaption>
 </figure>
 <figure markdown>
   ![Image title](assets/physic.svg){ width="50" align=left }

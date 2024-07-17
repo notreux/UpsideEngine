@@ -1,4 +1,4 @@
-# [Extended from Environment](Environment.md) SoundEnvironment 
+# [Extended from Environment](Environment.md) ShaderEnvironment 
  
 # Properties
 

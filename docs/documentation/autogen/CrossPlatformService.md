@@ -4,9 +4,9 @@ This class is used to make the controls functional in any device (Keyboards, Mob
 	property, here is an example to make our player jumps in every device:
 ```lua
 --  								Device,	    Key, 	Action
-CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
-CrossPlatformService:SetDeviceKey("Mobile", "JumpButton", "Jump")
-CrossPlatformService:SetDeviceKey("Gamepad", "ButtonA", "Jump")
+CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Up")
+CrossPlatformService:SetDeviceKey("Mobile", "JumpButton", "Up")
+CrossPlatformService:SetDeviceKey("Gamepad", "ButtonA", "Up")
 ```
 
 
@@ -29,7 +29,7 @@ We assigned an action for our devices but how can we detect when an action is tr
 CrossPlatformService:On("InputBegin", function(inputObject)
 	local character = CrossPlatformService.Character
 
-	if inputObject.Action == "Jump" then
+	if inputObject.Action == "Up" then
 		character:Jump(150)
 	end
 end)
@@ -56,49 +56,47 @@ This table stores the default controllers
 ```lua
 {
  	Keyboard: {
- 	W: string,
-	A: string,
-	S: string,
-	D: string,
-	Up: string,
-	Left: string,
-	Down: string,
-	Right: string,
-	Space: string,
-},
+		W: string,
+		A: string,
+		S: string,
+		D: string,
+		Up: string,
+		Left: string,
+		Down: string,
+		Right: string,
+		Space: string,
+	},
 	Gamepad: {
- 	ButtonA: string,
-	Thumbstick1: {
- 	Up: string,
-	Left: string,
-	Down: string,
-	Right: string,
-},
-},
+		ButtonA: string,
+		Thumbstick1: {
+			Up: string,
+			Left: string,
+			Down: string,
+			Right: string,
+		},
+	},
 	Mobile: {
- 	JumpButton: string,
-	Thumbstick1: {
- 	Up: string,
-	Left: string,
-	Down: string,
-	Right: string,
-},
-},
+		JumpButton: string,
+		Thumbstick1: {
+			Up: string,
+			Left: string,
+			Down: string,
+			Right: string,
+		},
+	},
 }
 ```
 
 
 # Methods
 
-## [CrossPlatformService](CrossPlatformService.md) Constructor(` `) 
- 
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey(`device: string, key: string, action: string `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey(`device: string, key: string, action: string`) 
  Assigns an action to a device key, example:
 	```lua
-	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Jump")
+	CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Up")
 	```
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceConfig(`device: string, controls: Dictionary<string, string> `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceConfig(`device: string, controls: Dictionary<string, string>`) 
  Sets the entire configuration of a device, example:
 	```lua
 	CrossPlatformService:SetDeviceConfig("Keyboard", {
@@ -111,11 +109,11 @@ This table stores the default controllers
 		Left = "Left",
 		Down = "Down",
 		Right = "Right",
-		Space = "Jump",
+		Space = "Up",
 	})
 	```
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPlayerCharacter(`character: Character `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPlayerCharacter(`character: Character`) 
  Sets the player character
 	
 

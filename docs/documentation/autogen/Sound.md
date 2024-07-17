@@ -19,9 +19,7 @@ This table stores all the objects in the scene
 
 # Methods
 
-## [Sound](Sound.md) Constructor(` `) 
- 
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character, useSceneSoundGroup: boolean? `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character, useSceneSoundGroup: boolean?`) 
  Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	
 

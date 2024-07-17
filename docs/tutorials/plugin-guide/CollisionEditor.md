@@ -1,4 +1,4 @@
-In this page, you will learn an essential tool to make better collisions for your game objects.
+On this page, you will learn an essential tool to make better collisions for your game objects.
 
 ![](../../assets/upsideenginebar.png)
 
@@ -8,11 +8,11 @@ Click on the Collision Editor button, and a new window named "Collision Editor" 
 ![](../../assets/collisioneditor.png)
 
 ## A basic usage
-Select an object, and to start from scratch lets remove the whole collision mask, for this we will right click 4 times on every red point.
+Select an object, and to start from scratch Let's remove the whole collision mask, for this we will right click 4 times on every red point.
 
 ![](../../assets/collisioneditornomask.png)
 
-Now we can draw our collision mask, lets draw a mask around the object, for this we will use left click.
+Now we can draw our collision mask, Let's draw a mask around the object, for this we will use left click.
 
 <video width="700" controls>
   <source src="../../assets/collisionmask.mp4" type="video/mp4">

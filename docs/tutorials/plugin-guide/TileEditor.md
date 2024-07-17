@@ -1,4 +1,4 @@
-In this page, you will learn an essential tool to make scenarios.
+On this page, you will learn an essential tool to make scenarios.
 
 ![](../../assets/upsideenginebar.png)
 
@@ -15,11 +15,11 @@ Within the Tile Editor, you'll find some fields:
 ![](../../assets/tileeditor.png)
 
 ## A basic usage
-Lets do a basic configuration, don't forget to enable the "grid" and "place tile" modes, this will create a new environment called "Tile Env".
+Let's do a basic configuration, don't forget to enable the "grid" and "place tile" modes, this will create a new environment called "Tile Env".
 
 ![](../../assets/tileeditorinfo.png)
 
-Now, lets build something, lets hold the left click while we move the mouse
+Now, Let's build something, Let's hold the left click while we move the mouse
 
 <video width="700" controls>
   <source src="../../assets/drawingtiles.mp4" type="video/mp4">

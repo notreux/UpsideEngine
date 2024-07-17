@@ -3,31 +3,29 @@ This class is used for the client replication
 	 
 # Properties
 
-## [number](number.md) ClientId
-The UserId of the client which sent the request if exists 
-	
 ## [table](table.md) Content 
 The content of the request
 		 
 ```lua
 { }
 ```
+## [string](string.md) ClientId
+The UserId of the client which sent the request if exists 
+	
 
 
 # Methods
 
-## [Request](Request.md) Constructor(`clientId: number?, content: RequestContent? `) 
- 
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Send(`content: Dictionary<string, any> `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Send(`content: Dictionary<string, any>`) 
  Sends the request to the server
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Approve(`clients: table `) 
- The request is approved and its replicated to the specified clients, if none is specified it will be replicated to all the clients except to the client who sent the request
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Approve() 
+ The request is approved and its replicated all the clients
 	
-## [void](BaseObject.md) Accept(` `) 
+## [void](BaseObject.md) Accept() 
  Accepts the request and builds the object to be replicated
 	
-## [void](https://create.roblox.com/docs/reference/engine/classes/Player) GetClient(` `) 
+## [void](https://create.roblox.com/docs/reference/engine/classes/Player) GetClient() 
  Returns the player which sent the request
 	
 

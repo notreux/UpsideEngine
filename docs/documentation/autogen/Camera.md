@@ -13,8 +13,11 @@ This property marks the limits to move the camera, for example, if you set `Vect
 		
 ## [boolean](boolean.md) FollowSubject
 This property defines if the camera is going to follow the defined subject
-
+		
 ## [string](string.md) Scene
+
+## [number](number.md) Smoothness
+This property defines the smoothness with which the camera will move, it only works in a range between 0 and 1
 
 ## [Character](Character.md) Subject
 This property defines the object which is going to follow the camera
@@ -23,18 +26,16 @@ This property defines the object which is going to follow the camera
 
 # Methods
 
-## [Camera](Camera.md) Constructor(`scene: Scene `) 
- 
-## [void](https://create.roblox.com/docs/reference/engine/datatypes/UDim2) GetPosition(` `) 
+## [void](https://create.roblox.com/docs/reference/engine/datatypes/UDim2) GetPosition() 
  Gets the camera position
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPosition(`udim2: UDim2 `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPosition(`udim2: UDim2`) 
  Sets the camera position
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character`) 
  Sets the camera subject
 	
-## [void](void.md) LookTo(`object: PhysicalObject `) 
+## [void](void.md) LookTo(`object: PhysicalObject`) 
  
 
 # Events

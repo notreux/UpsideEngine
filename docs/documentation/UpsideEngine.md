@@ -19,11 +19,23 @@ ___
 ## [void]() `new(ClassName: string)` 
 This method creates any of these classes:
 
-` Scene, Environment, Character, Sprite, Particle, PhysicalObject, Sound, Light `
+- [Scene](autogen/Scene.md)
+- [Environment](autogen/Environment.md)
+- [Character](autogen/Character.md)
+- [Sprite](autogen/Sprite.md)
+- [Particle](autogen/Particle.md)
+- [Shader](autogen/Shader.md)
+- [StaticObject](autogen/StaticObject.md)
+- [PhysicalObject](autogen/PhysicalObject.md)
+- [Sound](autogen/Sound.md)
+- [Light](autogen/Light.md)
 
 ___
 
 ## [void]() `GetService(ServiceName: string)` 
 This method returns any of these services:
 
-` SceneManager, NetworkingService, CrossPlatformService, PluginSupportService `
+- [SceneManager](autogen/SceneManager.md)
+- [NetworkingService](autogen/NetworkingService.md)
+- [CrossPlatformService](autogen/CrossPlatformService.md)
+- [PluginSupportService](autogen/PluginSupportService.md)

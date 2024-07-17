@@ -15,24 +15,22 @@ The amount of objects in this environment
 
 # Methods
 
-## [Environment](Environment.md) Constructor(`instanceType: string? `) 
- 
-## [any](any.link) Get(`index: string `) 
+## [any](any.link) Get(`index: string`) 
  Gets the object with the specified index
 	
-## [void](any.link) SetOne(`value: any, index: string `) 
+## [void](any.link) SetOne(`value: any, index: string`) 
  Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
 	
-## [void](any.link) AddOne(`value: any, index: string `) 
+## [void](any.link) AddOne(`value: any, index: string`) 
  Adds an object with the specified index, if no parameter is specified it will use the next number of the count property as index
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) RemoveOne(`index: string `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) RemoveOne(`index: string`) 
  Removes the object with the specified index
 	
-## [boolean](https://create.roblox.com/docs/scripting/luau/booleans) HasOne(`index: string `) 
+## [boolean](https://create.roblox.com/docs/scripting/luau/booleans) HasOne(`index: string`) 
  Checks if the environment has a value with the specified index
 	
-## [(boolean, Dictionary<string, boolean>)](https://create.roblox.com/docs/scripting/luau/booleans) Has(`objects: Array<string> `) 
+## [(boolean, Dictionary<string, boolean>)](https://create.roblox.com/docs/scripting/luau/booleans) Has(`objects: Array<string>`) 
  Checks if the environment contains every specified index and returns a boolean and a dictionary with boolean values, example:
 	```lua
 	local hasAll, dictionary = treeEnv:Has({
@@ -44,7 +42,7 @@ The amount of objects in this environment
 	print(hasAll, dictionary) -- output: false, { Tree1 = true, Tree2 = true, Tree4 = false }
 	```
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Add(`objects: Dictionary<string, any> `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Add(`objects: Dictionary<string, any>`) 
  Adds objects with the specified index
 	```lua
 	treeEnv:Add({
@@ -56,14 +54,14 @@ The amount of objects in this environment
 	print(treeEnv:Get("Tree2")) -- output: Tree2
 	```
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Remove(`objects: Array<string> `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Remove(`objects: Array<string>`) 
  Removes the objects with the specified index, example:
 	```lua
 	treeEnv:Remove({ "Tree1", "Tree2", "Tree3" })
 	print(treeEnv:Get("Tree2")) -- output: nil
 	```
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Update(`objects: Dictionary<string, any> `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Update(`objects: Dictionary<string, any>`) 
  Updates the objects with the specified index, example:
 	```lua
 	treeEnv:Update({
@@ -72,13 +70,13 @@ The amount of objects in this environment
 	})
 	```
 	
-## [any](any.link) FindByName(`name: string `) 
+## [any](any.link) FindByName(`name: string`) 
  Finds an object by his name
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetProperty(`property: string, value: any `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetProperty(`property: string, value: any`) 
  Sets the specified property in every object in the environment
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Run(`method: string, ...any `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Run(`method: string, ...any`) 
  Executes the specified methods in every object in the environment with the specified parameters
 	
 

@@ -13,11 +13,9 @@ This table store all the events of the class
 
 # Methods
 
-## [EventEmitter](EventEmitter.md) Constructor(` `) 
+## [Connection](Connection.md) On(`name: string, callback: () -> any`) 
  
-## [Connection](Connection.md) On(`name: string, callback: () -> any `) 
- 
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Fire(`name: string, ...any `) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) Fire(`name: string, ...any`) 
  Triggers an event with the specified arguments
 	
 

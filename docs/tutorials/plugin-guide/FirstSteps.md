@@ -1,4 +1,4 @@
-In this page, you will learn how to manage scenes and create objects for your 2D game projects with the graphic interface of upside engine.
+On this page, you will learn how to manage scenes and create objects for your 2D game projects with the graphic interface of upside engine.
 
 ![](../../assets/upsideenginebar.png)
 

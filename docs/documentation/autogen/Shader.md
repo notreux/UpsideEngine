@@ -1,0 +1,33 @@
+# [Extended from BaseClass](BaseClass.md) Shader 
+!!! warning 
+		Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
+		and not to use too many shaders.
+
+		If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
+		this will lighten a lot the work for the cpu.	
+
+		_____
+		This class is used to modify how an object is renderized
+	 
+# Properties
+
+## [boolean](boolean.md) Enabled
+This property determines if the shader is enabled
+
+## [string](string.md) Path
+This property stores the shader path
+        
+
+
+# Methods
+
+## [void](void.md) SetSource(`file: ModuleScript`) 
+ Sets the module script which is going to be used as shader source
+	
+
+# Events
+|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
+|---|---|
+
+
+

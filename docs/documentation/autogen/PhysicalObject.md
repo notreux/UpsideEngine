@@ -1,23 +1,17 @@
-# [Extended from BaseObject](BaseObject.md) PhysicalObject 
+# [Extended from StaticObject](StaticObject.md) PhysicalObject 
 This class is used to create objects with physics
 	 
 # Properties
 
-## [Vector2](Vector2.md) ChromaticAberrationPoint
-This is the point which is being used as reference for the chromatic aberration
-		
 ## [Vector2](Vector2.md) Force
 Is the force which is applied in the moment to the object
 		
 ## [Vector2](Vector2.md) Velocity
 Is the velocity applied to the object
 		
-## [table](table.md) ChromaticAberration 
-The instances which makes the chromatic aberration effect
-		 
-```lua
-{ }
-```
+## [Vector2](Vector2.md) Acceleration
+Defines the rate of change of velocity for the physical object, initially set to zero.
+	
 ## [table](table.md) Collisions 
 This table stores all the active collisions
 		 
@@ -35,10 +29,13 @@ This dictionary stores all the blacklisted objects, to blacklist an object do it
 ```
 ## [table](table.md) Hitbox 
 This the CollisionMask of the object
-	 
+		 
 ```lua
 { }
 ```
+## [string](string.md) Shape
+Specifies the geometric shape of the physical object, which can be "circle" and "custom" for polygons, custom is has box hitbox by default, also is the default shape.
+		
 ## [number](number.md) Mass
 The object mass
 		
@@ -47,10 +44,9 @@ The object mass
 ## [number](number.md) CollisionGroup
 A number which indicates the collision group of the object, the object only can collide with other objects with the same CollisionGroup
 		
-## [number](number.md) ChromaticAberrationIntensity
-
-## [number](number.md) ChromaticAberrationDistance
-
+## [number](number.md) Friction
+Determines the resistance to sliding motion between this object and another surface, influencing how quickly it slows down.
+		
 ## [boolean](boolean.md) Anchored
 This property defines if the object should have physics or not
 		
@@ -63,20 +59,12 @@ This property indicates if the object is touching the ground
 ## [boolean](boolean.md) TrackCollisions
 This property defines if the object is going to have physics and collisions or not
 		
-## [boolean](boolean.md) ChromaticAberrationConnection
-
 
 
 # Methods
 
-## [PhysicalObject](PhysicalObject.md) Constructor(` `) 
- 
-## [void](https://create.roblox.com/docs/scripting/luau/nil) Load(`url: string `) 
- Loads an image for the current object and is set as the instance image
-	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) SetChromaticAberration(`Intensity: number, Distance: number, Point: Vector2 `) 
- Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
-	to disable the chromatic aberration send 0 as first parameter
+## [void](PhysicalObject.md) ApplyForce(`force: Vector2`) 
+ Applies force to the object
 	
 
 # Events
