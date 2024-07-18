@@ -226,7 +226,7 @@ UpdateScreen: (self: LightingEnvironment) -> nil,
 --[[
 ]]
 export type ObjectEnvironment = Environment & {
-}
+There is no methods for this class}
 
 
 
@@ -234,7 +234,7 @@ export type ObjectEnvironment = Environment & {
 --[[
 ]]
 export type ParticleEnvironment = Environment & {
-}
+There is no methods for this class}
 
 
 
@@ -275,7 +275,7 @@ GetClient: (self: Request) -> Player,
 --[[
 ]]
 export type ShaderEnvironment = Environment & {
-}
+There is no methods for this class}
 
 
 
@@ -283,7 +283,7 @@ export type ShaderEnvironment = Environment & {
 --[[
 ]]
 export type SoundEnvironment = Environment & {
-}
+There is no methods for this class}
 
 
 
@@ -443,7 +443,7 @@ WavesAmplitude: number,
 Determines how fast the waves should move
 ]]
 WavesSpeed: number,
-}
+There is no methods for this class}
 
 
 
@@ -483,9 +483,9 @@ Transparency: number,
   	Only works on Pointlights
 
   Inverts the light source
-]]
+  ]]
 Inverted: boolean,
-}
+There is no methods for this class}
 
 
 
@@ -510,9 +510,6 @@ Track: boolean,
 Locks the Parallax object to the camera position
 ]]
 LockToCamera: boolean,
---[[
-]]
-AnchorPoint: Vector2,
 --[[
 Sets the tile texture
 	]]

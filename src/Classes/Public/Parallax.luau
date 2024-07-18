@@ -10,8 +10,10 @@ function parallax.new()
 	self.Offset = Vector2.zero
 	self.Track = true
 	self.LockToCamera = false
-	self.Instance.ClipsDescendants = true
-	self.Instance.AnchorPoint = Vector2.new(0.5, 0.5)
+
+	local instance = self.Instance
+	instance.ClipsDescendants = true
+	instance.AnchorPoint = Vector2.new(0.5, 0.5)
 
 	local content = Instance.new("ImageLabel")
 	content.Name = "Content"

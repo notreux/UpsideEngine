@@ -268,7 +268,7 @@ UpdateScreen(): null;
 
 */ 
 export declare interface ObjectEnvironment extends Environment {
-}
+There is no methods for this class}
  
 
 
@@ -277,7 +277,7 @@ export declare interface ObjectEnvironment extends Environment {
 
 */ 
 export declare interface ParticleEnvironment extends Environment {
-}
+There is no methods for this class}
  
 
 
@@ -326,7 +326,7 @@ GetClient(): Player;
 
 */ 
 export declare interface ShaderEnvironment extends Environment {
-}
+There is no methods for this class}
  
 
 
@@ -335,7 +335,7 @@ export declare interface ShaderEnvironment extends Environment {
 
 */ 
 export declare interface SoundEnvironment extends Environment {
-}
+There is no methods for this class}
  
 
 
@@ -525,7 +525,7 @@ Determines how fast the waves should move
 
 */
 WavesSpeed: number;
-}
+There is no methods for this class}
  
 
 
@@ -573,10 +573,10 @@ Transparency: number;
   	Only works on Pointlights
 
   Inverts the light source
-
+  
 */
 Inverted: boolean;
-}
+There is no methods for this class}
  
 
 
@@ -606,10 +606,6 @@ Locks the Parallax object to the camera position
 
 */
 LockToCamera: boolean;
-/**
-
-*/
-AnchorPoint: Vector2;
 /**
 Sets the tile texture
 	
