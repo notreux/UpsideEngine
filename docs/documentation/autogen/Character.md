@@ -21,7 +21,6 @@ Set to true when the character is jumping
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) UpdateHealth(`Health: number`) 
  Updates the amount of health of the character 
 	
@@ -32,9 +31,8 @@ Set to true when the character is jumping
  The character walks directly to the provided position
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

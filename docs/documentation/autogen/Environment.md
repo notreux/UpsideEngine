@@ -14,7 +14,6 @@ The amount of objects in this environment
 
 
 # Methods
-
 ## [any](any.link) Get(`index: string`) 
  Gets the object with the specified index
 	
@@ -80,9 +79,8 @@ The amount of objects in this environment
  Executes the specified methods in every object in the environment with the specified parameters
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

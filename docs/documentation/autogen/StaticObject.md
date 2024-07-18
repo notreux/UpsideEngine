@@ -24,7 +24,6 @@ Is the shader of the object
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetShader(`shader: Shader`) 
  Sets the shader for this object
 	
@@ -36,9 +35,8 @@ Is the shader of the object
  to disable the chromatic aberration send 0 as first parameter
  
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

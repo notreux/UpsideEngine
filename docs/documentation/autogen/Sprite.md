@@ -29,7 +29,6 @@ This table stores information about the active spritesheet
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSpriteSheet(`name: string, url: string, frames: Vector2`) 
  Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2
 	
@@ -43,9 +42,8 @@ This table stores information about the active spritesheet
  Stops the reproduction of the current playing sprite sheet or sprite list
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

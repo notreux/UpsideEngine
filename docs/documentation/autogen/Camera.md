@@ -27,7 +27,6 @@ This property defines the object which is going to follow the camera
 
 
 # Methods
-
 ## [UDim2](https://create.roblox.com/docs/reference/engine/datatypes/UDim2) GetPosition() 
  Gets the camera position
 	
@@ -41,9 +40,8 @@ This property defines the object which is going to follow the camera
  Position the camera in a centered location relative to the provided object
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

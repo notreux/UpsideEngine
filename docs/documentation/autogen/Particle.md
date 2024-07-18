@@ -74,7 +74,6 @@ Is a table with the goals of the particles
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character`) 
  Sets the subject property
 	
@@ -88,9 +87,8 @@ Is a table with the goals of the particles
  Emits the specified amount of particles, if none is provided then will use as amount the Rate property
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

@@ -26,14 +26,12 @@ This property stores the shader path
 
 
 # Methods
-
 ## [void](void.md) SetSource(`file: ModuleScript`) 
  Sets the module script which is going to be used as shader source
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

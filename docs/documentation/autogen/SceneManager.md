@@ -17,13 +17,13 @@ This dictionary stores all the active scenes
 
 
 # Methods
-
 ## [Scene?](https://create.roblox.com/docs/scripting/luau/nil) FindByName(`name: string`) 
  Finds a scene by the name
 	
 ## [Scene](Scene.md) Get(`Id: string`) 
  Returns the scene with the specified Id
 	
+
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|

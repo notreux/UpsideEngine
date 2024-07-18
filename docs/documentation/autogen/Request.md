@@ -15,7 +15,6 @@ The UserId of the client which sent the request if exists
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) Send(`content: Dictionary<string, any>`) 
  Sends the request to the server
 	
@@ -28,6 +27,7 @@ The UserId of the client which sent the request if exists
 ## [Player](https://create.roblox.com/docs/reference/engine/classes/Player) GetClient() 
  Returns the player which sent the request
 	
+
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|

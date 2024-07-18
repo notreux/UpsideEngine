@@ -63,10 +63,10 @@ This property defines if the object is going to have physics and collisions or n
 
 
 # Methods
-
 ## [void](PhysicalObject.md) ApplyForce(`force: Vector2`) 
  Applies force to the object
 	
+
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|

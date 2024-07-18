@@ -18,7 +18,6 @@ This table stores all the tags of the object
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetScene(`scene: Scene`) 
  Sets the object scene
 	
@@ -32,9 +31,8 @@ This table stores all the tags of the object
  Removes a tag from the object
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

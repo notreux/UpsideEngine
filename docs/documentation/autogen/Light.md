@@ -7,8 +7,16 @@ This class is used to illuminate areas in the darkness
 Is how the light should be shown, there are two modes "PointLight" and "SpotLight"
   
 ## [number](number.md) Rotation
+!!!warning
+  	Only works on Spotlights
+
+  The light rotation
 
 ## [number](number.md) Angle
+!!!warning
+  	Only works on Spotlights
+
+  The light angle
 
 ## [Color3](Color3.md) Color
 The color you want the light to have
@@ -27,15 +35,13 @@ Is the transparency of the light
   	Only works on Pointlights
 
   Inverts the light source
-
+  
 
 
 # Methods
-
+There is no methods for this class
 
 # Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
-
+There is no events for this class
 
 

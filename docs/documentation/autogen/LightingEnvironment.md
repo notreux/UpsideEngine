@@ -25,7 +25,6 @@ Determines the resolution for every chunk of the screen
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) DrawPixels() 
  Draws the pixels for the scene with the specified resolution
 	
@@ -33,9 +32,8 @@ Determines the resolution for every chunk of the screen
  Updates the position, the transparency and the color of the ambient
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

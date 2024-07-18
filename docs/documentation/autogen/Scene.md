@@ -30,7 +30,6 @@ This environment stores all the objects in the scene
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/tables#arrays) Enable() 
  Enables the scene, which will make it process physics, lights, sounds and sprites
 	
@@ -44,9 +43,8 @@ This environment stores all the objects in the scene
  Casts a ray using the Raycast2dParams. If it finds an elegible object a Raycast2dResult is returned containing the results of the operations
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

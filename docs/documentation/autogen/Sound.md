@@ -18,14 +18,12 @@ This table stores all the objects in the scene
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character, useSceneSoundGroup: boolean?`) 
  Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

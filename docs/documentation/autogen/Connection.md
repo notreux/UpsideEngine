@@ -17,7 +17,6 @@ The id of the linked event
 
 
 # Methods
-
 ## [thread?](https://create.roblox.com/docs/reference/engine/libraries/coroutine) Wait(`seconds: number?`) 
  Wait until the event gets fired, if seconds were specified, once the specified seconds have elapsed, it will stop waiting
 	
@@ -25,9 +24,8 @@ The id of the linked event
  Deletes the connection and the listener
 	
 
-# Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
-|---|---|
 
+# Events
+There is no events for this class
 
 

@@ -89,7 +89,6 @@ This table stores the default controllers
 
 
 # Methods
-
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey(`device: string, key: string, action: string`) 
  Assigns an action to a device key, example:
 	```lua
@@ -116,6 +115,7 @@ This table stores the default controllers
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPlayerCharacter(`character: Character`) 
  Sets the player character
 	
+
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
