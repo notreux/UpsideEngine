@@ -268,7 +268,7 @@ UpdateScreen(): null;
 
 */ 
 export declare interface ObjectEnvironment extends Environment {
-There is no methods for this class}
+}
  
 
 
@@ -277,7 +277,7 @@ There is no methods for this class}
 
 */ 
 export declare interface ParticleEnvironment extends Environment {
-There is no methods for this class}
+}
  
 
 
@@ -326,7 +326,7 @@ GetClient(): Player;
 
 */ 
 export declare interface ShaderEnvironment extends Environment {
-There is no methods for this class}
+}
  
 
 
@@ -335,7 +335,7 @@ There is no methods for this class}
 
 */ 
 export declare interface SoundEnvironment extends Environment {
-There is no methods for this class}
+}
  
 
 
@@ -525,7 +525,7 @@ Determines how fast the waves should move
 
 */
 WavesSpeed: number;
-There is no methods for this class}
+}
  
 
 
@@ -576,7 +576,7 @@ Transparency: number;
   
 */
 Inverted: boolean;
-There is no methods for this class}
+}
  
 
 
