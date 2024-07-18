@@ -5,13 +5,13 @@ This class is used to play sounds
 
 ## [boolean](boolean.md) IsPlaying
 Indicates if the sprite is playing
-		
+  
 ## [number](number.md) SecondsPerFrame
 This is the time to wait between frame and frame
-		
+  
 ## [table](table.md) Sprites 
 This table stores all sprite sheets and sprite lists 
-		 
+   
 ```lua
 { }
 ```

@@ -5,7 +5,7 @@ This class is used to illuminate areas in the darkness
 
 ## [string](string.md) Shape
 Is how the light should be shown, there are two modes "PointLight" and "SpotLight"
-		
+  
 ## [number](number.md) Rotation
 
 ## [number](number.md) Angle
@@ -14,18 +14,18 @@ Is how the light should be shown, there are two modes "PointLight" and "SpotLigh
 
 ## [number](number.md) Range
 Is the range of the light
-		
+  
 ## [number](number.md) Brightness
 Is the brightness of the light
-		
+  
 ## [number](number.md) Transparency
 Is the transparency of the light
-		
+  
 ## [boolean](boolean.md) Inverted
-Inverts the light source
 !!!warning
-		Only works on Pointlights
+  	Only works on Pointlights
 
+  Inverts the light source
 
 
 

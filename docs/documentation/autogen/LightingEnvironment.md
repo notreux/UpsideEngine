@@ -5,22 +5,22 @@ This class is one of the most important components of a scene, is used to manage
 
 ## [Color3](Color3.md) AmbientColor
 This is the color of every pixel of the ambient, we can say is the darkness color
-		
+  
 ## [number](number.md) AmbientTransparency
 This is the transparency of the ambient, we can say is the darkness transparency
-		
+  
 ## [number](number.md) UpdateFrequency
 This is the seconds between every update of the pixels in the screen
-		
+  
 ## [number](number.md) LightIntensity
 This is the intensity for all the lights in the scene
-		
+  
 ## [Enum](Enum.md) LightStyle
-Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
-		
+Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated" and Enum.ResamplerMode.Default
+  
 ## [Vector2](Vector2.md) ChunkResolution
 Determines the resolution for every chunk of the screen
-		
+  
 
 
 

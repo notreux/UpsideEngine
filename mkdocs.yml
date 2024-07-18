@@ -91,14 +91,17 @@ nav:
       - EventEmitter: documentation/autogen/EventEmitter.md
       - Light: documentation/autogen/Light.md
       - LightingEnvironment: documentation/autogen/LightingEnvironment.md
+      - SoundEnvironment: documentation/autogen/SoundEnvironment.md
+      - ShaderEnvironment: documentation/autogen/ShaderEnvironment.md
       - Particle: documentation/autogen/Particle.md
       - PhysicalObject: documentation/autogen/PhysicalObject.md
+      - StaticObject: documentation/autogen/StaticObject.md
       - Request: documentation/autogen/Request.md
       - Scene: documentation/autogen/Scene.md
       - Sound: documentation/autogen/Sound.md
-      - SoundEnvironment: documentation/autogen/SoundEnvironment.md
-      - ShaderEnvironment: documentation/autogen/ShaderEnvironment.md
       - Sprite: documentation/autogen/Sprite.md
+      - Shader: documentation/autogen/Shader.md
+      - Fluid: documentation/autogen/Fluid.md
     - Services:
       - CrossPlatformService: documentation/autogen/CrossPlatformService.md
       - PluginSupportService: documentation/autogen/PluginSupportService.md

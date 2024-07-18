@@ -5,16 +5,16 @@ This class is used to play sounds
 
 ## [number](number.md) Range
 This is the SoundEnvironment of the scene
-		
+  
 ## [number](number.md) MaxVolume
 This is the ParticleEnvironment of the scene
-		
+  
 ## [boolean](boolean.md) DistanceFading
 The volume will depend on the player distance
 
 ## [Character](Character.md) Subject
 This table stores all the objects in the scene
-		
+  
 
 
 # Methods

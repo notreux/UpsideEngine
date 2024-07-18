@@ -5,16 +5,16 @@ This class is used for the player character and for npcs
 
 ## [number](number.md) Health
 The amount of health of the character
-		
+  
 ## [number](number.md) MaxHealth
 The maximum amount of health of the character 
-		
+  
 ## [number](number.md) WalkSpeed
 The walk speed of the character
-		
+  
 ## [number](number.md) JumpPower
 The jump power of the character
-		
+  
 ## [boolean](boolean.md) IsJumping
 Set to true when the character is jumping
 

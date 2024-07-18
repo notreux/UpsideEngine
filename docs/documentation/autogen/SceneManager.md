@@ -28,8 +28,8 @@ This dictionary stores all the active scenes
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
 |---|---|
-|SceneLoaded|Params -> [Scene](Scene.md) <br>Fired when a scene is loaded<br>|
-|SceneUnloaded|Params -> [Scene](Scene.md) <br>Fired when a scene is unloaded<br>|
+|SceneLoaded|Params -> [Scene](Scene.md) <br>  Fired when a scene is loaded<br>  |
+|SceneUnloaded|Params -> [Scene](Scene.md) <br>  Fired when a scene is unloaded<br>|
 
 
 

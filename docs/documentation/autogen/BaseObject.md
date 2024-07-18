@@ -5,10 +5,10 @@ This class is the base class of the majority of classes
 
 ## [Instance](Instance.md) Instance
 The object instance
-		
+  
 ## [string](string.md) Scene
 The object scene ID
-		
+  
 ## [table](table.md) Tags 
 This table stores all the tags of the object
  

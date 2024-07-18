@@ -7,13 +7,13 @@ This class is included on every scene, it's used to move you around the scene
 
 ## [Vector2](Vector2.md) LocalPosition
 This property is used to move the camera internally
-		
+  
 ## [Vector2](Vector2.md) Limits
 This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
-		
+  
 ## [boolean](boolean.md) FollowSubject
 This property defines if the camera is going to follow the defined subject
-		
+  
 ## [string](string.md) Scene
 
 ## [number](number.md) Smoothness
@@ -21,12 +21,12 @@ This property defines the smoothness with which the camera will move, it only wo
 
 ## [Character](Character.md) Subject
 This property defines the object which is going to follow the camera
-		
+  
 
 
 # Methods
 
-## [void](https://create.roblox.com/docs/reference/engine/datatypes/UDim2) GetPosition() 
+## [UDim2](https://create.roblox.com/docs/reference/engine/datatypes/UDim2) GetPosition() 
  Gets the camera position
 	
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetPosition(`udim2: UDim2`) 

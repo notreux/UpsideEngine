@@ -5,27 +5,27 @@ This class is useful to have a workspace and manage your project more easily
 
 ## [Vector2](Vector2.md) Gravity
 The scene gravity
-		
+  
 ## [boolean](boolean.md) OnlyTrackVisible
 This property defines whether physics should be calculated only for visible objects
-		
+  
 ## [Camera](Camera.md) Camera
 The scene camera
-		
+  
 ## [LightingEnvironment](LightingEnvironment.md) LightingEnvironment
 This is the LightingEnvironment of the scene
 
 ## [ParticleEnvironment](ParticleEnvironment.md) ParticleEnvironment
 This is the ParticleEnvironment of the scene
-		
+  
 ## [SoundEnvironment](SoundEnvironment.md) SoundEnvironment
 This is the SoundEnvironment of the scene
-		
+  
 ## [ShaderEnvironment](ShaderEnvironment.md) ShaderEnvironment
 
 ## [ObjectEnvironment](ObjectEnvironment.md) Objects
 This environment stores all the objects in the scene
-		
+  
 
 
 # Methods
