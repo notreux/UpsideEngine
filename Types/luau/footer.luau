@@ -2,13 +2,17 @@ export type upsideEngine = {
 	Version: string,
 	Workspace: {},
 	new: ((name: "PhysicalObject") -> PhysicalObject)
+		& ((name: "StaticObject") -> StaticObject)
+		& ((name: "Fluid") -> Fluid)
+		& ((name: "Parallax") -> Parallax)
 		& ((name: "Sprite") -> Sprite)
 		& ((name: "Sound") -> Sound)
 		& ((name: "Environment") -> Environment)
 		& ((name: "Light") -> Light)
 		& ((name: "Character") -> Character)
 		& ((name: "Scene") -> Scene)
-		& ((name: "Particle") -> Particle),
+		& ((name: "Particle") -> Particle)
+		& ((name: "Shader") -> Shader),
 
 	GetService: ((name: "SceneManager") -> SceneManager)
 		& ((name: "PluginSupportService") -> PluginSupportService)

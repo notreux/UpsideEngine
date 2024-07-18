@@ -49,11 +49,11 @@ This class is the base class of the majority of classes
 export type BaseObject = EventEmitter & {
 --[[
 The object instance
-		]]
+  ]]
 Instance: Instance,
 --[[
 The object scene ID
-		]]
+  ]]
 Scene: string,
 --[[
 This table stores all the tags of the object
@@ -89,15 +89,15 @@ export type Camera = EventEmitter & {
 OffsetPosition: UDim2,
 --[[
 This property is used to move the camera internally
-		]]
+  ]]
 LocalPosition: Vector2,
 --[[
 This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
-		]]
+  ]]
 Limits: Vector2,
 --[[
 This property defines if the camera is going to follow the defined subject
-		]]
+  ]]
 FollowSubject: boolean,
 --[[
 ]]
@@ -108,12 +108,12 @@ This property defines the smoothness with which the camera will move, it only wo
 Smoothness: number,
 --[[
 This property defines the object which is going to follow the camera
-		]]
+  ]]
 Subject: Character,
 --[[
 Gets the camera position
 	]]
-GetPosition: (self: Camera) -> nil,
+GetPosition: (self: Camera) -> UDim2,
 --[[
 Sets the camera position
 	]]
@@ -183,27 +183,27 @@ This class is one of the most important components of a scene, is used to manage
 export type LightingEnvironment = Environment & {
 --[[
 This is the color of every pixel of the ambient, we can say is the darkness color
-		]]
+  ]]
 AmbientColor: Color3,
 --[[
 This is the transparency of the ambient, we can say is the darkness transparency
-		]]
+  ]]
 AmbientTransparency: number,
 --[[
 This is the seconds between every update of the pixels in the screen
-		]]
+  ]]
 UpdateFrequency: number,
 --[[
 This is the intensity for all the lights in the scene
-		]]
+  ]]
 LightIntensity: number,
 --[[
 Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated" and Enum.ResamplerMode.Default
-		]]
+  ]]
 LightStyle: Enum,
 --[[
 Determines the resolution for every chunk of the screen
-		
+  
 ]]
 ChunkResolution: Vector2,
 --[[
@@ -241,7 +241,7 @@ This class is used for the client replication
 export type Request = EventEmitter & {
 --[[
 The content of the request
-		]]
+  ]]
 Content: { },
 --[[
 The UserId of the client which sent the request if exists 
@@ -258,11 +258,11 @@ Approve: (self: Request) -> nil,
 --[[
 Accepts the request and builds the object to be replicated
 	]]
-Accept: (self: Request) -> nil,
+Accept: (self: Request) -> BaseObject,
 --[[
 Returns the player which sent the request
 	]]
-GetClient: (self: Request) -> nil,
+GetClient: (self: Request) -> Player,
 }
 
 
@@ -290,19 +290,19 @@ This class is used for the player character and for npcs
 export type Character = Sprite & {
 --[[
 The amount of health of the character
-		]]
+  ]]
 Health: number,
 --[[
 The maximum amount of health of the character 
-		]]
+  ]]
 MaxHealth: number,
 --[[
 The walk speed of the character
-		]]
+  ]]
 WalkSpeed: number,
 --[[
 The jump power of the character
-		]]
+  ]]
 JumpPower: number,
 --[[
 Set to true when the character is jumping
@@ -424,16 +424,16 @@ export type Fluid = PhysicalObject & {
 --[[
 Indicates how much dense the fluid should be. Higher values indicate a denser fluid, 
         affecting buoyancy and movement of objects within the fluid
-		]]
+  ]]
 Density: number,
 --[[
 Determines the flow resistance of the fluid. Higher values indicate a thicker fluid, 
         affecting the speed at which objects can move through it
-		]]
+  ]]
 Viscosity: number,
 --[[
 Specifies the magnitude of the fluid waves. These waves are not visible but influence buoyancy and object stability.
-		]]
+  ]]
 WavesAmplitude: number,
 --[[
 Determines how fast the waves should move
@@ -450,7 +450,7 @@ This class is used to illuminate areas in the darkness
 export type Light = StaticObject & {
 --[[
 Is how the light should be shown, there are two modes "PointLight" and "SpotLight"
-		]]
+  ]]
 Shape: string,
 --[[
 ]]
@@ -463,21 +463,21 @@ Angle: number,
 Color: Color3,
 --[[
 Is the range of the light
-		]]
+  ]]
 Range: number,
 --[[
 Is the brightness of the light
-		]]
+  ]]
 Brightness: number,
 --[[
 Is the transparency of the light
-		]]
+  ]]
 Transparency: number,
 --[[
 !!!warning
-			Only works on Pointlights
+  	Only works on Pointlights
 
-		Inverts the light source
+  Inverts the light source
 ]]
 Inverted: boolean,
 }
@@ -491,15 +491,15 @@ This class is used to create inmersive backgrounds
 export type Parallax = BaseObject & {
 --[[
 Defines the image zoom, if the value is 1X, 1Y it will see the whole image as expected, if you set it to 2X, 2Y you only will be able see half of the image
-		]]
+  ]]
 CanvasSize: Vector2,
 --[[
 Defines the scroll position of the parallax object
-		]]
+  ]]
 Offset: Vector2,
 --[[
 Defines if Update method should be called automatically
-		]]
+  ]]
 Track: boolean,
 --[[
 Locks the Parallax object to the camera position
@@ -523,76 +523,76 @@ UpdateTiles: (self: Parallax) -> nil,
 
 --[[
 !!! warning 
-		Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
+  Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
 
-		_____
-		This class is used for vfx
+  _____
+  This class is used for vfx
 
 	]]
 export type Particle = BaseObject & {
 --[[
 Depending on the value the particles will be more dispersed
-		]]
+  ]]
 Angle: Vector2,
 --[[
 Is the tween info of the tween which is going to be used to move the particles
-		]]
+  ]]
 Info: TweenInfo,
 --[[
 !!! warning 
-			Experimental, dont use
-		]]
+  	Experimental, dont use
+  ]]
 TrackLight: boolean,
 --[[
 !!! warning 
-			Experimental, dont use
-		]]
+  	Experimental, dont use
+  ]]
 CanCollide: boolean,
 --[[
 When its enabled new particles can be emitted
-		]]
+  ]]
 Enabled: boolean,
 --[[
 Is the maximum amount of particles that can exist at the same time
-		]]
+  ]]
 MaxRate: number,
 --[[
 Is the amount of particles that are existing at this moment
-		]]
+  ]]
 Units: number,
 --[[
 !!! warning 
-			Experimental, dont use
-		]]
+  	Experimental, dont use
+  ]]
 LightBrightness: number,
 --[[
 !!! warning 
-			Experimental, dont use
+  	Experimental, dont use
 ]]
 LightRange: number,
 --[[
 Is the distance that can be traveled by each particle 
-		]]
+  ]]
 Range: number,
 --[[
 The number of seconds the particle will be active before being destroyed
-		]]
+  ]]
 LifeTime: number,
 --[[
 Used for internal purposes
-		]]
+  ]]
 Clock: number,
 --[[
 Is the amount of particles which is going to be generated
-		]]
+  ]]
 Rate: number,
 --[[
 The subject which is going to be the center of emission of the particle, a character, sprite, etc...
-		]]
+  ]]
 Subject: Character,
 --[[
 Is a table with the initial properties of the particle which is going to be generated
-		]]
+  ]]
 Properties: {
  --[[
 @desc]]
@@ -600,7 +600,7 @@ Image: string,
 },
 --[[
 Is a table with the goals of the particles
-		]]
+  ]]
 Goals: {
  --[[
 @desc]]
@@ -636,11 +636,11 @@ This class is used to create objects with physics
 export type PhysicalObject = StaticObject & {
 --[[
 Is the force which is applied in the moment to the object
-		]]
+  ]]
 Force: Vector2,
 --[[
 Is the velocity applied to the object
-		]]
+  ]]
 Velocity: Vector2,
 --[[
 Defines the rate of change of velocity for the physical object, initially set to zero.
@@ -648,53 +648,53 @@ Defines the rate of change of velocity for the physical object, initially set to
 Acceleration: Vector2,
 --[[
 This table stores all the active collisions
-		]]
+  ]]
 Collisions: { },
 --[[
 This dictionary stores all the blacklisted objects, to blacklist an object do it like this:
-		```lua
-		CollisionBlacklist[object.Id] = true
-		```
-		]]
+  ```lua
+  CollisionBlacklist[object.Id] = true
+  ```
+  ]]
 CollisionBlacklist: { },
 --[[
 This the CollisionMask of the object
-		]]
+  ]]
 Hitbox: { },
 --[[
 Specifies the geometric shape of the physical object, which can be "circle" and "custom" for polygons, custom is has box hitbox by default, also is the default shape.
-		]]
+  ]]
 Shape: string,
 --[[
 The object mass
-		]]
+  ]]
 Mass: number,
 --[[
 ]]
 HitboxScale: number,
 --[[
 A number which indicates the collision group of the object, the object only can collide with other objects with the same CollisionGroup
-		]]
+  ]]
 CollisionGroup: number,
 --[[
 Determines the resistance to sliding motion between this object and another surface, influencing how quickly it slows down.
-		]]
+  ]]
 Friction: number,
 --[[
 This property defines if the object should have physics or not
-		]]
+  ]]
 Anchored: boolean,
 --[[
 This property defines if the object can collide with other objects
-		]]
+  ]]
 CanCollide: boolean,
 --[[
 This property indicates if the object is touching the ground
-		]]
+  ]]
 IsGrounded: boolean,
 --[[
 This property defines if the object is going to have physics and collisions or not
-		]]
+  ]]
 TrackCollisions: boolean,
 --[[
 Applies force to the object
@@ -711,15 +711,15 @@ This class is useful to have a workspace and manage your project more easily
 export type Scene = BaseObject & {
 --[[
 The scene gravity
-		]]
+  ]]
 Gravity: Vector2,
 --[[
 This property defines whether physics should be calculated only for visible objects
-		]]
+  ]]
 OnlyTrackVisible: boolean,
 --[[
 The scene camera
-		]]
+  ]]
 Camera: Camera,
 --[[
 This is the LightingEnvironment of the scene
@@ -727,18 +727,18 @@ This is the LightingEnvironment of the scene
 LightingEnvironment: LightingEnvironment,
 --[[
 This is the ParticleEnvironment of the scene
-		]]
+  ]]
 ParticleEnvironment: ParticleEnvironment,
 --[[
 This is the SoundEnvironment of the scene
-		]]
+  ]]
 SoundEnvironment: SoundEnvironment,
 --[[
 ]]
 ShaderEnvironment: ShaderEnvironment,
 --[[
 This environment stores all the objects in the scene
-		]]
+  ]]
 Objects: ObjectEnvironment,
 --[[
 Enables the scene, which will make it process physics, lights, sounds and sprites
@@ -763,20 +763,27 @@ Raycast: (self: Scene, info: Raycast2dParams) -> Raycast2dResult,
 
 --[[
 !!! warning 
-		Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
-		and not to use too many shaders.
+  Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
+  and not to use too many shaders.
 
-		If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
-		this will lighten a lot the work for the cpu.	
+  If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
+  this will lighten a lot the work for the cpu.	
 
-		_____
-		This class is used to modify how an object is renderized
+  _____
+  This class is used to modify how an object is renderized
 	]]
 export type Shader = BaseClass & {
 --[[
 This property determines if the shader is enabled
-]]
+        ]]
 Enabled: boolean,
+--[[
+Sometimes, modifying the position of pixels in an image can create gaps.
+  Upside Engine automatically fills these gaps, but this can occasionally 
+  lead to unwanted effects. Therefore, adjust this property according to your needs, 
+  the value of this property ranges between 0 and 1.
+]]
+Precision: number,
 --[[
 This property stores the shader path
         ]]
@@ -796,11 +803,11 @@ This class is used to play sounds
 export type Sound = BaseObject & {
 --[[
 This is the SoundEnvironment of the scene
-		]]
+  ]]
 Range: number,
 --[[
 This is the ParticleEnvironment of the scene
-		]]
+  ]]
 MaxVolume: number,
 --[[
 The volume will depend on the player distance
@@ -808,7 +815,7 @@ The volume will depend on the player distance
 DistanceFading: boolean,
 --[[
 This table stores all the objects in the scene
-		]]
+  ]]
 Subject: Character,
 --[[
 Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
@@ -825,15 +832,15 @@ This class is used to play sounds
 export type Sprite = PhysicalObject & {
 --[[
 Indicates if the sprite is playing
-		]]
+  ]]
 IsPlaying: boolean,
 --[[
 This is the time to wait between frame and frame
-		]]
+  ]]
 SecondsPerFrame: number,
 --[[
 This table stores all sprite sheets and sprite lists 
-		]]
+  ]]
 Sprites: { },
 --[[
 This table stores information about the active spritesheet
@@ -879,11 +886,11 @@ This class is used to create a basic object, without physics or animations
 export type StaticObject = BaseObject & {
 --[[
 This is the point which is being used as reference for the chromatic aberration
-		]]
+  ]]
 ChromaticAberrationPoint: Vector2,
 --[[
 The instances which makes the chromatic aberration effect
-		]]
+  ]]
 ChromaticAberration: { },
 --[[
 Is the shader of the object
@@ -908,8 +915,8 @@ Loads an image for the current object and is set as the instance image
 Load: (self: StaticObject, url: string) -> nil,
 --[[
 Sets chromatic aberration for the image using a center as reference, by default the center is the middle of the screen, 
-	to disable the chromatic aberration send 0 as first parameter
-	]]
+ to disable the chromatic aberration send 0 as first parameter
+ ]]
 SetChromaticAberration: (self: StaticObject, Intensity: number, Distance: number, Point: Vector2) -> nil,
 }
 
@@ -918,8 +925,8 @@ SetChromaticAberration: (self: StaticObject, Intensity: number, Distance: number
 
 --[[
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
-	to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`
-	property, here is an example to make our player jumps in every device:
+ to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`
+ property, here is an example to make our player jumps in every device:
 ```lua
 --  								Device,	    Key, 	Action
 CrossPlatformService:SetDeviceKey("Keyboard", "Space", "Up")
@@ -957,19 +964,19 @@ end)
 export type CrossPlatformService = EventEmitter & {
 --[[
 Defines if the default movement system is enabled
-		]]
+  ]]
 DefaultControllersEnabled: boolean,
 --[[
 Defines if the character is going to be seen from the side or from the top
-		]]
+  ]]
 SideView: boolean,
 --[[
 This is the sensibility of the sticks in mobile and in game controllers
-		]]
+  ]]
 StickSensibility: number,
 --[[
 This is the character which is going to be tracked by the camera
-		]]
+  ]]
 Character: Character,
 --[[
 This table stores the default controllers
@@ -978,80 +985,80 @@ Configs: {
  --[[
 @desc]]
 Keyboard: {
- --[[
+ 	--[[
 @desc]]
 W: string,
---[[
+	--[[
 @desc]]
 A: string,
---[[
+	--[[
 @desc]]
 S: string,
---[[
+	--[[
 @desc]]
 D: string,
---[[
+	--[[
 @desc]]
 Up: string,
---[[
+	--[[
 @desc]]
 Left: string,
---[[
+	--[[
 @desc]]
 Down: string,
---[[
+	--[[
 @desc]]
 Right: string,
---[[
+	--[[
 @desc]]
 Space: string,
-},
+	},
 --[[
 @desc]]
 Gamepad: {
- --[[
+ 	--[[
 @desc]]
 ButtonA: string,
---[[
+	--[[
 @desc]]
 Thumbstick1: {
- --[[
+ 		--[[
 @desc]]
 Up: string,
---[[
+		--[[
 @desc]]
 Left: string,
---[[
+		--[[
 @desc]]
 Down: string,
---[[
+		--[[
 @desc]]
 Right: string,
-},
-},
+		},
+	},
 --[[
 @desc]]
 Mobile: {
- --[[
+ 	--[[
 @desc]]
 JumpButton: string,
---[[
+	--[[
 @desc]]
 Thumbstick1: {
- --[[
+ 		--[[
 @desc]]
 Up: string,
---[[
+		--[[
 @desc]]
 Left: string,
---[[
+		--[[
 @desc]]
 Down: string,
---[[
+		--[[
 @desc]]
 Right: string,
-},
-},
+		},
+	},
 },
 --[[
 Assigns an action to a device key, example:
@@ -1159,13 +1166,17 @@ export type upsideEngine = {
 	Version: string,
 	Workspace: {},
 	new: ((name: "PhysicalObject") -> PhysicalObject)
+		& ((name: "StaticObject") -> StaticObject)
+		& ((name: "Fluid") -> Fluid)
+		& ((name: "Parallax") -> Parallax)
 		& ((name: "Sprite") -> Sprite)
 		& ((name: "Sound") -> Sound)
 		& ((name: "Environment") -> Environment)
 		& ((name: "Light") -> Light)
 		& ((name: "Character") -> Character)
 		& ((name: "Scene") -> Scene)
-		& ((name: "Particle") -> Particle),
+		& ((name: "Particle") -> Particle)
+		& ((name: "Shader") -> Shader),
 
 	GetService: ((name: "SceneManager") -> SceneManager)
 		& ((name: "PluginSupportService") -> PluginSupportService)
