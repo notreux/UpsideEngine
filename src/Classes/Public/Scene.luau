@@ -157,9 +157,10 @@ end
 		@Objects This environment stores all the objects in the scene
 		@Camera The scene camera
 		@Gravity The scene gravity
-		@SoundEnvironment This is the SoundEnvironment of the scene
 		@ParticleEnvironment This is the ParticleEnvironment of the scene
 		@LightingEnvironment This is the LightingEnvironment of the scene
+		@SoundEnvironment This is the SoundEnvironment of the scene
+		@ShaderEnvironment This is the ShaderEnvironment of the scene
 }=]]
 
 return setmetatable(scene, baseObject)

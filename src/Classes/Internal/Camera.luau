@@ -54,6 +54,11 @@ function camera:SetSubject(subject: Character)
 	self.Subject = subject
 end
 
+--[[={
+	@desc Position the camera in a centered location relative to the provided object
+	@link void.link
+}=]]
+
 function camera:LookTo(object: PhysicalObject)
 	assert(object:IsA("PhysicalObject"), ("Physical Object expected, got%s"):format(typeof(object)))
 	local resolution = workspace.CurrentCamera.ViewportSize
@@ -70,8 +75,9 @@ end
 	@desc This class is included on every scene, it's used to move you around the scene
 	@about
 		@Subject This property defines the object which is going to follow the camera
-		@CameraOffset This property serves to move as many pixels as you want the camera to adjust it to a desired position
+		@OffsetPosition This property serves to move as many pixels as you want the camera to adjust it to a desired position
 		@LocalPosition This property is used to move the camera internally
+		@Scene This is the Scene Id of the camera
 		@Limits This property marks the limits to move the camera, for example, if you set `Vector2.new(0.5, 0.5)` the camera will move only when it reaches the limit
 		@FollowSubject This property defines if the camera is going to follow the defined subject
 		@Smoothness This property defines the smoothness with which the camera will move, it only works in a range between 0 and 1

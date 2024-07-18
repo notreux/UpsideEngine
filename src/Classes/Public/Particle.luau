@@ -145,8 +145,8 @@ end
 
 --[[={
 	@desc 
-	!!! warning 
-		Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
+		!!! warning 
+			Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
 
 		_____
 		This class is used for vfx

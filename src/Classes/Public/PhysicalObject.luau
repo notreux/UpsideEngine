@@ -62,6 +62,7 @@ end
 		@Force Is the force which is applied in the moment to the object
 		@Velocity Is the velocity applied to the object
 		@Hitbox This the CollisionMask of the object
+		@HitboxScale Change this property to change the hitbox size, the default value is 1
 		@Shape Specifies the geometric shape of the physical object, which can be "circle" and "custom" for polygons, custom is has box hitbox by default, also is the default shape.
 		@Friction Determines the resistance to sliding motion between this object and another surface, influencing how quickly it slows down.
 		@Acceleration Defines the rate of change of velocity for the physical object, initially set to zero.

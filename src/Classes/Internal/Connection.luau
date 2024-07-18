@@ -55,6 +55,7 @@ end
 	@desc This class is used in the event emitter class, its used to manage a listener
 	@about
 		@Active Defines if the connection is active or not
+		@EventId The id of the linked event
 }=]]
 
 return setmetatable(connection, baseClass)

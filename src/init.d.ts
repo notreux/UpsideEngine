@@ -96,7 +96,8 @@ This class is included on every scene, it's used to move you around the scene
 */ 
 export declare interface Camera extends EventEmitter {
 /**
-
+This property serves to move as many pixels as you want the camera to adjust it to a desired position
+  
 */
 OffsetPosition: UDim2;
 /**
@@ -115,7 +116,8 @@ This property defines if the camera is going to follow the defined subject
 */
 FollowSubject: boolean;
 /**
-
+This is the Scene Id of the camera
+  
 */
 Scene: string;
 /**
@@ -144,7 +146,8 @@ Sets the camera subject
 */
 SetSubject(subject: Character): null;
 /**
-
+Position the camera in a centered location relative to the provided object
+	
 */
 LookTo(object: PhysicalObject): null;
 }
@@ -159,10 +162,11 @@ This class is used in the event emitter class, its used to manage a listener
 export declare interface Connection extends BaseClass {
 /**
 Defines if the connection is active or not
-
+  
 */
 Active: boolean;
 /**
+The id of the linked event
 
 */
 EventId: number;
@@ -545,7 +549,8 @@ Rotation: number;
 */
 Angle: number;
 /**
-
+The color you want the light to have
+  
 */
 Color: Color3;
 /**
@@ -622,7 +627,7 @@ UpdateTiles(): null;
 
 /**
 !!! warning 
-  Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
+  	Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
 
   _____
   This class is used for vfx
@@ -802,7 +807,8 @@ The object mass
 */
 Mass: number;
 /**
-
+Change this property to change the hitbox size, the default value is 1
+  
 */
 HitboxScale: number;
 /**
@@ -867,7 +873,7 @@ The scene camera
 Camera: Camera;
 /**
 This is the LightingEnvironment of the scene
-
+  
 */
 LightingEnvironment: LightingEnvironment;
 /**
@@ -881,6 +887,7 @@ This is the SoundEnvironment of the scene
 */
 SoundEnvironment: SoundEnvironment;
 /**
+This is the ShaderEnvironment of the scene
 
 */
 ShaderEnvironment: ShaderEnvironment;
@@ -916,11 +923,11 @@ Raycast(info: Raycast2dParams): Raycast2dResult;
 
 /**
 !!! warning 
-  Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
-  and not to use too many shaders.
+  	Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
+  	and not to use too many shaders.
 
-  If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
-  this will lighten a lot the work for the cpu.	
+  	If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
+  	this will lighten a lot the work for the cpu.	
 
   _____
   This class is used to modify how an object is renderized
