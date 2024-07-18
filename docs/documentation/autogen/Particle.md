@@ -1,6 +1,6 @@
 # [Extended from BaseObject](BaseObject.md) Particle 
 !!! warning 
-  Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
+  	Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
 
   _____
   This class is used for vfx

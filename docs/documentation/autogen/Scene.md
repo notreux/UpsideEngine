@@ -14,7 +14,7 @@ The scene camera
   
 ## [LightingEnvironment](LightingEnvironment.md) LightingEnvironment
 This is the LightingEnvironment of the scene
-
+  
 ## [ParticleEnvironment](ParticleEnvironment.md) ParticleEnvironment
 This is the ParticleEnvironment of the scene
   
@@ -22,6 +22,7 @@ This is the ParticleEnvironment of the scene
 This is the SoundEnvironment of the scene
   
 ## [ShaderEnvironment](ShaderEnvironment.md) ShaderEnvironment
+This is the ShaderEnvironment of the scene
 
 ## [ObjectEnvironment](ObjectEnvironment.md) Objects
 This environment stores all the objects in the scene

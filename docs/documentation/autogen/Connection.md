@@ -5,8 +5,9 @@ This class is used in the event emitter class, its used to manage a listener
 
 ## [boolean](boolean.md) Active
 Defines if the connection is active or not
-
+  
 ## [number](number.md) EventId
+The id of the linked event
 
 ## [table](table.md) Event 
  

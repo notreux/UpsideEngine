@@ -102,6 +102,7 @@ nav:
       - Sprite: documentation/autogen/Sprite.md
       - Shader: documentation/autogen/Shader.md
       - Fluid: documentation/autogen/Fluid.md
+      - Parallax: documentation/autogen/Parallax.md
     - Services:
       - CrossPlatformService: documentation/autogen/CrossPlatformService.md
       - PluginSupportService: documentation/autogen/PluginSupportService.md

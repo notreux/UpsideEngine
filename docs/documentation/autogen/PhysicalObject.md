@@ -40,7 +40,8 @@ Specifies the geometric shape of the physical object, which can be "circle" and 
 The object mass
   
 ## [number](number.md) HitboxScale
-
+Change this property to change the hitbox size, the default value is 1
+  
 ## [number](number.md) CollisionGroup
 A number which indicates the collision group of the object, the object only can collide with other objects with the same CollisionGroup
   

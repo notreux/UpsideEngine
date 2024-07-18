@@ -4,7 +4,8 @@ This class is included on every scene, it's used to move you around the scene
 # Properties
 
 ## [UDim2](UDim2.md) OffsetPosition
-
+This property serves to move as many pixels as you want the camera to adjust it to a desired position
+  
 ## [Vector2](Vector2.md) LocalPosition
 This property is used to move the camera internally
   
@@ -15,7 +16,8 @@ This property marks the limits to move the camera, for example, if you set `Vect
 This property defines if the camera is going to follow the defined subject
   
 ## [string](string.md) Scene
-
+This is the Scene Id of the camera
+  
 ## [number](number.md) Smoothness
 This property defines the smoothness with which the camera will move, it only works in a range between 0 and 1
 
@@ -35,8 +37,9 @@ This property defines the object which is going to follow the camera
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character`) 
  Sets the camera subject
 	
-## [void](void.md) LookTo(`object: PhysicalObject`) 
- 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) LookTo(`object: PhysicalObject`) 
+ Position the camera in a centered location relative to the provided object
+	
 
 # Events
 |<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|

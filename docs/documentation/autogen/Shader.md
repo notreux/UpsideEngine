@@ -1,10 +1,10 @@
 # [Extended from BaseClass](BaseClass.md) Shader 
 !!! warning 
-  Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
-  and not to use too many shaders.
+  	Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
+  	and not to use too many shaders.
 
-  If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
-  this will lighten a lot the work for the cpu.	
+  	If you need to scale an image, do it in the studio, instead of doing it in the editing program, 
+  	this will lighten a lot the work for the cpu.	
 
   _____
   This class is used to modify how an object is renderized

@@ -11,7 +11,8 @@ Is how the light should be shown, there are two modes "PointLight" and "SpotLigh
 ## [number](number.md) Angle
 
 ## [Color3](Color3.md) Color
-
+The color you want the light to have
+  
 ## [number](number.md) Range
 Is the range of the light
   
