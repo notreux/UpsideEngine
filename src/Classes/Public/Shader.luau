@@ -1,10 +1,10 @@
-local baseClass = require(script.Parent.Parent.Internal.BaseClass)
+local baseClass = require(script.Parent.Parent.Internal.BaseObject)
 local path = require(script.Parent.Parent.Parent.Private.Util.Internal.Path)
 local shader = {}
 shader.__index = shader
 
 function shader.new(): EventEmitter
-	local self = baseClass.new()
+	local self = baseClass.new("Folder")
 	self:SetClassName(script.Name)
 	self.Enabled = true
 	self.Precision = 0.6

@@ -3,12 +3,16 @@ interface upsideEngine {
 	Workspace: {};
 	new: ((name: "PhysicalObject") => PhysicalObject)
 		& ((name: "Sprite") => Sprite)
+		& ((name: "StaticObject") => StaticObject)
+		& ((name: "Fluid") => Fluid)
+		& ((name: "Parallax") => Parallax)
 		& ((name: "Sound") => Sound)
 		& ((name: "Environment") => Environment)
 		& ((name: "Light") => Light)
 		& ((name: "Character") => Character)
 		& ((name: "Scene") => Scene)
-		& ((name: "Particle") => Particle),
+		& ((name: "Particle") => Particle)
+		& ((name: "Shader") => Shader),
 
 	Extend: ((name: "PhysicalObject") => PhysicalObject)
 		& ((name: "Sprite") => Sprite)

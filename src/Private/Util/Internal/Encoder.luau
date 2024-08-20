@@ -21,6 +21,13 @@ local encoders = {
 			Y = data.Y,
 		}
 	end,
+	Vector3 = function(data)
+		return {
+			X = data.X,
+			Y = data.Y,
+			Z = data.Y,
+		}
+	end,
 	EnumItem = function(data)
 		return {
 			EnumType = tostring(data.EnumType),
@@ -35,6 +42,9 @@ local decoders = {
 	end,
 	Vector2 = function(data)
 		return Vector2.new(data.X, data.Y)
+	end,
+	Vector3 = function(data)
+		return Vector3.new(data.X, data.Y)
 	end,
 	EnumItem = function(data: { EnumType: string, Name: string }): EnumItem
 		local enum = Enum

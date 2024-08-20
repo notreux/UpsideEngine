@@ -3,12 +3,9 @@ local contentProvider = game:GetService("ContentProvider")
 local colorProperties = { "ImageColor3", "TextColor3", "TextStrokeColor3" }
 
 local sceneManager = require(script.Parent.Parent.Parent.Services.SceneManager)
-local Shader = require(script.Parent.Shader)
+local shader = require(script.Parent.Shader)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 local util = require(upsideEngine.Private.Util)
-
-local defaultShader = Shader.new()
-defaultShader.Enabled = false
 
 local staticObject = {}
 staticObject.__index = staticObject
@@ -61,6 +58,9 @@ end
 }=]]
 
 function staticObject.new(): PhysicalObject
+	local defaultShader = shader.new()
+	defaultShader.Enabled = false
+
 	local self = baseObject.new()
 	self:SetClassName(script.Name)
 	self.ChromaticAberrationPoint = Vector2.new(0.5, 0.5)
@@ -93,13 +93,13 @@ function staticObject:SetShader(shader: Shader)
 	elseif not shader then
 		local canvas = self.Instance:FindFirstChild("Canvas")
 		local shaderEnv = scene.ShaderEnvironment
-		shaderEnv:RemoveOne(self.Id)
-		self.Shader = {}
 
-		if canvas then
-			self.Instance.Canvas:Destroy()
+		if shaderEnv:HasOne(self.Id) then
+			shaderEnv:RemoveOne(self.Id)
+			canvas:Destroy()
 		end
 
+		self.Shader = {}
 		return
 	end
 

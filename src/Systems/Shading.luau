@@ -162,14 +162,16 @@ end
 
 function shadingSystem.onSetData(data, name, value)
 	local result = {}
+
 	for index, object in value do
 		local instance = object.Instance
 		local old = (data[name] or data)[index]
-
 		local isEqual = old and old.Image == instance.Image
-		local outScreen = isOutScreen(instance.AbsolutePosition, instance.AbsoluteSize)
 
-		if (outScreen or isEqual) and old then
+		local outScreen = isOutScreen(instance.AbsolutePosition, instance.AbsoluteSize)
+		local canvas = instance:FindFirstChild("Canvas")
+
+		if (outScreen or isEqual and canvas) and old then
 			old.Track = not outScreen
 			result[index] = old
 			continue
@@ -181,7 +183,6 @@ function shadingSystem.onSetData(data, name, value)
 
 		local id = instance.Image
 		local imageData = cache[id] or loadImage(id)
-		local canvas = instance:FindFirstChild("Canvas")
 
 		if not canvas then
 			canvas = imageData:Clone()

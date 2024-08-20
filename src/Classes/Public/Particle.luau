@@ -96,7 +96,6 @@ function particle:Emit(rate: number)
 		end
 
 		local unit = light.new()
-		unit.CollisionBlacklist[self.Subject.Id] = true
 		unit.Track = self.TrackLight
 		unit.Range = self.LightRange
 		unit.Brightness = self.LightBrightness

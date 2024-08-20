@@ -1,15 +1,15 @@
 local runService = game:GetService("RunService")
 local actor = script:GetActor()
 
+if runService:IsStudio() or not actor then
+	return
+end
+
 local data = {}
 local running = {}
 
 local module = nil
 local ready = script:WaitForChild("ready")
-
-if not actor then
-	return
-end
 
 actor:BindToMessage("init", function(moduleScript)
 	module = require(moduleScript)

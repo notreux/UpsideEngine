@@ -16,6 +16,23 @@ local sceneManager = require(ue.Services.SceneManager)
 local pluginSupportService = {}
 pluginSupportService.__index = pluginSupportService
 
+local classFixes = {
+	Environment = function(scene, env)
+		env:Run("SetScene", scene)
+	end,
+	Shader = function(scene, shader)
+		for _, object in scene.Objects do
+			if not object:IsA("StaticObject") then
+				continue
+			elseif object.Shader.Id ~= shader.Id then
+				continue
+			end
+
+			object:SetShader(shader)
+		end
+	end,
+}
+
 function pluginSupportService.new()
 	local self = eventEmitter.new()
 	return setmetatable(self, pluginSupportService)
@@ -73,6 +90,11 @@ end
 
 local function rebuild(parent, index, value)
 	local object = parent[index]
+	if index == "Hitbox" and typeof(value[1]) == "Vector2" then
+		for i, v in value do
+			value[i] = Vector3.new(v.X, v.Y)
+		end
+	end
 
 	if value.ClassName and (not object or object.ClassName ~= value.ClassName) then
 		local sucess, class = pcall(require, classes.Public[value.ClassName])
@@ -135,6 +157,13 @@ function pluginSupportService:LoadPluginContent()
 
 			object.Instance.Parent = scene.Instance.GameFrame
 			object:SetScene(scene)
+
+			local fix = classFixes[object.ClassName]
+			if not fix then
+				continue
+			end
+
+			fix(scene, object)
 		end
 	end
 
