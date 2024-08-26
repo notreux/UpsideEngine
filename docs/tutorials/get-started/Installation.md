@@ -1,35 +1,47 @@
 # Installation
 
-!!! warning
-    Please be aware that this guide requires the use of Github submodules and Rojo. Before proceeding, make sure that you have initialized a Git repository and are using the Rojo template.
+???+ working-with-roblox-studio
 
-To install the Upside Engine Framework, use the following command to create a new folder named "packages" with the Upside Engine Framework inside:
+    This tutorial is oriented to external code editors, so there are probably some terms that you do not understand if you only use roblox studio, so here are some clarifications:
+        
+    - When the tutorial talks about `whatever.client.luau` or `whatever.server.luau`:
+        - in the .client case is talking about a <u>local script</u> inside StarterPlayerScripts.
+        - in the .server case is talking about a <u>script</u> inside ServerScriptService.
+    - When the tutorial talks about any script like for example `whatever.client.luau`, the script's name would be everything before the first dot. In this case, it would be "whatever".
+    - When the tutorial doesn't specify if a script is a local script or a server script in the script name (example: `whatever.luau`), the tutorial is talking about a module script.
+    - When we talk about `src/client` we are are talking about `StarterPlayerScripts`.
 
+    ___
+
+    Follow this steps to "install" the package in roblox studio
+
+     - Create a folder in ReplicatedStorage and then name it as "packages"
+     - Place the upside engine module in the packages folder (click on the download button below to get the module)
+     - Once you finished the steps before, continue the tutorial in the ["An important step"](#an-important-step) section.
+    
+    [Download Upside Engine](https://create.roblox.com/marketplace/asset/13243857410){ .md-button .md-basic-button }
+
+
+## Project Setup
+For this tutorial, we will need the following:
+
+- Initialize Git
+- Start a new project with Rojo
+
+## Downloading Upside Engine
+To install the Upside Engine Framework, we can use github submodules or wally
+
+### Github submodules
+To install upside engine with github submodules run this command:
 ```git
 git submodule add https://github.com/TheHackerPuppy/UpsideEngine packages/UpsideEngine
 ```
 
-??? working-with-roblox-studio
-
-    
-    This tutorial is oriented to external code editors, so there are probably some terms that you do not understand if you only use roblox studio, so here are some clarifications:
-        
-    - When the tutorial talks about `somefile.client.luau` or `somefile.server.luau`:
-        - in the .client case is talking about a <u>local script</u> inside StarterPlayerScripts.
-        - in the .server case is talking about a <u>script</u> inside ServerScriptService.
-    - When the tutorial doesn't specify if a file is from client side or server side in the file name (example: `somefile.luau`), the tutorial is talking about a module script.
-    - When we talk about `src/client` we are are talking about `StarterPlayerScripts`.
-    - You may skip the Rojo and LSP sections of this page, but <u>don't skip</u> the ["An important step"](#an-important-step) section.
-
-    ___
-
-
-    Follow this steps to "install" the package
-
-     - Create a folder in ReplicatedStorage and then name it as "packages"
-     - Place the upside engine module in the packages folder
-    
-    [Download Upside Engine](https://create.roblox.com/marketplace/asset/13243857410){ .md-button .md-basic-button }
+#### Wally
+To install upside engine with wally add this line to your `wally.toml`:
+```toml
+UpsideEngine = "notreux/upside-engine@3.0.0"
+```
 
 ## Recommended Rojo Template
 
@@ -81,14 +93,21 @@ Once you have installed LuauLSP then go to extension settings and search “Defi
 ![Image](https://cdn.glitch.global/d1a228c9-9cc7-42e7-875e-5a138e0874ab/luauLSP.png){width="100%"}
 
 
+### Github submodules
+
 Click on "Add Item" and then enter this path `packages/UpsideEngine/upside-engine.d.luau`. Then click again on "Add Item" and then enter this path too `packages/UpsideEngine/src/init.d.luau`.
 
+### Wally
+!!! warning
+    In the paths below change `VERSION` for the version you are using, for example, if you use the version 3.0.0 change the path to `Packages/_Index/notreux_upside-engine@3.0.0/upside-engine.d.luau`
+
+Click on "Add Item" and then enter this path `Packages/_Index/notreux_upside-engine@VERSION/upside-engine.d.luau`. Then click again on "Add Item" and then enter this path too `Packages/_Index/notreux_upside-engine@VERSION/src/init.d.luau`.
 
 ## An important step
 
 To ensure that the Upside Engine works correctly, it is important to initialize the engine on the server, even if you are not using any server-side functionality. This is because some services, such as `NetworkingService`, depend on the server side.
 
-Here is an example of how to initialize upside engine:
+We will create a new script `initializer.server.luau` in `ServerScriptService` with the following content:
 
 ```lua
 local replicatedStorage = game:GetService("ReplicatedStorage")

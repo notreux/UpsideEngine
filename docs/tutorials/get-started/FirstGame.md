@@ -8,6 +8,14 @@ In this guide, we'll walk you through the process of creating a basic game scena
 ## Step 1: Setting up the scene
 The first thing we need to do is to create a scenario for our game. To do this, we'll use the `Scene` object, which is a useful tool for creating scenarios quickly and easily.
 
+???+ warning
+	If you are using roblox studio, the scripts with "init" as name works different, means that all the scripts in the same directory are gonna be children of that script, so to explain it easier, just create a local script named "Client" in StarterPlayerScripts and place any `module script` as a children of it.
+
+	example: 
+
+	![](../../assets/firstGameExampleWarning.png)
+
+
 In your `init.client.luau` script, add the following code:
 
 ```lua

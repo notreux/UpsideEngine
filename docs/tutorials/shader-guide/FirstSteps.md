@@ -1,5 +1,5 @@
 On this page, you will learn how a shader is created and how to assign it to your objects. 
-To start Let's create a new luau file `guide.client.luau` in which we will place this code:
+To start Let's create a new script `guide.client.luau` in which we will place this code:
 
 ## A basic setup
 

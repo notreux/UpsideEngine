@@ -1,5 +1,5 @@
 # Music
- We'll create a new file called `radio.luau` in the `src/client` folder. We are going to add inmersive background music, for this we are going to create a Sprite that represents a radio that is going to have a song gets louder when you get closer to it 
+ We'll create a new script called `radio.luau` in the `src/client` folder. We are going to add inmersive background music, for this we are going to create a Sprite that represents a radio that is going to have a song gets louder when you get closer to it 
 
 ```lua
 -- Get necessary services
