@@ -81,7 +81,7 @@ return function(scene, deltaTime)
 		iterations = math.round(1 + iterations * deltaTime * 10)
 
 		local collisionCount, collisions = 0, {}
-		local colliding
+		local colliding = {}
 
 		for i = iterations, 1, -1 do
 			local vel = velocity / i
