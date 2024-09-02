@@ -5,6 +5,7 @@ site_description: >-
 repo_name: TheHackerPuppy/UpsideEngine
 repo_url: https://github.com/TheHackerPuppy/UpsideEngine
 use_directory_urls: false
+edit_uri: edit/docs/docs/
 
 theme:
   name: material
@@ -23,6 +24,10 @@ theme:
   - navigation.indexes
   - navigation.top
   - content.tabs.link
+  - content.code.copy
+  - content.action.edit
+  - content.action.view
+  - navigation.footer
   - search.suggest
   - toc.integrate
 

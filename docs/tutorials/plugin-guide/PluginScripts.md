@@ -14,6 +14,7 @@ Place this in StarterPlayerScripts as a local script to make your player move
 ------------- SETTINGS -------------
 local sceneName = "MyScene" -- Change "MyScene" for your scene name
 local characterName = "MyCharacter" -- Change "MyCharacter" for your character name
+local isPlatformer = true -- Change this to false if your game is not a platformer
 ------------------------------------
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
@@ -29,6 +30,7 @@ pluginSupportService:LoadPluginContent()
 local scene = sceneManager:FindByName(sceneName)
 local character = scene.Objects:FindByName(characterName)
 
+crossPlatformService.SideView = isPlatformer
 crossPlatformService:SetPlayerCharacter(character)
 scene.Camera:SetSubject(character)
 scene:Enable()
@@ -37,6 +39,7 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.IgnoreGuiInset = true
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 scene.Instance.Parent = screenGui
 ```
 
