@@ -39,8 +39,9 @@ local function update(scene, object, deltaTime)
 		return
 	end
 
+	local mass = math.max(object.Mass, 1)
 	object:ApplyForce(scene.Gravity * object.Mass)
-	object.Acceleration = object.Force * (1 / object.Mass)
+	object.Acceleration = object.Force * (1 / mass)
 	object.Velocity += object.Acceleration * deltaTime
 
 	local velocity = object.Velocity * deltaTime
