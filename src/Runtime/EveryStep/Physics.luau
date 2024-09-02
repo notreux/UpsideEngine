@@ -1,6 +1,7 @@
 local upsideEngine = script.Parent.Parent.Parent
 local ToUDim2 = require(script.Parent.Parent.Parent.Private.Util.DataType.ToUDim2)
 local getCollidingObjects = require(script.Parent.Parent.Parent.Private.Util.Geometry.GetCollidingObjects)
+local crossPlatformService = require(script.Parent.Parent.Parent.Services.CrossPlatformService)
 local util = require(upsideEngine.Private.Util)
 
 local function emit(self, meta, active)
@@ -39,17 +40,24 @@ local function update(scene, object, deltaTime)
 		return
 	end
 
+	local sideView = crossPlatformService.SideView
 	local mass = math.max(object.Mass, 1)
+
 	object:ApplyForce(scene.Gravity * object.Mass)
 	object.Acceleration = object.Force * (1 / mass)
 	object.Velocity += object.Acceleration * deltaTime
 
-	local velocity = object.Velocity * deltaTime
-	local linearFriction = 1 - object.Friction * deltaTime
-	object.Velocity = Vector2.new(object.Velocity.X * math.max(linearFriction, 0), object.Velocity.Y)
-	object.Force = Vector2.zero
+	local velocity = object.Velocity
+	local moveVector = velocity * deltaTime
 
-	return velocity
+	local friction = math.max(1 - object.Friction * deltaTime, 0)
+	local vx = velocity.X * friction
+	local vy = if sideView then velocity.Y else velocity.Y * friction
+
+	object.Force = Vector2.zero
+	object.Velocity = Vector2.new(vx, vy)
+
+	return moveVector
 end
 
 return function(scene, deltaTime)
