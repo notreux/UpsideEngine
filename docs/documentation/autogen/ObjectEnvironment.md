@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from Environment](Environment.md) ObjectEnvironment 
  
 # Properties

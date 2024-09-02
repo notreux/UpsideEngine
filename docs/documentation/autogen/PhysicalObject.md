@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from StaticObject](StaticObject.md) PhysicalObject 
 This class is used to create objects with physics
 	 

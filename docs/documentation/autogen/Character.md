@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from Sprite](Sprite.md) Character 
 This class is used for the player character and for npcs
 	 

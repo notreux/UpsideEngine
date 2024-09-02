@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from BaseObject](BaseObject.md) Sound 
 This class is used to play sounds
 	 

@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from StaticObject](StaticObject.md) Light 
 This class is used to illuminate areas in the darkness
 	 
@@ -7,16 +13,8 @@ This class is used to illuminate areas in the darkness
 Is how the light should be shown, there are two modes "PointLight" and "SpotLight"
   
 ## [number](number.md) Rotation
-!!!warning
-  	Only works on Spotlights
-
-  The light rotation
 
 ## [number](number.md) Angle
-!!!warning
-  	Only works on Spotlights
-
-  The light angle
 
 ## [Color3](Color3.md) Color
 The color you want the light to have

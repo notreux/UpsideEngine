@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from EventEmitter](EventEmitter.md) CrossPlatformService 
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
  to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`

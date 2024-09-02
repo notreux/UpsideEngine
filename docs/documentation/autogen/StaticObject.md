@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from BaseObject](BaseObject.md) StaticObject 
 This class is used to create a basic object, without physics or animations
 	 

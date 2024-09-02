@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from BaseClass](BaseClass.md) Shader 
 !!! warning 
   	Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images

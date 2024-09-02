@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from BaseClass](BaseClass.md) EventEmitter 
 The event emitter is used to manage the events of a class
 	 

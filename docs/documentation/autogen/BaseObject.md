@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from EventEmitter](EventEmitter.md) BaseObject 
 This class is the base class of the majority of classes
 	 

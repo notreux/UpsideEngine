@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from EventEmitter](EventEmitter.md) NetworkingService 
 This class is used to replicate objects to other clients, for example the player character
 	 

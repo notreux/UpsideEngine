@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from EventEmitter](EventEmitter.md) SceneManager 
 This class save and build the engine data
 	 

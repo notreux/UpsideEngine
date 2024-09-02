@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from BaseObject](BaseObject.md) Particle 
 !!! warning 
   	Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot

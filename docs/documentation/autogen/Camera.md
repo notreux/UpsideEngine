@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from EventEmitter](EventEmitter.md) Camera 
 This class is included on every scene, it's used to move you around the scene
 	 

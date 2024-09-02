@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from BaseClass](BaseClass.md) Connection 
 This class is used in the event emitter class, its used to manage a listener
 	 

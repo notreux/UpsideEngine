@@ -1,3 +1,9 @@
+<style>
+  .md-content__button {
+    display: none;
+  }
+</style>
+
 # [Extended from BaseObject](BaseObject.md) Environment 
 This class is used to storage objects and interact with them in an easier way
 	 
