@@ -1,7 +1,7 @@
 local runService = game:GetService("RunService")
 local actor = script:GetActor()
 
-if runService:IsStudio() or not actor then
+if not runService:IsRunning() or not actor then
 	return
 end
 
