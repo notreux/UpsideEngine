@@ -239,7 +239,7 @@ This is the intensity for all the lights in the scene
 */
 LightIntensity: number;
 /**
-Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated" and Enum.ResamplerMode.Default
+Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
   
 */
 LightStyle: Enum;

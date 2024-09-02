@@ -119,7 +119,7 @@ end
 		@AmbientTransparency This is the transparency of the ambient, we can say is the darkness transparency
 		@UpdateFrequency This is the seconds between every update of the pixels in the screen
 		@LightIntensity This is the intensity for all the lights in the scene
-		@LightStyle Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated" and Enum.ResamplerMode.Default
+		@LightStyle Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
 		@ChunkResolution Determines the resolution for every chunk of the screen
 		
 }=]]
