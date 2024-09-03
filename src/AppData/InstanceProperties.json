@@ -11,5 +11,6 @@
 	"ResampleMode",
 	"ImageColor3",
 	"Size",
-	"Image"
+	"Image",
+	"SizeConstraint"
 ]
