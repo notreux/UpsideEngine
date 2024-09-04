@@ -43,7 +43,7 @@ function scene.new(): Scene
 	gameFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 	gameFrame.BackgroundTransparency = 1
 
-	self.Gravity = Vector2.new(0, 9.81 * 60)
+	self.Gravity = Vector2.new(0, 9.81 * 4)
 	self.OnlyTrackVisible = false
 	self.Camera = camera.new(self)
 	self.LightingEnvironment = lightingEnvironment.new(self)

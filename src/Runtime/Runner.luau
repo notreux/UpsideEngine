@@ -8,44 +8,30 @@ local sceneManager = require(upsideEngine.Services.SceneManager)
 local childs = stepFolder:GetChildren()
 local trackers = {}
 
-local frames = {}
-local init = os.clock()
-
 for _, tracker in ipairs(childs) do
 	if not tracker.Name:match(".spec") then
 		table.insert(trackers, require(tracker))
 	end
 end
 
+local t1 = os.clock()
 local function everyStep()
+	local fixedDeltaTime = 1 / 250
+	local accumulator = 0
+
 	local now = os.clock()
+	local deltaTime = now - t1
+	accumulator += deltaTime
+	t1 = now
 
-	local FPSTarget = 0
-	local timeCounter = 0
-
-	for i, sec in frames do
-		if timeCounter >= 1 then
-			frames[i] = nil
-			continue
+	while accumulator >= fixedDeltaTime do
+		for _, scene in sceneManager.ActiveScenes do
+			for _, tracker in trackers do
+				tracker(scene, fixedDeltaTime)
+			end
 		end
 
-		local prev = frames[i + 1]
-		local dif = if prev then sec - prev else frames[1] - sec
-		timeCounter += dif
-		FPSTarget += 1
-	end
-
-	local deltaTime = 1 / FPSTarget
-	table.insert(frames, 1, now)
-
-	if now - init < 1 then
-		return
-	end
-
-	for _, scene in sceneManager.ActiveScenes do
-		for _, tracker in trackers do
-			tracker(scene, deltaTime)
-		end
+		accumulator -= fixedDeltaTime
 	end
 end
 

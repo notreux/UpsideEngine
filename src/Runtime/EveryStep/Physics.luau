@@ -43,8 +43,8 @@ local function update(scene, object, deltaTime)
 	local sideView = crossPlatformService.SideView
 	local mass = math.max(object.Mass, 1)
 
-	object:ApplyForce(scene.Gravity * object.Mass)
-	object.Acceleration = object.Force * (1 / mass)
+	object.Acceleration = scene.Gravity * object.Mass
+	object.Acceleration += ((object.Force * 10) * (1 / mass))
 	object.Velocity += object.Acceleration * deltaTime
 
 	local velocity = object.Velocity
