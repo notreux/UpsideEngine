@@ -144,10 +144,14 @@ local function buildCanvas(chunk, position, size)
 end
 
 local function serializeChunk(chunks, chkData, lighting)
-	local chkPixels = {}
+	local canvas = chkData.canvas.Size
+	local bufferSize = canvas.Y * canvas.X
+
+	local pxIndex = 0
+	local chkPixels = buffer.create(bufferSize * 4)
 	chunks[chkData] = chkPixels
 
-	for index, px in chkData.content do
+	for _, px in chkData.content do
 		local isDrawn = px.transparency ~= 0 and px.transparency ~= nil
 		local transparency = if isDrawn and px.lightTransparency > lighting.ambientTransparency
 			then math.clamp(px.transparency, lighting.ambientTransparency, px.lightTransparency)
@@ -161,12 +165,12 @@ local function serializeChunk(chunks, chkData, lighting)
 			)
 			else lighting.ambientColor
 
-		local pxIndex = 1 + ((index - 1) * 4)
-		chkPixels[pxIndex] = color.R
-		chkPixels[pxIndex + 1] = color.G
-		chkPixels[pxIndex + 2] = color.B
-		chkPixels[pxIndex + 3] = 1 - transparency
+		buffer.writeu8(chkPixels, pxIndex, color.R * 255)
+		buffer.writeu8(chkPixels, pxIndex + 1, color.G * 255)
+		buffer.writeu8(chkPixels, pxIndex + 2, color.B * 255)
+		buffer.writeu8(chkPixels, pxIndex + 3, 255 - transparency * 255)
 
+		pxIndex += 4
 		px.color = nil
 		px.lightTransparency = nil
 		px.transparency = 0
@@ -268,8 +272,8 @@ function lightingSystem.draw(data)
 
 	task.synchronize()
 	for _, chkData in pixels do
-		local canvas = chkData.canvas
-		canvas:WritePixels(Vector2.zero, canvas.Size, chunks[chkData])
+		local canvas = chkData.canvas :: EditableImage
+		canvas:WritePixelsBuffer(Vector2.zero, canvas.Size, chunks[chkData])
 	end
 end
 

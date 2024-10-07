@@ -121,7 +121,6 @@ end
 		@LightIntensity This is the intensity for all the lights in the scene
 		@LightStyle Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
 		@ChunkResolution Determines the resolution for every chunk of the screen
-		
 }=]]
 
 return setmetatable(lightingEnvironment, environment)
