@@ -11,17 +11,12 @@ local axes = {
 	Vector3.new(1, 1),
 }
 
-local function interpolateColor(startColor, endColor, t)
-	local str = startColor.R * 255
-	local stg = startColor.G * 255
-	local stb = startColor.B * 255
-
-	local enr = endColor.R * 255
-	local eng = endColor.G * 255
-	local enb = endColor.B * 255
-
-	t = (1 - math.cos(t * math.pi)) * 0.5
-	return Color3.fromRGB(str * (1 - t) + enr * t, stg * (1 - t) + eng * t, stb * (1 - t) + enb * t)
+local function lerpColor(color1, color2, factor)
+	return Color3.new(
+		color1.R * (1 - factor) + color2.R * factor,
+		color1.G * (1 - factor) + color2.G * factor,
+		color1.B * (1 - factor) + color2.B * factor
+	)
 end
 
 local function sortf(l1, l2)
@@ -89,15 +84,23 @@ local function drawSpotLight(chkData, light, staticData)
 			continue
 		end
 
-		local nDistance = math.log(distance, absRange)
-		local transparency = (px.transparency or ambientTransparency) - nDistance + light.Brightness + 1
+		local color = px.color
+		local transparency = px.transparency or ambientTransparency
 
-		local lightTransparency = (light.Transparency + (px.lightTransparency or light.Transparency)) * 0.5
-		local color = if px.color then interpolateColor(px.color, light.Color, 0.5) else light.Color
+		local nDistance = if light.Inverted then normalize(distance, 0, absRange) else math.log(distance, absRange)
+		local pastDistance = px.pastDistance or nDistance
 
-		px.lightTransparency = lightTransparency
-		px.transparency = transparency
-		px.color = color
+		local influence1 = math.clamp(1 - (distance / absRange) ^ 2, 0, 1)
+		local influence2 = math.clamp(1 - (pastDistance / absRange) ^ 2, 0, 1)
+		local totalInfluence = influence1 + influence2
+
+		local newTransparency = transparency - nDistance + light.Brightness + 1
+		local mixFactor = 1 - influence2 / totalInfluence
+		local newColor = if color then lerpColor(color, light.Color, mixFactor) else light.Color
+
+		px.pastDistance = distance
+		px.transparency = newTransparency
+		px.color = newColor
 	end
 end
 
@@ -109,21 +112,33 @@ local function drawPointLight(chkData, light, staticData)
 		return
 	end
 
-	for _, px in chkData.content do
-		local distance = getDistance(px.position, light.Position)
+	local resolution = #chkData.content - 1
+	for i = 0, resolution do
+		local px = chkData.content[i + 1]
+		local position = px.position
+
+		local distance = getDistance(position, light.Position)
 		if distance > absRange then
 			continue
 		end
 
+		local color = px.color
+		local transparency = px.transparency or ambientTransparency
+
 		local nDistance = if light.Inverted then normalize(distance, 0, absRange) else math.log(distance, absRange)
-		local transparency = (px.transparency or ambientTransparency) - nDistance + light.Brightness + 1
+		local pastDistance = px.pastDistance or nDistance
+		local newTransparency = transparency - nDistance + light.Brightness + 1
 
-		local lightTransparency = (light.Transparency + (px.lightTransparency or light.Transparency)) * 0.5
-		local color = if px.color then interpolateColor(px.color, light.Color, 0.5) else light.Color
+		local influence1 = math.clamp(1 - (distance / absRange) ^ 2, 0, 1)
+		local influence2 = math.clamp(1 - (pastDistance / absRange) ^ 2, 0, 1)
+		local totalInfluence = influence1 + influence2
 
-		px.lightTransparency = lightTransparency
-		px.transparency = transparency
-		px.color = color
+		local mixFactor = 1 - influence2 / totalInfluence
+		local newColor = if color then lerpColor(color, light.Color, mixFactor) else light.Color
+
+		px.pastDistance = distance
+		px.transparency = newTransparency
+		px.color = newColor
 	end
 end
 
@@ -153,12 +168,12 @@ local function serializeChunk(chunks, chkData, lighting)
 
 	for _, px in chkData.content do
 		local isDrawn = px.transparency ~= 0 and px.transparency ~= nil
-		local transparency = if isDrawn and px.lightTransparency > lighting.ambientTransparency
-			then math.clamp(px.transparency, lighting.ambientTransparency, px.lightTransparency)
+		local transparency = if isDrawn --[[ and px.lightTransparency > lighting.ambientTransparency ]]
+			then math.clamp(px.transparency, lighting.ambientTransparency, 1)
 			else lighting.ambientTransparency
 
 		local color = if isDrawn
-			then interpolateColor(
+			then lerpColor(
 				px.color,
 				lighting.ambientColor,
 				math.clamp(lighting.lightIntensity - px.transparency, 0, lighting.lightIntensity)
@@ -207,7 +222,6 @@ function lightingSystem.onSetData(data, name, value)
 			Color = light.Color,
 			Inverted = light.Inverted,
 			Brightness = light.Brightness,
-			Transparency = light.Transparency,
 		}
 	end
 

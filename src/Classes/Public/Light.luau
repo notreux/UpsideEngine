@@ -15,7 +15,6 @@ function light.new(): Light
 	self.Color = Color3.fromRGB(255, 255, 255)
 	self.Range = 50
 	self.Brightness = 0
-	self.Transparency = 0.85
 	self.Inverted = false
 
 	return setmetatable(self, light)
@@ -26,7 +25,6 @@ end
 	@about
 		@TrackCollisions Its a property of PhysicalObject, in this class is marked as readonly and is set false to optimizate
 		@Range Is the range of the light
-		@Transparency Is the transparency of the light
 		@Shape Is how the light should be shown, there are two modes "PointLight" and "SpotLight"
 		@Brightness Is the brightness of the light
 		@Color The color you want the light to have
