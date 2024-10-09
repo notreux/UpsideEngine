@@ -7,10 +7,10 @@ There are no explicit parameters in the shader functions; instead, upside engine
 ___
 
 ### Shader variables
-- red :octicons-arrow-right-24: Represents the red intensity of the pixel, with a value ranging from 0 to 1.
-- green :octicons-arrow-right-24: Represents the green intensity of the pixel, with a value ranging from 0 to 1.
-- blue :octicons-arrow-right-24: Represents the blue intensity of the pixel, with a value ranging from 0 to 1.
-- opacity :octicons-arrow-right-24: Represents the opacity of the pixel, with a value ranging from 0 to 1.
+- red :octicons-arrow-right-24: Represents the red intensity of the pixel, with a value ranging from 0 to 255.
+- green :octicons-arrow-right-24: Represents the green intensity of the pixel, with a value ranging from 0 to 255.
+- blue :octicons-arrow-right-24: Represents the blue intensity of the pixel, with a value ranging from 0 to 255.
+- opacity :octicons-arrow-right-24: Represents the opacity of the pixel, with a value ranging from 0 to 255.
 - x :octicons-arrow-right-24: Represents the position of the pixel on the X-axis.
 - y :octicons-arrow-right-24: Represents the position of the pixel on the Y-axis.
 
@@ -18,9 +18,9 @@ ___
 If we want to invert the colors of our image, we just need to return to our `Shader.luau` script and write the following code:
 ```lua
 return function()
-	red = 1 - red
-	green = 1 - green
-	blue = 1 -  blue
+	red = 255 - red
+	green = 255 - green
+	blue = 255 - blue
 end
 ```
 
@@ -36,7 +36,7 @@ return function()
 	local speed = 10
 
 	local amplitude = 0.1
-	local waveSize = 1
+	local waveSize = 3
 
 	x += math.sin(clock * speed + x * amplitude + y * amplitude) * waveSize
 	y += math.cos(clock * speed + x * amplitude + y * amplitude) * waveSize

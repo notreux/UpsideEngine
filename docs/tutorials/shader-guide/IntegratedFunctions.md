@@ -27,7 +27,7 @@ Let's apply the image from a camera to our water texture. Initially, the camera 
 
 ```lua
 local source = Instance.new("ImageLabel")
-source.Image = "http://www.roblox.com/asset/?id=16157374575"
+source.Image = "rbxassetid://cameraId"
 
 return function()
 	local offset = Vector2.new(60, 80)
@@ -46,7 +46,7 @@ As you can see, the camera image appears in the water:
 
 ![](../../assets/texture.png)
 
-But it has a bluish tint. This happens because we are blending the water's pixel colors with the camera's. If we want to display only the camera's pixels, we can do the following:
+But it has a bluish tint. This happens because we are blending the water's pixel colors with the camera's. If we want to display the pure camera pixels, we can do the following:
 ```lua
 local source = Instance.new("ImageLabel")
 source.Image = "rbxassetid://cameraId"
