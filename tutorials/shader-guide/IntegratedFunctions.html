@@ -1978,7 +1978,7 @@
 <h2 id="example">Example<a class="headerlink" href="#example" title="Anchor link to this section for reference">&para;</a></h2>
 <p>Let's apply the image from a camera to our water texture. Initially, the camera image will appear in the top left corner, but we can adjust its position to a more suitable location. To do this, we will modify its position by subtracting an offset, which is a Vector2 that allows us to move the camera image across the texture.</p>
 <div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">source</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ImageLabel&quot;</span><span class="p">)</span>
-<span class="n">source</span><span class="p">.</span><span class="n">Image</span> <span class="o">=</span> <span class="s2">&quot;http://www.roblox.com/asset/?id=16157374575&quot;</span>
+<span class="n">source</span><span class="p">.</span><span class="n">Image</span> <span class="o">=</span> <span class="s2">&quot;rbxassetid://cameraId&quot;</span>
 
 <span class="kr">return</span> <span class="kr">function</span><span class="p">()</span>
     <span class="kd">local</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
@@ -1993,7 +1993,7 @@
 </code></pre></div>
 <p>As you can see, the camera image appears in the water:</p>
 <p><img alt="" src="../../assets/texture.png" /></p>
-<p>But it has a bluish tint. This happens because we are blending the water's pixel colors with the camera's. If we want to display only the camera's pixels, we can do the following:
+<p>But it has a bluish tint. This happens because we are blending the water's pixel colors with the camera's. If we want to display the pure camera pixels, we can do the following:
 <div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">source</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ImageLabel&quot;</span><span class="p">)</span>
 <span class="n">source</span><span class="p">.</span><span class="n">Image</span> <span class="o">=</span> <span class="s2">&quot;rbxassetid://cameraId&quot;</span>
 
