@@ -76,9 +76,13 @@ local function drawSpotLight(chkData, light, staticData)
 		return
 	end
 
-	for _, px in chkData.content do
-		local distance = getDistance(px.position, light.Position + light.Size * 0.5)
-		local rotatedAngle = getRotatedAngle(light, px.position)
+	local pixelCount = #chkData.content - 1
+	for i = 0, pixelCount do
+		local px = chkData.content[i + 1]
+		local position = px.position
+
+		local distance = getDistance(position, light.Position + light.Size * 0.5)
+		local rotatedAngle = getRotatedAngle(light, position)
 
 		if distance > absRange or (rotatedAngle <= -angle or rotatedAngle >= angle) then
 			continue
@@ -112,8 +116,8 @@ local function drawPointLight(chkData, light, staticData)
 		return
 	end
 
-	local resolution = #chkData.content - 1
-	for i = 0, resolution do
+	local pixelCount = #chkData.content - 1
+	for i = 0, pixelCount do
 		local px = chkData.content[i + 1]
 		local position = px.position
 
@@ -168,7 +172,7 @@ local function serializeChunk(chunks, chkData, lighting)
 
 	for _, px in chkData.content do
 		local isDrawn = px.transparency ~= 0 and px.transparency ~= nil
-		local transparency = if isDrawn --[[ and px.lightTransparency > lighting.ambientTransparency ]]
+		local transparency = if isDrawn
 			then math.clamp(px.transparency, lighting.ambientTransparency, 1)
 			else lighting.ambientTransparency
 

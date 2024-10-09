@@ -21,7 +21,10 @@ local function loadImage(id)
 end
 
 local function getPixel(bmp, idx)
-	return bmp[idx] or 0, bmp[idx + 1] or 0, bmp[idx + 2] or 0, bmp[idx + 3] or 0
+	return buffer.readu8(bmp, idx) or 0,
+		buffer.readu8(bmp, idx + 1) or 0,
+		buffer.readu8(bmp, idx + 2) or 0,
+		buffer.readu8(bmp, idx + 3) or 0
 end
 
 local function isEmpty(pixels, iterations, position)
@@ -33,8 +36,8 @@ local function isEmpty(pixels, iterations, position)
 		return true
 	end
 
-	local index = 1 + ((y * width) + x) * 4
-	local result = pixels[index + 3] == 0
+	local index = ((y * width) + x) * 4
+	local result = buffer.readu8(pixels, index + 3) == 0
 
 	return result
 end
@@ -54,7 +57,7 @@ local function getAproximatedColor(pixels, position, iterations)
 				continue
 			end
 
-			local index = 1 + ((ny * width) + nx) * 4
+			local index = ((ny * width) + nx) * 4
 			local r, g, b, a = getPixel(pixels, index)
 			sumR += r
 			sumG += g
@@ -94,8 +97,8 @@ local function scanGaps(pixels, iterations, preicision)
 
 	for y = 0, iterations.Y do
 		for x = 0, iterations.X do
-			local idx = 1 + ((y * width) + x) * 4
-			if pixels[idx + 3] ~= 0 then
+			local idx = ((y * width) + x) * 4
+			if buffer.readu8(pixels, idx + 3) ~= 0 then
 				continue
 			end
 
@@ -107,10 +110,10 @@ local function scanGaps(pixels, iterations, preicision)
 			end
 
 			local r, g, b, a = getAproximatedColor(pixels, position, iterations)
-			pixels[idx] = r
-			pixels[idx + 1] = g
-			pixels[idx + 2] = b
-			pixels[idx + 3] = a
+			buffer.writeu8(pixels, idx, r)
+			buffer.writeu8(pixels, idx + 1, g)
+			buffer.writeu8(pixels, idx + 2, b)
+			buffer.writeu8(pixels, idx + 3, a)
 		end
 	end
 end
@@ -141,8 +144,8 @@ local function texture(imageLabel: ImageLabel, position: Vector2 | Vector3)
 		return 0, 0, 0, 0
 	end
 
-	local bmp = canvas:ReadPixels(offset, rectSize)
-	local idx = 1 + ((y * rectSize.X) + x) * 4
+	local bmp = canvas:ReadPixelsBuffer(offset, rectSize)
+	local idx = ((y * rectSize.X) + x) * 4
 
 	return getPixel(bmp, idx)
 end
@@ -239,15 +242,15 @@ function shadingSystem.draw(details)
 			continue
 		end
 
-		local pixels = table.create(math.round(rectSize.X * rectSize.Y * 4), 0)
-		local bmp = shader.ImageData:ReadPixels(position, rectSize)
+		local pixels = buffer.create(rectSize.X * rectSize.Y * 4)
+		local bmp = shader.ImageData:ReadPixelsBuffer(position, rectSize)
 
 		local iterations = Vector3.new(rectSize.X - 1, rectSize.Y - 1)
 		local width, checkGaps = rectSize.X, false
 
 		for y = 0, iterations.Y do
 			for x = 0, iterations.X do
-				local idx = 1 + ((y * width) + x) * 4
+				local idx = ((y * width) + x) * 4
 				local sx, sy
 
 				local r, g, b, a = getPixel(bmp, idx)
@@ -275,12 +278,12 @@ function shadingSystem.draw(details)
 				end
 
 				checkGaps = checkGaps or sx ~= x or sy ~= y
-				idx = 1 + ((sy * rectSize.X) + sx) * 4
+				idx = ((sy * rectSize.X) + sx) * 4
 
-				pixels[idx] = r
-				pixels[idx + 1] = g
-				pixels[idx + 2] = b
-				pixels[idx + 3] = a
+				buffer.writeu8(pixels, idx, r)
+				buffer.writeu8(pixels, idx + 1, g)
+				buffer.writeu8(pixels, idx + 2, b)
+				buffer.writeu8(pixels, idx + 3, a)
 			end
 		end
 
@@ -297,7 +300,7 @@ function shadingSystem.draw(details)
 
 	task.synchronize()
 	for canvas, data in shaderResults do
-		canvas:WritePixels(data.position, data.rectSize, data.pixels)
+		canvas:WritePixelsBuffer(data.position, data.rectSize, data.pixels)
 	end
 end
 
