@@ -36,7 +36,7 @@ return function()
 	local speed = 10
 
 	local amplitude = 0.1
-	local waveSize = 3
+	local waveSize = 1
 
 	x += math.sin(clock * speed + x * amplitude + y * amplitude) * waveSize
 	y += math.cos(clock * speed + x * amplitude + y * amplitude) * waveSize
