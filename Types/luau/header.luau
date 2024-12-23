@@ -10,13 +10,11 @@ export type Event = {
 }
 
 export type RequestContent = {
-	className: string,
-	id: string,
-	name: string,
-	properties: {
-		instance: table,
-		object: table,
-	},
+	ClassName: string,
+	Id: string,
+	Name: string,
+	ObjectProperties: table,
+	Instance: table,
 }
 
 export type Raycast2dResult = {

@@ -27,6 +27,7 @@ return function()
 			expect(newSprite.IsPlaying).to.equal(true)
 		end)
 	end)
+
 	describe(":Stop()", function()
 		it("should stop the sprite", function()
 			newSprite:Stop()

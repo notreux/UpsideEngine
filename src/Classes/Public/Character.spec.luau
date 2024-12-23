@@ -27,4 +27,33 @@ return function()
 			end).never.to.throw()
 		end)
 	end)
+
+	describe(":MoveTo()", function()
+		it("should move the character to the specified position", function()
+			local targetPosition = Vector2.new(100, 100)
+			expect(function()
+				newCharacter:MoveTo(targetPosition)
+			end).never.to.throw()
+		end)
+	end)
+
+	describe(":Fire()", function()
+		it("should fire the 'Died' event when health is updated to 0", function()
+			local diedFired = false
+			newCharacter:On("Died", function()
+				diedFired = true
+			end)
+			newCharacter:UpdateHealth(0)
+			expect(diedFired).to.equal(true)
+		end)
+
+		it("should fire the 'HealthChanged' event when health is updated", function()
+			local healthChangedFired = false
+			newCharacter:On("HealthChanged", function()
+				healthChangedFired = true
+			end)
+			newCharacter:UpdateHealth(50)
+			expect(healthChangedFired).to.equal(true)
+		end)
+	end)
 end

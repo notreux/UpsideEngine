@@ -1,5 +1,7 @@
 local baseClass = require(script.Parent.Parent.Internal.BaseObject)
 local path = require(script.Parent.Parent.Parent.Private.Util.Internal.Path)
+
+local source = nil
 local shader = {}
 shader.__index = shader
 
@@ -9,10 +11,10 @@ function shader.new(): Shader
 	self.Enabled = true
 	self.PreloadSprites = false
 	self.MirrorEnabled = false
-	self.MirrorSource = nil
+	self.MirrorSource = source
 	self.Precision = 0.6
 	self.Path = ""
-
+	
 	return setmetatable(self, shader)
 end
 

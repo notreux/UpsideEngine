@@ -1,4 +1,5 @@
 local crossPlatformService = require(script.Parent.CrossPlatformService)
+
 return function()
 	local configs = crossPlatformService.Configs
 	describe(":SetDeviceKey()", function()

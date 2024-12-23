@@ -10,13 +10,11 @@ export type Event = {
 }
 
 export type RequestContent = {
-	className: string,
-	id: string,
-	name: string,
-	properties: {
-		instance: table,
-		object: table,
-	},
+	ClassName: string,
+	Id: string,
+	Name: string,
+	ObjectProperties: table,
+	Instance: table,
 }
 
 export type Raycast2dResult = {
@@ -207,7 +205,6 @@ Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixe
 LightStyle: Enum,
 --[[
 Determines the resolution for every chunk of the screen
-  
 ]]
 ChunkResolution: Vector2,
 --[[
@@ -474,10 +471,6 @@ Range: number,
 Is the brightness of the light
   ]]
 Brightness: number,
---[[
-Is the transparency of the light
-  ]]
-Transparency: number,
 --[[
 !!!warning
   	Only works on Pointlights
@@ -779,8 +772,21 @@ Raycast: (self: Scene, info: Raycast2dParams) -> Raycast2dResult,
 export type Shader = BaseClass & {
 --[[
 This property determines if the shader is enabled
-        ]]
+  ]]
 Enabled: boolean,
+--[[
+When this property is marked as true every animation of a sprite will be preloaded, 
+  if not the animations will be loaded dynamically
+  ]]
+PreloadSprites: boolean,
+--[[
+This property determines if the shader will use the mirror source or not, false by default
+        ]]
+MirrorEnabled: boolean,
+--[[
+The current mirror source, nil by default ImageLabel if an object is set using SetMirrorSource()
+  ]]
+MirrorSource: ImageLabel,
 --[[
 Sometimes, modifying the position of pixels in an image can create gaps.
   Upside Engine automatically fills these gaps, but this can occasionally 
@@ -792,6 +798,14 @@ Precision: number,
 This property stores the shader path
         ]]
 Path: string,
+--[[
+Sets the mirror source object for rendering the shader. When a mirror source is specified, 
+ the shader uses its `ImageRectOffset` and `ImageRectSize` to render. All objects to which this shader
+ is applied will display the exact same result, mirroring the appearance of the source object. 
+ If no mirror source is set, each object will be rendered independently, 
+ which may lead to decreased performance.
+	]]
+SetMirrorSource: (self: Shader, object: StaticObject) -> nil,
 --[[
 Sets the module script which is going to be used as shader source
 	]]

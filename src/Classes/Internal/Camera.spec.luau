@@ -1,5 +1,5 @@
 local Scene = require(script.Parent.Parent.Public.Scene)
-local physicalObject = require(script.Parent.Parent.Public.PhysicalObject)
+local PhysicalObject = require(script.Parent.Parent.Public.PhysicalObject)
 
 return function()
 	local newScene = Scene.new()
@@ -21,9 +21,25 @@ return function()
 
 	describe(":SetSubject()", function()
 		it("should set the camera subject", function()
-			local subject = physicalObject.new()
+			local subject = PhysicalObject.new()
 			camera:SetSubject(subject)
 			expect(camera.Subject).to.equal(subject)
+		end)
+	end)
+
+	describe(":LookTo()", function()
+		it("should position the camera centered relative to the provided object", function()
+			local object = PhysicalObject.new()
+			object.Instance.Position = UDim2.fromOffset(100, 100)
+			camera:LookTo(object)
+
+			local resolution = workspace.CurrentCamera.ViewportSize
+			local center = resolution / 2
+
+			local target = Vector2.new(object.Instance.Position.X.Offset, object.Instance.Position.Y.Offset)
+			local result = center + (center - target)
+			
+			expect(camera.LocalPosition).to.equal(UDim2.fromOffset(result.X, result.Y))
 		end)
 	end)
 end

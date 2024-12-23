@@ -12,13 +12,11 @@ declare interface Event {
 }
 
 declare interface RequestContent {
-	className: string,
-	id: string,
-	name: string,
-	properties: {
-		instance: {},
-		object: {},
-	}
+	ClassName: string,
+	Id: string,
+	Name: string,
+	Instance: {},
+	ObjectProperties: {},
 }
 
 declare interface Raycast2dResult { 
