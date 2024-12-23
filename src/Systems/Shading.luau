@@ -1,25 +1,19 @@
---!native
 local path = require(script.Parent.Parent.Private.Util.Internal.Path)
 local isOutScreen = require(script.Parent.Parent.Private.Util.Math.IsOutScreen)
 
-local assetService = game:GetService("AssetService")
+local Canvas2d = require(script.Parent.Parent.Private.Util.Graphics.Canvas2d)
+local ContentManager = require(script.Parent.Parent.Private.Util.Graphics.ContentManager)
 local shadingSystem = {}
-local cache = {}
 
-local function loadImage(id)
-	local sucess, imageData = nil, nil
-	for retries = 1, 10 do
-		sucess, imageData = pcall(assetService.CreateEditableImageAsync, assetService, id)
-
-		if sucess then
-			cache[id] = imageData
-			return imageData
-		end
-	end
-
-	return Instance.new("EditableImage")
+@native
+local function clampV2(base, max)
+	return Vector2.new(
+		math.clamp(math.round(base.X), 0, max.X), -- X
+		math.clamp(math.round(base.Y), 0, max.Y) -- Y
+	)
 end
 
+@native
 local function getPixel(bmp, idx)
 	return buffer.readu8(bmp, idx) or 0,
 		buffer.readu8(bmp, idx + 1) or 0,
@@ -27,6 +21,7 @@ local function getPixel(bmp, idx)
 		buffer.readu8(bmp, idx + 3) or 0
 end
 
+@native
 local function isEmpty(pixels, iterations, position)
 	local x = position.X
 	local y = position.Y
@@ -42,6 +37,7 @@ local function isEmpty(pixels, iterations, position)
 	return result
 end
 
+@native
 local function getAproximatedColor(pixels, position, iterations)
 	local count = 0
 	local sumR, sumG, sumB, sumA = 0, 0, 0, 0
@@ -70,6 +66,7 @@ local function getAproximatedColor(pixels, position, iterations)
 	return sumR / count, sumG / count, sumB / count, sumA / count
 end
 
+@native
 local function countPaintedNeighbors(pixels, iterations, position)
 	local count = 0
 	local range = 2
@@ -91,6 +88,7 @@ local function countPaintedNeighbors(pixels, iterations, position)
 	return count
 end
 
+@native
 local function scanGaps(pixels, iterations, preicision)
 	local width = iterations.X + 1
 	preicision = preicision * 16
@@ -118,13 +116,14 @@ local function scanGaps(pixels, iterations, preicision)
 	end
 end
 
+@native
 local function texture(imageLabel: ImageLabel, position: Vector2 | Vector3)
 	local id = imageLabel.Image
-	local canvas = cache[id]
+	local canvas = ContentManager.cache[id]
 
-	if not canvas then
+	if not canvas and imageLabel.ImageContent.Uri then
 		task.synchronize()
-		canvas = loadImage(id)
+		canvas = ContentManager.loadImage(id)
 		task.desynchronize()
 	end
 
@@ -150,6 +149,7 @@ local function texture(imageLabel: ImageLabel, position: Vector2 | Vector3)
 	return getPixel(bmp, idx)
 end
 
+@native
 local function rotate(centre, position, degrees)
 	local rotation = math.rad(degrees)
 	local sin, cos = math.sin(rotation), math.cos(rotation)
@@ -163,18 +163,41 @@ local function rotate(centre, position, degrees)
 	return x, y
 end
 
+local function isOutsideBounds(size, cropArea)
+	return size.X < cropArea.X or size.Y < cropArea.Y
+end
+
+local function shouldSkip(object, old, id)
+	local oldCanvas: Canvas2d.canvas2d = old.Canvas
+	local playingSprite = object.Sprites and object.Sprites[object.Active.Name]
+	local isContainerAdded = oldCanvas and oldCanvas:hasContainer(object.Instance)
+	
+	local sameSize = oldCanvas and oldCanvas.image and oldCanvas.image.Size == old.ImageData.Size
+	local sameUrl = if playingSprite and oldCanvas then playingSprite.Url == oldCanvas.url 
+				elseif oldCanvas then oldCanvas.url == id
+				else nil
+
+	return (sameUrl and sameSize) and isContainerAdded and oldCanvas
+end
+
 function shadingSystem.onSetData(data, name, value)
+	local oldValue = data[name]
 	local result = {}
 
-	for index, object in value do
-		local instance = object.Instance
-		local old = (data[name] or data)[index]
-		local isEqual = old and old.Image == instance.Image
+	for idx, object in value do
+		local shader = object.Shader
+		local mirrorSource = shader.MirrorSource
+		local useMirror = shader.MirrorEnabled and mirrorSource ~= nil
+
+		local index = if useMirror then shader.Id else idx 
+		local instance: ImageLabel = if useMirror then mirrorSource else object.Instance
+		local old = oldValue[index] or {}
 
 		local outScreen = isOutScreen(instance.AbsolutePosition, instance.AbsoluteSize)
-		local canvas = instance:FindFirstChild("Canvas")
+		local id = instance:GetAttribute("url")
+		id = if id ~= nil then id else instance.Image 
 
-		if (outScreen or isEqual and canvas) and old then
+		if outScreen and shouldSkip(object, old, id) then
 			old.Track = not outScreen
 			result[index] = old
 			continue
@@ -182,71 +205,83 @@ function shadingSystem.onSetData(data, name, value)
 
 		local shaderSource = path.readRoute(object.Shader.Path)
 		local shadingFunction = require(shaderSource)
-		local rectSize = instance.ImageRectSize
 
-		local id = instance.Image
-		local imageData = cache[id] or loadImage(id)
+		local imageData = ContentManager.loadImage(id)
+		local canvas = old.Canvas or Canvas2d.new()
+		canvas:addContainer(object.Instance)
+		canvas:setPrimaryContainer(instance)
 
-		if not canvas then
-			canvas = imageData:Clone()
-			canvas.Parent = instance
-			canvas.Name = "Canvas"
+		if shader.PreloadSprites and object.Sprites then
+			canvas:preloadSprites(object.Sprites)
 		end
 
-		canvas:Resize(imageData.Size)
-		rectSize = Vector2.new(
-			math.clamp(math.round(rectSize.X), 0, imageData.Size.X),
-			math.clamp(math.round(rectSize.Y), 0, imageData.Size.Y)
-		)
+		if id ~= "" and canvas.url ~= id then
+			canvas:setUrl(id)
+			instance:SetAttribute("url", id)
+		end
 
-		local env = getfenv(shadingFunction)
-		env.texture = texture
-		env.rotate = rotate
-
-		setfenv(shadingFunction, env)
 		result[index] = {
-			RectSize = if rectSize.X > 1 then rectSize else canvas.Size,
-			Instance = object.Instance,
-			Shader = object.Shader,
-			Precision = object.Shader.Precision,
+			Instance = instance,
+			Shader = shader,
+			Precision = shader.Precision,
 			Run = shadingFunction,
 			Canvas = canvas,
 			ImageData = imageData,
 			Image = id,
 			Track = true,
-			Enabled = object.Shader.Enabled,
+			Enabled = shader.Enabled,
 		}
 	end
 
 	return result
 end
 
+@native
 function shadingSystem.draw(details)
-	local shaders = details.shadable
+	local shadable = details.shadable or {}
 	local shaderResults = {}
 
-	for _, shader in shaders do
-		local instance = shader.Instance
-		if not shader.Track or not shader.Enabled then
+	for _, data in shadable do
+		local canvas = data.Canvas :: Canvas2d.canvas2d
+		local skipProcess = not data.Track or not data.Enabled
+		local isLoading = not data.ImageData or not data.Canvas.image
+
+		if skipProcess or isLoading then
 			continue
 		end
 
-		local canvas = shader.Canvas :: EditableImage
-		local run = shader.Run
+		local instance = canvas.primaryContainer
+		local run = data.Run
 
-		local size = canvas.Size
-		local rectSize = shader.RectSize
+		local sourceSize = data.ImageData.Size
+		local canvasSize = canvas.image.Size
 
-		local position = instance.ImageRectOffset
-		if size.X < position.X or size.Y < position.Y then
+		local rectSize = clampV2(instance.ImageRectSize, canvasSize)
+		local position = clampV2(instance.ImageRectOffset, canvasSize)
+
+		local cropSize = if rectSize.X > 0 then rectSize else canvasSize
+		local cropArea = position + cropSize
+
+		if isOutsideBounds(sourceSize, cropArea) then
 			continue
 		end
+		
+		local pixels = buffer.create(cropSize.X * cropSize.Y * 4)
+		local bmp = data.ImageData:ReadPixelsBuffer(position, cropSize)
 
-		local pixels = buffer.create(rectSize.X * rectSize.Y * 4)
-		local bmp = shader.ImageData:ReadPixelsBuffer(position, rectSize)
+		local iterations = Vector3.new(cropSize.X - 1, cropSize.Y - 1)
+		local width, checkGaps = cropSize.X, false
 
-		local iterations = Vector3.new(rectSize.X - 1, rectSize.Y - 1)
-		local width, checkGaps = rectSize.X, false
+		local shaderData = {
+			x = 0,
+			y = 0,
+			red = 0,
+			green = 0,
+			blue = 0,
+			opacity = 0,
+			rotate = rotate,
+			texture = texture,
+		}
 
 		for y = 0, iterations.Y do
 			for x = 0, iterations.X do
@@ -254,53 +289,53 @@ function shadingSystem.draw(details)
 				local sx, sy
 
 				local r, g, b, a = getPixel(bmp, idx)
-				local env = getfenv(run)
-				env.opacity = a
-				env.red = r
-				env.green = g
-				env.blue = b
-				env.x = x
-				env.y = y
+				shaderData.red = r
+				shaderData.green = g
+				shaderData.blue = b
+				shaderData.opacity = a
+				shaderData.x = x
+				shaderData.y = y
 
-				setfenv(run, env)
-				run(x, y, r, g, b, a)
-				env = getfenv(run)
-
-				sx = math.floor(env.x)
-				sy = math.floor(env.y)
-				r = env.red
-				g = env.green
-				b = env.blue
-				a = env.opacity
+				run(shaderData)
+				sx = math.floor(shaderData.x)
+				sy = math.floor(shaderData.y)
 
 				if sx < 0 or sx > iterations.X or sy < 0 or sy > iterations.Y then
 					continue
 				end
 
 				checkGaps = checkGaps or sx ~= x or sy ~= y
-				idx = ((sy * rectSize.X) + sx) * 4
+				idx = ((sy * cropSize.X) + sx) * 4
 
-				buffer.writeu8(pixels, idx, r)
-				buffer.writeu8(pixels, idx + 1, g)
-				buffer.writeu8(pixels, idx + 2, b)
-				buffer.writeu8(pixels, idx + 3, a)
+				buffer.writeu8(pixels, idx, shaderData.red or r)
+				buffer.writeu8(pixels, idx + 1, shaderData.green or g)
+				buffer.writeu8(pixels, idx + 2, shaderData.blue or b)
+				buffer.writeu8(pixels, idx + 3, shaderData.opacity or a)
 			end
 		end
 
 		if checkGaps then
-			scanGaps(pixels, iterations, shader.Precision)
+			scanGaps(pixels, iterations, data.Precision)
 		end
 
 		shaderResults[canvas] = {
+			i = instance,
 			position = position,
-			rectSize = rectSize,
+			cropSize = cropSize,
 			pixels = pixels,
 		}
 	end
 
 	task.synchronize()
 	for canvas, data in shaderResults do
-		canvas:WritePixelsBuffer(data.position, data.rectSize, data.pixels)
+		local cropArea = data.cropSize + data.position
+		local image = canvas.image
+		
+		if isOutsideBounds(image.Size, cropArea) then
+			continue
+		end
+
+		image:WritePixelsBuffer(data.position, data.cropSize, data.pixels)
 	end
 end
 

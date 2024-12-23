@@ -57,7 +57,7 @@ end
 	@link StaticObject.md
 }=]]
 
-function staticObject.new(): PhysicalObject
+function staticObject.new(): StaticObject
 	local defaultShader = shader.new()
 	defaultShader.Enabled = false
 
@@ -91,12 +91,9 @@ function staticObject:SetShader(shader: Shader)
 	if not scene then
 		return
 	elseif not shader then
-		local canvas = self.Instance:FindFirstChild("Canvas")
 		local shaderEnv = scene.ShaderEnvironment
-
 		if shaderEnv:HasOne(self.Id) then
 			shaderEnv:RemoveOne(self.Id)
-			canvas:Destroy()
 		end
 
 		self.Shader = {}
