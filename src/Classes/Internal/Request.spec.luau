@@ -1,15 +1,17 @@
+local Sprite = require(script.Parent.Parent.Public.Sprite)
 local Request = require(script.Parent.Request)
 
 return function()
+	local object = Sprite.new()
 	local newRequest = Request.new(1, {
 		Name = "TestObject",
-		ObjectId = 2,
-		ClassName = "Sprite",
+		ClassName = object.ClassName,
+		ObjectId = object.Id,
 		ObjectProperties = {
-			SpriteSpeed = 0.5,
+			Active = object.Active,
 		},
 		Instance = {
-			BackgroundTransparency = 0.5,
+			Position = UDim2.fromOffset(100, 300),
 		},
 	})
 
@@ -44,10 +46,10 @@ return function()
 					Name = "AnotherObject",
 					ClassName = "Sprite",
 					ObjectProperties = {
-						SpriteSpeed = 1.0,
+						IsPlaying = false,
 					},
 					Instance = {
-						BackgroundTransparency = 0.3,
+						Size = UDim2.fromOffset(200, 500),
 					},
 				})
 			end).never.to.throw()

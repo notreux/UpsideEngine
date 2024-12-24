@@ -9,7 +9,7 @@ sprite.__index = sprite
 	@link Sprite.md
 }=]]
 
-function sprite.new()
+function sprite.new(): Sprite
 	local self = physicalObject.new()
 	self:SetClassName(script.Name)
 	self.IsPlaying = false
