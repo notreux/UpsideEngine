@@ -13,9 +13,11 @@ return function()
 
 	describe(":SetPosition()", function()
 		it("should set the camera position", function()
-			local position = UDim2.fromScale(0.45, 0.45)
+			local position = UDim2.fromOffset(200, 200)
 			camera:SetPosition(position)
-			expect(camera:GetPosition()).to.equal(position)
+
+			local newPosition = camera.LocalPosition
+			expect(newPosition).to.equal(Vector2.new(200, 200))
 		end)
 	end)
 
@@ -38,8 +40,8 @@ return function()
 
 			local target = Vector2.new(object.Instance.Position.X.Offset, object.Instance.Position.Y.Offset)
 			local result = center + (center - target)
-			
-			expect(camera.LocalPosition).to.equal(UDim2.fromOffset(result.X, result.Y))
+
+			expect(camera.LocalPosition).to.equal(result)
 		end)
 	end)
 end

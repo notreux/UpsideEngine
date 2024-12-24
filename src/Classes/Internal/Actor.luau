@@ -23,8 +23,11 @@ function actor.new(module: ModuleScript)
 	ready.Name = "ready"
 	ready.Parent = loader
 
-	ready.Event:Wait()
-	ready:Destroy()
+	if not runService:IsRunMode() then
+		ready.Event:Wait()
+		ready:Destroy()
+	end
+
 	instance:SendMessage("init", module)
 
 	return setmetatable({

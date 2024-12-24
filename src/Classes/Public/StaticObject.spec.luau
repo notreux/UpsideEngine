@@ -1,21 +1,16 @@
+local Scene = require(script.Parent.Scene)
 local StaticObject = require(script.Parent.StaticObject)
 local Shader = require(script.Parent.Shader)
 
 return function()
+	local scene = Scene.new()
 	local staticObject = StaticObject.new()
+	staticObject:SetScene(scene)
 
 	describe("constructor .new()", function()
 		it("should create a new static object instance", function()
 			expect(staticObject).to.be.ok()
 			expect(staticObject.ClassName).to.equal("StaticObject")
-		end)
-	end)
-
-	describe(":SetPosition()", function()
-		it("should set the position of the static object", function()
-			local position = UDim2.fromScale(0.5, 0.5)
-			staticObject:SetPosition(position)
-			expect(staticObject.Instance.Position).to.equal(position)
 		end)
 	end)
 

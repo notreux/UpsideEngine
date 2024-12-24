@@ -83,9 +83,11 @@ end
 function character:UpdateHealth(Health: number)
 	assert(typeof(Health) == "number", ("Number expected got %s"):format(typeof(Health)))
 	assert(Health <= self.MaxHealth, "The health cannot exceed maximum health")
+	
+	local oldHealth = self.Health
 	self.Health = Health
 
-	if self.Health > 0 and Health <= 0 then
+	if oldHealth > 0 and Health <= 0 then
 		self:Fire("Died")
 	else
 		self:Fire("HealthChanged")

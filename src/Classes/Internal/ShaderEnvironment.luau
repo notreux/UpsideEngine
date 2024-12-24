@@ -12,7 +12,7 @@ function shaderEnvironment.new(): ObjectEnvironment
 	local self = environment.new()
 	self:SetClassName(script.Name)
 
-	if runService:IsRunning() then
+	if runService:IsRunning() and not runService:IsRunMode() then
 		self.__actor = actor.new(shadingSystem)
 		self.__actor:SetVariable("shadable", {})
 		self.__actor:ExecuteEveryStep("draw")

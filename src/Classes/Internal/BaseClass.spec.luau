@@ -42,7 +42,8 @@ return function()
 
 		it("should return false for non-matching class name", function()
 			local object = baseClass.new()
-			expect(object:IsA("NonExistentClass")).to.never.be.ok()
+			print(object:IsA("NonExistentClass"))
+			expect(object:IsA("NonExistentClass")).to.equal(false)
 		end)
 	end)
 

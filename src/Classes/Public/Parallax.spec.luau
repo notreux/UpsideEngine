@@ -10,24 +10,19 @@ return function()
 		end)
 	end)
 
-	describe(":SetLayers()", function()
-		it("should set the layers correctly", function()
-			local layers = {
-				{ Image = "rbxassetid://123456", Speed = 0.5 },
-				{ Image = "rbxassetid://654321", Speed = 1.0 },
-			}
-			parallaxInstance:SetLayers(layers)
-			expect(#parallaxInstance.Layers).to.equal(2)
-			expect(parallaxInstance.Layers[1].Image).to.equal("rbxassetid://123456")
-			expect(parallaxInstance.Layers[2].Speed).to.equal(1.0)
+	describe(":UpdateTiles()", function()
+		it("should update the parallax effect", function()
+			expect(function()
+				parallaxInstance:UpdateTiles()
+			end).never.to.throw()
 		end)
 	end)
 
-	describe(":Update()", function()
-		it("should update the parallax effect", function()
-			expect(function()
-				parallaxInstance:Update()
-			end).never.to.throw()
+	describe(":SetTexture()", function()
+		it("should set the texture of the parallax content", function()
+			local texture = "rbxassetid://1234567890"
+			parallaxInstance:SetTexture(texture)
+			expect(parallaxInstance.Instance.Content.Image).to.equal(texture)
 		end)
 	end)
 end

@@ -2,16 +2,8 @@ local Actor = require(script.Parent.Actor)
 
 return function()
 	describe("Actor", function()
-		local actorInstance
 		local mockModule = Instance.new("ModuleScript")
-
-		beforeAll(function()
-			actorInstance = Actor.new(mockModule)
-		end)
-
-		afterAll(function()
-			actorInstance.instance:Destroy()
-		end)
+		local actorInstance = Actor.new(mockModule)
 
 		it("should create a new actor instance", function()
 			expect(actorInstance).to.be.ok()
