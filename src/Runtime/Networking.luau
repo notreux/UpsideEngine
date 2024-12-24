@@ -186,4 +186,6 @@ if not isServer then
 	runService.Heartbeat:Connect(clientInterpolator)
 end
 
-return {}
+return {
+	PlayersData = playersData,
+}

@@ -1,3 +1,4 @@
+local Networking = require(script.Parent.Parent.Parent.Runtime.Networking)
 local Sprite = require(script.Parent.Parent.Public.Sprite)
 local Request = require(script.Parent.Request)
 
@@ -14,6 +15,9 @@ return function()
 			Position = UDim2.fromOffset(100, 300),
 		},
 	})
+
+	Networking.PlayersData[1] = {}
+	Networking.PlayersData[3] = {}
 
 	describe("Constructor .new()", function()
 		it("should send the provided information to the client|server", function()
@@ -42,7 +46,7 @@ return function()
 		it("should send the request to the server", function()
 			expect(function()
 				newRequest:Send({
-					Id = 3,
+					ObjectId = 3,
 					Name = "AnotherObject",
 					ClassName = "Sprite",
 					ObjectProperties = {
