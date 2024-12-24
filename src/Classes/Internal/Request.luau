@@ -63,7 +63,7 @@ end
 }=]]
 
 function request:Send(content: Dictionary<string, any>)
-	local id = tostring((content :: any).Id)
+	local id = tostring((content :: any).ObjectId)
 	networking.Pending[id] = {
 		ClientId = self.ClientId,
 		Content = content,
@@ -93,9 +93,9 @@ function request:Accept(): BaseObject
 	local class = classes[content.ClassName]
 
 	local playerData = networking.PlayersData[self.ClientId] or {}
-	local exists = playerData[content.Id] ~= nil
+	local exists = playerData[content.ObjectId] ~= nil
 
-	local clon = playerData[content.Id] or class.new()
+	local clon = playerData[content.ObjectId] or class.new()
 	local instance = clon.Instance
 
 	applyProperties(instance, content.Instance)
@@ -111,7 +111,7 @@ function request:Accept(): BaseObject
 		return clon
 	end
 
-	playerData[content.Id] = clon
+	playerData[content.ObjectId] = clon
 	clon:SetName(content.Name)
 	networking:Fire("Build", clon)
 

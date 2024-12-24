@@ -105,7 +105,7 @@ local function sendServerRequests(pending)
 	local clients = {}
 	for index, data in pending do
 		local content = data.Content
-		local id = content.Id
+		local id = content.ObjectId
 
 		local clientId = data.ClientId
 		local toCache = copyTable(data)

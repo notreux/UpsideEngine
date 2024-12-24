@@ -59,7 +59,7 @@ local function replicate(self, object, instance)
 	playerData[object.Id] = object
 	req:Send({
 		ClassName = object.ClassName,
-		Id = object.Id,
+		ObjectId = object.Id,
 		Name = object.Name,
 		Instance = instance,
 		ObjectProperties = objectProperties,

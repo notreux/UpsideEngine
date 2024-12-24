@@ -3,7 +3,7 @@ local Request = require(script.Parent.Request)
 return function()
 	local newRequest = Request.new(1, {
 		Name = "TestObject",
-		Id = 2,
+		ObjectId = 2,
 		ClassName = "Sprite",
 		ObjectProperties = {
 			SpriteSpeed = 0.5,

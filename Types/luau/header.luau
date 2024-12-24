@@ -11,7 +11,7 @@ export type Event = {
 
 export type RequestContent = {
 	ClassName: string,
-	Id: string,
+	ObjectId: string,
 	Name: string,
 	ObjectProperties: { [string]: any },
 	Instance: { [string]: any },
