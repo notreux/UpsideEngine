@@ -1,5 +1,5 @@
 # Integrated Functions
-On the previous page, you saw the variables that are automatically injected by Upside Engine. On this page, you will explore the functions that Upside Engine injects into your shading function, which can help you create interesting effects.
+On this page, you will explore the functions that the Upside Engine passes as parameters to your shading function, enabling you to create interesting effects.
 
 ___
 
@@ -26,20 +26,24 @@ ___
 Let's apply the image from a camera to our water texture. Initially, the camera image will appear in the top left corner, but we can adjust its position to a more suitable location. To do this, we will modify its position by subtracting an offset, which is a Vector2 that allows us to move the camera image across the texture.
 
 ```lua
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local packages = replicatedStorage:WaitForChild("packages")
+
+local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
 local source = Instance.new("ImageLabel")
 source.Image = "rbxassetid://cameraId"
 
-return function()
-	local offset = Vector2.new(60, 80)
-    local position = Vector2.new(x, y)
-	local r, g, b, a = texture(source, position - offset)
-	
-	red += r
-	green += g
-	blue += b
-	opacity += a
+@native
+return function(params: upsideEngine.ShadingParams)
+    local offset = Vector2.new(60, 80)
+    local position = Vector2.new(params.x, params.y)
+    local r, g, b, a = params.texture(source, position - offset)
+    
+    params.red += r
+    params.green += g
+    params.blue += b
+    params.opacity += a
 end
-
 ```
 
 As you can see, the camera image appears in the water:
@@ -48,23 +52,29 @@ As you can see, the camera image appears in the water:
 
 But it has a bluish tint. This happens because we are blending the water's pixel colors with the camera's. If we want to display the pure camera pixels, we can do the following:
 ```lua
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local packages = replicatedStorage:WaitForChild("packages")
+
+local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
 local source = Instance.new("ImageLabel")
 source.Image = "rbxassetid://cameraId"
 
-return function()
-	local offset = Vector2.new(60, 80)
-    local position = Vector2.new(x, y)
-	local r, g, b, a = texture(source, position - offset)
-	
-	if a == 0 then
-		return
-	end	
+@native
+return function(params: upsideEngine.ShadingParams)
+    local offset = Vector2.new(60, 80)
+    local position = Vector2.new(params.x, params.y)
+    local r, g, b, a = params.texture(source, position - offset)
+    
+    if a == 0 then
+        return
+    end    
 
-	red = r
-	green = g
-	blue = b
-	opacity = a
+    params.red = r
+    params.green = g
+    params.blue = b
+    params.opacity = a
 end
+
 ```
 As you can see, now the camera looks normal:
 
@@ -74,14 +84,21 @@ As you can see, now the camera looks normal:
 Perfect, now let's use the `rotate` function. With this function, we'll rotate the water image around itself. Since the image resolution is 128x128, we'll use the position 64, 64 as the center. Additionally, we'll use `clock` to make our image rotate continuously, multiplying it by the desired rotational speed.
 
 ```lua
-return function()
-	local clock = os.clock()	
-    local speed = 25
-	
-    local centre = Vector2.new(64, 64)
-    local position = Vector2.new(x, y)
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local packages = replicatedStorage:WaitForChild("packages")
+local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
 
-	x, y = rotate(centre, position, clock * speed)
+@native
+return function(params: upsideEngine.ShadingParams)
+    local clock = os.clock()    
+    local speed = 25
+    
+    local centre = Vector2.new(64, 64)
+    local position = Vector2.new(params.x, params.y)
+
+	local rx, ry = params.rotate(centre, position, clock * speed)
+    params.x = rx
+	params.y = ry
 end
 ```
 

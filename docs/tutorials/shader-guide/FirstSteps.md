@@ -49,7 +49,7 @@ shader:SetSource(script.Parent.Shader) -- we set the shader source in the module
 Next, let's create an object to apply our shader to:
 
 ```lua
-local water = upsideEngine.new ("StaticObject")
+local water = upsideEngine.new("StaticObject")
 water:SetScene(scene)
 water:SetShader(shader)
 
@@ -60,7 +60,7 @@ instance.Size = UDim2.fromOffset(800, 800)
 
 Let's add some decoration too:
 ```lua
-local terrain = upsideEngine.new ("StaticObject")
+local terrain = upsideEngine.new("StaticObject")
 terrain:SetScene(scene)
 
 local instance = terrain.Instance

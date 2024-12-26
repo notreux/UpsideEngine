@@ -3,7 +3,7 @@ On this page, you will explore the fundamentals of how a shader works and discov
 ### How it works
 When we create a function for our shader, we are creating a function that is executed for each pixel of an image. This function allows us to manipulate various parameters, to achieve the desired visual effects, such as color and position.
 
-There are no explicit parameters in the shader functions; instead, upside engine injects variables directly into the function. This approach avoids the need for a lot parameters. You will need to be familiar with the names of these variables, which are both readable and writable.
+Upside Engine provides a typed table containing all the necessary variables. This approach simplifies the function interface by eliminating the need for numerous parameters, as the table's structure ensures that all required variables are clearly defined and accessible.
 ___
 
 ### Shader variables
@@ -17,11 +17,17 @@ ___
 ### Inverting the color of our image
 If we want to invert the colors of our image, we just need to return to our `Shader.luau` script and write the following code:
 ```lua
-return function()
-	red = 255 - red
-	green = 255 - green
-	blue = 255 - blue
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local packages = replicatedStorage:WaitForChild("packages")
+local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
+
+@native
+return function(params: upsideEngine.ShadingParams)
+    params.red = 255 - params.red
+    params.green = 255 - params.green
+    params.blue = 255 - params.blue
 end
+
 ```
 
 Since all values range from 0 to 1, subtracting each color value from 1 inverts the pixel's color for that channel.
@@ -31,15 +37,23 @@ Since all values range from 0 to 1, subtracting each color value from 1 inverts 
 ### Water Shader
 Let's take it a step further and create an interesting effect, such as a water effect. We can achieve this using the following code:
 ```lua
-return function()
-	local clock = os.clock()
-	local speed = 10
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local packages = replicatedStorage:WaitForChild("packages")
+local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
 
-	local amplitude = 0.1
-	local waveSize = 1
+@native
+return function(params: upsideEngine.ShadingParams)
+    local clock = os.clock()
+    local speed = 10
+	
+    local amplitude = 0.1
+    local waveSize = 1
 
-	x += math.sin(clock * speed + x * amplitude + y * amplitude) * waveSize
-	y += math.cos(clock * speed + x * amplitude + y * amplitude) * waveSize
+    local timeFactor = clock * speed
+    local offset = params.x * amplitude + params.y * amplitude
+
+    params.x += math.sin(timeFactor + offset) * waveSize
+    params.y += math.cos(timeFactor + offset) * waveSize
 end
 ```
 `clock` continuously increases, causing our shader to move constantly. The `x` and `y` variables help the shader move diagonally, adding more realism to the effect. If we only used `x`, the shader would move horizontally, and similarly, if we only used `y`, it would move vertically.
