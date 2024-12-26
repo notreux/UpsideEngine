@@ -1,4 +1,5 @@
---!native
+local AssetService = game:GetService("AssetService")
+local Canvas2d = require(script.Parent.Parent.Private.Util.Graphics.Canvas2d)
 local getDistance = require(script.Parent.Parent.Private.Util.Math.GetDistance)
 local normalize = require(script.Parent.Parent.Private.Util.Math.Normalize)
 local IsOutScreen = require(script.Parent.Parent.Private.Util).IsOutScreen
@@ -11,6 +12,7 @@ local axes = {
 	Vector3.new(1, 1),
 }
 
+@native
 local function lerpColor(color1, color2, factor)
 	return Color3.new(
 		color1.R * (1 - factor) + color2.R * factor,
@@ -19,10 +21,12 @@ local function lerpColor(color1, color2, factor)
 	)
 end
 
+@native
 local function sortf(l1, l2)
 	return l1.range > l2.range
 end
 
+@native
 local function isBallInsidechunk(chk, light, range)
 	return chk.position.X < light.Position.X + range
 		and chk.position.X + chk.size.X > light.Position.X - range
@@ -32,6 +36,7 @@ end
 
 
 --stylua: ignore start
+@native
 local function normalizeAngle(angle)
 	local normalized = angle % (2 * math.pi)
 	return normalized > math.pi 
@@ -40,6 +45,7 @@ local function normalizeAngle(angle)
 end
 --stylua: ignore end
 
+@native
 local function getRotatedAngle(light, origin)
 	local dx = origin.X - light.Position.X
 	local dy = origin.Y - light.Position.Y
@@ -50,6 +56,7 @@ local function getRotatedAngle(light, origin)
 	return normalizeAngle(rotatedAngle)
 end
 
+@native
 local function isSpotInsidechunk(chk, light, range)
 	local lightAngle = math.clamp(light.Angle, 60, 360)
 	for _, axe in axes do
@@ -67,6 +74,7 @@ local function isSpotInsidechunk(chk, light, range)
 	return false
 end
 
+@native
 local function drawSpotLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
@@ -108,6 +116,7 @@ local function drawSpotLight(chkData, light, staticData)
 	end
 end
 
+@native
 local function drawPointLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
@@ -146,25 +155,38 @@ local function drawPointLight(chkData, light, staticData)
 	end
 end
 
-local function buildCanvas(chunk, position, size)
-	local canvas = chunk.Canvas.Size
-	local pixels = table.create((canvas.Y - 1) * (canvas.X - 1))
+@native
+local function buildCanvas(position, size, data)
+	local canvas = data.Canvas or Canvas2d.new()
+	canvas:addContainer(data.instance)
 
-	for y = 0, canvas.Y - 1 do
-		for x = 0, canvas.X - 1 do
-			local normalPosition = Vector3.new(x / canvas.X, y / canvas.Y)
+	local resolution = data.resolution
+	local pixels = table.create((resolution.Y - 1) * (resolution.X - 1))
+
+	local oldImage = canvas.image
+	local image = AssetService:CreateEditableImage({ Size = data.resolution })
+	canvas:setImage(image)
+
+	if oldImage then
+		oldImage:Destroy()
+	end
+
+	for y = 0, resolution.Y - 1 do
+		for x = 0, resolution.X - 1 do
+			local normalPosition = Vector3.new(x / resolution.X, y / resolution.Y)
 			table.insert(pixels, {
 				position = position + normalPosition * size,
 			})
 		end
 	end
 
-	return pixels
+	return canvas, pixels
 end
 
+@native
 local function serializeChunk(chunks, chkData, lighting)
-	local canvas = chkData.canvas.Size
-	local bufferSize = canvas.Y * canvas.X
+	local resolution = chkData.canvas.image.Size
+	local bufferSize = resolution.Y * resolution.X
 
 	local pxIndex = 0
 	local chkPixels = buffer.create(bufferSize * 4)
@@ -197,6 +219,8 @@ local function serializeChunk(chunks, chkData, lighting)
 end
 
 local lightingSystem = {}
+
+@native
 function lightingSystem.onSetData(data, name, value)
 	if name ~= "lights" or not value then
 		return value
@@ -233,24 +257,29 @@ function lightingSystem.onSetData(data, name, value)
 	return value
 end
 
+@native
 function lightingSystem.build(data)
 	local details = data.details
 	local chunk = details.chunk
 	local chunkSize = details.chunkSize
 
-	local yFrames = math.round(details.screenSize.Y / chunkSize)
-	for y = 0, yFrames do
-		local chk = chunk:Clone()
-		chk.Position = UDim2.fromOffset(details.x * chunkSize, y * chunkSize)
-		chk.Parent = details.screen
+	local chunkRows = math.floor(details.screenSize.Y / chunkSize)
+	for row = 0, chunkRows do
+		local instance = chunk:Clone()
+		instance.Position = UDim2.fromOffset(details.col * chunkSize, row * chunkSize)
+		instance.Parent = details.screen
 
-		local size = Vector3.new(chk.AbsoluteSize.X, chk.AbsoluteSize.Y)
-		local position = Vector3.new(chk.AbsolutePosition.X, chk.AbsolutePosition.Y)
-		local pixels = buildCanvas(chunk, position, size)
+		local size = Vector3.new(instance.AbsoluteSize.X, instance.AbsoluteSize.Y)
+		local position = Vector3.new(instance.AbsolutePosition.X, instance.AbsolutePosition.Y)
+
+		local canvas, pixels = buildCanvas(position, size, {
+			instance = instance,
+			resolution = details.chunkResolution,
+		})
 
 		table.insert(data.pixels, {
-			instance = chk,
-			canvas = chk.Canvas,
+			instance = instance,
+			canvas = canvas,
 			position = position,
 			size = size,
 			content = pixels,
@@ -258,6 +287,7 @@ function lightingSystem.build(data)
 	end
 end
 
+@native
 function lightingSystem.draw(data)
 	local current = clock()
 	local lighting = data.lighting
@@ -290,17 +320,23 @@ function lightingSystem.draw(data)
 
 	task.synchronize()
 	for _, chkData in pixels do
-		local canvas = chkData.canvas :: EditableImage
-		canvas:WritePixelsBuffer(Vector2.zero, canvas.Size, chunks[chkData])
+		local canvas = chkData.canvas :: Canvas2d.canvas2d
+		local image = canvas.image
+		image:WritePixelsBuffer(Vector2.zero, image.Size, chunks[chkData])
 	end
 end
 
+@native
 function lightingSystem.updateScreen(data)
 	local lighting = data.lighting
 	for _, chkData in data.pixels do
+		local _, pixels = buildCanvas(chkData.position, chkData.size, {
+			instance = chkData.instance,
+			resolution = lighting.chunkResolution,
+		})
+
 		chkData.instance.ResampleMode = lighting.lightStyle
-		chkData.canvas:Resize(lighting.chunkResolution)
-		chkData.content = buildCanvas(chkData.instance, chkData.position, chkData.size)
+		chkData.content = pixels
 	end
 end
 

@@ -235,13 +235,18 @@ This is the intensity for all the lights in the scene
 */
 LightIntensity: number;
 /**
-Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
+Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default, the default value is Enum.ResamplerMode.Pixelated
   
 */
 LightStyle: Enum;
 /**
-Determines the resolution for every chunk of the screen
+Determines the number of columns for the chunks, the number of rows is calculated automatically, the default value is 1
 
+*/
+ChunkColumns: number;
+/**
+Determines the resolution for every chunk of the screen
+  
 */
 ChunkResolution: Vector2;
 /**

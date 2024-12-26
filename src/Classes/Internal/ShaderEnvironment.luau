@@ -14,6 +14,7 @@ function shaderEnvironment.new(): ObjectEnvironment
 
 	if runService:IsRunning() and not runService:IsRunMode() then
 		self.__actor = actor.new(shadingSystem)
+		self.__actor:SetRunMode("ByTasks")
 		self.__actor:SetVariable("shadable", {})
 		self.__actor:ExecuteEveryStep("draw")
 	end

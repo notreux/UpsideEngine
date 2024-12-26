@@ -10,16 +10,26 @@ local running = {}
 local tasks = {}
 
 local module = nil
+local runMode = "Default"
 local ready = script:WaitForChild("ready")
 
 local function addTask(f)
 	return function(...)
+		if runMode == "Default" then
+			f(...)
+			return
+		end
+
 		local args = { ... }
 		table.insert(tasks, function()
 			f(unpack(args))
 		end)
 	end
 end
+
+actor:BindToMessage("setRunMode", function(mode)
+	runMode = mode
+end)
 
 actor:BindToMessage(
 	"init",

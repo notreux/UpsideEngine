@@ -20,7 +20,8 @@ function lightingEnvironment.new(scene: Scene): LightingEnvironment
 	self.UpdateFrequency = 0.025
 	self.LightIntensity = 1
 	self.LightStyle = Enum.ResamplerMode.Pixelated
-	self.ChunkResolution = Vector2.new(15, 15)
+	self.ChunkColumns = 1
+	self.ChunkResolution = Vector2.new(64, 64)
 	self.__actrees = actrees.new()
 
 	local gameFrame = scene.Instance:WaitForChild("GameFrame")
@@ -47,9 +48,11 @@ function lightingEnvironment:DrawPixels()
 	instance.Position = gameFrame.Position
 	instance.AnchorPoint = gameFrame.AnchorPoint
 
-	local chunkSize = 200
-	local chunkX = math.clamp(self.ChunkResolution.X, 0, 80)
-	local chunkY = math.clamp(self.ChunkResolution.Y, 0, 80)
+	local chunkCols = self.ChunkColumns
+	local chunkSize = self.Instance.AbsoluteSize.X / chunkCols
+
+	local chunkX = math.clamp(self.ChunkResolution.X, 0, 128)
+	local chunkY = math.clamp(self.ChunkResolution.Y, 0, 128)
 	local chunkResolution = Vector2.new(chunkX, chunkY)
 
 	local chunk = Instance.new("ImageLabel")
@@ -59,13 +62,7 @@ function lightingEnvironment:DrawPixels()
 	chunk.ZIndex = 1000
 	chunk.ResampleMode = self.LightStyle
 
-	local xChunks = math.round(self.Instance.AbsoluteSize.X / chunkSize)
-	local canvas = Instance.new("EditableImage")
-	canvas.Name = "Canvas"
-	canvas.Parent = chunk
-	canvas:Resize(chunkResolution)
-
-	for x = 0, xChunks do
+	for col = 0, chunkCols - 1 do
 		local chkActor = actor.new(lightingSystem)
 		self.__actrees:AddActor(chkActor)
 
@@ -73,9 +70,10 @@ function lightingEnvironment:DrawPixels()
 		chkActor:SetVariable("lights", {})
 		chkActor:SetVariable("resolution", self.Instance.AbsoluteSize)
 		chkActor:SetVariable("details", {
-			x = x,
+			col = col,
 			chunk = chunk,
 			chunkSize = chunkSize,
+			chunkResolution = chunkResolution,
 			screen = self.Instance,
 			screenSize = self.Instance.AbsoluteSize,
 		})
@@ -85,7 +83,10 @@ function lightingEnvironment:DrawPixels()
 			updateFrequency = self.UpdateFrequency,
 			lightIntensity = self.LightIntensity,
 		})
+	end
 
+	task.wait(1)
+	for _, chkActor in self.__actrees do
 		chkActor:Execute("build")
 		chkActor:ExecuteEveryStep("draw")
 	end
@@ -119,8 +120,9 @@ end
 		@AmbientTransparency This is the transparency of the ambient, we can say is the darkness transparency
 		@UpdateFrequency This is the seconds between every update of the pixels in the screen
 		@LightIntensity This is the intensity for all the lights in the scene
-		@LightStyle Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
+		@LightStyle Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default, the default value is Enum.ResamplerMode.Pixelated
 		@ChunkResolution Determines the resolution for every chunk of the screen
+		@ChunkColumns Determines the number of columns for the chunks, the number of rows is calculated automatically, the default value is 1
 }=]]
 
 return setmetatable(lightingEnvironment, environment)

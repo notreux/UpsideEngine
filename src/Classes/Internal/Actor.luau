@@ -49,6 +49,10 @@ function actor:SetVariable(name: string, value: any, ignoreCache: boolean)
 	self.instance:SendMessage("setVariable", name, value)
 end
 
+function actor:SetRunMode(name)
+	self.instance:SendMessage("setRunMode", name)
+end
+
 function actor:UpdateVariable(name)
 	self.instance:SendMessage("updateVariable", name)
 end
