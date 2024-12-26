@@ -25,9 +25,6 @@ Is the range of the light
 ## [number](number.md) Brightness
 Is the brightness of the light
   
-## [number](number.md) Transparency
-Is the transparency of the light
-  
 ## [boolean](boolean.md) Inverted
 !!!warning
   	Only works on Pointlights

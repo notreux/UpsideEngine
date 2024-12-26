@@ -22,12 +22,14 @@ This is the seconds between every update of the pixels in the screen
 This is the intensity for all the lights in the scene
   
 ## [Enum](Enum.md) LightStyle
-Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default
+Determines the light rendering mode, there are two modes Enum.ResamplerMode.Pixelated and Enum.ResamplerMode.Default, the default value is Enum.ResamplerMode.Pixelated
   
+## [number](number.md) ChunkColumns
+Determines the number of columns for the chunks, the number of rows is calculated automatically, the default value is 1
+
 ## [Vector2](Vector2.md) ChunkResolution
 Determines the resolution for every chunk of the screen
   
-
 
 
 # Methods
