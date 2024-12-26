@@ -34,7 +34,7 @@ local source = Instance.new("ImageLabel")
 source.Image = "rbxassetid://cameraId"
 
 @native
-return function(params: upsideEngine.ShadingParams)
+local function shadingFunction(params: upsideEngine.ShadingParams)
     local offset = Vector2.new(60, 80)
     local position = Vector2.new(params.x, params.y)
     local r, g, b, a = params.texture(source, position - offset)
@@ -44,6 +44,8 @@ return function(params: upsideEngine.ShadingParams)
     params.blue += b
     params.opacity += a
 end
+
+return shadingFunction
 ```
 
 As you can see, the camera image appears in the water:
@@ -60,7 +62,7 @@ local source = Instance.new("ImageLabel")
 source.Image = "rbxassetid://cameraId"
 
 @native
-return function(params: upsideEngine.ShadingParams)
+local function shadingFunction(params: upsideEngine.ShadingParams)
     local offset = Vector2.new(60, 80)
     local position = Vector2.new(params.x, params.y)
     local r, g, b, a = params.texture(source, position - offset)
@@ -75,6 +77,7 @@ return function(params: upsideEngine.ShadingParams)
     params.opacity = a
 end
 
+return shadingFunction
 ```
 As you can see, now the camera looks normal:
 
@@ -89,7 +92,7 @@ local packages = replicatedStorage:WaitForChild("packages")
 local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
 
 @native
-return function(params: upsideEngine.ShadingParams)
+local function shadingFunction(params: upsideEngine.ShadingParams)
     local clock = os.clock()    
     local speed = 25
     
@@ -100,6 +103,8 @@ return function(params: upsideEngine.ShadingParams)
     params.x = rx
 	params.y = ry
 end
+
+return shadingFunction
 ```
 
 final result:

@@ -22,12 +22,13 @@ local packages = replicatedStorage:WaitForChild("packages")
 local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
 
 @native
-return function(params: upsideEngine.ShadingParams)
+local function shadingFunction(params: upsideEngine.ShadingParams)
     params.red = 255 - params.red
     params.green = 255 - params.green
     params.blue = 255 - params.blue
 end
 
+return shadingFunction
 ```
 
 Since all values range from 0 to 1, subtracting each color value from 1 inverts the pixel's color for that channel.
@@ -42,7 +43,7 @@ local packages = replicatedStorage:WaitForChild("packages")
 local upsideEngine = require(packages:WaitForChild("UpsideEngine"))
 
 @native
-return function(params: upsideEngine.ShadingParams)
+local function shadingFunction(params: upsideEngine.ShadingParams)
     local clock = os.clock()
     local speed = 10
 	
@@ -55,6 +56,8 @@ return function(params: upsideEngine.ShadingParams)
     params.x += math.sin(timeFactor + offset) * waveSize
     params.y += math.cos(timeFactor + offset) * waveSize
 end
+
+return shadingFunction
 ```
 `clock` continuously increases, causing our shader to move constantly. The `x` and `y` variables help the shader move diagonally, adding more realism to the effect. If we only used `x`, the shader would move horizontally, and similarly, if we only used `y`, it would move vertically.
  
