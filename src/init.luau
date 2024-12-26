@@ -21,4 +21,6 @@ for _, scr in script.Runtime:GetChildren() do
 end
 
 task.delay(0.1, destroy)
-return (upsideEngine::any) :: types.upsideEngine
+
+export type ShadingParams = types.ShadingParams
+return (upsideEngine :: any) :: types.upsideEngine

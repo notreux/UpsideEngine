@@ -8,6 +8,16 @@ export type Event = {
 	Functions: table,
 	Threads: table,
 }
+export type ShadingParams = {
+	x: number,
+	y: number,
+	red: number,
+	green: number,
+	blue: number,
+	opacity: number,
+	rotate: (centre: Vector2 | Vector3, position: Vector2 | Vector3, degrees: number) -> (number, number),
+	texture: (imageLabel: ImageLabel, position: Vector2 | Vector3) -> (),
+}
 
 export type RequestContent = {
 	ClassName: string,
