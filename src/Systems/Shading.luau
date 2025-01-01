@@ -120,11 +120,14 @@ end
 local function texture(imageLabel: ImageLabel, position: Vector2 | Vector3)
 	local id = imageLabel.Image
 	local canvas = ContentManager.cache[id]
+	local content = imageLabel.ImageContent 
 
-	if not canvas and imageLabel.ImageContent.Uri then
+	if not canvas and content.Uri then
 		task.synchronize()
 		canvas = ContentManager.loadImage(id)
 		task.desynchronize()
+	elseif content.Object then
+		canvas = content.Object
 	end
 
 	local size = canvas.Size
@@ -215,7 +218,7 @@ function shadingSystem.onSetData(data, name, value)
 			canvas:preloadSprites(object.Sprites)
 		end
 
-		if id ~= "" and canvas.url ~= id then
+		if id ~= "" and canvas.url ~= id or not instance.ImageContent.Object then
 			canvas:setUrl(id)
 			instance:SetAttribute("url", id)
 		end
