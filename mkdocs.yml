@@ -66,6 +66,11 @@ nav:
       - Graphic inteface: tutorials/get-started/GraphicInterface.md
       - License: tutorials/get-started/LicensePage.md
 
+    - Style Guide:
+      - Project Structure: tutorials/style-guide/ProjectStructure.md
+      - Module Structure: tutorials/style-guide/ModuleStructure.md
+      - Module Management: tutorials/style-guide/ModuleManagement.md
+
     - Plugin Guide: 
       - First steps: tutorials/plugin-guide/FirstSteps.md
       - Using tile editor: tutorials/plugin-guide/TileEditor.md

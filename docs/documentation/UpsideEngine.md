@@ -21,14 +21,16 @@ This method creates any of these classes:
 
 - [Scene](autogen/Scene.md)
 - [Environment](autogen/Environment.md)
-- [Character](autogen/Character.md)
-- [Sprite](autogen/Sprite.md)
 - [Particle](autogen/Particle.md)
+- [Light](autogen/Light.md)
+- [Sound](autogen/Sound.md)
 - [Shader](autogen/Shader.md)
 - [StaticObject](autogen/StaticObject.md)
 - [PhysicalObject](autogen/PhysicalObject.md)
-- [Sound](autogen/Sound.md)
-- [Light](autogen/Light.md)
+- [Sprite](autogen/Sprite.md)
+- [Character](autogen/Character.md)
+- [Fluid](autogen/Fluid.md)
+- [Parallax](autogen/Parallax.md)
 
 ___
 
