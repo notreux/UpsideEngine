@@ -71,6 +71,9 @@ nav:
       - Module Structure: tutorials/style-guide/ModuleStructure.md
       - Module Management: tutorials/style-guide/ModuleManagement.md
 
+    - Assets with AI: 
+      - Guide: tutorials/ai-assets/index.md
+
     - Plugin Guide: 
       - First steps: tutorials/plugin-guide/FirstSteps.md
       - Using tile editor: tutorials/plugin-guide/TileEditor.md

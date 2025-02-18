@@ -152,12 +152,12 @@ a {
     color: var(--md-typeset-color)
 }
 
-.title, .md-button, .md-header__topic, .admonition-title, #__nav_3_label, #__nav_4_label, h5, summary {
+.title, .md-button, .md-header__topic, .admonition-title, #__nav_3_label, #__nav_4_label, h1, h2, h3, h4, h5, summary, strong {
     font-family: "Roboto-Bold";
 }
 
-h1, h2, h3, h4 {
-    font-family: "Roboto-Light";
+.md-content__inner > h1, .md-content__inner > h2, .md-content__inner > h3, .md-content__inner > h4{
+    font-family: "Roboto-Light" !important;
 }
 
 .pixelated {
