@@ -1,4 +1,4 @@
-# Step-by-Step Guide
+# Creating Assets Step-by-Step
 
 1. **Access the AI Model Space**  
    Visit the Hugging Face space provided on the previous page. This space has been specifically set up for this guide.

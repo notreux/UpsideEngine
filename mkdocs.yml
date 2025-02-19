@@ -82,6 +82,11 @@ nav:
       - Client Side: tutorials/multiplayer-game/client.md
       - Server Side: tutorials/multiplayer-game/server.md
 
+    - Lighting Guide: 
+      - Introduction: tutorials/lighting-guide/Introduction.md
+      - Pointlight: tutorials/lighting-guide/Pointlight.md
+      - Spotlight: tutorials/lighting-guide/Spotlight.md
+
     - Shader Guide: 
       - First Steps: tutorials/shader-guide/FirstSteps.md
       - Basic effect: tutorials/shader-guide/BasicEffect.md
@@ -89,7 +94,7 @@ nav:
 
     - Assets with AI: 
       - Introduction: tutorials/ai-assets/Introduction.md
-      - Steps: tutorials/ai-assets/Steps.md
+      - Creating Assets: tutorials/ai-assets/CreatingAssets.md
       
   - Documentation:
     - Welcome: documentation/Welcome.md
