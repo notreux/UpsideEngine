@@ -56,7 +56,7 @@ nav:
 
   - Tutorials: 
     - Welcome: tutorials/Welcome.md
-
+    
     - Getting Started: 
       - Installation: tutorials/get-started/Installation.md
       - Your first game: tutorials/get-started/FirstGame.md
@@ -70,9 +70,6 @@ nav:
       - Project Structure: tutorials/style-guide/ProjectStructure.md
       - Module Structure: tutorials/style-guide/ModuleStructure.md
       - Module Management: tutorials/style-guide/ModuleManagement.md
-
-    - Assets with AI: 
-      - Guide: tutorials/ai-assets/index.md
 
     - Plugin Guide: 
       - First steps: tutorials/plugin-guide/FirstSteps.md
@@ -90,6 +87,10 @@ nav:
       - Basic effect: tutorials/shader-guide/BasicEffect.md
       - Integrated Functions: tutorials/shader-guide/IntegratedFunctions.md
 
+    - Assets with AI: 
+      - Introduction: tutorials/ai-assets/Introduction.md
+      - Steps: tutorials/ai-assets/Steps.md
+      
   - Documentation:
     - Welcome: documentation/Welcome.md
     - Upside Engine: documentation/UpsideEngine.md
