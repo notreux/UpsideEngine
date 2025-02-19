@@ -6,10 +6,13 @@ local IsOutScreen = require(script.Parent.Parent.Private.Util).IsOutScreen
 local clock = os.clock
 local ms = clock()
 local axes = {
-	Vector3.zero,
-	Vector3.new(0, 1),
+	Vector3.new(0, 0),
 	Vector3.new(1, 0),
+	Vector3.new(0, 1),
 	Vector3.new(1, 1),
+	Vector3.new(-1, 0),
+	Vector3.new(0, -1),
+	Vector3.new(-1, -1),
 }
 
 @native
@@ -27,11 +30,11 @@ local function sortf(l1, l2)
 end
 
 @native
-local function isBallInsidechunk(chk, light, range)
-	return chk.position.X < light.Position.X + range
-		and chk.position.X + chk.size.X > light.Position.X - range
-		and chk.position.Y < light.Position.Y + range
-		and chk.position.Y + chk.size.Y > light.Position.Y - range
+local function isCircleOutsideChunk(chk, light, range)
+	return chk.position.X >= light.Position.X + range
+		or chk.position.X + chk.size.X <= light.Position.X - range
+		or chk.position.Y >= light.Position.Y + range
+		or chk.position.Y + chk.size.Y <= light.Position.Y - range
 end
 
 
@@ -57,21 +60,30 @@ local function getRotatedAngle(light, origin)
 end
 
 @native
-local function isSpotInsidechunk(chk, light, range)
-	local lightAngle = math.clamp(light.Angle, 60, 360)
+local function isSpotOutsideChunk(chk, light, range)
+	local lightAngle = math.clamp(light.Angle, 0, 360)
+	local isOutsideChunk = isCircleOutsideChunk(chk, light, range)
+
+	if isOutsideChunk then
+		return true
+	end
+
 	for _, axe in axes do
 		local position = chk.position + chk.size * axe
 		local rotatedAngle = getRotatedAngle(light, position)
 
-		local insideAngle = -lightAngle <= rotatedAngle and rotatedAngle <= lightAngle
-		local insideRange = getDistance(position, light.Position + light.Size * 0.5) < light.AbsoluteRange * 1.6
+		local lowerBound = -lightAngle / 2
+		local upperBound = lightAngle / 2
 
-		if insideAngle and insideRange then
-			return true
+		local insideAngle = rotatedAngle >= lowerBound and rotatedAngle <= upperBound
+			or math.abs(lowerBound) == upperBound
+
+		if insideAngle then
+			return false
 		end
 	end
 
-	return false
+	return true
 end
 
 @native
@@ -79,12 +91,12 @@ local function drawSpotLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
 	local angle = light.Angle * 0.5
+	local pixelCount = #chkData.content - 1
 
-	if not isSpotInsidechunk(chkData, light, light.Range) then
+	if isSpotOutsideChunk(chkData, light, light.Range) then
 		return
 	end
 
-	local pixelCount = #chkData.content - 1
 	for i = 0, pixelCount do
 		local px = chkData.content[i + 1]
 		local position = px.position
@@ -121,7 +133,7 @@ local function drawPointLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
 
-	if not isBallInsidechunk(chkData, light, light.Range) then
+	if isCircleOutsideChunk(chkData, light, light.Range) then
 		return
 	end
 
