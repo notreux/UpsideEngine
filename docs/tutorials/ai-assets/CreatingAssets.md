@@ -27,7 +27,7 @@
 
     **Prompt Template:**
 
-    "Given a brief concept or description, create a detailed pixel art sprite by expanding on the idea with visual elements, specific attributes, and design details that suit a 2D game environment. Focus on aspects like viewpoint (e.g., top-down), scale, textures, and colors. Ensure that the description explicitly mentions 'pixel art' and incorporates elements relevant to sprite creation, such as a clear perspective and detailed shading"
+    "Given a brief concept or description, create a detailed pixel art sprite by expanding on the idea with visual elements, specific attributes, and design details that suit a 2D game environment. Focus on aspects like viewpoint (e.g., top-down), scale, textures, and colors. Ensure that the description explicitly mentions 'pixel art' and incorporates elements relevant to sprite creation, such as a clear perspective and detailed shading", keep the format in the example
 
     **Example:**
 
