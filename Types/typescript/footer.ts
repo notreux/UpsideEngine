@@ -12,16 +12,10 @@ interface upsideEngine {
 		& ((name: "Character") => Character)
 		& ((name: "Scene") => Scene)
 		& ((name: "Particle") => Particle)
-		& ((name: "Shader") => Shader),
+		& ((name: "Shader") => Shader)
+		& ((name: "TextTag") => TextTag)
+		& ((name: "ReactiveLabel") => ReactiveLabel),
 
-	Extend: ((name: "PhysicalObject") => PhysicalObject)
-		& ((name: "Sprite") => Sprite)
-		& ((name: "Sound") => Sound)
-		& ((name: "Environment") => Environment)
-		& ((name: "Light") => Light)
-		& ((name: "Character") => Character)
-		& ((name: "Scene") => Scene)
-		& ((name: "Particle") => Particle)
 
 	GetService: ((name: "SceneManager") => SceneManager)
 		& ((name: "PluginSupportService") => PluginSupportService)

@@ -119,7 +119,6 @@ function reactiveLabel.new(): Sound
 		["."] = 0.5,
 		["?"] = 0.5,
 	}
-
 	self.Instance.Size = UDim2.new(0, 400, 0, 400)
 	self.Instance.BackgroundTransparency = 1
 

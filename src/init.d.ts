@@ -719,7 +719,7 @@ Properties: {
  /**
 @desc
 */
-Image: string,
+["Image"]: string,
 };
 /**
 Is a table with the goals of the particles
@@ -729,11 +729,11 @@ Goals: {
  /**
 @desc
 */
-Size: UDim2,
+["Size"]: UDim2,
 /**
 @desc
 */
-ImageTransparency: number,
+["ImageTransparency"]: number,
 };
 /**
 Sets the subject property
@@ -848,6 +848,115 @@ Applies force to the object
 	
 */
 ApplyForce(force: Vector2): null;
+}
+ 
+
+
+
+/**
+UI element that renders text with a typewriter effect, text animations and supports roblox rich text. 
+	
+*/ 
+export declare interface ReactiveLabel extends BaseObject {
+/**
+The font used for displaying text.
+  
+*/
+Font: Enum;
+/**
+The font size of the text.
+  
+*/
+FontSize: number;
+/**
+The text content to be rendered.
+  
+*/
+Text: string;
+/**
+
+*/
+TextTransparency: number;
+/**
+
+*/
+TextColor3: Color3;
+/**
+Determines if the text scales automatically.
+  
+*/
+TextScaled: boolean;
+/**
+If true, renders text progressively like a typewriter.
+  
+*/
+Animated: boolean;
+/**
+
+*/
+TextStrokeColor3: Color3;
+/**
+Transparency of the text stroke.
+  
+*/
+TextStrokeTransparency: number;
+/**
+Thickness of the text stroke.
+  
+*/
+TextStrokeThickness: number;
+/**
+ The number of characters rendered per second.
+  
+*/
+CharactersPerSecond: number;
+/**
+The volume of the typing sound.
+  
+*/
+TypingSoundVolume: number;
+/**
+If true, stops the typing sound once rendering is complete.
+  
+*/
+StopSoundOnFinish: boolean;
+/**
+A table defining additional pause durations after certain characters (e.g., comma, period).
+  -- Example of PauseDelays usage:
+  {
+  	[","] = 0.25, -- pause 0.25 seconds after a comma
+  	["."] = 0.5,  -- pause 0.5 seconds after a period
+  	["?"] = 0.5,  -- pause 0.5 seconds after a question mark
+  }
+
+*/
+PauseDelays: {
+ /**
+@desc
+*/
+[","]: number,
+/**
+@desc
+*/
+["."]: number,
+/**
+@desc
+*/
+["?"]: number,
+};
+/**
+
+*/
+Size: UDim2;
+/**
+
+*/
+BackgroundTransparency: number;
+/**
+Renders the label text with a typewriter effect, yielding during animations.
+	
+*/
+Render(): null;
 }
  
 
@@ -1052,19 +1161,19 @@ Active: {
  /**
 @desc
 */
-Name: string,
+["Name"]: string,
 /**
 @desc
 */
-CurrentFrame: Vector2,
+["CurrentFrame"]: Vector2,
 /**
 @desc
 */
-SecondsPerFrame: number,
+["SecondsPerFrame"]: number,
 /**
 @desc
 */
-NextStepReady: boolean,
+["NextStepReady"]: boolean,
 };
 /**
 Adds a new sprite sheet to the object, the sprite will be played using as reference the amount of cells in the X axe and the Y axe, this must be provided in the third paramether as a Vector2
@@ -1145,6 +1254,41 @@ SetChromaticAberration(Intensity: number, Distance: number, Point: Vector2): nul
 
 
 /**
+Class representing a text tag for UpsideEngine.
+	
+*/ 
+export declare interface TextTag extends BaseClass {
+/**
+The tag name that defines a rendering style.
+  
+*/
+TagName: string;
+/**
+Display mode, either "letter" (character by character) or "word" (word by word).
+  
+*/
+DisplayMode: string;
+/**
+Volume of the typing sound.
+  
+*/
+TypingSoundVolume: number;
+/**
+Typing speed expressed in words per second.
+  
+*/
+WordsPerSecond: number;
+/**
+Idle time.
+  
+*/
+IdleTime: number;
+}
+ 
+
+
+
+/**
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
  to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`
  property, here is an example to make our player jumps in every device:
@@ -1212,102 +1356,102 @@ Configs: {
  /**
 @desc
 */
-Keyboard: {
+["Keyboard"]: {
  	/**
 @desc
 */
-W: string,
+["W"]: string,
 	/**
 @desc
 */
-A: string,
+["A"]: string,
 	/**
 @desc
 */
-S: string,
+["S"]: string,
 	/**
 @desc
 */
-D: string,
+["D"]: string,
 	/**
 @desc
 */
-Up: string,
+["Up"]: string,
 	/**
 @desc
 */
-Left: string,
+["Left"]: string,
 	/**
 @desc
 */
-Down: string,
+["Down"]: string,
 	/**
 @desc
 */
-Right: string,
+["Right"]: string,
 	/**
 @desc
 */
-Space: string,
+["Space"]: string,
 	},
 /**
 @desc
 */
-Gamepad: {
+["Gamepad"]: {
  	/**
 @desc
 */
-ButtonA: string,
+["ButtonA"]: string,
 	/**
 @desc
 */
-Thumbstick1: {
+["Thumbstick1"]: {
  		/**
 @desc
 */
-Up: string,
+["Up"]: string,
 		/**
 @desc
 */
-Left: string,
+["Left"]: string,
 		/**
 @desc
 */
-Down: string,
+["Down"]: string,
 		/**
 @desc
 */
-Right: string,
+["Right"]: string,
 		},
 	},
 /**
 @desc
 */
-Mobile: {
+["Mobile"]: {
  	/**
 @desc
 */
-JumpButton: string,
+["JumpButton"]: string,
 	/**
 @desc
 */
-Thumbstick1: {
+["Thumbstick1"]: {
  		/**
 @desc
 */
-Up: string,
+["Up"]: string,
 		/**
 @desc
 */
-Left: string,
+["Left"]: string,
 		/**
 @desc
 */
-Down: string,
+["Down"]: string,
 		/**
 @desc
 */
-Right: string,
+["Right"]: string,
 		},
 	},
 };
@@ -1431,6 +1575,19 @@ Get(Id: string): Scene;
 
 
 
+/**
+
+*/ 
+export declare interface TextTagService extends BaseClass {
+/**
+
+*/
+TextTags: { };
+}
+ 
+
+
+
 interface upsideEngine {
 	Version: string;
 	Workspace: {};
@@ -1445,16 +1602,10 @@ interface upsideEngine {
 		& ((name: "Character") => Character)
 		& ((name: "Scene") => Scene)
 		& ((name: "Particle") => Particle)
-		& ((name: "Shader") => Shader),
+		& ((name: "Shader") => Shader)
+		& ((name: "TextTag") => TextTag)
+		& ((name: "ReactiveLabel") => ReactiveLabel),
 
-	Extend: ((name: "PhysicalObject") => PhysicalObject)
-		& ((name: "Sprite") => Sprite)
-		& ((name: "Sound") => Sound)
-		& ((name: "Environment") => Environment)
-		& ((name: "Light") => Light)
-		& ((name: "Character") => Character)
-		& ((name: "Scene") => Scene)
-		& ((name: "Particle") => Particle)
 
 	GetService: ((name: "SceneManager") => SceneManager)
 		& ((name: "PluginSupportService") => PluginSupportService)

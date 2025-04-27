@@ -12,7 +12,9 @@ export type upsideEngine = {
 		& ((name: "Character") -> Character)
 		& ((name: "Scene") -> Scene)
 		& ((name: "Particle") -> Particle)
-		& ((name: "Shader") -> Shader),
+		& ((name: "Shader") -> Shader)
+		& ((name: "TextTag") -> TextTag)
+		& ((name: "ReactiveLabel") -> ReactiveLabel),
 
 	GetService: ((name: "SceneManager") -> SceneManager)
 		& ((name: "PluginSupportService") -> PluginSupportService)
