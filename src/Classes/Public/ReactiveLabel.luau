@@ -111,8 +111,8 @@ function reactiveLabel.new(): Sound
 	self.TextStrokeTransparency = 1
 	self.TextStrokeThickness = 0
 	self.CharactersPerSecond = 20
-	self.TypingSoundId = "rbxassetid://139345803843032"
-	self.TypingSoundVolume = 0.5
+	self.TypingSoundId = "rbxassetid://92143495194538"
+	self.TypingSoundVolume = 1
 	self.StopSoundOnFinish = true
 	self.PauseDelays = {
 		[","] = 0.25,

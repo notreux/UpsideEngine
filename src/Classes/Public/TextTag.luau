@@ -4,14 +4,13 @@ local TextTagService = require(upsideEngine.Services.TextTagService)
 local TextTag = {}
 TextTag.__index = TextTag
 
-
 function TextTag.new()
 	local self = BaseClass.new()
 	self:SetClassName(script.Name)
 	self.TagName = "default"
 	self.DisplayMode = "letter"
-	self.TypingSoundId = "rbxassetid://139345803843032"
-	self.TypingSoundVolume = 0.5
+	self.TypingSoundId = "rbxassetid://92143495194538"
+	self.TypingSoundVolume = 1
 	self.WordsPerSecond = 0
 	self.IdleTime = 0
 

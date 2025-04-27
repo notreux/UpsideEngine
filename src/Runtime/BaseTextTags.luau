@@ -72,7 +72,7 @@ local function createGradientRenderFunction(defaultStartColor, defaultEndColor)
 end
 
 local angry = TextTag.new()
-angry.TypingSoundId = "rbxassetid://130250668983711"
+angry.TypingSoundId = "rbxassetid://110332722919137"
 angry.WordsPerSecond = 2
 angry:SetTagName("angry")
 angry:SetDisplayMode("word")
