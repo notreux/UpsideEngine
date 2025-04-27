@@ -1,0 +1,25 @@
+local ReactiveLabel = require(script.Parent.ReactiveLabel)
+
+return function()
+	describe("ReactiveLabel", function()
+		it("should initialize with default properties", function()
+			local label = ReactiveLabel.new()
+			expect(label.Text).to.equal("")
+			expect(label.Font).to.equal(Enum.Font.Arial)
+			expect(label.FontSize).to.equal(32)
+			expect(label.TextTransparency).to.equal(0)
+			expect(label.Instance.Size).to.equal(UDim2.new(0, 400, 0, 400))
+		end)
+
+		it("should render text with typewriter effect", function()
+			local label = ReactiveLabel.new()
+			label.Text = "Hello"
+			task.defer(function()
+				label:Render()
+				task.wait(1)
+				local children = label.Instance:GetChildren()
+				expect(#children).to.equal(5)
+			end)
+		end)
+	end)
+end
