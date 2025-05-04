@@ -65,6 +65,7 @@ end
 
 function character.new(): Character
 	local self = sprite.new()
+	self.Anchored = false
 	self.Health = 100
 	self.MaxHealth = 100
 	self.WalkSpeed = 50
@@ -83,7 +84,7 @@ end
 function character:UpdateHealth(Health: number)
 	assert(typeof(Health) == "number", ("Number expected got %s"):format(typeof(Health)))
 	assert(Health <= self.MaxHealth, "The health cannot exceed maximum health")
-	
+
 	local oldHealth = self.Health
 	self.Health = Health
 
