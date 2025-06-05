@@ -187,6 +187,9 @@ EventsStorage: { },
 ]]
 On: (self: EventEmitter, name: string, callback: () -> any) -> Connection,
 --[[
+]]
+Once: (self: EventEmitter, name: string, callback: () -> any) -> Connection,
+--[[
 Triggers an event with the specified arguments
 	]]
 Fire: (self: EventEmitter, name: string, ...any) -> nil,

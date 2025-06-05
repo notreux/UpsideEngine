@@ -217,6 +217,10 @@ EventsStorage: { };
 */
 On(name: string, callback: () => any): Connection;
 /**
+
+*/
+Once(name: string, callback: () => any): Connection;
+/**
 Triggers an event with the specified arguments
 	
 */
