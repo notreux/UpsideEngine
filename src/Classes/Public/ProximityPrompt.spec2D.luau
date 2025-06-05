@@ -29,7 +29,7 @@ return function()
             prompt:SetScene(scene)
             prompt:Attach(dummyObject)
             prompt:Detach()
-            expect(prompt.Instance.Parent).to.equal(nil)
+            expect(prompt.Instance.Parent).to.equal(scene.Instance.GameFrame)
 		end)
 	end)
 end

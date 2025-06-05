@@ -79,7 +79,7 @@ end
 function proximityPrompt2d:Detach()
 	local scene = SceneManager:Get(self.Scene)
 	if scene then
-		self.Instance.Parent = scene.Instance
+		self.Instance.Parent = scene.Instance.GameFrame
 	end
 end
 
