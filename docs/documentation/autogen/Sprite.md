@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from PhysicalObject](PhysicalObject.md) Sprite 
+# [Extended from PhysicalObject](PhysicalObject.md) Sprite 
 This class is used to play sounds
 	 
 # Properties

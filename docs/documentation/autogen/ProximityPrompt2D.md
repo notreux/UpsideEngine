@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from Sprite](Sprite.md) ProximityPrompt2D 
+# [Extended from Sprite](Sprite.md) ProximityPrompt2D 
 The proximity prompt is a UI element that will show a prompt when the player is close to it, this is used to interact with objects in the game, it will show a label and a hitbox that will be used to detect when the player is close to it
 	 
 # Properties

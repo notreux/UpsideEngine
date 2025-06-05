@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseClass](BaseClass.md) TextTag 
+# [Extended from BaseClass](BaseClass.md) TextTag 
 Class representing a text tag for UpsideEngine.
 	 
 # Properties

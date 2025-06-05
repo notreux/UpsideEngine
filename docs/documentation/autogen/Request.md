@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from EventEmitter](EventEmitter.md) Request 
+# [Extended from EventEmitter](EventEmitter.md) Request 
 This class is used for the client replication
 	 
 # Properties

@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from Environment](Environment.md) SoundEnvironment 
+# [Extended from Environment](Environment.md) SoundEnvironment 
  
 # Properties
 

@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from EventEmitter](EventEmitter.md) NetworkingService 
+# [Extended from EventEmitter](EventEmitter.md) NetworkingService 
 This class is used to replicate objects to other clients, for example the player character
 	 
 # Properties

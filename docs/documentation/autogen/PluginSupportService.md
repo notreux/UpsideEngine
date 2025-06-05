@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from EventEmitter](EventEmitter.md) PluginSupportService 
+# [Extended from EventEmitter](EventEmitter.md) PluginSupportService 
 This class save and build the engine data
  
 # Properties

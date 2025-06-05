@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from StaticObject](StaticObject.md) PhysicalObject 
+# [Extended from StaticObject](StaticObject.md) PhysicalObject 
 This class is used to create objects with physics
 	 
 # Properties

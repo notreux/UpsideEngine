@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseClass](BaseClass.md) Connection 
+# [Extended from BaseClass](BaseClass.md) Connection 
 This class is used in the event emitter class, its used to manage a listener
 	 
 # Properties

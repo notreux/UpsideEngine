@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from Sprite](Sprite.md) Character 
+# [Extended from Sprite](Sprite.md) Character 
 This class is used for the player character and for npcs
 	 
 # Properties

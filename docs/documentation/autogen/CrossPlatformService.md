@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from EventEmitter](EventEmitter.md) CrossPlatformService 
+# [Extended from EventEmitter](EventEmitter.md) CrossPlatformService 
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
  to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`
  property, here is an example to make our player jumps in every device:

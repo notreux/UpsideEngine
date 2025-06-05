@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from StaticObject](StaticObject.md) Light 
+# [Extended from StaticObject](StaticObject.md) Light 
 This class is used to illuminate areas in the darkness
 	 
 # Properties

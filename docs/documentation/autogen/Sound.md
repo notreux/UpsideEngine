@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseObject](BaseObject.md) Sound 
+# [Extended from BaseObject](BaseObject.md) Sound 
 This class is used to play sounds
 	 
 # Properties

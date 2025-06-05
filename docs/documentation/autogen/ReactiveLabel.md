@@ -1,4 +1,4 @@
-C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseObject](BaseObject.md) ReactiveLabel 
+# [Extended from BaseObject](BaseObject.md) ReactiveLabel 
 UI element that renders text with a typewriter effect, text animations and supports roblox rich text. 
 	 
 # Properties
