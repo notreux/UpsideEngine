@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from Environment](Environment.md) LightingEnvironment 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from Environment](Environment.md) LightingEnvironment 
 This class is one of the most important components of a scene, is used to manage everything related with the light 
 	 
 # Properties

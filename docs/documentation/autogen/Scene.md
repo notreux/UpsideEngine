@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from BaseObject](BaseObject.md) Scene 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseObject](BaseObject.md) Scene 
 This class is useful to have a workspace and manage your project more easily
 	 
 # Properties

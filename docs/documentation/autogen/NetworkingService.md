@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from EventEmitter](EventEmitter.md) NetworkingService 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from EventEmitter](EventEmitter.md) NetworkingService 
 This class is used to replicate objects to other clients, for example the player character
 	 
 # Properties

@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from Environment](Environment.md) ObjectEnvironment 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from Environment](Environment.md) ObjectEnvironment 
  
 # Properties
 

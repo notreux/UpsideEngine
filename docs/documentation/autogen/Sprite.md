@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from PhysicalObject](PhysicalObject.md) Sprite 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from PhysicalObject](PhysicalObject.md) Sprite 
 This class is used to play sounds
 	 
 # Properties
@@ -23,13 +17,13 @@ This table stores all sprite sheets and sprite lists
 ```
 ## [table](table.md) Active 
 This table stores information about the active spritesheet
- 
+	 
 ```lua
 {
- 	Name: string,
-	CurrentFrame: Vector2,
-	SecondsPerFrame: number,
-	NextStepReady: boolean,
+ 	["Name"]: string,
+	["CurrentFrame"]: Vector2,
+	["SecondsPerFrame"]: number,
+	["NextStepReady"]: boolean,
 }
 ```
 
@@ -50,6 +44,9 @@ This table stores information about the active spritesheet
 
 
 # Events
-There is no events for this class
+|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
+|---|---|
+|FrameChanging|This event is fired before the current frame changes, it will provide the new frame position as a Vector2<br>|
+
 
 

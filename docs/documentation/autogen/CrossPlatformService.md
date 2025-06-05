@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from EventEmitter](EventEmitter.md) CrossPlatformService 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from EventEmitter](EventEmitter.md) CrossPlatformService 
 This class is used to make the controls functional in any device (Keyboards, Mobiles, Gamepads), this service vinculate actions 
  to specified keys, and also provides a movement system for the player character which can be disabled with the `DefaultControllersEnabled`
  property, here is an example to make our player jumps in every device:
@@ -61,33 +55,35 @@ This table stores the default controllers
 	 
 ```lua
 {
- 	Keyboard: {
- 		W: string,
-		A: string,
-		S: string,
-		D: string,
-		Up: string,
-		Left: string,
-		Down: string,
-		Right: string,
-		Space: string,
+ 	["Keyboard"]: {
+ 		["W"]: string,
+		["A"]: string,
+		["S"]: string,
+		["D"]: string,
+		["Up"]: string,
+		["Left"]: string,
+		["Down"]: string,
+		["Right"]: string,
+		["Space"]: string,
+		["E"]: string,
 	},
-	Gamepad: {
- 		ButtonA: string,
-		Thumbstick1: {
- 			Up: string,
-			Left: string,
-			Down: string,
-			Right: string,
+	["Gamepad"]: {
+ 		["ButtonA"]: string,
+		["ButtonX"]: string,
+		["Thumbstick1"]: {
+ 			["Up"]: string,
+			["Left"]: string,
+			["Down"]: string,
+			["Right"]: string,
 		},
 	},
-	Mobile: {
- 		JumpButton: string,
-		Thumbstick1: {
- 			Up: string,
-			Left: string,
-			Down: string,
-			Right: string,
+	["Mobile"]: {
+ 		["JumpButton"]: string,
+		["Thumbstick1"]: {
+ 			["Up"]: string,
+			["Left"]: string,
+			["Down"]: string,
+			["Right"]: string,
 		},
 	},
 }
@@ -95,6 +91,12 @@ This table stores the default controllers
 
 
 # Methods
+## [string](https://create.roblox.com/docs/reference/engine/libraries/string) DetectCurrentDevice() 
+ Detects the current device type based on user input capabilities
+	
+## [string?](https://create.roblox.com/docs/reference/engine/libraries/string) GetTargetActionKey(`action: string`) 
+ Returns the current key for a specific action based on the current device (Mobile, Gamepad, or Keyboard)
+	
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetDeviceKey(`device: string, key: string, action: string`) 
  Assigns an action to a device key, example:
 	```lua

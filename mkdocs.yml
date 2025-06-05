@@ -113,8 +113,11 @@ nav:
       - SoundEnvironment: documentation/autogen/SoundEnvironment.md
       - ShaderEnvironment: documentation/autogen/ShaderEnvironment.md
       - Particle: documentation/autogen/Particle.md
+      - ProximityPrompt2D: documentation/autogen/ProximityPrompt2D.md
       - PhysicalObject: documentation/autogen/PhysicalObject.md
       - StaticObject: documentation/autogen/StaticObject.md
+      - ReactiveLabel: documentation/autogen/ReactiveLabel.md
+      - TextTag: documentation/autogen/TextTag.md
       - Request: documentation/autogen/Request.md
       - Scene: documentation/autogen/Scene.md
       - Sound: documentation/autogen/Sound.md
@@ -127,6 +130,7 @@ nav:
       - PluginSupportService: documentation/autogen/PluginSupportService.md
       - NetworkingService: documentation/autogen/NetworkingService.md
       - SceneManager: documentation/autogen/SceneManager.md
+      - TextTagService: documentation/autogen/TextTagService.md
     - DataTypes:
       - UpsideEngineInput: "documentation/datatypes/UpsideEngineInput.md"
       - Raycast2DParams: "documentation/datatypes/Raycast2DParams.md"

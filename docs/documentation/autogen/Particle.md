@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from BaseObject](BaseObject.md) Particle 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseObject](BaseObject.md) Particle 
 !!! warning 
   	Currently it's recommended to use sprites to make particles/vfx, this class is in experimental state and can change a lot
 
@@ -65,7 +59,7 @@ Is a table with the initial properties of the particle which is going to be gene
    
 ```lua
 {
- 	Image: string,
+ 	["Image"]: string,
 }
 ```
 ## [table](table.md) Goals 
@@ -73,8 +67,8 @@ Is a table with the goals of the particles
    
 ```lua
 {
- 	Size: UDim2,
-	ImageTransparency: number,
+ 	["Size"]: UDim2,
+	["ImageTransparency"]: number,
 }
 ```
 

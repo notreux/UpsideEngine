@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from BaseClass](BaseClass.md) Shader 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseClass](BaseClass.md) Shader 
 !!! warning 
   	Shaders are very cpu-intensive, so it is not recommended to use them with high resolution images
   	and not to use too many shaders.

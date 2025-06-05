@@ -1,13 +1,9 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from Sprite](Sprite.md) Character 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from Sprite](Sprite.md) Character 
 This class is used for the player character and for npcs
 	 
 # Properties
+
+## [boolean](boolean.md) Anchored
 
 ## [number](number.md) Health
 The amount of health of the character

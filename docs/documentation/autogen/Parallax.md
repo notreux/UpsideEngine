@@ -1,10 +1,4 @@
-<style>
-  .md-content__button {
-    display: none;
-  }
-</style>
-
-# [Extended from BaseObject](BaseObject.md) Parallax 
+C:/Users/Reux/Documents/Develop/ue/UpsideEngine/docs/header.md# [Extended from BaseObject](BaseObject.md) Parallax 
 This class is used to create inmersive backgrounds
 	 
 # Properties
