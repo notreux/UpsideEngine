@@ -80,9 +80,6 @@ ready:Fire()
 while task.wait() do
 	for index, run in tasks do
 		table.remove(tasks, index)
-		local sucess, err = pcall(run)
-		if not sucess then
-			warn(err)
-		end
+		run()
 	end
 end

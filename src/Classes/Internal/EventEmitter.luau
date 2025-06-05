@@ -40,6 +40,24 @@ function eventEmitter:On(name: string, callback: () -> any): Connection
 end
 
 --[[={
+	@desc Executes the provided function when the specified event gets fired, but only once
+	@link Connection.md
+}=]]
+function eventEmitter:Once(name: string, callback: () -> any): Connection
+	local event = getEvent(self.EventsStorage, name)
+	local id = #event.Functions + 1
+
+	local function wrapper(...)
+		if callback then
+			callback(...)
+		end
+		event.Functions[id] = nil
+	end
+
+	return self:On(name, wrapper)
+end
+
+--[[={
 	@desc Triggers an event with the specified arguments
 	@link void.link
 }=]]

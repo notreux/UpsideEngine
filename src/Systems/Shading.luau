@@ -120,7 +120,7 @@ end
 local function texture(imageLabel: ImageLabel, position: Vector2 | Vector3)
 	local id = imageLabel.Image
 	local canvas = ContentManager.cache[id]
-	local content = imageLabel.ImageContent 
+	local content = imageLabel.ImageContent
 
 	if not canvas and content.Uri then
 		task.synchronize()
@@ -174,11 +174,12 @@ local function shouldSkip(object, old, id)
 	local oldCanvas: Canvas2d.canvas2d = old.Canvas
 	local playingSprite = object.Sprites and object.Sprites[object.Active.Name]
 	local isContainerAdded = oldCanvas and oldCanvas:hasContainer(object.Instance)
-	
+
 	local sameSize = oldCanvas and oldCanvas.image and oldCanvas.image.Size == old.ImageData.Size
-	local sameUrl = if playingSprite and oldCanvas then playingSprite.Url == oldCanvas.url 
-				elseif oldCanvas then oldCanvas.url == id
-				else nil
+	local sameUrl = if playingSprite and oldCanvas
+		then playingSprite.Url == oldCanvas.url
+		elseif oldCanvas then oldCanvas.url == id
+		else nil
 
 	return (sameUrl and sameSize) and isContainerAdded and oldCanvas
 end
@@ -192,13 +193,13 @@ function shadingSystem.onSetData(data, name, value)
 		local mirrorSource = shader.MirrorSource
 		local useMirror = shader.MirrorEnabled and mirrorSource ~= nil
 
-		local index = if useMirror then shader.Id else idx 
+		local index = if useMirror then shader.Id else idx
 		local instance: ImageLabel = if useMirror then mirrorSource else object.Instance
 		local old = oldValue[index] or {}
 
 		local outScreen = isOutScreen(instance.AbsolutePosition, instance.AbsoluteSize)
 		local id = instance:GetAttribute("url")
-		id = if id ~= nil then id else instance.Image 
+		id = if id ~= nil then id else instance.Image
 
 		if outScreen and shouldSkip(object, old, id) then
 			old.Track = not outScreen
@@ -268,7 +269,7 @@ function shadingSystem.draw(details)
 		if isOutsideBounds(sourceSize, cropArea) then
 			continue
 		end
-		
+
 		local pixels = buffer.create(cropSize.X * cropSize.Y * 4)
 		local bmp = data.ImageData:ReadPixelsBuffer(position, cropSize)
 
@@ -333,7 +334,7 @@ function shadingSystem.draw(details)
 	for canvas, data in shaderResults do
 		local cropArea = data.cropSize + data.position
 		local image = canvas.image
-		
+
 		if isOutsideBounds(image.Size, cropArea) then
 			continue
 		end
