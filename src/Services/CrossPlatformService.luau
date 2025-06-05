@@ -1,3 +1,4 @@
+local UserInputService = game:GetService("UserInputService")
 local upsideEngine = script.Parent.Parent
 local classes = upsideEngine.Classes
 
@@ -27,9 +28,11 @@ function crossPlatformService.new()
 			Down = "Down",
 			Right = "Right",
 			Space = "Up",
+			E = "Interact",
 		},
 		Gamepad = {
 			ButtonA = "Up",
+			ButtonX = "Interact",
 			Thumbstick1 = {
 				Up = "Up",
 				Left = "Left",
@@ -49,6 +52,37 @@ function crossPlatformService.new()
 	}
 
 	return setmetatable(self, crossPlatformService)
+end
+
+--[[={
+	@desc Detects the current device type based on user input capabilities
+	@link string.link
+}=]]
+
+function crossPlatformService:DetectCurrentDevice(): string
+	if UserInputService.TouchEnabled then
+		return "Mobile"
+	elseif UserInputService.GamepadEnabled then
+		return "Gamepad"
+	else
+		return "Keyboard"
+	end
+end
+
+--[[={
+	@desc Returns the current key for a specific action based on the current device (Mobile, Gamepad, or Keyboard)
+	@link string.link
+}=]]
+
+function crossPlatformService:GetTargetActionKey(action: string): string?
+	local device = self:DetectCurrentDevice()
+	for key, mappedAction in self.Configs[device] or {} do
+		if mappedAction == action then
+			return key
+		end
+	end
+
+	return nil
 end
 
 --[[={

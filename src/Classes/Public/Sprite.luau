@@ -81,6 +81,8 @@ end
 		@Sprites This table stores all sprite sheets and sprite lists 
 		@SecondsPerFrame This is the time to wait between frame and frame
 		@Active This table stores information about the active spritesheet
+	@events
+		@FrameChanging This event is fired before the current frame changes, it will provide the new frame position as a Vector2
 }=]]
 
 return setmetatable(sprite, physicalObject)

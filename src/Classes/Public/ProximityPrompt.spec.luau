@@ -1,0 +1,35 @@
+local ProximityPrompt2D = require(script.Parent.ProximityPrompt2D)
+local Scene = require(script.Parent.Scene)
+
+return function()
+	describe("ProximityPrompt2D.new", function()
+		it("should create an instance with default properties", function()
+			local prompt = ProximityPrompt2D.new()
+			expect(prompt.Range).to.equal(100)
+			expect(prompt.ActionName).to.equal("Interact")
+			expect(prompt.Enabled).to.equal(true)
+			expect(typeof(prompt.Fire)).to.equal("function")
+		end)
+	end)
+
+	describe(":Attach", function()
+		it("should set the prompt's Instance.Parent to the object's Instance", function()
+			local prompt = ProximityPrompt2D.new()
+			local dummyObject = { Instance = Instance.new("Folder") }
+			prompt:Attach(dummyObject)
+			expect(prompt.Instance.Parent).to.equal(dummyObject.Instance)
+		end)
+	end)
+
+	describe(":Detach", function()
+		it("should set the prompt's Instance.Parent to the scene's Instance", function()
+            local scene = Scene.new()
+            local prompt = ProximityPrompt2D.new()
+            local dummyObject = { Instance = Instance.new("Folder") }
+            prompt:SetScene(scene)
+            prompt:Attach(dummyObject)
+            prompt:Detach()
+            expect(prompt.Instance.Parent).to.equal(nil)
+		end)
+	end)
+end

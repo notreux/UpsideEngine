@@ -52,6 +52,12 @@ declare interface BaseClass {
     Clone(...any): BaseClass;
     Extend(self: BaseClass,className: string,classStructure: table): BaseClass;
     Destroy(): any;
+}
+
+declare interface UpsideEngineInput {
+	Action: string,
+	Position: Vector2,
+	KeyCode: Enum.KeyCode,
 }/**
 This class is the base class of the majority of classes
 	
@@ -356,6 +362,10 @@ This class is used for the player character and for npcs
 	
 */ 
 export declare interface Character extends Sprite {
+/**
+
+*/
+Anchored: boolean;
 /**
 The amount of health of the character
   
@@ -854,6 +864,79 @@ ApplyForce(force: Vector2): null;
 
 
 /**
+The proximity prompt is a UI element that will show a prompt when the player is close to it, this is used to interact with objects in the game, it will show a label and a hitbox that will be used to detect when the player is close to it
+	
+*/ 
+export declare interface ProximityPrompt2D extends Sprite {
+/**
+The range of the prompt, this will be used to detect when the prompt should be shown
+        
+*/
+Range: number;
+/**
+The action name of the prompt, this will be used to detect when the 
+        prompt is triggered, if you change the default action name you should change or 
+        add a new action in the CrossPlatformService, 'Interact' by default
+  
+*/
+ActionName: string;
+/**
+If the prompt is enabled or not, if it is not enabled the prompt will not be shown
+  
+*/
+Enabled: boolean;
+/**
+True if the proximity prompt is the closest one to the player
+  
+*/
+IsClosest: boolean;
+/**
+True if the proximity prompt is visible on the player's screen. Useful for detecting when the prompt is within interaction range
+        
+*/
+InRange: boolean;
+/**
+Determines whether this proximity prompt should only be shown when it is the closest one to the player.
+  If set to true, the prompt will only appear if it is the nearest among all prompts within interaction range.
+  If set to false, the prompt will be shown as long as it is within range, regardless of other nearby prompts.
+  The property is enabled by default
+	
+*/
+ShowIfClosest: boolean;
+/**
+The duration of the fade in and out of the prompt, this will be used to make the prompt appear and disappear smoothly
+  
+*/
+FadeDuration: number;
+/**
+The text label of the prompt, this will be shown when the prompt is active
+        
+*/
+Label: Instance;
+/**
+The button that will be used to trigger the proximity prompt on mobile devices
+  
+*/
+HitboxButton: Instance;
+/**
+
+*/
+SecondsPerFrame: number;
+/**
+
+*/
+Name: string;
+/**
+A table containing the positions(as UDim2) of the label, this will be used to adjust the text to the proximity prompt sprites, position 0 will be the position on the first frame, position 1 will be the position on the second frame, etc.
+  
+*/
+LabelPositions: { };
+}
+ 
+
+
+
+/**
 UI element that renders text with a typewriter effect, text animations and supports roblox rich text. 
 	
 */ 
@@ -1155,7 +1238,7 @@ This table stores all sprite sheets and sprite lists
 Sprites: { };
 /**
 This table stores information about the active spritesheet
-
+	
 */
 Active: {
  /**
@@ -1393,6 +1476,10 @@ Configs: {
 @desc
 */
 ["Space"]: string,
+	/**
+@desc
+*/
+["E"]: string,
 	},
 /**
 @desc
@@ -1402,6 +1489,10 @@ Configs: {
 @desc
 */
 ["ButtonA"]: string,
+	/**
+@desc
+*/
+["ButtonX"]: string,
 	/**
 @desc
 */
@@ -1455,6 +1546,16 @@ Configs: {
 		},
 	},
 };
+/**
+Detects the current device type based on user input capabilities
+	
+*/
+DetectCurrentDevice(): string;
+/**
+Returns the current key for a specific action based on the current device (Mobile, Gamepad, or Keyboard)
+	
+*/
+GetTargetActionKey(action: string): string | void;
 /**
 Assigns an action to a device key, example:
 	```lua
@@ -1604,7 +1705,8 @@ interface upsideEngine {
 		& ((name: "Particle") => Particle)
 		& ((name: "Shader") => Shader)
 		& ((name: "TextTag") => TextTag)
-		& ((name: "ReactiveLabel") => ReactiveLabel),
+		& ((name: "ReactiveLabel") => ReactiveLabel)
+		& ((name: "ProximityPrompt2D") => ProximityPrompt2D),
 
 
 	GetService: ((name: "SceneManager") => SceneManager)

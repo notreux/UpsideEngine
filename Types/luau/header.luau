@@ -41,6 +41,12 @@ export type Raycast2dParams = {
 	To: Vector2,
 }
 
+export type UpsideEngineInput = {
+	Action: string,
+	Position: Vector2,
+	KeyCode: Enum.KeyCode,
+}
+
 export type BaseClass = {
 	Id: string,
 	ClassName: string,

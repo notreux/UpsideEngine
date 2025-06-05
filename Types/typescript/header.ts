@@ -53,3 +53,9 @@ declare interface BaseClass {
     Extend(self: BaseClass,className: string,classStructure: table): BaseClass;
     Destroy(): any;
 }
+
+declare interface UpsideEngineInput {
+	Action: string,
+	Position: Vector2,
+	KeyCode: Enum.KeyCode,
+}

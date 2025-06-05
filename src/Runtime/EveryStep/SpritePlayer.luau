@@ -13,14 +13,18 @@ local function spriteListStep(self, sprite, seconds)
 	local shader = sprite.Shader
 
 	local list = sprite.List
+	local currentFrame
 	axeStep(active, "X", #list - 1)
 
+	currentFrame = Vector2.new(active.CurrentFrame.X + 1, active.CurrentFrame.Y)
+	self:Fire("FrameChanging", currentFrame)
+
 	if not shader.Enabled then
-		instance.Image = list[active.CurrentFrame.X + 1]
+		instance.Image = list[currentFrame.X]
 		return
 	end
 
-	instance:SetAttribute("url", list[active.CurrentFrame.X + 1])
+	instance:SetAttribute("url", list[currentFrame.X])
 end
 
 local function SpriteSheetStep(self, sprite, active)
@@ -32,6 +36,7 @@ local function SpriteSheetStep(self, sprite, active)
 	end
 
 	axeStep(active, "X", frames.X)
+	self:Fire("FrameChanging", active.CurrentFrame)
 	instance.ImageRectOffset = instance.ImageRectSize * active.CurrentFrame
 end
 

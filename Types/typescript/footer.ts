@@ -14,7 +14,8 @@ interface upsideEngine {
 		& ((name: "Particle") => Particle)
 		& ((name: "Shader") => Shader)
 		& ((name: "TextTag") => TextTag)
-		& ((name: "ReactiveLabel") => ReactiveLabel),
+		& ((name: "ReactiveLabel") => ReactiveLabel)
+		& ((name: "ProximityPrompt2D") => ProximityPrompt2D),
 
 
 	GetService: ((name: "SceneManager") => SceneManager)
