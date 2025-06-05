@@ -20,6 +20,7 @@ export type upsideEngine = {
 	GetService: ((name: "SceneManager") -> SceneManager)
 		& ((name: "PluginSupportService") -> PluginSupportService)
 		& ((name: "NetworkingService") -> NetworkingService)
+		& ((name: "TextTagService") -> TextTagService)
 		& ((name: "CrossPlatformService") -> CrossPlatformService),
 }
 
