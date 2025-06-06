@@ -185,7 +185,7 @@ local function shouldSkip(object, old, id)
 end
 
 function shadingSystem.onSetData(data, name, value)
-	local oldValue = data[name]
+	local oldValue = data[name] or {}
 	local result = {}
 
 	for idx, object in value do
