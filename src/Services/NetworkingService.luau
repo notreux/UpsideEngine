@@ -5,7 +5,7 @@ local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local request = require(upsideEngine.Classes.Internal.Request)
 local instanceProperties = require(upsideEngine.AppData.InstanceProperties)
 
-local toSkip = { "ImageRectOffset" }
+local toSkip = { "ImageRectOffset", "none" }
 local networkingService = {}
 networkingService.__index = networkingService
 
