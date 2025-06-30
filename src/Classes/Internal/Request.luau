@@ -107,6 +107,13 @@ function request:Accept(): BaseObject
 	this.Position = position
 	networking.ReplicationTarget[clon] = this
 
+	local shader = clon.Shader
+	clon:SetShader( --
+		if shader.Path ~= "" and shader.Enabled --
+			then clon.Shader
+			else nil
+	)
+
 	if exists then
 		return clon
 	end

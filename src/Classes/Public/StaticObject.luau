@@ -82,6 +82,20 @@ function staticObject.new(): StaticObject
 end
 
 --[[={
+	@desc Sets the scene for this object
+	@link void.link
+}=]]
+
+function staticObject:SetScene(scene: Scene)
+	baseObject.SetScene(self, scene)
+	local shader = self.Shader
+
+	if shader.Enabled and shader.Source then
+		self:SetShader(shader)
+	end
+end
+
+--[[={
 	@desc Sets the shader for this object
 	@link void.link
 }=]]

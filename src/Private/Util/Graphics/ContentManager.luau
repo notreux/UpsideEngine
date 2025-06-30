@@ -51,9 +51,13 @@ function exports.createSafeEditableImage(id)
 		elseif message and message:match("too many") then
 			warn(("[SHADER INFO] Too many requests for %s retrying in 5s"):format(id))
 			task.wait(5)
+		else
+			warn("[SHADER INFO] Unmanaged error: " .. message)
 		end
 
-		task.wait(1)
+		warn("[SHADER INFO] Retrying to load image: " .. id .. " (" .. retries .. "/10)")
+		warn("[SHADER INFO] If you are loading shaders when the client is still loading, it's recommended to wait some seconds before trying to load shaders")
+		task.wait(0.1)
 	end
 
 	return canvas

@@ -220,6 +220,7 @@ function shadingSystem.onSetData(data, name, value)
 		end
 
 		if id ~= "" and canvas.url ~= id or not instance.ImageContent.Object then
+			print(id, instance:GetAttribute(id))
 			canvas:setUrl(id)
 			instance:SetAttribute("url", id)
 		end

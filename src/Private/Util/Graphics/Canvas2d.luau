@@ -9,7 +9,7 @@ local function createCacheableImage(url)
 		image = editableImage,
 		isFree = false,
 	}
-
+	print(editableImage)
 	cache[url] = cache[url] or imageData
 	return imageData
 end
@@ -34,6 +34,11 @@ function exports:setUrl(url: string)
 
 	if cantUseCache then
 		imageData = createCacheableImage(url)
+	end
+
+	if imageData.image == nil then
+		self.loading = false
+		return
 	end
 
 	imageData.isFree = false

@@ -32,6 +32,8 @@ local function getInstanceData(object)
 		local sucess, value = pcall(read, instance, index)
 		if not sucess or table.find(toSkip, index) then
 			continue
+		elseif index == "Image" and value.Uri == nil then
+			value = instance:GetAttribute("url")
 		end
 
 		data[index] = value
