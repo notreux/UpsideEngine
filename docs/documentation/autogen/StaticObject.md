@@ -24,6 +24,9 @@ Is the shader of the object
 
 
 # Methods
+## [void](https://create.roblox.com/docs/scripting/luau/nil) SetScene(`scene: Scene`) 
+ Sets the scene for this object
+	
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetShader(`shader: Shader`) 
  Sets the shader for this object
 	

@@ -3,15 +3,25 @@ This class is used to replicate objects to other clients, for example the player
 	 
 # Properties
 
+## [number](number.md) ReplicationPerSecond
+Specifies the number of replication requests per second to send when using ReplicateOnChange
+  
 ## [boolean](boolean.md) DestroyObjectsOnLeave
-Defines if the replicated objects by other clients should be destroyed when they leaves
-	
+If true, destroys replicated objects from other clients when they leave
+  
 ## [table](table.md) ReplicationTarget 
- 
+Table of objects from other clients currently targeted for replication
+   
 ```lua
 { }
 ```
 ## [table](table.md) PlayersData 
+Dictionary containing the replicated objects for each client (keyed by UserId)
+   
+```lua
+{ }
+```
+## [table](table.md) Cache 
  
 ```lua
 { }

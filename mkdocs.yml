@@ -92,9 +92,7 @@ nav:
       - Basic effect: tutorials/shader-guide/BasicEffect.md
       - Integrated Functions: tutorials/shader-guide/IntegratedFunctions.md
 
-    - Assets with AI: 
-      - Introduction: tutorials/ai-assets/Introduction.md
-      - Creating Assets: tutorials/ai-assets/CreatingAssets.md
+    - Assets with AI: tutorials/ai-assets/Introduction.md
       
   - Documentation:
     - Welcome: documentation/Welcome.md

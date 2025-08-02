@@ -23,6 +23,14 @@
   --md-code-font: "FiraCode";
 }
 
+.md-header__topic:first-child{
+    font-weight:500;
+}
+
+.md-nav__link{
+    font-weight: 100 !important;
+} 
+
 [data-md-color-scheme="default"] {
     --md-footer-bg-color: #519DAF;
     --custom-navbar-color: #f1f1f1;
@@ -91,6 +99,14 @@ a {
 .md-footer-meta {
     background-color: var(--md-footer-bg-color);
 }
+
+summary,
+h5,
+.admonition-title,
+.md-typeset .md-button {
+    font-weight: 500 !important;
+}
+
 
 .md-typeset .md-button {
     text-align: center;
