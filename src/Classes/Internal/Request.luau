@@ -42,7 +42,7 @@ local function applyProperties(object, properties)
 end
 
 function request.new(clientId: number?, content: RequestContent?): Request
-	local data = if content then table.freeze(content) else {}
+	local data = if content then content else {}
 	local playerId = if clientId ~= nil
 		then clientId
 		elseif players.LocalPlayer ~= nil then players.LocalPlayer.UserId
@@ -63,7 +63,7 @@ end
 }=]]
 
 function request:Send(content: Dictionary<string, any>)
-	local id = tostring((content :: any).ObjectId)
+	local id = content.ObjectId
 	networking.Pending[id] = {
 		ClientId = self.ClientId,
 		Content = content,
@@ -108,11 +108,11 @@ function request:Accept(): BaseObject
 	networking.ReplicationTarget[clon] = this
 
 	local shader = clon.Shader
-	clon:SetShader( --
-		if shader.Path ~= "" and shader.Enabled --
-			then clon.Shader
-			else nil
-	)
+	if shader.Path ~= "" and shader.Enabled then
+		clon:SetShader(clon.Shader)
+	elseif not shader.Enabled then
+		clon:SetShader()
+	end
 
 	if exists then
 		return clon

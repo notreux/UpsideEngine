@@ -1,9 +1,8 @@
 local upsideEngine = script.Parent.Parent
-local players = game:GetService("Players")
-
+local diff = require(script.Parent.Parent.Private.Util.Internal.Diff)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local request = require(upsideEngine.Classes.Internal.Request)
-local instanceProperties = require(upsideEngine.AppData.InstanceProperties)
+local eProperties = require(upsideEngine.AppData.EssentialProperties)
 
 local toSkip = { "ImageRectOffset", "none" }
 local networkingService = {}
@@ -12,10 +11,12 @@ networkingService.__index = networkingService
 function networkingService.new()
 	local self = eventEmitter.new()
 	self:SetClassName("NetworkingService")
+	self.ReplicationPerSecond = 15
 	self.DestroyObjectsOnLeave = true
 	self.ReplicationTarget = {}
 	self.PlayersData = {}
 	self.Pending = {}
+	self.Cache = {}
 
 	return setmetatable(self, networkingService)
 end
@@ -28,7 +29,7 @@ local function getInstanceData(object)
 	local instance = object.Instance
 	local data = {}
 
-	for _, index in instanceProperties do
+	for _, index in eProperties.Instance do
 		local sucess, value = pcall(read, instance, index)
 		if not sucess or table.find(toSkip, index) then
 			continue
@@ -42,31 +43,53 @@ local function getInstanceData(object)
 	return data
 end
 
-local function replicate(self, object, instance)
-	local clientId = players.LocalPlayer.UserId
-	local playerData = self.PlayersData[clientId]
-
+local function replicate(self, object: Sprite, instance)
 	local req = request.new()
-	local objectProperties = {
-		Sprites = object.Sprites,
-		IsPlaying = object.IsPlaying,
-		Shader = object.Shader,
-		Tags = object.Tags,
+	local props = {
 		Active = {
 			Name = object.Active.Name,
 			SecondsPerFrame = object.Active.SecondsPerFrame,
 		},
 	}
 
-	playerData[object.Id] = object
-	req:Send({
+	for className, classProps in eProperties do
+		if not object:IsA(className) or className == "PhysicalObject" then
+			continue
+		end
+
+		for _, baseProp in classProps do
+			if baseProp == "Active" then
+				continue
+			end
+
+			props[baseProp] = object[baseProp]
+		end
+	end
+
+	if object:IsA("PhysicalObject") and not (object.Anchored and object.TrackCollisions) then
+		for _, physicalProp in eProperties.PhysicalObject do
+			props[physicalProp] = object[physicalProp]
+		end
+	end
+
+	local cached = self.Cache[object.Id] or {}
+	local instanceData = diff(instance, cached.Instance or {})
+	local objPropsData = diff(props, cached.ObjectProperties or {})
+
+	if not (next(instanceData) or next(objPropsData)) then
+		return
+	end
+
+	local content = {
 		ClassName = object.ClassName,
 		ObjectId = object.Id,
 		Name = object.Name,
 		Instance = instance,
-		ObjectProperties = objectProperties,
-	})
+		ObjectProperties = props,
+	}
 
+	self.Cache[object.Id] = content
+	req:Send(content)
 	req:Destroy()
 end
 
@@ -76,7 +99,7 @@ end
 
 function networkingService:Replicate(object: BaseObject)
 	local instance = getInstanceData(object)
-	replicate(self, object, instance)
+	replicate(self, object :: Sprite, instance)
 end
 
 --[[={
@@ -101,8 +124,11 @@ end
 --[[={
 	@desc This class is used to replicate objects to other clients, for example the player character
 	@about
-		@Players A dictionary with the replicated objects by the clients
-		@DestroyObjectsOnLeave Defines if the replicated objects by other clients should be destroyed when they leaves
+		@PlayersData Dictionary containing the replicated objects for each client (keyed by UserId)
+		@DestroyObjectsOnLeave If true, destroys replicated objects from other clients when they leave
+		@ReplicationPerSecond Specifies the number of replication requests per second to send when using ReplicateOnChange
+		@ReplicationTarget Table of objects from other clients currently targeted for replication
+		@Pending Table of pending replication requests
 	@events
 		@ReplicationRequest Params -> [Request](Request.md) 
 		Fired when a request is received by the client

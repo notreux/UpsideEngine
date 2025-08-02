@@ -2,7 +2,7 @@ local ue = script.Parent.Parent
 local classes = ue.Classes
 
 local objects = require(ue.AppData.Data).objects
-local instanceProperties = require(ue.AppData.InstanceProperties)
+local eProperties = require(ue.AppData.EssentialProperties)
 local eventEmitter = require(classes.Internal.EventEmitter)
 
 local encoder = require(ue.Private.Util).Encoder
@@ -52,7 +52,7 @@ function getData(data)
 			local instance = value
 			value = {}
 
-			for _, property in ipairs(instanceProperties) do
+			for _, property in eProperties.Instance do
 				local sucess, val = pcall(read, instance, property)
 				if sucess then
 					value[property] = val

@@ -1,6 +1,7 @@
-local Networking = require(script.Parent.Parent.Parent.Runtime.Networking)
-local Sprite = require(script.Parent.Parent.Public.Sprite)
-local Request = require(script.Parent.Request)
+local upsideEngine = script.Parent.Parent.Parent
+local NetworkingService = require(upsideEngine.Services.NetworkingService)
+local Sprite = require(upsideEngine.Classes.Public.Sprite)
+local Request = require(upsideEngine.Classes.Internal.Request)
 
 return function()
 	local object = Sprite.new()
@@ -16,8 +17,8 @@ return function()
 		},
 	})
 
-	Networking.PlayersData[1] = {}
-	Networking.PlayersData[3] = {}
+	NetworkingService.PlayersData[1] = {}
+	NetworkingService.PlayersData[3] = {}
 
 	describe("Constructor .new()", function()
 		it("should send the provided information to the client|server", function()

@@ -2,11 +2,9 @@ local upsideEngine = script.Parent.Parent
 local runService = game:GetService("RunService")
 local players = game:GetService("Players")
 
+local request = require(script.Parent.Parent.Classes.Internal.Request)
 local ToVector2 = require(script.Parent.Parent.Private.Util.DataType.ToVector2)
-local copyTable = require(script.Parent.Parent.Private.Util.Internal.CopyTable)
-local isEqual = require(script.Parent.Parent.Private.Util.Internal.IsEqual)
 local getDistance = require(script.Parent.Parent.Private.Util.Math.GetDistance)
-local request = require(upsideEngine.Classes.Internal.Request)
 local networkingService = require(upsideEngine.Services.NetworkingService)
 
 local socket = game.ReplicatedStorage:WaitForChild("UpsideEngineSocket")
@@ -14,14 +12,12 @@ local isServer = runService:IsServer()
 
 local playersData = networkingService.PlayersData
 local replicationTarget = networkingService.ReplicationTarget
-
-local replicationTicks = 1 / 10
 local replicationTimer = 0
 
 local event = isServer and "OnServerEvent" or "OnClientEvent"
-local requestHandler = {}
+local endpoints = {}
 
-function requestHandler.replicate(client, pending)
+function endpoints.sync(client, pending)
 	if typeof(pending) ~= "table" then
 		return
 	elseif isServer then
@@ -45,7 +41,7 @@ function buildRequests(requests)
 end
 
 local function onEvent(client, requestType, pending)
-	local handle = requestHandler[requestType] :: () -> nil
+	local handle = endpoints[requestType] :: () -> nil
 	handle(client, pending)
 end
 
@@ -59,7 +55,7 @@ local function onPlayerAdded(player)
 		local data = table.clone(playersData)
 		data[player.UserId] = nil
 
-		socket:FireClient(player, "replicate", data)
+		socket:FireClient(player, "sync", data)
 		task.wait(1)
 	end
 end
@@ -80,56 +76,30 @@ local function onPlayerLeave(player)
 end
 
 local function sendClientRequests(pending)
-	socket:FireServer("replicate", pending)
+	networkingService.Pending = {}
+	socket:FireServer("sync", pending)
 end
 
-local function getTableSafe(object, key)
-	if not object[key] then
-		object[key] = {}
-	end
+local function sendServerRequests(requests)
+	local toSend = {}
+	for index, data in requests do
+		local content = data.Content
+		local objectId = content.ObjectId
+		local clientId = data.ClientId
 
-	return object[key]
-end
-
-local function removeCachedProperties(data, cached)
-	for key, value in data do
-		if not isEqual(value, cached[key]) then
-			continue
+		if toSend[clientId] == nil then
+			toSend[clientId] = {}
 		end
 
-		data[key] = nil
-	end
-end
-
-local function sendServerRequests(pending)
-	local clients = {}
-	for index, data in pending do
-		local content = data.Content
-		local id = content.ObjectId
-
-		local clientId = data.ClientId
-		local toCache = copyTable(data)
-
-		local clientData = getTableSafe(clients, clientId)
-		local cachedRequest = getTableSafe(playersData[clientId], id)
-
-		local cachedContent = cachedRequest.Content or {}
-		local cachedInstance = cachedContent.Instance or {}
-		local cachedOP = cachedContent.ObjectProperties or {}
-
-		removeCachedProperties(content.Instance, cachedInstance)
-		removeCachedProperties(content.ObjectProperties, cachedOP)
-
-		playersData[clientId][id] = toCache
-		clientData[id] = data
-		pending[index] = nil
+		toSend[clientId][objectId] = data
+		requests[index] = nil
 	end
 
 	for _, player in players:GetPlayers() do
-		local data = table.clone(clients)
+		local data = table.clone(toSend)
 		data[player.UserId] = nil
 
-		socket:FireClient(player, "replicate", data)
+		socket:FireClient(player, "sync", data)
 	end
 end
 
@@ -137,16 +107,14 @@ local function requestManager(deltaTime)
 	local pending = networkingService.Pending
 	local sendRequests = if isServer then sendServerRequests else sendClientRequests
 
-	local _, element = next(pending)
+	local replicationTicks = 1 / networkingService.ReplicationPerSecond
 	replicationTimer += deltaTime
-
-	if not element then
-		return
-	end
 
 	while replicationTimer > replicationTicks do
 		replicationTimer -= replicationTicks
-		sendRequests(pending)
+		if next(pending) then
+			sendRequests(pending)
+		end
 	end
 end
 
@@ -157,7 +125,7 @@ local function clientInterpolator(deltaTime)
 			local iValue = instance[property]:Lerp(value, 0.33)
 			local distance = getDistance(ToVector2(iValue, "Offset"), ToVector2(instance[property], "Offset"))
 
-			if distance < 10 then
+			if distance < 5 then
 				continue
 			end
 
@@ -186,6 +154,4 @@ if not isServer then
 	runService.Heartbeat:Connect(clientInterpolator)
 end
 
-return {
-	PlayersData = playersData,
-}
+return {}

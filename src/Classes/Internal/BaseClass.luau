@@ -2,7 +2,7 @@ local upsideEngine = script.Parent.Parent.Parent
 local appData = upsideEngine.AppData
 
 local copyTable = require(upsideEngine.Private.Util.Internal.CopyTable)
-local instanceProperties = require(appData.InstanceProperties)
+local eProperties = require(appData.EssentialProperties)
 local data = require(appData.Data)
 
 local environments = {
@@ -44,7 +44,7 @@ function baseClass:Clone()
 	clon.Instance = instance
 	clon.Id = id
 
-	for _, index in instanceProperties do
+	for _, index in eProperties.Instance do
 		pcall(set, self.Instance, clon.Instance, index)
 	end
 

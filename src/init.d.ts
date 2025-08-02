@@ -1320,6 +1320,11 @@ ChromaticAberrationDistance: number;
 */
 ChromaticAberrationConnection: boolean;
 /**
+Sets the scene for this object
+	
+*/
+SetScene(scene: Scene): null;
+/**
 Sets the shader for this object
 	
 */
@@ -1603,18 +1608,29 @@ This class is used to replicate objects to other clients, for example the player
 */ 
 export declare interface NetworkingService extends EventEmitter {
 /**
-Defines if the replicated objects by other clients should be destroyed when they leaves
-	
+Specifies the number of replication requests per second to send when using ReplicateOnChange
+  
+*/
+ReplicationPerSecond: number;
+/**
+If true, destroys replicated objects from other clients when they leave
+  
 */
 DestroyObjectsOnLeave: boolean;
 /**
-
+Table of objects from other clients currently targeted for replication
+  
 */
 ReplicationTarget: { };
 /**
-
+Dictionary containing the replicated objects for each client (keyed by UserId)
+  
 */
 PlayersData: { };
+/**
+
+*/
+Cache: { };
 /**
 Replicates an object to other clients
 

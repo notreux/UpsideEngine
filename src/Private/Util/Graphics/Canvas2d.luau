@@ -9,7 +9,7 @@ local function createCacheableImage(url)
 		image = editableImage,
 		isFree = false,
 	}
-	print(editableImage)
+
 	cache[url] = cache[url] or imageData
 	return imageData
 end
