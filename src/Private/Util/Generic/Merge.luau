@@ -1,6 +1,6 @@
 return function(t1, t2)
-	local result = t2 or {}
-	for index, value in t1 do
+	local result = t1
+	for index, value in t2 do
 		result[index] = value
 	end
 

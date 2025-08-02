@@ -4,6 +4,8 @@ local players = game:GetService("Players")
 
 local request = require(script.Parent.Parent.Classes.Internal.Request)
 local ToVector2 = require(script.Parent.Parent.Private.Util.DataType.ToVector2)
+local merge = require(script.Parent.Parent.Private.Util.Generic.Merge)
+local diff = require(script.Parent.Parent.Private.Util.Internal.Diff)
 local getDistance = require(script.Parent.Parent.Private.Util.Math.GetDistance)
 local networkingService = require(upsideEngine.Services.NetworkingService)
 
@@ -87,12 +89,22 @@ local function sendServerRequests(requests)
 		local objectId = content.ObjectId
 		local clientId = data.ClientId
 
+		local cachedRequest = playersData[clientId][objectId] or { Content = {} }
+		local cachedContent = cachedRequest.Content
+
 		if toSend[clientId] == nil then
 			toSend[clientId] = {}
 		end
 
-		toSend[clientId][objectId] = data
 		requests[index] = nil
+		playersData[clientId][objectId] = data
+		toSend[clientId][objectId] = {
+			ClientId = clientId,
+			Content = merge(data.Content, {
+				Instance = diff(content.Instance, cachedContent.Instance or {}),
+				ObjectProperties = diff(content.ObjectProperties, cachedContent.ObjectProperties or {}),
+			}),
+		}
 	end
 
 	for _, player in players:GetPlayers() do
