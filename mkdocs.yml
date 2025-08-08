@@ -95,8 +95,10 @@ nav:
     - Reactive Label Guide: 
       - Introduction: tutorials/reactive-label/Introduction.md
       - Creating a Custom TextTag: tutorials/reactive-label/TextTags.md
-    - Proximity Prompt Guide: tutorials/reactive-label/Guide.md
-    - Assets with AI: tutorials/ai-assets/Introduction.md
+    - Proximity Prompt Guide: 
+      - Introduction: tutorials/proximity-prompt/Introduction.md
+    - Assets with AI: 
+      - Introduction: tutorials/ai-assets/Introduction.md
       
   - Documentation:
     - Welcome: documentation/Welcome.md
