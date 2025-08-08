@@ -92,6 +92,10 @@ nav:
       - Basic effect: tutorials/shader-guide/BasicEffect.md
       - Integrated Functions: tutorials/shader-guide/IntegratedFunctions.md
 
+    - Reactive Label Guide: 
+      - Introduction: tutorials/reactive-label/Introduction.md
+      - Creating a Custom TextTag: tutorials/reactive-label/TextTags.md
+    - Proximity Prompt Guide: tutorials/reactive-label/Guide.md
     - Assets with AI: tutorials/ai-assets/Introduction.md
       
   - Documentation:
