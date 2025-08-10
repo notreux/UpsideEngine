@@ -73,9 +73,10 @@ nav:
 
     - Plugin Guide: 
       - First steps: tutorials/plugin-guide/FirstSteps.md
-      - Using tile editor: tutorials/plugin-guide/TileEditor.md
       - Using sprite editor: tutorials/plugin-guide/SpriteEditor.md
       - Using collision editor: tutorials/plugin-guide/CollisionEditor.md
+      - Using tilemap editor: tutorials/plugin-guide/TilemapEditor.md
+      - Using MCP: tutorials/plugin-guide/MCPGuide.md
       - Plugin Scripts: tutorials/plugin-guide/PluginScripts.md
 
     - Multiplayer Integration: 

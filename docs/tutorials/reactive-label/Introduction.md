@@ -63,7 +63,7 @@ Some of the most important properties of `ReactiveLabel` include:
 - **Animated** : `boolean`  
   Enables or disables all animation behavior (default: `true`).
 
-> 🔍 For a full list of configurable properties, check the [API Reference](../../documentation/autogen/ReactiveLabel.html).
+> 🔍 For a full list of configurable properties, check the [API Reference](../../documentation/autogen/ReactiveLabel.md).
 
 ---
 
@@ -115,7 +115,7 @@ This loop updates the name and dialog content dynamically, allowing for animated
 - Supports rich text formatting and animations using custom tags.
 - Text playback speed and behavior can be fine-tuned via properties like `CharactersPerSecond` and `PauseDelays`.
 - Sound effects for typing can be customized with `TypingSoundId` and `TypingSoundVolume`.
-- Additional customization options are available in the [API Reference](../../documentation/autogen/ReactiveLabel.html).
+- Additional customization options are available in the [API Reference](../../documentation/autogen/ReactiveLabel.md).
 
 ---
 
