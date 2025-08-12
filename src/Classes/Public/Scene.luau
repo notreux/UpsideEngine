@@ -72,7 +72,7 @@ function scene:Enable()
 	instance.Lighting.Visible = true
 
 	sceneManager.ActiveScenes[self.Id] = self
-	sceneManager:Fire("SceneEnable", scene)
+	sceneManager:Fire("SceneLoaded", scene)
 end
 
 --[[={
@@ -86,7 +86,7 @@ function scene:Disable()
 	instance.Lighting.Visible = false
 
 	sceneManager.ActiveScenes[self.Id] = nil
-	sceneManager:Fire("SceneDisable", scene)
+	sceneManager:Fire("SceneUnloaded", scene)
 end
 
 --[[={
