@@ -26,7 +26,6 @@ function parallax.new()
 	content.ScaleType = Enum.ScaleType.Tile
 	content.ResampleMode = Enum.ResamplerMode.Pixelated
 	content.Parent = self.Instance
-	content.ZIndex = -1
 
 	return setmetatable(self, parallax)
 end
