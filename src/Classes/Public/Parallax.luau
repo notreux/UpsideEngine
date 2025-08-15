@@ -12,6 +12,7 @@ function parallax.new()
 	self.LockToCamera = false
 
 	local instance = self.Instance
+	instance.BackgroundTransparency = 1
 	instance.ClipsDescendants = true
 	instance.AnchorPoint = Vector2.new(0.5, 0.5)
 
