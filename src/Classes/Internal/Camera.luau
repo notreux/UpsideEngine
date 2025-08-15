@@ -59,8 +59,8 @@ end
 	@link void.link
 }=]]
 
-function camera:LookTo(object: PhysicalObject)
-	assert(object:IsA("PhysicalObject"), ("Physical Object expected, got%s"):format(typeof(object)))
+function camera:LookTo(object: StaticObject)
+	assert(object:IsA("StaticObject"), ("StaticObject expected, got %s"):format(typeof(object)))
 	local resolution = workspace.CurrentCamera.ViewportSize
 	local center = resolution / 2
 
