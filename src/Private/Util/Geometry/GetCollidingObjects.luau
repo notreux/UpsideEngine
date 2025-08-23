@@ -48,7 +48,7 @@ local function getRotatedArea(instance, area, centre)
 	return area
 end
 
-function getObjectData(object, velocity)
+local function getObjectData(object, velocity)
 	local area = {}
 	local instance = object.Instance
 

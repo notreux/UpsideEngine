@@ -1,25 +1,24 @@
-type collision = nil | true
-
 local handlers = {}
-function tripleProduct(a, b, c)
-	return a:Cross(b):Cross(c)
+
+local function tripleProduct(a, b, c)
+	return b * a:Dot(c) - a * b:Dot(c)
 end
 
-function handlers.point(direction, simplex): (Vector3, collision)
+function handlers.point(direction, simplex)
 	return -direction
 end
 
-function handlers.line(direction, simplex): (Vector3, collision)
+function handlers.line(direction, simplex)
 	local b = simplex[2]
 	local c = simplex[1]
 
 	local cb = b - c
-	local c0 = c * -1
+	local c0 = -c
 
 	return tripleProduct(cb, c0, cb)
 end
 
-function handlers.triangle(direction, simplex): (Vector3, collision)
+function handlers.triangle(direction, simplex)
 	local a = simplex[3]
 	local b = simplex[2]
 	local c = simplex[1]
@@ -33,15 +32,13 @@ function handlers.triangle(direction, simplex): (Vector3, collision)
 
 	if abPerp:Dot(a0) > 0 then
 		table.remove(simplex, 1)
-		direction = abPerp
+		return abPerp
 	elseif acPerp:Dot(a0) > 0 then
 		table.remove(simplex, 2)
-		direction = acPerp
-	else
-		return direction, true
+		return acPerp
 	end
 
-	return direction
+	return direction, true
 end
 
 return handlers

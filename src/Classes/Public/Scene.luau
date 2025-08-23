@@ -1,7 +1,7 @@
 local upsideEngine = script.Parent.Parent.Parent
 
-local objectEnvironment = require(script.Parent.Parent.Internal.ObjectEnvironment)
-local shaderEnvironment = require(script.Parent.Parent.Internal.ShaderEnvironment)
+local objectEnvironment = require(upsideEngine.Classes.Internal.ObjectEnvironment)
+local shaderEnvironment = require(upsideEngine.Classes.Internal.ShaderEnvironment)
 local camera = require(upsideEngine.Classes.Internal.Camera)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 
