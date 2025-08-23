@@ -14,10 +14,15 @@ for _, tracker in ipairs(childs) do
 	end
 end
 
-local function everyStep(deltaTime)
+local t1 = os.clock()
+local function everyStep()
 	local fixedDeltaTime = 1 / 250
 	local accumulator = 0
+
+	local now = os.clock()
+	local deltaTime = now - t1
 	accumulator += deltaTime
+	t1 = now
 
 	while accumulator >= fixedDeltaTime do
 		for _, scene in sceneManager.ActiveScenes do
