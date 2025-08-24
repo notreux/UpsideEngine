@@ -204,6 +204,7 @@ function reactiveLabel:Render()
 				letterFrame.BackgroundTransparency = 1
 				letterFrame.Size = UDim2.new(0, 0, 0, self.FontSize)
 				letterFrame.AutomaticSize = Enum.AutomaticSize.X
+				letterFrame.ZIndex = self.Instance.ZIndex
 				letterFrame.Parent = wordFrame
 
 				local letterLabel = Instance.new("TextLabel")
@@ -218,6 +219,7 @@ function reactiveLabel:Render()
 				letterLabel.TextScaled = self.TextScaled
 				letterLabel.AutomaticSize = Enum.AutomaticSize.X
 				letterLabel.Size = UDim2.new(0, 0, 0, self.FontSize)
+				letterLabel.ZIndex = self.Instance.ZIndex
 				letterLabel.Parent = letterFrame
 
 				local stroke = Instance.new("UIStroke")
