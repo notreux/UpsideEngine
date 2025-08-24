@@ -36,7 +36,7 @@ This property defines the object which is going to follow the camera
 ## [void](https://create.roblox.com/docs/scripting/luau/nil) SetSubject(`subject: Character`) 
  Sets the camera subject
 	
-## [void](https://create.roblox.com/docs/scripting/luau/nil) LookTo(`object: PhysicalObject`) 
+## [void](https://create.roblox.com/docs/scripting/luau/nil) LookTo(`object: StaticObject`) 
  Position the camera in a centered location relative to the provided object
 	
 
