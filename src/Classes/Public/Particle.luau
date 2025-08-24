@@ -1,28 +1,25 @@
+local tweenService = game:GetService("TweenService")
 local upsideEngine = script.Parent.Parent.Parent
 local sceneManager = require(upsideEngine.Services).SceneManager
 
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
-local light = require(upsideEngine.Classes.Public.Light)
-
-local tweenService = game:GetService("TweenService")
 local character = require(script.Parent.Character)
+local staticObject = require(script.Parent.StaticObject)
+
 local particle = {}
 particle.__index = particle
 
 function particle.new(): Particle
 	local self = baseObject.new()
 	self:SetClassName(script.Name)
+
 	self.Angle = Vector2.new(90, 90)
 	self.Info = TweenInfo.new(0.5)
-
-	self.TrackLight = false -- Experimental
-	self.CanCollide = false
 	self.Enabled = true
 
+	self.Rotation = 0
 	self.MaxRate = 100
 	self.Units = 0
-	self.LightBrightness = -10 -- Experimental
-	self.LightRange = 150 -- Experimental
 	self.Range = 5
 	self.LifeTime = 1
 	self.Clock = 0
@@ -41,67 +38,81 @@ function particle.new(): Particle
 end
 
 --[[={
-	@desc Sets the subject property
-	@link void.link
+    @desc Sets the subject property
 }=]]
-
 function particle:SetSubject(subject: Character)
-	local sScene = sceneManager:Get(subject.Scene)
-	assert(sScene ~= nil, "The subject must be in a scene!")
+	assert(subject ~= nil, "Subject expected")
+	local newScene = sceneManager:Get(subject.Scene)
+	assert(newScene ~= nil, "The subject must be in a scene!")
 
-	local scene = sceneManager:Get(self.Subject.Scene)
-	if self.Subject and scene then
-		scene.ParticleEnvironment:RemoveOne(self.Id)
+	local id = (self.Subject and self.Subject.Scene) or self.Scene
+	local oldScene = sceneManager:Get(id)
+	if self.Subject and oldScene then
+		oldScene.ParticleEnvironment:RemoveOne(self.Id)
 	end
 
 	self.Subject = subject
-	if not sScene.ParticleEnvironment:HasOne(self.Id) then
-		sScene.ParticleEnvironment:AddOne(self, self.Id)
+
+	if not newScene.ParticleEnvironment:HasOne(self.Id) then
+		newScene.ParticleEnvironment:AddOne(self, self.Id)
 	end
 end
 
 --[[={
-	@desc Sets the angle property of the particle
-	@link void.link
+    @desc Sets the angle property of the particle
 }=]]
-
 function particle:SetAngle(Angle: Vector2)
-	assert(Angle.X > 0 and Angle.Y > 0, "The angle must be greater than 0!")
+	assert(Angle and Angle.X > 0 and Angle.Y > 0, "The angle components must be greater than 0!")
 	self.Angle = Angle
 end
 
 --[[={
-	@desc Sets the maximum amount of particles that can exist at the same time
-	@link void.link
+    @desc Sets the maximum amount of particles that can exist at the same time
 }=]]
-
 function particle:SetMaxRate(maxRate: number)
-	assert(maxRate > 0, "The maxRate must be greater than 0!")
+	assert(type(maxRate) == "number" and maxRate > 0, "The maxRate must be greater than 0!")
 	assert(maxRate <= 1500, "The maxRate limit is 1500!")
 	self.MaxRate = maxRate
 end
 
+function particle:SetRotation(rotation: number)
+	assert(type(rotation) == "number", "Rotation must be a number (degrees)")
+	self.Rotation = rotation
+end
+
 --[[={
-	@desc Emits the specified amount of particles, if none is provided then will use as amount the Rate property
-	@link void.link
+    @desc Emits the specified amount of particles, if none is provided then will use as amount the Rate property
+    @link void.link
 }=]]
+function particle:Emit(rate: number?)
+	if not self.Enabled then
+		return
+	end
 
-function particle:Emit(rate: number)
-	local id = self.Subject and self.Subject.Scene or self.Scene
+	local emitCount = rate or self.Rate
+	if type(emitCount) ~= "number" or emitCount <= 0 then
+		return
+	end
+
+	local id = (self.Subject and self.Subject.Scene) or self.Scene
 	local scene = sceneManager:Get(id)
+	if not scene or not scene.Instance or not scene.Instance.GameFrame then
+		return
+	end
 
-	for _ = 1, self.Enabled and (rate or self.Rate) or 0 do
-		if self.Units > self.MaxRate then
-			break
-		end
+	local available = math.max(self.MaxRate - self.Units, 0)
+	if available <= 0 then
+		return
+	end
 
-		local unit = light.new()
-		unit.Track = self.TrackLight
-		unit.Range = self.LightRange
-		unit.Brightness = self.LightBrightness
+	emitCount = math.min(emitCount, available)
+	for _ = 1, emitCount do
 		self.Units += 1
 
-		local subjectInstance = self.Subject.Instance
+		local unit = staticObject.new()
+		unit.Instance.ZIndex = self.Instance.ZIndex
+
+		local subjectInstance = (self.Subject and self.Subject.Instance) or unit.Instance
 		local instance = unit.Instance
 		instance.Parent = scene.Instance.GameFrame
 		instance.Position = subjectInstance.Position
@@ -110,6 +121,20 @@ function particle:Emit(rate: number)
 			instance[property] = value
 		end
 
+		local halfAngleDeg = (self.Angle and self.Angle.X or 0) / 2
+
+		local rotationOffset = tonumber(self.Rotation) or 0
+		local thetaDeg = rotationOffset + ((math.random() * (2 * halfAngleDeg)) - halfAngleDeg)
+		local theta = math.rad(thetaDeg)
+		local radius = math.sqrt(math.random()) * self.Range
+
+		local dx = math.cos(theta) * radius
+		local dy = math.sin(theta) * radius
+		if self.Angle and self.Angle.X and self.Angle.X ~= 0 then
+			dy = dy * (self.Angle.Y / math.max(self.Angle.X, 1))
+		end
+
+		local targetPosition = subjectInstance.Position + UDim2.fromOffset(dx, dy)
 		local info = TweenInfo.new(
 			self.LifeTime,
 			self.Info.EasingStyle,
@@ -121,24 +146,28 @@ function particle:Emit(rate: number)
 
 		local goalsTween = tweenService:Create(instance, info, self.Goals)
 		local positionTween = tweenService:Create(instance, self.Info, {
-			Position = subjectInstance.Position + UDim2.fromOffset(
-				math.random(-self.Angle.X, self.Angle.X) * self.Range,
-				math.random(-self.Angle.Y, self.Angle.Y) * self.Range
-			),
+			Position = targetPosition,
 		})
 
 		positionTween:Play()
 		goalsTween:Play()
 
-		goalsTween.Completed:Connect(function()
-			goalsTween:Destroy()
-			positionTween:Destroy()
-
-			unit:Destroy()
+		local conn
+		conn = goalsTween.Completed:Connect(function()
+			if conn then
+				conn:Disconnect()
+			end
+			pcall(function()
+				goalsTween:Destroy()
+				positionTween:Destroy()
+				if unit and unit.Destroy then
+					unit:Destroy()
+				end
+			end)
 			self.Units -= 1
 		end)
 
-		task.wait(self.LifeTime / self.Rate)
+		task.wait(math.max(self.LifeTime / math.max(self.Rate, 1), 0.001))
 	end
 end
 
@@ -163,18 +192,7 @@ end
 		@LifeTime The number of seconds the particle will be active before being destroyed
 		@Rate Is the amount of particles which is going to be generated
 		@Clock Used for internal purposes
-		@TrackLight 
-		!!! warning 
-			Experimental, dont use
-		@CanCollide 
-		!!! warning 
-			Experimental, dont use
-		@LightBrightness 
-		!!! warning 
-			Experimental, dont use
-		@LightRange 
-		!!! warning 
-			Experimental, dont use
+		@Rotation Rotation in degrees applied to the emission direction (offset for theta)
 }=]]
 
 return setmetatable(particle, baseObject)
