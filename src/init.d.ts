@@ -162,7 +162,7 @@ SetSubject(subject: Character): null;
 Position the camera in a centered location relative to the provided object
 	
 */
-LookTo(object: PhysicalObject): null;
+LookTo(object: StaticObject): null;
 }
  
 
@@ -662,22 +662,15 @@ Is the tween info of the tween which is going to be used to move the particles
 */
 Info: TweenInfo;
 /**
-!!! warning 
-  	Experimental, dont use
-  
-*/
-TrackLight: boolean;
-/**
-!!! warning 
-  	Experimental, dont use
-  
-*/
-CanCollide: boolean;
-/**
 When its enabled new particles can be emitted
   
 */
 Enabled: boolean;
+/**
+Rotation in degrees applied to the emission direction (offset for theta)
+
+*/
+Rotation: number;
 /**
 Is the maximum amount of particles that can exist at the same time
   
@@ -688,18 +681,6 @@ Is the amount of particles that are existing at this moment
   
 */
 Units: number;
-/**
-!!! warning 
-  	Experimental, dont use
-  
-*/
-LightBrightness: number;
-/**
-!!! warning 
-  	Experimental, dont use
-
-*/
-LightRange: number;
 /**
 Is the distance that can be traveled by each particle 
   
@@ -751,24 +732,28 @@ Goals: {
 };
 /**
 Sets the subject property
-	
+
 */
 SetSubject(subject: Character): null;
 /**
 Sets the angle property of the particle
-	
+
 */
 SetAngle(Angle: Vector2): null;
 /**
 Sets the maximum amount of particles that can exist at the same time
-	
+
 */
 SetMaxRate(maxRate: number): null;
 /**
-Emits the specified amount of particles, if none is provided then will use as amount the Rate property
-	
+
 */
-Emit(rate: number): null;
+SetRotation(rotation: number): null;
+/**
+Emits the specified amount of particles, if none is provided then will use as amount the Rate property
+    
+*/
+Emit(rate: number | void): null;
 }
  
 

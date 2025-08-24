@@ -29,6 +29,10 @@ This version wont work in roblox player until [EditableImages](https://create.ro
     - Impact: The method will be executed with default values
     - Action required: Use instead one of the new properties in LightingEnvironment listed in the "Features" section.
 
+- Removed experimental properties from Particle
+    - Impact: Using these properties will throw an error
+    - Action required: Remove any usage of these properties
+
 ## Features
 ### New movement keywords
 - "idle_left"
@@ -73,6 +77,10 @@ This version wont work in roblox player until [EditableImages](https://create.ro
     - Rotation (only works in SpotLights)
     - Angle (only works in SpotLights)
     - Inverted (only works in PointLights)
+
+## Particle
+- New properties
+    - Rotation
 
 ### PhysicalObject
 - New properties
