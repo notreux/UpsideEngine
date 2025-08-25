@@ -946,6 +946,16 @@ The text content to be rendered.
 */
 Text: string;
 /**
+Controls how child elements are laid out horizontally within the label. Enum type: Enum.HorizontalAlignment
+        
+*/
+HorizontalAlignment: Enum;
+/**
+Controls how child elements are laid out vertically within the label. Enum type: Enum.VerticalAlignment
+  
+*/
+VerticalAlignment: Enum;
+/**
 
 */
 TextTransparency: number;
@@ -994,12 +1004,14 @@ If true, stops the typing sound once rendering is complete.
 StopSoundOnFinish: boolean;
 /**
 A table defining additional pause durations after certain characters (e.g., comma, period).
-  -- Example of PauseDelays usage:
+  Example of PauseDelays usage:
+  ```
   {
   	[","] = 0.25, -- pause 0.25 seconds after a comma
   	["."] = 0.5,  -- pause 0.5 seconds after a period
   	["?"] = 0.5,  -- pause 0.5 seconds after a question mark
   }
+  ```
 
 */
 PauseDelays: {
