@@ -12,6 +12,12 @@ The font size of the text.
 ## [string](string.md) Text
 The text content to be rendered.
   
+## [Enum](Enum.md) HorizontalAlignment
+Controls how child elements are laid out horizontally within the label. Enum type: Enum.HorizontalAlignment
+        
+## [Enum](Enum.md) VerticalAlignment
+Controls how child elements are laid out vertically within the label. Enum type: Enum.VerticalAlignment
+  
 ## [number](number.md) TextTransparency
 
 ## [Color3](Color3.md) TextColor3
@@ -41,12 +47,14 @@ If true, stops the typing sound once rendering is complete.
   
 ## [table](table.md) PauseDelays 
 A table defining additional pause durations after certain characters (e.g., comma, period).
-  -- Example of PauseDelays usage:
+  Example of PauseDelays usage:
+  ```
   {
   	[","] = 0.25, -- pause 0.25 seconds after a comma
   	["."] = 0.5,  -- pause 0.5 seconds after a period
   	["?"] = 0.5,  -- pause 0.5 seconds after a question mark
   }
+  ```
  
 ```lua
 {
