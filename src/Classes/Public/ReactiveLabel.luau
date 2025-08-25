@@ -1,6 +1,6 @@
 local SoundService = game:GetService("SoundService")
 local upsideEngine = script.Parent.Parent.Parent
-local TextTagService = require(script.Parent.Parent.Parent.Services.TextTagService)
+local TextTagService = require(upsideEngine.Services.TextTagService)
 local TextTag = require(script.Parent.TextTag)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
 
@@ -11,11 +11,11 @@ local defaultTypingSoundId = TextTag.new().TypingSoundId
 local typingSound = Instance.new("Sound")
 typingSound.Parent = SoundService
 
-local function createUIListLayout(self: Frame)
+local function createUIListLayout(self: Frame, horizontalAlignment, verticalAlignment)
 	local uiListLayout = Instance.new("UIListLayout")
 	uiListLayout.Parent = self
-	uiListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-	uiListLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+	uiListLayout.HorizontalAlignment = horizontalAlignment
+	uiListLayout.VerticalAlignment = verticalAlignment
 	uiListLayout.FillDirection = Enum.FillDirection.Horizontal
 	uiListLayout.Wraps = true
 	uiListLayout.Padding = UDim.new(0, 0)
@@ -103,6 +103,8 @@ function reactiveLabel.new(): Sound
 	self.Font = Enum.Font.Arial
 	self.FontSize = 32
 	self.Text = ""
+	self.HorizontalAlignment = Enum.HorizontalAlignment.Left
+	self.VerticalAlignment = Enum.VerticalAlignment.Top
 	self.TextTransparency = 0
 	self.TextColor3 = Color3.new(1, 1, 1)
 	self.TextScaled = false
@@ -122,7 +124,7 @@ function reactiveLabel.new(): Sound
 	self.Instance.Size = UDim2.new(0, 400, 0, 400)
 	self.Instance.BackgroundTransparency = 1
 
-	createUIListLayout(self.Instance)
+	createUIListLayout(self.Instance, self.HorizontalAlignment, self.VerticalAlignment)
 	return setmetatable(self, reactiveLabel)
 end
 
@@ -137,9 +139,13 @@ function reactiveLabel:Render()
 	end
 
 	self.Instance:ClearAllChildren()
-	createUIListLayout(self.Instance)
+	createUIListLayout(self.Instance, self.HorizontalAlignment, self.VerticalAlignment)
 
 	local elements = parseTags(self.Text, {})
+
+	local allWords = {}
+	local charactersDelayGlobal = 1 / math.max(1, self.CharactersPerSecond)
+
 	for _, data in elements do
 		for word in data.text:gmatch("%S+") do
 			local wordFrame = Instance.new("Frame")
@@ -147,12 +153,10 @@ function reactiveLabel:Render()
 			wordFrame.Size = UDim2.new(0, 0, 0, self.FontSize)
 			wordFrame.AutomaticSize = Enum.AutomaticSize.X
 			wordFrame.Parent = self.Instance
-			createUIListLayout(wordFrame)
+			createUIListLayout(wordFrame, self.HorizontalAlignment, self.VerticalAlignment)
 
 			local letters = {}
 			local displayMode = "letter"
-			local charactersDelay = (1 / math.max(1, self.CharactersPerSecond))
-
 			local typingSoundId = self.TypingSoundId
 			local typingSoundVolume = self.TypingSoundVolume
 			local wordsPerSecond = 0
@@ -172,7 +176,7 @@ function reactiveLabel:Render()
 					else wordsPerSecond
 
 				if args.wordsPerSecond and args.wordsPerSecond > localWordsPerSecond then
-					localWordsPerSecond = args.idleTime
+					localWordsPerSecond = args.wordsPerSecond
 					useLocalCharsPerSecond = true
 				end
 
@@ -184,9 +188,6 @@ function reactiveLabel:Render()
 			if useLocalCharsPerSecond then
 				wordsPerSecond = localWordsPerSecond
 			end
-
-			typingSound.SoundId = typingSoundId
-			typingSound.Volume = typingSoundVolume
 
 			for i = 1, #word do
 				local letter = word:sub(i, i)
@@ -233,46 +234,20 @@ function reactiveLabel:Render()
 					stroke = stroke,
 					letter = letter,
 					tags = data.tags,
+					typingSoundId = typingSoundId,
+					typingSoundVolume = typingSoundVolume,
+					wordsPerSecond = wordsPerSecond,
 				})
 
-				letterFrame.Size = UDim2.fromOffset(letterFrame.AbsoluteSize.X, self.FontSize)
-				letterFrame.AutomaticSize = Enum.AutomaticSize.None
+				letterFrame.Size = UDim2.fromOffset(0, self.FontSize)
+				letterFrame.AutomaticSize = Enum.AutomaticSize.X
 			end
 
-			for i, lettersData in letters do
-				local pauseDelay = self.PauseDelays[lettersData.letter]
-				local delayTime = pauseDelay or charactersDelay
-
-				for _, tag in data.tags do
-					local textTag = TextTagService.TextTags[tag.name]
-					local args = tag.args or {}
-
-					if textTag and textTag.renderFunction then
-						task.defer(textTag.renderFunction, lettersData.label, i, args)
-					end
-				end
-
-				lettersData.label.TextTransparency = self.TextTransparency
-				lettersData.stroke.Transparency = self.TextStrokeTransparency
-
-				if self.Animated and displayMode == "letter" then
-					task.wait(delayTime)
-					typingSound:Play()
-				end
-			end
-
-			if self.Animated and displayMode == "word" then
-				typingSound:Play()
-				task.wait(charactersDelay)
-			end
-
-			if wordsPerSecond > 0 and self.Animated then
-				task.wait(1 / wordsPerSecond)
-			end
-
-			if self.StopSoundOnFinish then
-				typingSound:Stop()
-			end
+			table.insert(allWords, {
+				letters = letters,
+				displayMode = displayMode,
+				wordsPerSecond = wordsPerSecond,
+			})
 		end
 
 		local maxIdleTime = 0
@@ -282,8 +257,70 @@ function reactiveLabel:Render()
 				maxIdleTime = idle
 			end
 		end
-		if maxIdleTime > 0 then
-			task.wait(maxIdleTime)
+		if maxIdleTime > 0 and #allWords > 0 then
+			allWords[#allWords].idleTime = maxIdleTime
+		end
+	end
+
+	for _, wordObj in allWords do
+		local letters = wordObj.letters
+		local displayMode = wordObj.displayMode
+		local wordsPerSecond = wordObj.wordsPerSecond or 0
+
+		if displayMode == "letter" and self.Animated then
+			for i, lettersData in letters do
+				for _, tag in lettersData.tags do
+					local textTag = TextTagService.TextTags[tag.name]
+					local args = tag.args or {}
+					if textTag and textTag.renderFunction then
+						task.defer(textTag.renderFunction, lettersData.label, i, args)
+					end
+				end
+
+				lettersData.label.TextTransparency = self.TextTransparency
+				lettersData.stroke.Transparency = self.TextStrokeTransparency
+
+				typingSound.SoundId = lettersData.typingSoundId
+				typingSound.Volume = lettersData.typingSoundVolume
+				typingSound:Play()
+
+				task.wait(charactersDelayGlobal)
+				local pauseDelay = self.PauseDelays[lettersData.letter]
+				if pauseDelay then
+					task.wait(pauseDelay)
+				end
+			end
+		else
+			for i, lettersData in letters do
+				for _, tag in lettersData.tags do
+					local textTag = TextTagService.TextTags[tag.name]
+					local args = tag.args or {}
+					if textTag and textTag.renderFunction then
+						task.defer(textTag.renderFunction, lettersData.label, i, args)
+					end
+				end
+				lettersData.label.TextTransparency = self.TextTransparency
+				lettersData.stroke.Transparency = self.TextStrokeTransparency
+			end
+
+			if self.Animated and #letters > 0 then
+				typingSound.SoundId = letters[1].typingSoundId
+				typingSound.Volume = letters[1].typingSoundVolume
+				typingSound:Play()
+				task.wait(charactersDelayGlobal)
+			end
+		end
+
+		if wordsPerSecond > 0 and self.Animated then
+			task.wait(1 / wordsPerSecond)
+		end
+
+		if self.StopSoundOnFinish then
+			typingSound:Stop()
+		end
+
+		if wordObj.idleTime and wordObj.idleTime > 0 then
+			task.wait(wordObj.idleTime)
 		end
 	end
 end
@@ -304,13 +341,17 @@ end
 		@TextStrokeColor3 The stroke (outline) color for the text.
 		@TextStrokeTransparency Transparency of the text stroke.
 		@TextStrokeThickness Thickness of the text stroke.
+		@HorizontalAlignment Controls how child elements are laid out horizontally within the label. Enum type: Enum.HorizontalAlignment
+        @VerticalAlignment Controls how child elements are laid out vertically within the label. Enum type: Enum.VerticalAlignment
 		@PauseDelays A table defining additional pause durations after certain characters (e.g., comma, period).
-		-- Example of PauseDelays usage:
+		Example of PauseDelays usage:
+		```
 		{
 			[","] = 0.25, -- pause 0.25 seconds after a comma
 			["."] = 0.5,  -- pause 0.5 seconds after a period
 			["?"] = 0.5,  -- pause 0.5 seconds after a question mark
 		}
+		```
 }=]]
 
 return setmetatable(reactiveLabel, baseObject)
