@@ -1,9 +1,9 @@
 site_name: Upside Engine
-site_author: TheHackerPuppy
+site_author: notreux
 site_description: >- 
   Upside Engine is the perfect tool to create your own 2d game in roblox!
-repo_name: TheHackerPuppy/UpsideEngine
-repo_url: https://github.com/TheHackerPuppy/UpsideEngine
+repo_name: notreux/UpsideEngine
+repo_url: https://github.com/notreux/UpsideEngine
 use_directory_urls: false
 edit_uri: edit/docs/docs/
 
