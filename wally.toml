@@ -1,5 +1,5 @@
 [package]
-name = "reux/upsideengine"
+name = "notreux/upsideengine"
 version = "3.0.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
