@@ -34,7 +34,7 @@ To install Upside Engine, you can use `github submodules` or `wally`
 ### Github submodules
 To install upside engine using github submodules run this command:
 ```git
-git submodule add https://github.com/TheHackerPuppy/UpsideEngine packages/UpsideEngine
+git submodule add https://github.com/notreux/UpsideEngine packages/UpsideEngine
 ```
 
 ### Wally
@@ -84,20 +84,20 @@ UpsideEngine = "notreux/upside-engine@3.0.0"
 For the best experience, we recommend to use the [LuauLSP](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp) extension for Visual Studio Code. Once you have installed LuauLSP then go to extension settings and search “Definition Files”
 
 ??? Typescript-Types
-	You can also use typescript, just be sure you have installed [roblox-ts](https://roblox-ts.com/)
+	You can also use TypeScript, just make sure you have [roblox-ts](https://roblox-ts.com/) installed
 
-![Image](https://cdn.glitch.global/d1a228c9-9cc7-42e7-875e-5a138e0874ab/luauLSP.png){width="100%"}
+![Image](../../assets/luauLSP.png){width="100%"}
 
 
 ### Github submodules
 
-If you are using github submodules, click on "Add Item" and then enter this path `packages/UpsideEngine/upside-engine.d.luau`. Then click again on "Add Item" and then enter this path too `packages/UpsideEngine/src/init.d.luau`.
+If you are using github submodules, click on "Add Item" and then enter this path `packages/UpsideEngine/src/init.d.luau`.
 
 ### Wally
 !!! warning
-    In the paths below change `VERSION` for the version you are using, for example, if you use the version 3.0.0 change the path to `Packages/_Index/notreux_upside-engine@3.0.0/upside-engine.d.luau`
+    In the paths below change `VERSION` for the version you are using, for example, if you use the version 3.0.0 change the path to `Packages/_Index/notreux_upside-engine@3.0.0/src/init.d.luau`
 
-If you are using github wally, click on "Add Item" and then enter this path `Packages/_Index/notreux_upside-engine@VERSION/upside-engine.d.luau`. Then click again on "Add Item" and then enter this path too `Packages/_Index/notreux_upside-engine@VERSION/src/init.d.luau`.
+If you are using wally, click on "Add Item" and then enter this path `Packages/_Index/notreux_upside-engine@VERSION/src/init.d.luau`.
 
 ## An important step
 
