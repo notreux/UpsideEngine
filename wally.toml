@@ -1,0 +1,23 @@
+[package]
+name = "reux/upsideengine"
+version = "3.0.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+license = "Apache-2.0"
+homepage = "https://notreux.github.io/UpsideEngine/"
+exclude = [
+    "bin",
+    "DevPackages", 
+    "Types", 
+    ".gitignore",
+    ".gitmodules",
+    ".gitattributes",
+    ".github",
+    "aftman.toml",
+    "TODO.md",
+    "testez.d.luau",
+    "test.project.json",
+    "upside-engine.project.json",
+]
+
+[dependencies]
