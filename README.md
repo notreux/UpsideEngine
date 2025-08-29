@@ -1,16 +1,16 @@
 # Upside Engine
 Upside Engine It's a 2d framework that lets you create amazing games with ease. You can use it to make platformers, puzzles, shooters, and more. Upside Engine has many features to help you design your game, such as physics, animations, sounds and more. Upside Engine is the ultimate tool for 2d game development in roblox.
 
-[Get Started](https://thehackerpuppy.github.io/UpsideEngine/tutorials/get-started/Installation.html) [Documentation](https://thehackerpuppy.github.io/UpsideEngine/documentation/Welcome.html)
+[Get Started](https://notreux.github.io/UpsideEngine/tutorials/get-started/Installation.html) [Documentation](https://notreux.github.io/UpsideEngine/documentation/Welcome.html)
 
 # Roadmap
 ✅ Collision Masks
 ✅ Parallel lighting system
-✅ Angular Velocity
+⬜ Angular Velocity
 ✅ Parallax Objects
 ⬜ Beams
 ✅ Spotlights
-⬜ Update outdated tests
+✅ Update outdated tests
 
 # Changelog v3.0.0
 Some things have been changed for the long term health of the project, this update brings new interesting features, such as shaders, spotlights, fluids and parallax objects. 
@@ -18,7 +18,7 @@ Some things have been changed for the long term health of the project, this upda
 This update also includes a new physics implementation, which gives much more realism, it also implements a new native “circle” shape. 
 
 ### WARNING
-This version wont work in roblox player until [EditableImages](https://create.roblox.com/docs/es-es/reference/engine/classes/EditableImage) get released
+This version won't work if you don't have [EditableImages](https://create.roblox.com/docs/es-es/reference/engine/classes/EditableImage) enabled in your game
 
 ## Breaking Changes
 - Removed the movement keyword "idle" for default controllers
@@ -42,6 +42,12 @@ This version wont work in roblox player until [EditableImages](https://create.ro
 
 ### Shader
 - Allows you to modify the pixels of an image using EditableImages internally
+
+### ReactiveLabel
+- Allows you to create labels with animations and effects
+
+### ProximityPrompt2D
+- Allows you to create proximity prompts for your games
 
 ### Fluid
 - An object that can simulate the physics of a fluid
