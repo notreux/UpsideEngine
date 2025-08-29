@@ -53,6 +53,7 @@ previous scene and loads the new ones accordingly. This dynamic approach ensures
 only the necessary modules are active, improving performance and reducing conflicts.
 ???+ example "`client/main.client.luau`"
     ```lua
+    local players = game:GetService("Players")
     local replicatedStorage = game:WaitForChild("ReplicatedStorage")
     local packages = replicatedStorage:WaitForChild("packages")
     local modules = script.Parent:WaitForChild("modules")
@@ -64,7 +65,12 @@ only the necessary modules are active, improving performance and reducing confli
 
     -- Load global modules that are used across multiple scenes.
     local globalModules = setup.getModulesByPath(modules:WaitForChild("globals"))
+    local playerGui = players.LocalPlayer:WaitForChild("PlayerGui")
     local activeScene = nil
+
+    local sceneContainer = Instance.new("ScreenGui")
+    sceneContainer.Name = "SceneContainer"
+    sceneContainer.Parent = playerGui
 
     -- Unload modules from the current scene.
     local function unloadModules(scene)
@@ -92,18 +98,23 @@ only the necessary modules are active, improving performance and reducing confli
     sceneManager:On("SceneLoaded", function(scene)
         if activeScene then
             unloadModules(activeScene)
+            activeScene:Disable()
+            activeScene.Parent = nil
         end
+
+        activeScene = scene
+        scene.Parent = sceneContainer
         loadModules(scene)
     end)
 
     -- Load scenes from the plugin if they were created using it.
     pluginSupportService:LoadPluginContent()
-    local myPluginScene = sceneManager:Get("MyScene")
+    local myPluginScene = sceneManager:FindByName("MyScene")
     myPluginScene:Enable()
 
     -- Alternatively, create and enable a new scene programmatically.
-    pluginSupportService:LoadPluginContent()
     local newScene = upsideEngine.new("Scene")
+    newScene:SetName("MyNewScene")
     newScene:Enable()
     ```
 
@@ -114,8 +125,8 @@ unloaded when the game closes. This helps maintain a clean server state and prev
 ???+ example "`server/main.server.luau`"
     ```lua
     local replicatedStorage = game:WaitForChild("ReplicatedStorage")
-    local modules = script.Parent:WaitForChild("modules")
     local setup = require(replicatedStorage.shared.util.setup)
+    local modules = setup.getModulesByPath(script.Parent:WaitForChild("modules"))
 
     -- Unload all modules when required.
     local function unloadModules()
@@ -128,10 +139,8 @@ unloaded when the game closes. This helps maintain a clean server state and prev
         setup.run(modules, "start")
     end
 
-    -- Load modules when the game has finished loading.
-    game.Loaded:Connect(function()
-        loadModules()
-    end)
+    -- Load modules
+    loadModules()
 
     -- Ensure that modules are unloaded properly when the game is closing.
     game:BindToClose(function()
@@ -144,3 +153,4 @@ Additionally, click on the button below to visit the GitHub repository containin
 that encompasses everything discussed on this page. We encourage you to explore the repository and use the template as a robust starting point for your own development work.
 
 [Get template](https://github.com/notreux/UpsideEngineProjectTemplate){ .md-button .md-basic-button }
+[Get Demo](https://github.com/notreux/SpaceFighter){ .md-button .md-basic-button }
