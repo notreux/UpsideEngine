@@ -1,4 +1,4 @@
-local isEqual = require(script.Parent.Parent.Parent.Private.Util.Internal.IsEqual)
+local isEqual = require(script.Parent.Parent.Parent.Lib.Util.Internal.IsEqual)
 local actrees = {}
 actrees.__index = actrees
 

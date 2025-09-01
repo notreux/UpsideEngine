@@ -1,5 +1,5 @@
 local TweenService = game:GetService("TweenService")
-local getDistance = require(script.Parent.Parent.Parent.Private.Util.Math.GetDistance)
+local getDistance = require(script.Parent.Parent.Parent.Lib.Util.Math.GetDistance)
 
 local function setProximityPromptVisible(proximityPrompt, visible)
 	local targetTransparency = if visible then 0 else 1

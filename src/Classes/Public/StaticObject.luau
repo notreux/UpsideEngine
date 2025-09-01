@@ -5,7 +5,7 @@ local colorProperties = { "ImageColor3", "TextColor3", "TextStrokeColor3" }
 local sceneManager = require(script.Parent.Parent.Parent.Services.SceneManager)
 local shader = require(script.Parent.Shader)
 local baseObject = require(upsideEngine.Classes.Internal.BaseObject)
-local util = require(upsideEngine.Private.Util)
+local util = require(upsideEngine.Lib.Util)
 
 local staticObject = {}
 staticObject.__index = staticObject

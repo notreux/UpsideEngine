@@ -1,9 +1,9 @@
 local runService = game:GetService("RunService")
-local private = script.Parent.Parent.Parent.Private
+local lib = script.Parent.Parent.Parent.Lib
 local player = game:GetService("Players").LocalPlayer
 
-local actorLoader = private:WaitForChild("ActorLoader")
-local util = require(private.Util)
+local actorLoader = lib:WaitForChild("ActorLoader")
+local util = require(lib.Util)
 
 local copyTable = util.CopyTable
 local isEqual = util.IsEqual

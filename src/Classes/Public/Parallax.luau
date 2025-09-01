@@ -1,5 +1,5 @@
 local baseObject = require(script.Parent.Parent.Internal.BaseObject)
-local toUDim2 = require(script.Parent.Parent.Parent.Private.Util.DataType.ToUDim2)
+local toUDim2 = require(script.Parent.Parent.Parent.Lib.Util.DataType.ToUDim2)
 local parallax = {}
 parallax.__index = parallax
 

@@ -1,6 +1,6 @@
 local upsideEngine = script.Parent.Parent.Parent
 
-local setSmoothPosition = require(script.Parent.Parent.Parent.Private.Util.Math.SetSmoothPosition)
+local setSmoothPosition = require(script.Parent.Parent.Parent.Lib.Util.Math.SetSmoothPosition)
 local character = require(script.Parent.Parent.Public.Character)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local camera = {}

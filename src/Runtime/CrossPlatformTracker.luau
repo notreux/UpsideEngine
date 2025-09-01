@@ -6,7 +6,7 @@ local runService = game:GetService("RunService")
 local upsideEngine = script.Parent.Parent
 
 local crossPlatformService = require(upsideEngine.Services).CrossPlatformService
-local util = require(upsideEngine.Private.Util)
+local util = require(upsideEngine.Lib.Util)
 
 local configs = crossPlatformService.Configs
 local wrap = util.Wrap

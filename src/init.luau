@@ -5,11 +5,11 @@ local runService = game:GetService("RunService")
 local isServer = runService:IsServer()
 
 local function destroy()
-	if isServer or not script.Private:FindFirstChild("Data") then
+	if isServer or not script.Lib:FindFirstChild("Data") then
 		return
 	end
 	script.AppData.Data:Destroy()
-	script.Private.Class:Destroy()
+	script.Lib.Class:Destroy()
 end
 
 for _, scr in script.Runtime:GetChildren() do

@@ -5,7 +5,7 @@ local objects = require(ue.AppData.Data).objects
 local eProperties = require(ue.AppData.EssentialProperties)
 local eventEmitter = require(classes.Internal.EventEmitter)
 
-local encoder = require(ue.Private.Util).Encoder
+local encoder = require(ue.Lib.Util).Encoder
 local runService = game:GetService("RunService")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 

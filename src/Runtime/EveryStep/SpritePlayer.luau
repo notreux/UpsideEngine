@@ -1,4 +1,4 @@
-local IsOutScreen = require(script.Parent.Parent.Parent.Private.Util).IsOutScreen
+local IsOutScreen = require(script.Parent.Parent.Parent.Lib.Util).IsOutScreen
 local function axeStep(active, axe, max)
 	local index = active.CurrentFrame[axe]
 	local value = index <= max - 1 and index + 1 or 0

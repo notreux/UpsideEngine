@@ -1,5 +1,5 @@
 local upsideEngine = script.Parent.Parent
-local diff = require(script.Parent.Parent.Private.Util.Internal.Diff)
+local diff = require(script.Parent.Parent.Lib.Util.Internal.Diff)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local request = require(upsideEngine.Classes.Internal.Request)
 local eProperties = require(upsideEngine.AppData.EssentialProperties)

@@ -1,4 +1,4 @@
-local setSmoothPosition = require(script.Parent.Parent.Parent.Private.Util.Math.SetSmoothPosition)
+local setSmoothPosition = require(script.Parent.Parent.Parent.Lib.Util.Math.SetSmoothPosition)
 return function(scene: Scene)
 	local camera = scene.Camera
 	local subject = camera.Subject.Instance

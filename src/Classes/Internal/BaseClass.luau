@@ -1,7 +1,7 @@
 local upsideEngine = script.Parent.Parent.Parent
 local appData = upsideEngine.AppData
 
-local copyTable = require(upsideEngine.Private.Util.Internal.CopyTable)
+local copyTable = require(upsideEngine.Lib.Util.Internal.CopyTable)
 local eProperties = require(appData.EssentialProperties)
 local data = require(appData.Data)
 

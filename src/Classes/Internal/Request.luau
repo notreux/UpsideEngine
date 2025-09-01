@@ -4,7 +4,7 @@ local runService = game:GetService("RunService")
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
-local copyTable = require(script.Parent.Parent.Parent.Private.Util.Internal.CopyTable)
+local copyTable = require(script.Parent.Parent.Parent.Lib.Util.Internal.CopyTable)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local classes = {}
 local networking

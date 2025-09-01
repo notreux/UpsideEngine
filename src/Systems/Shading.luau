@@ -1,8 +1,8 @@
-local path = require(script.Parent.Parent.Private.Util.Internal.Path)
-local isOutScreen = require(script.Parent.Parent.Private.Util.Math.IsOutScreen)
+local path = require(script.Parent.Parent.Lib.Util.Internal.Path)
+local isOutScreen = require(script.Parent.Parent.Lib.Util.Math.IsOutScreen)
 
-local Canvas2d = require(script.Parent.Parent.Private.Util.Graphics.Canvas2d)
-local ContentManager = require(script.Parent.Parent.Private.Util.Graphics.ContentManager)
+local Canvas2d = require(script.Parent.Parent.Lib.Util.Graphics.Canvas2d)
+local ContentManager = require(script.Parent.Parent.Lib.Util.Graphics.ContentManager)
 local shadingSystem = {}
 
 @native

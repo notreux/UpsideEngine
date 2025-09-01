@@ -1,4 +1,4 @@
-local Path = require(script.Parent.Parent.Parent.Private.Util.Internal.Path)
+local Path = require(script.Parent.Parent.Parent.Lib.Util.Internal.Path)
 local Shader = require(script.Parent.Shader)
 
 return function()

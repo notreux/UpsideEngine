@@ -1,4 +1,4 @@
-local ToUDim2 = require(script.Parent.Parent.Parent.Private.Util).ToUDim2
+local ToUDim2 = require(script.Parent.Parent.Parent.Lib.Util).ToUDim2
 
 local function isOutsideLimits(target, limits, margin)
 	return target.X < limits.X - margin

@@ -1,8 +1,8 @@
 local upsideEngine = script.Parent.Parent.Parent
-local ToUDim2 = require(script.Parent.Parent.Parent.Private.Util.DataType.ToUDim2)
-local getCollidingObjects = require(script.Parent.Parent.Parent.Private.Util.Geometry.GetCollidingObjects)
+local ToUDim2 = require(script.Parent.Parent.Parent.Lib.Util.DataType.ToUDim2)
+local getCollidingObjects = require(script.Parent.Parent.Parent.Lib.Util.Geometry.GetCollidingObjects)
 local crossPlatformService = require(script.Parent.Parent.Parent.Services.CrossPlatformService)
-local util = require(upsideEngine.Private.Util)
+local util = require(upsideEngine.Lib.Util)
 
 local function emit(self, meta, active)
 	local oldState = self.Collisions[meta.Id]

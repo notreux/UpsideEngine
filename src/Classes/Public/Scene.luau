@@ -10,7 +10,7 @@ local lightingEnvironment = require(upsideEngine.Classes.Internal.LightingEnviro
 local particleEnvironment = require(upsideEngine.Classes.Internal.ParticleEnvironment)
 
 local sceneManager = require(upsideEngine.Services).SceneManager
-local util = require(upsideEngine.Private.Util)
+local util = require(upsideEngine.Lib.Util)
 
 local scene = {}
 scene.__index = scene

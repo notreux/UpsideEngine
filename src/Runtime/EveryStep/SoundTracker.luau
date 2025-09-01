@@ -1,5 +1,5 @@
-local util = require(script.Parent.Parent.Parent.Private.Util)
-local getDistance = require(script.Parent.Parent.Parent.Private.Util.Math.GetDistance)
+local util = require(script.Parent.Parent.Parent.Lib.Util)
+local getDistance = require(script.Parent.Parent.Parent.Lib.Util.Math.GetDistance)
 local normalize = util.Normalize
 
 return function(scene)
