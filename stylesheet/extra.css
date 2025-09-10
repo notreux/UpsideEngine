@@ -23,6 +23,14 @@
   --md-code-font: "FiraCode";
 }
 
+.md-header__topic:first-child{
+    font-weight:500;
+}
+
+.md-nav__link{
+    font-weight: 100 !important;
+} 
+
 [data-md-color-scheme="default"] {
     --md-footer-bg-color: #519DAF;
     --custom-navbar-color: #f1f1f1;
@@ -92,6 +100,14 @@ a {
     background-color: var(--md-footer-bg-color);
 }
 
+summary,
+h5,
+.admonition-title,
+.md-typeset .md-button {
+    font-weight: 500 !important;
+}
+
+
 .md-typeset .md-button {
     text-align: center;
     border-color: var(--button-color);
@@ -152,12 +168,12 @@ a {
     color: var(--md-typeset-color)
 }
 
-.title, .md-button, .admonition-title, #__nav_3_label, #__nav_4_label, h5, summary {
+.title, .md-button, .md-header__topic, .admonition-title, #__nav_3_label, #__nav_4_label, h1, h2, h3, h4, h5, summary, strong {
     font-family: "Roboto-Bold";
 }
 
-h1, h2, h3, h4 {
-    font-family: "Roboto-Light";
+.md-content__inner > h1, .md-content__inner > h2, .md-content__inner > h3, .md-content__inner > h4{
+    font-family: "Roboto-Light" !important;
 }
 
 .pixelated {

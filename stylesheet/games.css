@@ -1,6 +1,6 @@
 .gameCard {
     width: 300px;
-    height:400px;
+    height:500px;
     border-color: var(--md-default-fg-color--lightest);
     border-width: 1px;
     border-style: outset;
@@ -16,7 +16,7 @@
     background-size: cover;
     image-rendering: pixelated;
     width:100%;
-    height:100px;
+    height:200px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -40,6 +40,7 @@
 .viewButton {
     bottom: 0px;
     width: 235px !important;
+    margin-bottom: 10px !important;
 }
 .no-margin {
     margin: 0px !important;
@@ -52,8 +53,6 @@
     text-align: center;
     width: 100%;
     position: relative;
-    overflow-x: scroll;
-    overflow-y: hidden;
     border-radius: 10px;
 }
 

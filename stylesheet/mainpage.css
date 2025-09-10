@@ -21,6 +21,10 @@ tb {
   width: 4;
 }
 
+.md-typeset figcaption {
+  font-style: normal;
+}
+
 .md-button {
   color: white;
   border-color: white;
