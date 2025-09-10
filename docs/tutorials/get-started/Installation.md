@@ -95,9 +95,9 @@ If you are using github submodules, click on "Add Item" and then enter this path
 
 ### Wally
 !!! warning
-    In the paths below change `VERSION` for the version you are using, for example, if you use the version 3.0.0 change the path to `Packages/_Index/notreux_upside-engine@3.0.0/src/init.d.luau`
+    In the paths below change `VERSION` for the version you are using, for example, if you use the version 3.0.0 change the path to `Packages/_Index/notreux_upsideengine@3.0.0/upsideengine/src/init.d.luau`
 
-If you are using wally, click on "Add Item" and then enter this path `Packages/_Index/notreux_upside-engine@VERSION/src/init.d.luau`.
+If you are using wally, click on "Add Item" and then enter this path `Packages/_Index/notreux_upsideengine@VERSION/upsideengine/src/init.d.luau`.
 
 ## An important step
 
