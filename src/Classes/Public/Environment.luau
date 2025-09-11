@@ -96,7 +96,7 @@ function environment:Has(objects: Array<string>): (boolean, Dictionary<string, b
 	local hasAll = true
 	local result = {}
 
-	for _, index in ipairs(objects) do
+	for _, index in objects do
 		local has = self:HasOne(index)
 		result[index] = has
 
@@ -138,7 +138,7 @@ end
 }=]]
 
 function environment:Remove(objects: Array<string>)
-	for _, index in ipairs(objects) do
+	for _, index in objects do
 		self:RemoveOne(index)
 	end
 end

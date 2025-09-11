@@ -8,7 +8,7 @@ local sceneManager = require(upsideEngine.Services.SceneManager)
 local childs = stepFolder:GetChildren()
 local trackers = {}
 
-for _, tracker in ipairs(childs) do
+for _, tracker in childs do
 	if not tracker.Name:match(".spec") then
 		table.insert(trackers, require(tracker))
 	end

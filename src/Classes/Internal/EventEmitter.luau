@@ -1,7 +1,6 @@
 local baseClass = require(script.Parent.BaseClass)
 local connection = require(script.Parent.Connection)
 
-local testService = game:GetService("TestService")
 local eventEmitter = {}
 eventEmitter.__index = eventEmitter
 
@@ -67,17 +66,15 @@ function eventEmitter:Fire(name: string, ...)
 	local functions = event.Functions
 
 	if #functions > 0 then
-		for _, func in ipairs(functions) do
-			local env = getfenv(func)
+		for _, func in functions do
 			local sucess, err = pcall(coroutine.wrap(func), ...)
-
 			if not sucess then
-				testService:Error(("%s: %s"):format(name, err), env.script, 0)
+				error(("%s: %s"):format(name, err))
 			end
 		end
 	end
 
-	for _, thread in ipairs(event.Threads) do
+	for _, thread in event.Threads do
 		coroutine.resume(thread, ...)
 	end
 

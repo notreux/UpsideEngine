@@ -33,7 +33,7 @@ return function()
 	describe(":SetChromaticAberration()", function()
 		it("should set chromatic aberration", function()
 			staticObject:SetChromaticAberration(0.2, 0.15, Vector2.new(0.5, 0.5))
-			for _, c in ipairs({ "R", "G", "B" }) do
+			for _, c in { "R", "G", "B" } do
 				expect(staticObject.ChromaticAberration[c]).to.be.ok()
 			end
 

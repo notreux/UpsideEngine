@@ -85,7 +85,7 @@ local function inputDetector(input, gpe)
 end
 
 local function inputSetup(obj, func)
-	for _, event in ipairs({ "Began", "Changed", "Ended" }) do
+	for _, event in { "Began", "Changed", "Ended" } do
 		obj["Input" .. event]:Connect(func)
 	end
 end

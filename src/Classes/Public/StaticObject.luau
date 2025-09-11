@@ -163,7 +163,7 @@ function staticObject:SetChromaticAberration(Intensity: number, Distance: number
 		}
 
 		for colorName, color in self.ChromaticAberration do
-			for _, property in ipairs(colorProperties) do
+			for _, property in colorProperties do
 				pcall(setAberration, {
 					name = colorName,
 					color = color,
