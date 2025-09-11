@@ -40,7 +40,7 @@ git submodule add https://github.com/notreux/UpsideEngine packages/UpsideEngine
 ### Wally
 To install upside engine with wally add this line to your `wally.toml`:
 ```toml
-UpsideEngine = "notreux/upside-engine@3.0.0"
+UpsideEngine = "notreux/upsideengine@3.0.0"
 ```
 
 ## Recommended Rojo Template (optional)
