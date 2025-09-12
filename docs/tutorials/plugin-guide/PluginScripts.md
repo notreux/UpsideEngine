@@ -4,9 +4,10 @@ Now you are ready to use the plugin, but you can't run the game only with the pl
 Follow this steps to import upside engine
 
 - Create a folder in ReplicatedStorage and then name it as "packages"
+- Click on the button below to download the latest Upside Engine rbxm file
 - Place the upside engine module in the packages folder
 
-[Download](https://create.roblox.com/marketplace/asset/13243857410){ .md-button .md-basic-button }
+[Download Upside Engine](https://github.com/notreux/UpsideEngine/releases/latest/download/UpsideEngine.rbxm){ .md-button .md-basic-button }
 
 ## Essential code
 Place this in StarterPlayerScripts as a local script to make your player move

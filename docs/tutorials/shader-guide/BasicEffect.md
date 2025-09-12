@@ -31,7 +31,7 @@ end
 return shadingFunction
 ```
 
-Since all values range from 0 to 1, subtracting each color value from 1 inverts the pixel's color for that channel.
+Since all values range from 0 to 255, subtracting each color value from 255 inverts the pixel's color for that channel.
 
 ![](../../assets/inverted.png)
 

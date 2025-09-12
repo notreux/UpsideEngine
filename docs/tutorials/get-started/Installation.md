@@ -19,7 +19,7 @@
      - Place the upside engine module in the packages folder (click on the download button below to get the module)
      - Once you finished the steps before, continue the tutorial in the ["An important step"](#an-important-step) section.
     
-    [Download Upside Engine](https://create.roblox.com/marketplace/asset/13243857410){ .md-button .md-basic-button }
+    [Download Upside Engine](https://github.com/notreux/UpsideEngine/releases/latest/download/UpsideEngine.rbxm){ .md-button .md-basic-button }
 
 
 ## Project Setup
