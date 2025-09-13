@@ -15,6 +15,23 @@ local function getEvent(events, name)
 	return events[name]
 end
 
+local function cleanTrace(trace)
+	local result = {}
+	for line in trace:gmatch("[^\n]+") do
+		if not line:find("Internal.EventEmitter") then
+			table.insert(result, line)
+		end
+	end
+
+	return table.concat(result, "\n")
+end
+
+local function errorHandler(err)
+	local errData = err:split(": ")
+	local trace = debug.traceback(errData[2])
+	return cleanTrace(trace)
+end
+
 function eventEmitter.new(): EventEmitter
 	local self = baseClass.new()
 	self:SetClassName(script.Name)
@@ -32,8 +49,19 @@ function eventEmitter:On(name: string, callback: () -> any): Connection
 	local event = getEvent(self.EventsStorage, name)
 	local id = #event.Functions + 1
 
+	local function wrapper(...)
+		local args = { ... }
+		local sucess, err = xpcall(function()
+			callback(unpack(args))
+		end, errorHandler)
+
+		if not sucess then
+			warn(("Error: %s"):format(err))
+		end
+	end
+
 	local cn = connection.new(id, event)
-	event.Functions[id] = callback
+	event.Functions[id] = callback and wrapper or nil
 
 	return cn
 end
@@ -67,10 +95,7 @@ function eventEmitter:Fire(name: string, ...)
 
 	if #functions > 0 then
 		for _, func in functions do
-			local sucess, err = pcall(coroutine.wrap(func), ...)
-			if not sucess then
-				error(("%s: %s"):format(name, err))
-			end
+			coroutine.wrap(func)(...)
 		end
 	end
 
