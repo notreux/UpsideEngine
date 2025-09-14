@@ -8,6 +8,7 @@ function handlers.point(direction, simplex)
 	return -direction
 end
 
+@native
 function handlers.line(direction, simplex)
 	local b = simplex[2]
 	local c = simplex[1]
@@ -18,6 +19,7 @@ function handlers.line(direction, simplex)
 	return tripleProduct(cb, c0, cb)
 end
 
+@native
 function handlers.triangle(direction, simplex)
 	local a = simplex[3]
 	local b = simplex[2]

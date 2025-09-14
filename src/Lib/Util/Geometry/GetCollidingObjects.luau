@@ -72,7 +72,7 @@ local function getObjectData(object, velocity)
 	}
 end
 
-local function checkByShape(objects, object, velocity)
+return function(objects, object, velocity)
 	local collisions = {}
 	local objectData = getObjectData(object, velocity)
 
@@ -103,5 +103,3 @@ local function checkByShape(objects, object, velocity)
 
 	return collisions
 end
-
-return checkByShape
