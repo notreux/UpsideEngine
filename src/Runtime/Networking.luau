@@ -23,6 +23,10 @@ function endpoints.sync(client, pending)
 	if typeof(pending) ~= "table" then
 		return
 	elseif isServer then
+		for _, request in pending do
+			request.ClientId = client.UserId
+		end
+
 		buildRequests(pending)
 		return
 	end
