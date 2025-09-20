@@ -1,7 +1,7 @@
 [package]
 name = "notreux/upsideengine"
 description = "A 2D game engine for roblox"
-version = "3.0.0"
+version = "3.0.1"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 license = "Apache-2.0"
