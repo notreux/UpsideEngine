@@ -2,7 +2,7 @@
 
 Now let's put everything together and build a complete multiplayer game! This example will show you how to structure your code properly for a real project.
 
-[Get Multiplayer Example :material-download:](){ .md-button .md-button--primary }
+[Get Multiplayer Example :material-download:](https://github.com/notreux/UpsideEngineMultiplayerDemo){ .md-button .md-button--primary }
 
 ## What you should see
 
