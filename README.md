@@ -52,7 +52,7 @@ Additionally, this update includes important type definition fixes and improveme
 
 #### New Replication System
 - **NetworkingService**: 
-  - Now the `ReplicationRequest` event is only fired when the request comes from a client, so it should only be used on the server side
+  - Now the `ReplicationRequest` event is only fired when the request comes from a client, so it should only be used on the server side. Once you accept the request, the object will no longer be replicated again unless authority is granted to the client using the `AuthorityService`.
 - **Handlers.luau**: New replication handlers module
   - Handles object data updates from clients
   - Processes property changes and replication
