@@ -12,7 +12,7 @@ function shaderEnvironment.new(): ObjectEnvironment
 	local self = environment.new()
 	self:SetClassName(script.Name)
 
-	if runService:IsRunning() and not runService:IsRunMode() then
+	if runService:IsRunning() and runService:IsClient() and not runService:IsRunMode() then
 		self.__actor = actor.new(shadingSystem)
 		self.__actor:SetRunMode("ByTasks")
 		self.__actor:SetVariable("shadable", {})

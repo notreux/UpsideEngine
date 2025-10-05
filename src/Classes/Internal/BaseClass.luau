@@ -2,7 +2,7 @@ local upsideEngine = script.Parent.Parent.Parent
 local appData = upsideEngine.AppData
 
 local copyTable = require(upsideEngine.Lib.Util.Internal.CopyTable)
-local eProperties = require(appData.EssentialProperties)
+local properties = require(appData.Properties)
 local data = require(appData.Data)
 
 local environments = {
@@ -44,7 +44,7 @@ function baseClass:Clone()
 	clon.Instance = instance
 	clon.Id = id
 
-	for _, index in eProperties.Instance do
+	for _, index in properties.Instance do
 		pcall(set, self.Instance, clon.Instance, index)
 	end
 
@@ -66,7 +66,7 @@ function baseClass:Destroy()
 	local scene = data.objects[self.Scene]
 	local id = self.Id
 
-	if self:IsA("EventEmitter") then
+	if self.ClassNameHistory and self:IsA("EventEmitter") then
 		self:Fire("Destroy")
 	end
 
@@ -82,7 +82,7 @@ function baseClass:Destroy()
 
 	for _, environment in environments do
 		local env = scene[environment]
-		if not env:HasOne(id) then
+		if not (env and env:HasOne(id)) then
 			continue
 		end
 

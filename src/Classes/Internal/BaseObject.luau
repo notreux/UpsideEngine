@@ -34,7 +34,7 @@ function baseObject:SetScene(scene: Scene)
 	self.Instance.Parent = scene.Instance:WaitForChild("GameFrame")
 
 	if environment then
-		environment = (scene :: table)[environment]
+		environment = (scene :: any)[environment]
 		environment:SetOne(self, self.Id)
 	end
 end

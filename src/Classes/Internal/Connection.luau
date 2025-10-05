@@ -11,7 +11,7 @@ end
 	@link Connection.md
 }=]]
 
-function connection.new(eventId: number, event: table)
+function connection.new(eventId: number, event: Event)
 	local self = baseClass.new()
 	self:SetClassName(script.Name)
 	self.Active = true

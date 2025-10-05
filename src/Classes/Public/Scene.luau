@@ -25,6 +25,43 @@ local function intersect(a, b, c, d)
 	return (0 <= u and u <= 1 and 0 <= t and t <= 1) and a + t * r
 end
 
+local function intersectRayCircle(a, b, center, radius)
+	local eps = 1e-6
+	local d = b - a
+	local f = a - center
+
+	local a_coef = d.X * d.X + d.Y * d.Y
+	local b_coef = 2 * (f.X * d.X + f.Y * d.Y)
+	local c_coef = f.X * f.X + f.Y * f.Y - radius * radius
+
+	if a_coef <= eps then
+		return nil
+	end
+
+	local disc = b_coef * b_coef - 4 * a_coef * c_coef
+	if disc < 0 then
+		return nil
+	end
+
+	local sqrtDisc = math.sqrt(disc)
+	local t1 = (-b_coef - sqrtDisc) / (2 * a_coef)
+	local t2 = (-b_coef + sqrtDisc) / (2 * a_coef)
+
+	local t = math.huge
+	if t1 >= 0 and t1 <= 1 and t1 < t then
+		t = t1
+	end
+	if t2 >= 0 and t2 <= 1 and t2 < t then
+		t = t2
+	end
+
+	if t == math.huge then
+		return nil
+	end
+
+	return a + d * t
+end
+
 --[[={
 	@link Scene.md
 }=]]
@@ -112,34 +149,64 @@ end
 }=]]
 
 function scene:Raycast(info: Raycast2dParams): Raycast2dResult
-	local intersections = {}
 	local isBlackList = info.FilterType == "Blacklist"
+	local intersections = {}
+	local targetList = isBlackList and self.Objects or info.List
+
 	local from, to = info.From, info.To
 	info.List = info.List or {}
 
-	for _, object in (isBlackList and self.Objects or info.List) do
-		if isBlackList and info.List[object.Id] then
+	from = Vector3.new(from.X, from.Y)
+	to = Vector3.new(to.X, to.Y)
+
+	local function pushIntersection(normal, position, object)
+		table.insert(intersections, {
+			Object = object,
+			Position = UDim2.fromOffset(position.X, position.Y),
+			Distance = (from - position).Magnitude,
+			Normal = UDim2.fromOffset(normal.X, normal.Y),
+		})
+	end
+
+	for _, object in targetList do
+		if isBlackList and info.List[object.Id] or not object:IsA("PhysicalObject") then
 			continue
 		end
 
+		local shape = object.Shape:lower()
 		local instance = object.Instance
-		local corners = util.GetCorners(instance)
-		for i = 1, #corners do
-			local prev = corners[i - 1] or corners[#corners]
-			local nxt = corners[i + 1] or corners[1]
-			local position = intersect(corners[i], nxt, from, to)
+		local absPos = instance.AbsolutePosition
+		local absSize = instance.AbsoluteSize
 
+		if shape == "circle" then
+			local centre = absPos + (absSize / 2)
+			local radius = ((absSize.X + absSize.Y) / 2) * object.HitboxScale
+			centre = Vector3.new(centre.X, centre.Y, 0)
+
+			local position = intersectRayCircle(from, to, centre, radius)
 			if not position then
 				continue
 			end
 
-			local normal = (corners[i] - prev).Unit
-			table.insert(intersections, {
-				Object = object,
-				Position = UDim2.fromOffset(position.X, position.Y),
-				Distance = (from - position).Magnitude,
-				Normal = UDim2.fromOffset(normal.X, normal.Y),
-			})
+			local normal = (position - centre).Unit
+			pushIntersection(normal, position, object)
+		else
+			local corners = util.GetCorners(object)
+			local n = #corners
+
+			for i = 1, n do
+				local current = corners[i]
+				local nextCorner = corners[i % n + 1]
+				local position = intersect(current, nextCorner, from, to)
+
+				if not position then
+					continue
+				end
+
+				local edge = nextCorner - current
+				local normal = edge.Unit
+				pushIntersection(normal, position, object)
+			end
 		end
 	end
 

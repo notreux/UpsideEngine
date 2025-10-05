@@ -5,13 +5,18 @@ local players = game:GetService("Players")
 local request = require(script.Parent.Parent.Classes.Internal.Request)
 local ToVector2 = require(script.Parent.Parent.Lib.Util.DataType.ToVector2)
 local merge = require(script.Parent.Parent.Lib.Util.Generic.Merge)
+local copyTable = require(script.Parent.Parent.Lib.Util.Internal.CopyTable)
 local diff = require(script.Parent.Parent.Lib.Util.Internal.Diff)
 local getDistance = require(script.Parent.Parent.Lib.Util.Math.GetDistance)
+local authorityService = require(script.Parent.Parent.Services.AuthorityService)
 local networkingService = require(upsideEngine.Services.NetworkingService)
+local sceneManager = require(upsideEngine.Services.SceneManager)
 
 local socket = game.ReplicatedStorage:WaitForChild("UpsideEngineSocket")
 local isServer = runService:IsServer()
+local isRunning = runService:IsRunning()
 
+local requestsCache = networkingService.RequestsCache
 local playersData = networkingService.PlayersData
 local replicationTarget = networkingService.ReplicationTarget
 local replicationTimer = 0
@@ -22,27 +27,56 @@ local endpoints = {}
 function endpoints.sync(client, pending)
 	if typeof(pending) ~= "table" then
 		return
-	elseif isServer then
-		for _, request in pending do
-			request.ClientId = client.UserId
+	elseif not isServer then
+		for _, requests in pending do
+			buildRequests(requests)
 		end
 
-		buildRequests(pending)
 		return
 	end
 
-	for _, requests in pending do
-		buildRequests(requests)
+	-- This loop prevents the client from impersonating the server and therefore
+	-- ensures that their requests are not automatically approved
+
+	for _, request in pending do
+		request.ClientId = client.UserId
+	end
+
+	buildRequests(pending)
+end
+
+function endpoints.requestServerData(client)
+	for retries = 1, 4 do
+		local data = table.clone(requestsCache)
+		data[client.UserId] = nil
+
+		socket:FireClient(client, "sync", data)
+		task.wait(0.5)
 	end
 end
 
 function buildRequests(requests)
 	for _, data in requests do
-		local content = data.Content
+		local content = data.Content :: RequestContent
 		local clientId = data.ClientId
 
+		if clientId == nil or content == nil then
+			continue
+		end
+
 		local pendingRequest = request.new(clientId, content)
-		networkingService:Fire("ReplicationRequest", pendingRequest)
+		playersData[clientId] = playersData[clientId] or {}
+
+		local isNewObject = playersData[clientId][content.ObjectId] == nil
+		local authorityType = authorityService:GetAuthority({
+			Id = content.ObjectId,
+		} :: any)
+
+		if clientId == 0 then
+			pendingRequest:Accept()
+		elseif authorityType == "Client" or (isServer and isNewObject) then
+			networkingService:Fire("ReplicationRequest", pendingRequest)
+		end
 	end
 end
 
@@ -53,23 +87,14 @@ end
 
 local function onPlayerAdded(player)
 	playersData[player.UserId] = {}
-	if not isServer then
-		return
-	end
-
-	for retries = 1, 10 do
-		local data = table.clone(playersData)
-		data[player.UserId] = nil
-
-		socket:FireClient(player, "sync", data)
-		task.wait(1)
-	end
+	requestsCache[player.UserId] = {}
 end
 
 local function onPlayerLeave(player)
 	local skip = not networkingService.DestroyObjectsOnLeave
 	local data = playersData[player.UserId]
 	playersData[player.UserId] = nil
+	requestsCache[player.UserId] = nil
 
 	if skip or isServer then
 		return
@@ -93,7 +118,7 @@ local function sendServerRequests(requests)
 		local objectId = content.ObjectId
 		local clientId = data.ClientId
 
-		local cachedRequest = playersData[clientId][objectId] or { Content = {} }
+		local cachedRequest = requestsCache[clientId][objectId] or { Content = {} }
 		local cachedContent = cachedRequest.Content
 
 		if toSend[clientId] == nil then
@@ -101,7 +126,7 @@ local function sendServerRequests(requests)
 		end
 
 		requests[index] = nil
-		playersData[clientId][objectId] = data
+		requestsCache[clientId][objectId] = copyTable(requestsCache[clientId][objectId] or {}, data)
 		toSend[clientId][objectId] = {
 			ClientId = clientId,
 			Content = merge(data.Content, {
@@ -112,10 +137,37 @@ local function sendServerRequests(requests)
 	end
 
 	for _, player in players:GetPlayers() do
+		local playerData = playersData[player.UserId]
 		local data = table.clone(toSend)
+		local serverData = table.clone(data[0] or {})
 		data[player.UserId] = nil
+		data[0] = serverData
+
+		for objectId, request in serverData do
+			local object = playerData[objectId]
+			if object == nil then
+				continue
+			end
+
+			local authorityType = authorityService:GetAuthority({
+				Id = objectId,
+			} :: any)
+
+			if authorityType == "Client" then
+				serverData[objectId] = nil
+			end
+		end
 
 		socket:FireClient(player, "sync", data)
+	end
+end
+
+local function replicateServer()
+	for _, scene in sceneManager.Scenes do
+		networkingService:Replicate(scene)
+		for _, object in scene.Objects do
+			networkingService:Replicate(object)
+		end
 	end
 end
 
@@ -123,11 +175,17 @@ local function requestManager(deltaTime)
 	local pending = networkingService.Pending
 	local sendRequests = if isServer then sendServerRequests else sendClientRequests
 
+	local serverReplication = networkingService.ServerReplication
 	local replicationTicks = 1 / networkingService.ReplicationPerSecond
 	replicationTimer += deltaTime
 
 	while replicationTimer > replicationTicks do
 		replicationTimer -= replicationTicks
+
+		if isServer and isRunning and serverReplication then
+			replicateServer()
+		end
+
 		if next(pending) then
 			sendRequests(pending)
 		end
@@ -137,14 +195,19 @@ end
 local function clientInterpolator(deltaTime)
 	for object, goals in replicationTarget do
 		local instance = object.Instance
-		for property, value in goals do
-			local iValue = instance[property]:Lerp(value, 0.33)
-			local distance = getDistance(ToVector2(iValue, "Offset"), ToVector2(instance[property], "Offset"))
+		replicationTarget[object] = nil
 
-			if distance < 5 then
+		for property, value in goals do
+			local currentValue = instance[property]
+			local distance = getDistance(ToVector2(currentValue, "Offset"), ToVector2(value, "Offset"))
+
+			if distance < 2 then
+				instance[property] = value
 				continue
 			end
 
+			local lerpSpeed = math.min(deltaTime * 8, 0.5)
+			local iValue = currentValue:Lerp(value, lerpSpeed)
 			instance[property] = iValue
 		end
 	end
@@ -152,6 +215,7 @@ end
 
 for _, player in players:GetPlayers() do
 	playersData[player.UserId] = {}
+	requestsCache[player.UserId] = {}
 end
 
 if isServer then
@@ -168,6 +232,7 @@ runService.Heartbeat:Connect(requestManager)
 
 if not isServer then
 	runService.Heartbeat:Connect(clientInterpolator)
+	socket:FireServer("requestServerData")
 end
 
 return {}

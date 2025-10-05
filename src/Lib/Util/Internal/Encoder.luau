@@ -53,7 +53,7 @@ local decoders = {
 }
 
 local function encode(data)
-	for index, value in pairs(data) do
+	for index, value in data do
 		local datatype = typeof(value)
 		local encoder = encoders[datatype]
 
@@ -74,7 +74,7 @@ local function encode(data)
 end
 
 local function decode(data)
-	for index, value in pairs(data) do
+	for index, value in data do
 		local datatype = typeof(value)
 
 		if datatype == "table" and not value.datatype then

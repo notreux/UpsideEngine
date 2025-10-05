@@ -2,7 +2,7 @@ local ue = script.Parent.Parent
 local classes = ue.Classes
 
 local objects = require(ue.AppData.Data).objects
-local eProperties = require(ue.AppData.EssentialProperties)
+local properties = require(ue.AppData.Properties)
 local eventEmitter = require(classes.Internal.EventEmitter)
 
 local encoder = require(ue.Lib.Util).Encoder
@@ -52,7 +52,7 @@ function getData(data)
 			local instance = value
 			value = {}
 
-			for _, property in eProperties.Instance do
+			for _, property in properties.Instance do
 				local sucess, val = pcall(read, instance, property)
 				if sucess then
 					value[property] = val
@@ -167,7 +167,7 @@ function pluginSupportService:LoadPluginContent()
 		end
 	end
 
-	if isClient then
+	if isClient and runService:IsRunning() then
 		game.ReplicatedStorage:SetAttribute("UpsideEngineDB", "{}")
 	end
 end

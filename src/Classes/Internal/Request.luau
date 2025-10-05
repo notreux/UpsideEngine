@@ -5,7 +5,9 @@ local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 local copyTable = require(script.Parent.Parent.Parent.Lib.Util.Internal.CopyTable)
+local ReplicationHandlers = require(script.Parent.Parent.Parent.Lib.Util.Replication.Handlers)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
+
 local classes = {}
 local networking
 
@@ -33,10 +35,6 @@ end
 
 local function applyProperties(object, properties)
 	for index, value in properties do
-		if index == "Position" then
-			continue
-		end
-
 		pcall(setProperty, object, index, value)
 	end
 end
@@ -98,21 +96,27 @@ function request:Accept(): BaseObject
 	local clon = playerData[content.ObjectId] or class.new()
 	local instance = clon.Instance
 
+	if not exists and isServer then
+		local clientRequests = networking.RequestsCache[self.ClientId]
+		local currentCache = clientRequests[content.ObjectId] or {}
+		clientRequests[content.ObjectId] = copyTable(currentCache, content)
+	end
+
+	clon.Id = content.ObjectId
 	applyProperties(instance, content.Instance)
 	copyTable(content.ObjectProperties, clon)
+
+	for className, handler in ReplicationHandlers do
+		if clon:IsA(className) then
+			handler(clon)
+		end
+	end
 
 	local this = networking.ReplicationTarget[clon] or {}
 	local position = content.Instance.Position or this.Position
 
 	this.Position = position
 	networking.ReplicationTarget[clon] = this
-
-	local shader = clon.Shader
-	if shader.Path ~= "" and shader.Enabled then
-		clon:SetShader(clon.Shader)
-	elseif not shader.Enabled then
-		clon:SetShader()
-	end
 
 	if exists then
 		return clon

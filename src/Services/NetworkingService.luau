@@ -1,20 +1,22 @@
 local upsideEngine = script.Parent.Parent
+local copyTable = require(script.Parent.Parent.Lib.Util.Internal.CopyTable)
 local diff = require(script.Parent.Parent.Lib.Util.Internal.Diff)
 local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local request = require(upsideEngine.Classes.Internal.Request)
-local eProperties = require(upsideEngine.AppData.EssentialProperties)
+local properties = require(upsideEngine.AppData.Properties)
 
-local toSkip = { "ImageRectOffset", "none" }
 local networkingService = {}
 networkingService.__index = networkingService
 
 function networkingService.new()
 	local self = eventEmitter.new()
-	self:SetClassName("NetworkingService")
+	self:SetClassName(script.Name)
 	self.ReplicationPerSecond = 15
 	self.DestroyObjectsOnLeave = true
+	self.ServerReplication = true
 	self.ReplicationTarget = {}
-	self.PlayersData = {}
+	self.RequestsCache = { [0] = {} }
+	self.PlayersData = { [0] = {} }
 	self.Pending = {}
 	self.Cache = {}
 
@@ -29,11 +31,13 @@ local function getInstanceData(object)
 	local instance = object.Instance
 	local data = {}
 
-	for _, index in eProperties.Instance do
+	for _, index in properties.Instance do
 		local sucess, value = pcall(read, instance, index)
-		if not sucess or table.find(toSkip, index) then
+		local isSpritePlaying = index == "ImageRectOffset" and object:IsA("Sprite") and object.IsPlaying
+
+		if not sucess or index == "none" or isSpritePlaying then
 			continue
-		elseif index == "Image" and value.Uri == nil then
+		elseif index == "Image" and instance.ImageContent.Object ~= nil then
 			value = instance:GetAttribute("url")
 		end
 
@@ -43,33 +47,26 @@ local function getInstanceData(object)
 	return data
 end
 
-local function replicate(self, object: Sprite, instance)
+local function replicate(self, object)
+	local instance = getInstanceData(object)
 	local req = request.new()
-	local props = {
-		Active = {
+	local props = {}
+
+	if object:IsA("Sprite") then
+		props.Active = {
 			Name = object.Active.Name,
 			SecondsPerFrame = object.Active.SecondsPerFrame,
-		},
-	}
+		}
+	end
 
-	for className, classProps in eProperties do
-		if not object:IsA(className) or className == "PhysicalObject" then
+	for key, value in object do
+		if table.find(properties.NonReplicable, key) or typeof(value) == "Instance" then
 			continue
 		end
 
-		for _, baseProp in classProps do
-			if baseProp == "Active" then
-				continue
-			end
-
-			props[baseProp] = object[baseProp]
-		end
-	end
-
-	if object:IsA("PhysicalObject") and not (object.Anchored and object.TrackCollisions) then
-		for _, physicalProp in eProperties.PhysicalObject do
-			props[physicalProp] = object[physicalProp]
-		end
+		props[key] = if typeof(value) == "table" --
+			then copyTable(value)
+			else value
 	end
 
 	local cached = self.Cache[object.Id] or {}
@@ -88,6 +85,7 @@ local function replicate(self, object: Sprite, instance)
 		ObjectProperties = props,
 	}
 
+	self.PlayersData[0][object.Id] = object
 	self.Cache[object.Id] = content
 	req:Send(content)
 	req:Destroy()
@@ -98,8 +96,7 @@ end
 }=]]
 
 function networkingService:Replicate(object: BaseObject)
-	local instance = getInstanceData(object)
-	replicate(self, object :: Sprite, instance)
+	replicate(self, object :: Sprite)
 end
 
 --[[={
@@ -110,10 +107,6 @@ end
 
 function networkingService:ReplicateOnChange(object: BaseObject): RBXScriptConnection
 	local function wrapper(property)
-		if table.find(toSkip, property) then
-			return
-		end
-
 		self:Replicate(object)
 	end
 
@@ -129,6 +122,9 @@ end
 		@ReplicationPerSecond Specifies the number of replication requests per second to send when using ReplicateOnChange
 		@ReplicationTarget Table of objects from other clients currently targeted for replication
 		@Pending Table of pending replication requests
+		@ServerReplication Boolean that determines if server-side replication is enabled, true by default
+		@RequestsCache Cache storing replication requests indexed by client (UserId)
+		@Cache Dictionary storing cached object data to optimize replication by detecting changes
 	@events
 		@ReplicationRequest Params -> [Request](Request.md) 
 		Fired when a request is received by the client

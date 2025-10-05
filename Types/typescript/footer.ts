@@ -22,6 +22,7 @@ interface upsideEngine {
 		& ((name: "PluginSupportService") => PluginSupportService)
 		& ((name: "NetworkingService") => NetworkingService)
 		& ((name: "TextTagService") => TextTagService)
+		& ((name: "AuthorityService") => AuthorityService)
 		& ((name: "CrossPlatformService") => CrossPlatformService),
 }
 
