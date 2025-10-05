@@ -79,9 +79,13 @@ nav:
       - Using MCP: tutorials/plugin-guide/MCPGuide.md
       - Plugin Scripts: tutorials/plugin-guide/PluginScripts.md
 
-    - Multiplayer Integration: 
-      - Client Side: tutorials/multiplayer-game/client.md
-      - Server Side: tutorials/multiplayer-game/server.md
+    - Replication Guide: 
+      - Introduction: tutorials/replication-guide/Introduction.md
+      - How it works: tutorials/replication-guide/HowItWorks.md
+      - Client Setup: tutorials/replication-guide/ClientSetup.md
+      - Server Setup: tutorials/replication-guide/ServerSetup.md
+      - Authority System: tutorials/replication-guide/AuthoritySystem.md
+      - Practical Example: tutorials/replication-guide/PracticalExample.md
 
     - Lighting Guide: 
       - Introduction: tutorials/lighting-guide/Introduction.md

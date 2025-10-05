@@ -179,3 +179,7 @@ h5,
 .pixelated {
     image-rendering: pixelated;
 }
+
+.tabbed-labels > label, .filename, .md-typeset__table th {
+    font-weight: 500 !important;
+}
