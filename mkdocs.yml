@@ -135,6 +135,7 @@ nav:
       - Fluid: documentation/autogen/Fluid.md
       - Parallax: documentation/autogen/Parallax.md
     - Services:
+      - AuthorityService: documentation/autogen/AuthorityService.md
       - CrossPlatformService: documentation/autogen/CrossPlatformService.md
       - PluginSupportService: documentation/autogen/PluginSupportService.md
       - NetworkingService: documentation/autogen/NetworkingService.md

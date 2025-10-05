@@ -9,8 +9,17 @@ Specifies the number of replication requests per second to send when using Repli
 ## [boolean](boolean.md) DestroyObjectsOnLeave
 If true, destroys replicated objects from other clients when they leave
   
+## [boolean](boolean.md) ServerReplication
+Boolean that determines if server-side replication is enabled, true by default
+  
 ## [table](table.md) ReplicationTarget 
 Table of objects from other clients currently targeted for replication
+   
+```lua
+{ }
+```
+## [table](table.md) RequestsCache 
+Cache storing replication requests indexed by client (UserId)
    
 ```lua
 { }
@@ -22,7 +31,8 @@ Dictionary containing the replicated objects for each client (keyed by UserId)
 { }
 ```
 ## [table](table.md) Cache 
- 
+Dictionary storing cached object data to optimize replication by detecting changes
+	 
 ```lua
 { }
 ```
