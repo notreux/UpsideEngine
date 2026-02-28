@@ -172,8 +172,11 @@ local function animationPlayer(character, sideView)
 		animation = ("idle_%s"):format(lastAction)
 	end
 
-	lastAction = action
 	animation = if animation == "idle" then defaultIdle else animation
+	if lastAction == "left" or lastAction == "right" then
+		animation = `idle_{lastAction}`
+	end
+	lastAction = action
 
 	character:Play(animation)
 end
