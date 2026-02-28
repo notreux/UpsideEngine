@@ -166,7 +166,7 @@ local function animationPlayer(character, sideView)
 		animation = control
 	end
 
-	if action == lastAction or sideView and character.IsJumping and lastAction == "up" then
+	if action == lastAction then --or sideView and character.IsJumping and lastAction == "up" then
 		return
 	elseif action == "none" and not lastAction:match("idle") then
 		animation = ("idle_%s"):format(lastAction)
