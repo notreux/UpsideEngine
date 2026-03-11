@@ -97,7 +97,8 @@ function request:Accept(): BaseObject
 	local instance = clon.Instance
 
 	if not exists and isServer then
-		local clientRequests = networking.RequestsCache[self.ClientId]
+		local clientRequests = networking.RequestsCache[self.ClientId] or {}
+		networking.RequestsCache[self.ClientId] = clientRequests
 		local currentCache = clientRequests[content.ObjectId] or {}
 		clientRequests[content.ObjectId] = copyTable(currentCache, content)
 	end

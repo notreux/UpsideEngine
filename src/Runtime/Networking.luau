@@ -117,8 +117,14 @@ local function sendServerRequests(requests)
 		local content = data.Content
 		local objectId = content.ObjectId
 		local clientId = data.ClientId
+		local clientRequests = requestsCache[clientId]
 
-		local cachedRequest = requestsCache[clientId][objectId] or { Content = {} }
+		if clientRequests == nil then
+			requests[index] = nil
+			continue
+		end
+
+		local cachedRequest = clientRequests[objectId] or { Content = {} }
 		local cachedContent = cachedRequest.Content
 
 		if toSend[clientId] == nil then
@@ -126,7 +132,7 @@ local function sendServerRequests(requests)
 		end
 
 		requests[index] = nil
-		requestsCache[clientId][objectId] = copyTable(requestsCache[clientId][objectId] or {}, data)
+		clientRequests[objectId] = copyTable(clientRequests[objectId] or {}, data)
 		toSend[clientId][objectId] = {
 			ClientId = clientId,
 			Content = merge(data.Content, {
@@ -137,7 +143,7 @@ local function sendServerRequests(requests)
 	end
 
 	for _, player in players:GetPlayers() do
-		local playerData = playersData[player.UserId]
+		local playerData = playersData[player.UserId] or {}
 		local data = table.clone(toSend)
 		local serverData = table.clone(data[0] or {})
 		data[player.UserId] = nil
