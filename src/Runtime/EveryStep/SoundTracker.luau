@@ -3,15 +3,19 @@ local getDistance = require(script.Parent.Parent.Parent.Lib.Util.Math.GetDistanc
 local normalize = util.Normalize
 
 return function(scene)
-	if not scene.Camera.Subject then
+	if not scene.Camera.Subject or not scene.Camera.Subject.Instance then
 		return
 	end
 
 	for _, sound in scene.SoundEnvironment.Content do
-		local soundSubject = sound.Subject.Instance
+		local soundSubject = sound.Subject and sound.Subject.Instance
 		local soundInstance = sound.Instance
 
 		local player = scene.Camera.Subject.Instance
+		if not soundSubject then
+			continue
+		end
+
 		local range = sound.Range * sound.Range
 		local distance = getDistance(player.AbsolutePosition, soundSubject.AbsolutePosition)
 

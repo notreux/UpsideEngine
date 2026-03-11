@@ -10,13 +10,48 @@ local function getSoundEnvironment(scene: string): SoundEnvironment
 	return objects[scene].SoundEnvironment
 end
 
+local function disconnectSubject(self)
+	if self.SubjectDestroyConnection then
+		self.SubjectDestroyConnection:Disconnect()
+		self.SubjectDestroyConnection = nil
+	end
+end
+
+local function removeFromSoundEnvironment(self)
+	local sceneId = self.Subject and self.Subject.Scene or nil
+	if self.Subject and objects[sceneId] then
+		local soundEnvironment = getSoundEnvironment(sceneId)
+		soundEnvironment.Content[self.Id] = nil
+	end
+end
+
+local function bindSubject(self, subject)
+	disconnectSubject(self)
+	self.Subject = subject
+
+	if not subject then
+		return
+	end
+
+	self.SubjectDestroyConnection = subject:On("Destroy", function()
+		if self.Subject ~= subject then
+			return
+		end
+
+		removeFromSoundEnvironment(self)
+		disconnectSubject(self)
+		self.Subject = nil
+	end)
+end
+
 function sound.new(): Sound
 	local self = baseObject.new("Sound")
 	self:SetClassName(script.Name)
 	self.Range = 1000
 	self.MaxVolume = 1
 	self.DistanceFading = true
-	self.Subject = character.new()
+	self.SubjectDestroyConnection = nil
+	bindSubject(self, character.new())
 
 	return setmetatable(self, sound)
 end
@@ -29,16 +64,12 @@ end
 function sound:SetSubject(subject: Character, useSceneSoundGroup: boolean?)
 	assert(objects[subject.Scene] ~= nil, "The subject must be in a scene!")
 
-	local sceneId = self.Subject.Scene or nil
-	if self.Subject and objects[sceneId] then
-		local SoundEnvironment = getSoundEnvironment(sceneId)
-		SoundEnvironment.Content[self.Id] = nil
-	end
+	removeFromSoundEnvironment(self)
 
 	local SoundEnvironment = getSoundEnvironment(subject.Scene)
 	SoundEnvironment.Content[self.Id] = self
 
-	self.Subject = subject
+	bindSubject(self, subject)
 	if useSceneSoundGroup then
 		self.Instance.SoundGroup = SoundEnvironment.Instance
 	end

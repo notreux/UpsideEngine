@@ -38,12 +38,12 @@ return function(scene)
 	local targetProximityPrompt = nil
 	local proximityPrompts = {}
 
-	if not subject and subject.Instance then
+	if not subject or not subject.Instance then
 		return
 	end
 
 	for _, object in scene.Objects do
-		if not object:IsA("ProximityPrompt2D") or not object.Enabled then
+		if not object:IsA("ProximityPrompt2D") or not object.Enabled or not object.Instance then
 			continue
 		end
 

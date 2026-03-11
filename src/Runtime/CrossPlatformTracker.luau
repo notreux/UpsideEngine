@@ -18,6 +18,16 @@ local actions = {
 	down = false,
 }
 
+local lastAction = ""
+
+local function resetActions()
+	for action in actions do
+		actions[action] = false
+	end
+
+	lastAction = ""
+end
+
 local directions = {
 	up = Vector2.new(0, -1),
 	left = Vector2.new(-1, 0),
@@ -30,7 +40,7 @@ local function onUserInput(state, input)
 	local character = crossPlatformService.Character
 	local action = input.Action:lower()
 
-	local isValid = not character.Sprites or not directions[action]
+	local isValid = not character or not character.Sprites or not directions[action]
 	local begin = state == "Begin"
 
 	if not controlsEnabled or isValid then
@@ -150,8 +160,8 @@ inputSetup(uis, inputDetector)
 crossPlatformService:On("InputBegin", wrap(onUserInput, "Begin"))
 crossPlatformService:On("InputChange", wrap(onUserInput, "Begin"))
 crossPlatformService:On("InputEnd", wrap(onUserInput, "Ended"))
+crossPlatformService:On("CharacterDestroy", resetActions)
 
-local lastAction = ""
 local function animationPlayer(character, sideView)
 	local defaultIdle = if sideView then "idle_right" else "idle_down"
 	local action = "none"
@@ -211,6 +221,10 @@ end
 RunService.Heartbeat:Connect(function()
 	local character = crossPlatformService.Character
 	local sideView = crossPlatformService.SideView
+
+	if not character or not character.Instance then
+		return
+	end
 
 	animationPlayer(character, sideView)
 	characterController(character, sideView)

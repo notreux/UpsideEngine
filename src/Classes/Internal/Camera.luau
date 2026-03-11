@@ -6,6 +6,31 @@ local eventEmitter = require(upsideEngine.Classes.Internal.EventEmitter)
 local camera = {}
 camera.__index = camera
 
+local function disconnectSubject(self)
+	if self.SubjectDestroyConnection then
+		self.SubjectDestroyConnection:Disconnect()
+		self.SubjectDestroyConnection = nil
+	end
+end
+
+local function bindSubject(self, subject)
+	disconnectSubject(self)
+	self.Subject = subject
+
+	if not subject then
+		return
+	end
+
+	self.SubjectDestroyConnection = subject:On("Destroy", function()
+		if self.Subject ~= subject then
+			return
+		end
+
+		disconnectSubject(self)
+		self.Subject = nil
+	end)
+end
+
 --[[={
 	@link Camera.md
 }=]]
@@ -20,7 +45,8 @@ function camera.new(scene: Scene): Camera
 	self.Scene = scene.Id
 	self.Smoothness = 0.7
 	self.Instance = scene.Instance:WaitForChild("GameFrame")
-	self.Subject = character.new()
+	self.SubjectDestroyConnection = nil
+	bindSubject(self, character.new())
 
 	return setmetatable(self, camera)
 end
@@ -51,7 +77,7 @@ end
 }=]]
 
 function camera:SetSubject(subject: Character)
-	self.Subject = subject
+	bindSubject(self, subject)
 end
 
 --[[={

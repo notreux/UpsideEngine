@@ -7,6 +7,32 @@ local eventEmitter = require(classes.Internal.EventEmitter)
 local crossPlatformService = {}
 crossPlatformService.__index = crossPlatformService
 
+local function disconnectCharacter(self)
+	if self.CharacterDestroyConnection then
+		self.CharacterDestroyConnection:Disconnect()
+		self.CharacterDestroyConnection = nil
+	end
+end
+
+local function bindCharacter(self, targetCharacter)
+	disconnectCharacter(self)
+	self.Character = targetCharacter
+
+	if not targetCharacter then
+		return
+	end
+
+	self.CharacterDestroyConnection = targetCharacter:On("Destroy", function()
+		if self.Character ~= targetCharacter then
+			return
+		end
+
+		disconnectCharacter(self)
+		self.Character = nil
+		self:Fire("CharacterDestroy", targetCharacter)
+	end)
+end
+
 function crossPlatformService.new()
 	local self = eventEmitter.new()
 	self:SetClassName("CrossPlatformService")
@@ -14,7 +40,7 @@ function crossPlatformService.new()
 	self.DefaultControllersEnabled = true
 	self.SideView = true
 	self.StickSensibility = 1
-	self.Character = character.new()
+	self.CharacterDestroyConnection = nil
 
 	self.Configs = {
 		Keyboard = {
@@ -50,6 +76,8 @@ function crossPlatformService.new()
 			},
 		},
 	}
+
+	bindCharacter(self, character.new())
 
 	return setmetatable(self, crossPlatformService)
 end
@@ -126,7 +154,7 @@ end
 }=]]
 
 function crossPlatformService:SetPlayerCharacter(character: Character)
-	self.Character = character
+	bindCharacter(self, character)
 end
 
 --[[={
