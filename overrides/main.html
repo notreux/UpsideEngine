@@ -2,8 +2,8 @@
 <style>
 	.context7-launcher {
 		position: fixed;
-		right: 1rem;
-		bottom: 5.5rem;
+		right: max(1rem, calc(env(safe-area-inset-right, 0px) + 1rem));
+		bottom: max(1rem, calc(env(safe-area-inset-bottom, 0px) + 1rem));
 		z-index: 9999;
 		display: flex;
 		align-items: flex-end;
@@ -12,17 +12,15 @@
 	.context7-launcher__button {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.55rem;
+		justify-content: center;
 		border: 1px solid color-mix(in srgb, var(--md-primary-fg-color) 35%, transparent);
 		border-radius: 999px;
-		padding: 0.9rem 1.25rem;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
 		background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
 		color: var(--md-primary-bg-color);
-		box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.18);
-		font: inherit;
-      font-size: 0.7125rem;
-		font-weight: 500;
-		line-height: 1.2;
+		box-shadow: 0 0.65rem 1.6rem rgba(0, 0, 0, 0.18);
 		cursor: pointer;
 		transition:
 			transform 0.18s ease,
@@ -33,7 +31,7 @@
 	.context7-launcher__button:hover,
 	.context7-launcher__button:focus-visible {
 		transform: translateY(-1px);
-		box-shadow: 0 0.95rem 2.2rem rgba(0, 0, 0, 0.22);
+		box-shadow: 0 0.85rem 1.9rem rgba(0, 0, 0, 0.22);
 	}
 
 	.context7-launcher__button:focus-visible {
@@ -48,8 +46,50 @@
 	}
 
 	.context7-launcher__icon {
-		width: 1.15rem;
-		height: 1.15rem;
+		width: 1.1rem;
+		height: 1.1rem;
+		flex: 0 0 auto;
+	}
+
+	.context7-widget-disable {
+		position: fixed;
+		right: max(3.7rem, calc(env(safe-area-inset-right, 0px) + 3.7rem));
+		bottom: max(1.4rem, calc(env(safe-area-inset-bottom, 0px) + 1.4rem));
+		z-index: 2147483648;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.3rem;
+		height: 1.3rem;
+		padding: 0;
+		border: 1px solid rgba(180, 35, 24, 0.18);
+		border-radius: 999px;
+		background: #fafaf9;
+		color: #b42318;
+		box-shadow: 0 0.2rem 0.55rem rgba(0, 0, 0, 0.14);
+		cursor: pointer;
+		opacity: 0.92;
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease,
+			opacity 0.18s ease;
+	}
+
+	.context7-widget-disable:hover,
+	.context7-widget-disable:focus-visible {
+		transform: translateX(-1px);
+		box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.18);
+		opacity: 1;
+	}
+
+	.context7-widget-disable:focus-visible {
+		outline: 2px solid #b42318;
+		outline-offset: 2px;
+	}
+
+	.context7-widget-disable__icon {
+		width: 0.65rem;
+		height: 0.65rem;
 		flex: 0 0 auto;
 	}
 
@@ -66,9 +106,9 @@
 	}
 
 	.context7-consent__dialog {
-		width: min(100%, 34rem);
+		width: min(100%, 25.5rem);
 		border: 1px solid var(--md-default-fg-color--lightest);
-		border-radius: 1rem;
+		border-radius: 0.75rem;
 		background: var(--md-default-bg-color);
 		color: var(--md-default-fg-color);
 		box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.22);
@@ -76,21 +116,21 @@
 	}
 
 	.context7-consent__body {
-		padding: 1.1rem 1.1rem 0.9rem;
+		padding: 0.85rem 0.85rem 0.7rem;
 	}
 
 	.context7-consent__title {
 		margin: 0 0 0.55rem;
 		color: var(--md-default-fg-color);
-		font-size: 1.1rem;
+		font-size: 0.95rem;
 		font-weight: 500;
 	}
 
 	.context7-consent__body p {
 		margin: 0 0 0.7rem;
 		color: var(--md-default-fg-color--light);
-		font-size: 0.92rem;
-		line-height: 1.6;
+		font-size: 0.78rem;
+		line-height: 1.45;
 	}
 
 	.context7-consent__body p:last-child {
@@ -101,14 +141,14 @@
 		display: flex;
 		justify-content: flex-end;
 		gap: 0.7rem;
-		padding: 0.9rem 1.1rem 1.1rem;
+		padding: 0.7rem 0.85rem 0.85rem;
 	}
 
 	.context7-consent__action {
 		border-radius: 999px;
-		padding: 0.78rem 1.05rem;
+		padding: 0.58rem 0.82rem;
 		font: inherit;
-		font-size: 0.95rem;
+		font-size: 0.8rem;
 		font-weight: 500;
 		line-height: 1.2;
 		cursor: pointer;
@@ -143,8 +183,13 @@
 
 	@media (max-width: 760px) {
 		.context7-launcher {
-			right: 0.75rem;
-			bottom: 5rem;
+			right: max(0.75rem, calc(env(safe-area-inset-right, 0px) + 0.75rem));
+			bottom: max(0.75rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
+		}
+
+		.context7-widget-disable {
+			right: max(3.45rem, calc(env(safe-area-inset-right, 0px) + 3.45rem));
+			bottom: max(1.2rem, calc(env(safe-area-inset-bottom, 0px) + 1.2rem));
 		}
 
 		.context7-consent__actions {
@@ -175,8 +220,13 @@
 	function setContext7ConsentAccepted() {
 		try {
 			window.localStorage.setItem(context7ConsentStorageKey, 'true');
-		} catch (error) {
-		}
+		} catch (error) {}
+	}
+
+	function clearContext7ConsentAccepted() {
+		try {
+			window.localStorage.removeItem(context7ConsentStorageKey);
+		} catch (error) {}
 	}
 
 	function removeContext7Launcher() {
@@ -191,6 +241,40 @@
 		if (existing) {
 			existing.remove();
 		}
+	}
+
+	function removeContext7DisableButton() {
+		var existing = document.querySelector('.context7-widget-disable');
+		if (existing) {
+			existing.remove();
+		}
+	}
+
+	function attachContext7DisableButton() {
+		removeContext7DisableButton();
+
+		if (!hasContext7Consent() || !shouldShowContext7Launcher()) {
+			return;
+		}
+
+		var button = document.createElement('button');
+		button.className = 'context7-widget-disable';
+		button.type = 'button';
+		button.setAttribute('aria-label', 'Disable AI');
+		button.title = 'Disable AI';
+		button.innerHTML =
+			'<svg class="context7-widget-disable__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="M7.05 5.8A8 8 0 1 0 16.95 5.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>';
+
+		button.addEventListener('click', function () {
+			clearContext7ConsentAccepted();
+			window.location.reload();
+		});
+
+		window.requestAnimationFrame(function () {
+			window.requestAnimationFrame(function () {
+				document.body.appendChild(button);
+			});
+		});
 	}
 
 	function loadContext7Widget(onLoaded, onError) {
@@ -286,9 +370,10 @@
 			loadContext7Widget(
 				function () {
 					removeContext7Consent();
-					removeContext7Launcher();
+					attachContext7Launcher();
 				},
 				function () {
+					clearContext7ConsentAccepted();
 					accept.disabled = false;
 					cancel.disabled = false;
 					accept.textContent = 'Could not load Context7';
@@ -311,13 +396,17 @@
 	function attachContext7Launcher() {
 		removeContext7Launcher();
 		removeContext7Consent();
+		removeContext7DisableButton();
 
 		if (!shouldShowContext7Launcher()) {
 			return;
 		}
 
-		if (hasContext7Consent()) {
+		var hasConsent = hasContext7Consent();
+
+		if (hasConsent) {
 			loadContext7Widget();
+			attachContext7DisableButton();
 			return;
 		}
 
@@ -327,8 +416,11 @@
 		var button = document.createElement('button');
 		button.className = 'context7-launcher__button';
 		button.type = 'button';
+
+		button.setAttribute('aria-label', 'Enable AI');
+		button.title = 'Enable AI';
 		button.innerHTML =
-			'<svg class="context7-launcher__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 14.35 8.15 20 10.5 14.85 12.85 12.5 18 10.15 12.85 5 10.5 10.15 8.15 12 3Z" fill="currentColor"></path><path d="M18.5 3 19.32 4.68 21 5.5 19.32 6.32 18.5 8 17.68 6.32 16 5.5 17.68 4.68 18.5 3Z" fill="currentColor" opacity="0.72"></path><path d="M6 15 7.09 17.41 9.5 18.5 7.09 19.59 6 22 4.91 19.59 2.5 18.5 4.91 17.41 6 15Z" fill="currentColor" opacity="0.72"></path></svg><span>Enable AI</span>';
+			'<svg class="context7-launcher__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 14.35 8.15 20 10.5 14.85 12.85 12.5 18 10.15 12.85 5 10.5 10.15 8.15 12 3Z" fill="currentColor"></path><path d="M18.5 3 19.32 4.68 21 5.5 19.32 6.32 18.5 8 17.68 6.32 16 5.5 17.68 4.68 18.5 3Z" fill="currentColor" opacity="0.72"></path><path d="M6 15 7.09 17.41 9.5 18.5 7.09 19.59 6 22 4.91 19.59 2.5 18.5 4.91 17.41 6 15Z" fill="currentColor" opacity="0.72"></path></svg>';
 
 		button.addEventListener('click', function () {
 			openContext7Consent(button);
