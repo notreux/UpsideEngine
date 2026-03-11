@@ -151,10 +151,10 @@ end
 function scene:Raycast(info: Raycast2dParams): Raycast2dResult
 	local isBlackList = info.FilterType == "Blacklist"
 	local intersections = {}
-	local targetList = isBlackList and self.Objects or info.List
 
 	local from, to = info.From, info.To
 	info.List = info.List or {}
+	local targetList = isBlackList and self.Objects or info.List
 
 	from = Vector3.new(from.X, from.Y)
 	to = Vector3.new(to.X, to.Y)

@@ -2,9 +2,24 @@ local baseClass = require(script.Parent.BaseClass)
 local connection = {}
 connection.__index = connection
 
-local function unyield(seconds, running)
-	task.wait(seconds)
-	coroutine.resume(running)
+local function removeThread(event, running)
+	for index, thread in event.Threads do
+		if thread == running then
+			table.remove(event.Threads, index)
+			break
+		end
+	end
+
+	return running
+end
+
+local function resumeThread(event, running, ...)
+	if coroutine.status(running) ~= "suspended" then
+		return
+	end
+
+	removeThread(event, running)
+	coroutine.resume(running, ...)
 end
 
 --[[={
@@ -33,7 +48,7 @@ function connection:Wait(seconds: number?): thread?
 	end
 
 	if seconds then
-		task.defer(unyield, seconds, running)
+		task.delay(seconds, resumeThread, self.Event, running)
 	end
 
 	table.insert(self.Event.Threads, running)

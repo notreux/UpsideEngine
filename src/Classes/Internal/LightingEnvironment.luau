@@ -85,11 +85,12 @@ function lightingEnvironment:DrawPixels()
 		})
 	end
 
-	task.wait(1)
-	for _, chkActor in self.__actrees do
-		chkActor:Execute("build")
-		chkActor:ExecuteEveryStep("draw")
-	end
+	task.defer(function()
+		for _, chkActor in self.__actrees do
+			chkActor:Execute("build")
+			chkActor:ExecuteEveryStep("draw")
+		end
+	end)
 end
 
 --[[={
