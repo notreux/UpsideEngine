@@ -15,103 +15,37 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 ### WARNING
 Some Upside Engine features may not work if you don't have [EditableImages](https://create.roblox.com/docs/es-es/reference/engine/classes/EditableImage) enabled in your game
 
-# Changelog v3.1.0
+# Changelog v3.1.2
 
 ## Summary
 
-This update introduces a comprehensive authority management system for multiplayer functionality, significantly improving the replication system and network synchronization capabilities. The new AuthorityService provides fine-grained control over which client or server has authority over specific objects, essential for preventing conflicts in multiplayer environments.
-
-Additionally, this update includes important type definition fixes and improvements, particularly for TypeScript users, ensuring better type safety and developer experience.
+This update focuses on runtime stability. It hardens character-related trackers during destroy/respawn flows, fixes a few core regressions caught by the test suite, and makes networking more resilient to stale request state on the server.
 
 **Key Features:**
-- Authority management system (AuthorityService)
-- Enhanced replication system with better client-server communication
-- Improved type definitions with bug fixes
-- Better property categorization and management
-- New geometry utilities for improved raycasting
+- Safer character and subject lifecycle handling
+- Test-driven fixes for connection waits, lighting setup, and scene raycasts
+- More robust server networking request cache handling
 
 ---
 
 ### Added
 
-#### New Services
-- **AuthorityService**: New service for managing authority assignments in multiplayer environments
-  - Controls which client or server has authority over specific objects
-  - Provides `SetAuthority()` method to assign authority to objects (Server/Client)
-  - Provides `GetAuthority()` method to retrieve current authority assignments
-  - Defaults to "Server" authority when not explicitly set
-  - Only server can manage authority assignments
-
-#### New Types
-- **AuthorityType**: New type definition for authority management ("Server" | "Client")
-  - Added to both Luau and TypeScript type definitions
-
-#### New Utilities
-- **GetCorners.luau**: New geometry utility function for calculating corners of objects
-  - Added to `src/Lib/Util/Geometry/` directory
-
-#### New Replication System
-- **NetworkingService**: 
-  - Now the `ReplicationRequest` event is only fired when the request comes from a client, so it should only be used on the server side. Once you accept the request, the object will no longer be replicated again unless authority is granted to the client using the `AuthorityService`.
-- **Handlers.luau**: New replication handlers module
-  - Handles object data updates from clients
-  - Processes property changes and replication
-
-#### New Properties file
-- **Properties.luau**: Replaces `EssentialProperties.luau` with expanded functionality
-  - Added `NonReplicable` property category for properties that should not be replicated
-  - Added `Replicable` property category for properties that can be replicated
-  - Includes comprehensive property lists for all object types (StaticObject, Sprite, PhysicalObject, Instance)
-  - Better organization of property metadata
+- Automatic cleanup hooks when tracked characters or subjects are destroyed in runtime services.
+- Root-level `context7.json` support for the Upside Engine Context7 entry.
 
 ### Changed
 
-#### Scene Class Enhancements
-- Enhanced `Scene:Raycast2d()` method with improved corner detection using new GetCorners utility
-- Added visibility bounds calculation for raycasting
-- Added circle shape support in raycasting
-- Improved raycast filtering and collision detection logic
-- Better handling of object dimensions and corners in raycast operations
-
-#### NetworkingService Improvements
-- Added `ServerReplication` property (boolean, defaults to true) to control server-side replication
-- Added `RequestsCache` property for storing replication requests indexed by client UserId
-- Improved `Cache` property documentation - now explicitly stores cached object data for change detection
-- Enhanced object replication logic
-- Better handling of client-server communication
-- Improved data synchronization between clients
-
-#### Networking Runtime
-- Refactored remote event handling with new handler system
-- Integrated new replication handlers for client requests
-- Enhanced server-side object replication processing
-- Improved data encoding/decoding for network transmission
-- Better error handling and validation
-
-#### Request Class
-- Updated internal request handling with improved property management
-- Enhanced parameter processing
-
-#### UpsideEngine Core
-- Updated to include AuthorityService in service registry
-- Minor initialization improvements
+- `CrossPlatformService`, camera subjects, and sound subjects now release destroyed references automatically.
+- Runtime trackers now tolerate missing `Character`, `Subject`, or backing `Instance` values during respawn gaps.
+- Lighting pixel startup no longer blocks on a nested `task.wait()` during tests.
 
 ### Removed
-- **EssentialProperties.luau**: Replaced by the more comprehensive Properties.luau module
+- No removals in this release.
 
 ### Fixed
 
-#### TypeScript Definitions
-- Fixed typo: `Filterinterface` → `FilterType` in `Raycast2dParams`
-- Fixed `To` property type in `Raycast2dParams` from `any` to `Vector2`
-- Improved type safety for `Dictionary<K, V>` type definition
-- Better type definitions for `Event` interface with proper `Record<string, unknown>` types
-- Improved `BaseClass` interface with better method signatures:
-  - Methods now properly return `void` instead of `any` where appropriate
-  - Better parameter typing with `...args: any[]`
-  - Removed unused `Extend` method from interface
-- Better formatting and consistency across type definitions (commas to semicolons)
-
-#### Luau Type Definitions
-- Enhanced type exports consistency
+- Fixed runtime errors from `CrossPlatformTracker`, `ProximityPromptTracker`, `ParallaxTracker`, and `SoundTracker` when characters are destroyed and respawned.
+- Fixed `Connection:Wait()` timeout behavior so timed waits resume correctly and tests do not hang.
+- Fixed `Scene:Raycast()` iterating over `nil` when no filter list is provided.
+- Fixed server networking errors caused by stale `RequestsCache` entries and orphaned pending requests.
 
