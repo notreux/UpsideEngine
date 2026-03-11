@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block extrahead %}
+  {{ super() }}
+  {% if page and page.url and (page.url.startswith('documentation/') or page.url.startswith('tutorials/')) %}
+    <script src="https://context7.com/widget.js" data-library="/notreux/upsideengine"></script>
+  {% endif %}
+{% endblock %}
+
 {% block outdated %}
   You're not viewing the latest version.
   <a href="{{ '../' ~ base_url }}"> 
