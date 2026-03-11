@@ -1,15 +1,353 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block extrahead %} {{ super() }}
+<style>
+	.context7-launcher {
+		position: fixed;
+		right: 1rem;
+		bottom: 5.5rem;
+		z-index: 9999;
+		display: flex;
+		align-items: flex-end;
+	}
 
-{% block extrahead %}
-  {{ super() }}
-  {% if page and page.url and (page.url.startswith('documentation/') or page.url.startswith('tutorials/')) %}
-    <script src="https://context7.com/widget.js" data-library="/notreux/upsideengine"></script>
-  {% endif %}
-{% endblock %}
+	.context7-launcher__button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.55rem;
+		border: 1px solid color-mix(in srgb, var(--md-primary-fg-color) 35%, transparent);
+		border-radius: 999px;
+		padding: 0.9rem 1.25rem;
+		background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+		color: var(--md-primary-bg-color);
+		box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.18);
+		font: inherit;
+      font-size: 0.7125rem;
+		font-weight: 500;
+		line-height: 1.2;
+		cursor: pointer;
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease,
+			opacity 0.18s ease;
+	}
 
-{% block outdated %}
-  You're not viewing the latest version.
-  <a href="{{ '../' ~ base_url }}"> 
-    <strong>Click here to go to latest.</strong>
-  </a>
+	.context7-launcher__button:hover,
+	.context7-launcher__button:focus-visible {
+		transform: translateY(-1px);
+		box-shadow: 0 0.95rem 2.2rem rgba(0, 0, 0, 0.22);
+	}
+
+	.context7-launcher__button:focus-visible {
+		outline: 2px solid var(--md-accent-fg-color);
+		outline-offset: 2px;
+	}
+
+	.context7-launcher__button:disabled {
+		opacity: 0.7;
+		cursor: progress;
+		transform: none;
+	}
+
+	.context7-launcher__icon {
+		width: 1.15rem;
+		height: 1.15rem;
+		flex: 0 0 auto;
+	}
+
+	.context7-consent {
+		position: fixed;
+		inset: 0;
+		z-index: 10000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+		background: rgba(15, 23, 42, 0.48);
+		backdrop-filter: blur(6px);
+	}
+
+	.context7-consent__dialog {
+		width: min(100%, 34rem);
+		border: 1px solid var(--md-default-fg-color--lightest);
+		border-radius: 1rem;
+		background: var(--md-default-bg-color);
+		color: var(--md-default-fg-color);
+		box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.22);
+		overflow: hidden;
+	}
+
+	.context7-consent__body {
+		padding: 1.1rem 1.1rem 0.9rem;
+	}
+
+	.context7-consent__title {
+		margin: 0 0 0.55rem;
+		color: var(--md-default-fg-color);
+		font-size: 1.1rem;
+		font-weight: 500;
+	}
+
+	.context7-consent__body p {
+		margin: 0 0 0.7rem;
+		color: var(--md-default-fg-color--light);
+		font-size: 0.92rem;
+		line-height: 1.6;
+	}
+
+	.context7-consent__body p:last-child {
+		margin-bottom: 0;
+	}
+
+	.context7-consent__actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.7rem;
+		padding: 0.9rem 1.1rem 1.1rem;
+	}
+
+	.context7-consent__action {
+		border-radius: 999px;
+		padding: 0.78rem 1.05rem;
+		font: inherit;
+		font-size: 0.95rem;
+		font-weight: 500;
+		line-height: 1.2;
+		cursor: pointer;
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease,
+			opacity 0.18s ease;
+	}
+
+	.context7-consent__action:hover,
+	.context7-consent__action:focus-visible {
+		transform: translateY(-1px);
+	}
+
+	.context7-consent__action:focus-visible {
+		outline: 2px solid var(--md-accent-fg-color);
+		outline-offset: 2px;
+	}
+
+	.context7-consent__action--secondary {
+		border: 1px solid var(--md-default-fg-color--lightest);
+		background: var(--md-default-bg-color);
+		color: var(--md-default-fg-color);
+	}
+
+	.context7-consent__action--primary {
+		border: 1px solid color-mix(in srgb, var(--md-primary-fg-color) 35%, transparent);
+		background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+		color: var(--md-primary-bg-color);
+		box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.18);
+	}
+
+	@media (max-width: 760px) {
+		.context7-launcher {
+			right: 0.75rem;
+			bottom: 5rem;
+		}
+
+		.context7-consent__actions {
+			flex-direction: column-reverse;
+		}
+
+		.context7-consent__action {
+			width: 100%;
+		}
+	}
+</style>
+<script>
+	var context7ConsentStorageKey = 'context7-consent-accepted';
+
+	function shouldShowContext7Launcher() {
+		var path = window.location.pathname;
+		return path.indexOf('/documentation/') !== -1 || path.indexOf('/tutorials/') !== -1;
+	}
+
+	function hasContext7Consent() {
+		try {
+			return window.localStorage.getItem(context7ConsentStorageKey) === 'true';
+		} catch (error) {
+			return false;
+		}
+	}
+
+	function setContext7ConsentAccepted() {
+		try {
+			window.localStorage.setItem(context7ConsentStorageKey, 'true');
+		} catch (error) {
+		}
+	}
+
+	function removeContext7Launcher() {
+		var existing = document.querySelector('.context7-launcher');
+		if (existing) {
+			existing.remove();
+		}
+	}
+
+	function removeContext7Consent() {
+		var existing = document.querySelector('.context7-consent');
+		if (existing) {
+			existing.remove();
+		}
+	}
+
+	function loadContext7Widget(onLoaded, onError) {
+		if (document.querySelector('script[data-context7-widget="true"]')) {
+			if (onLoaded) {
+				onLoaded();
+			}
+			return;
+		}
+
+		var script = document.createElement('script');
+		script.src = 'https://context7.com/widget.js';
+		script.dataset.library = '/notreux/upsideengine';
+		script.dataset.context7Widget = 'true';
+		script.async = true;
+
+		script.addEventListener('load', function () {
+			if (onLoaded) {
+				onLoaded();
+			}
+		});
+
+		script.addEventListener('error', function () {
+			if (onError) {
+				onError();
+			}
+		});
+
+		document.head.appendChild(script);
+	}
+
+	function openContext7Consent(button) {
+		removeContext7Consent();
+
+		var overlay = document.createElement('div');
+		overlay.className = 'context7-consent';
+
+		var dialog = document.createElement('div');
+		dialog.className = 'context7-consent__dialog';
+		dialog.setAttribute('role', 'dialog');
+		dialog.setAttribute('aria-modal', 'true');
+		dialog.setAttribute('aria-labelledby', 'context7-consent-title');
+
+		var body = document.createElement('div');
+		body.className = 'context7-consent__body';
+
+		var title = document.createElement('h2');
+		title.className = 'context7-consent__title';
+		title.id = 'context7-consent-title';
+		title.textContent = 'Enable Context7 AI assistant?';
+
+		var paragraph1 = document.createElement('p');
+		paragraph1.textContent =
+			'This loads a third-party service from Context7. Questions you send, along with technical data such as your IP address, browser details, and page context, may be processed by Context7.';
+
+		var paragraph2 = document.createElement('p');
+		paragraph2.textContent =
+			'Context7 may also use cookies, local storage, or similar browser storage depending on how their widget works. Only continue if you want to interact with that external service.';
+
+		var paragraph3 = document.createElement('p');
+		paragraph3.textContent =
+			'This site stores your consent choice in your browser using local storage. If you continue, the assistant will be loaded on this page and used at your discretion.';
+
+		var actions = document.createElement('div');
+		actions.className = 'context7-consent__actions';
+
+		var cancel = document.createElement('button');
+		cancel.className = 'context7-consent__action context7-consent__action--secondary';
+		cancel.type = 'button';
+		cancel.textContent = 'Cancel';
+
+		var accept = document.createElement('button');
+		accept.className = 'context7-consent__action context7-consent__action--primary';
+		accept.type = 'button';
+		accept.textContent = 'Accept and continue';
+
+		cancel.addEventListener('click', function () {
+			removeContext7Consent();
+		});
+
+		overlay.addEventListener('click', function (event) {
+			if (event.target === overlay) {
+				removeContext7Consent();
+			}
+		});
+
+		accept.addEventListener('click', function () {
+			accept.disabled = true;
+			cancel.disabled = true;
+			accept.textContent = 'Loading...';
+			setContext7ConsentAccepted();
+
+			loadContext7Widget(
+				function () {
+					removeContext7Consent();
+					removeContext7Launcher();
+				},
+				function () {
+					accept.disabled = false;
+					cancel.disabled = false;
+					accept.textContent = 'Could not load Context7';
+				},
+			);
+		});
+
+		body.appendChild(title);
+		body.appendChild(paragraph1);
+		body.appendChild(paragraph2);
+		body.appendChild(paragraph3);
+		actions.appendChild(cancel);
+		actions.appendChild(accept);
+		dialog.appendChild(body);
+		dialog.appendChild(actions);
+		overlay.appendChild(dialog);
+		document.body.appendChild(overlay);
+	}
+
+	function attachContext7Launcher() {
+		removeContext7Launcher();
+		removeContext7Consent();
+
+		if (!shouldShowContext7Launcher()) {
+			return;
+		}
+
+		if (hasContext7Consent()) {
+			loadContext7Widget();
+			return;
+		}
+
+		var launcher = document.createElement('div');
+		launcher.className = 'context7-launcher';
+
+		var button = document.createElement('button');
+		button.className = 'context7-launcher__button';
+		button.type = 'button';
+		button.innerHTML =
+			'<svg class="context7-launcher__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 14.35 8.15 20 10.5 14.85 12.85 12.5 18 10.15 12.85 5 10.5 10.15 8.15 12 3Z" fill="currentColor"></path><path d="M18.5 3 19.32 4.68 21 5.5 19.32 6.32 18.5 8 17.68 6.32 16 5.5 17.68 4.68 18.5 3Z" fill="currentColor" opacity="0.72"></path><path d="M6 15 7.09 17.41 9.5 18.5 7.09 19.59 6 22 4.91 19.59 2.5 18.5 4.91 17.41 6 15Z" fill="currentColor" opacity="0.72"></path></svg><span>Enable AI</span>';
+
+		button.addEventListener('click', function () {
+			openContext7Consent(button);
+		});
+
+		launcher.appendChild(button);
+		document.body.appendChild(launcher);
+	}
+
+	window.addEventListener('DOMContentLoaded', attachContext7Launcher);
+
+	if (typeof document$ !== 'undefined' && document$.subscribe) {
+		document$.subscribe(function () {
+			attachContext7Launcher();
+		});
+	}
+</script>
+{% endblock %} {% block outdated %} You're not viewing the latest version.
+<a href="{{ '../' ~ base_url }}">
+	<strong>Click here to go to latest.</strong>
+</a>
 {% endblock %}
