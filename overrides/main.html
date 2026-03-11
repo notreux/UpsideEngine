@@ -250,6 +250,36 @@
 		}
 	}
 
+	function attachContext7WidgetKeyguard() {
+		var widget = document.getElementById('context7-widget');
+
+		if (!widget || widget.dataset.keyguardAttached === 'true') {
+			return;
+		}
+
+		widget.dataset.keyguardAttached = 'true';
+		widget.addEventListener('keydown', function (event) {
+			event.stopPropagation();
+		});
+	}
+
+	function watchContext7Widget() {
+		attachContext7WidgetKeyguard();
+
+		if (window.context7WidgetObserver) {
+			return;
+		}
+
+		window.context7WidgetObserver = new MutationObserver(function () {
+			attachContext7WidgetKeyguard();
+		});
+
+		window.context7WidgetObserver.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
+	}
+
 	function attachContext7DisableButton() {
 		removeContext7DisableButton();
 
@@ -279,6 +309,7 @@
 
 	function loadContext7Widget(onLoaded, onError) {
 		if (document.querySelector('script[data-context7-widget="true"]')) {
+			watchContext7Widget();
 			if (onLoaded) {
 				onLoaded();
 			}
@@ -292,6 +323,7 @@
 		script.async = true;
 
 		script.addEventListener('load', function () {
+			watchContext7Widget();
 			if (onLoaded) {
 				onLoaded();
 			}
