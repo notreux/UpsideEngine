@@ -11,7 +11,7 @@ Is the velocity applied to the object
   
 ## [Vector2](Vector2.md) Acceleration
 Defines the rate of change of velocity for the physical object, initially set to zero.
-	
+  
 ## [table](table.md) Collisions 
 This table stores all the active collisions
    
@@ -48,6 +48,21 @@ A number which indicates the collision group of the object, the object only can 
 ## [number](number.md) Friction
 Determines the resistance to sliding motion between this object and another surface, influencing how quickly it slows down.
   
+## [number](number.md) AngularVelocity
+The rotational speed of the object in degrees per second.
+  
+## [number](number.md) AngularFriction
+Determines how quickly the angular velocity decays over time.
+  
+## [number](number.md) AngularScale
+Multiplier for collision-generated spin. Defaults to 0 (disabled). Set to 1 or higher to enable angular physics.
+  
+## [number](number.md) AngularStiffness
+How strongly the object snaps to stable angles when grounded. Higher = faster settling, lower = more wobbly. Set to 0 to disable auto-stabilization.
+  
+## [number](number.md) Torque
+The rotational force applied to the object this frame.
+	
 ## [boolean](boolean.md) Anchored
 This property defines if the object should have physics or not
   
@@ -65,6 +80,9 @@ This property defines if the object is going to have physics and collisions or n
 # Methods
 ## [void](PhysicalObject.md) ApplyForce(`force: Vector2`) 
  Applies force to the object
+	
+## [void](PhysicalObject.md) ApplyTorque(`torque: number`) 
+ Applies torque to the object (rotational force in degrees/s²)
 	
 
 

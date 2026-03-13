@@ -47,9 +47,8 @@ Defines if the character is going to be seen from the side or from the top
 ## [number](number.md) StickSensibility
 This is the sensibility of the sticks in mobile and in game controllers
   
-## [Character](Character.md) Character
-This is the character which is going to be tracked by the camera
-  
+## [CharacterDestroyConnection](CharacterDestroyConnection.md) CharacterDestroyConnection
+
 ## [table](table.md) Configs 
 This table stores the default controllers
 	 
