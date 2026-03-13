@@ -10,7 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ok-nick/setup-aftman@v0.4.2
+      - name: Install aftman
+        run: |
+          curl -L https://github.com/LPGhatguy/aftman/releases/download/v0.3.0/aftman-0.3.0-linux-x86_64.zip -o aftman.zip
+          unzip aftman.zip -d aftman-bin
+          ./aftman-bin/aftman self-install
+          echo "$HOME/.aftman/bin" >> $GITHUB_PATH
 
       - run: aftman install
 
