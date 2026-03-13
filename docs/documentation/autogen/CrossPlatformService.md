@@ -125,7 +125,7 @@ This table stores the default controllers
 
 
 # Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
+|<div style="width:100%; max-size: 100%">Name</div>|<div style="width:100%; max-size: 100%">Description</div>|
 |---|---|
 |InputBegin|Params -> [UpsideEngineInput](/documentation/datatypes/UpsideEngineInput.html) <br>  Fired when one of the keys/sticks in the configuration is pressed/moved<br>  |
 |InputChange|Params -> [UpsideEngineInput](/documentation/datatypes/UpsideEngineInput.html) <br>  Fired when the an active input change its value, for example the position of a stick<br>  |

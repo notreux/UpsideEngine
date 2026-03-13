@@ -21,6 +21,9 @@ This is the Scene Id of the camera
 ## [number](number.md) Smoothness
 This property defines the smoothness with which the camera will move, it only works in a range between 0 and 1
 
+## [Subject](Subject.md) Subject
+This property defines the object which is going to follow the camera
+  
 ## [SubjectDestroyConnection](SubjectDestroyConnection.md) SubjectDestroyConnection
 
 

@@ -12,6 +12,9 @@ This is the ParticleEnvironment of the scene
 ## [boolean](boolean.md) DistanceFading
 The volume will depend on the player distance
 
+## [Subject](Subject.md) Subject
+This table stores all the objects in the scene
+  
 ## [SubjectDestroyConnection](SubjectDestroyConnection.md) SubjectDestroyConnection
 
 

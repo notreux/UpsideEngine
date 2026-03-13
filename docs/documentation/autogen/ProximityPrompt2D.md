@@ -51,7 +51,7 @@ A table containing the positions(as UDim2) of the label, this will be used to ad
 There is no methods for this class
 
 # Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
+|<div style="width:100%; max-size: 100%">Name</div>|<div style="width:100%; max-size: 100%">Description</div>|
 |---|---|
 |Triggered|Fired when the proximity prompt is triggered. This occurs when the player begins interacting with the prompt.<br>  |
 |TriggerEnded|Fired when the proximity prompt interaction ends. This occurs when the player releases the interaction.<br>|

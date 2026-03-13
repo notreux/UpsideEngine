@@ -87,7 +87,7 @@ This property defines if the object is going to have physics and collisions or n
 
 
 # Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
+|<div style="width:100%; max-size: 100%">Name</div>|<div style="width:100%; max-size: 100%">Description</div>|
 |---|---|
 |Collision|Params -> [PhysicalObject](PhysicalObject.md)<br>  This event is fired when the object collides with other object<br>  |
 |CollisionEnd|Params -> [PhysicalObject](PhysicalObject.md)<br>  This event is fired when the object finish the collision with other object<br>|

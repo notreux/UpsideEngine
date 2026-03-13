@@ -48,7 +48,7 @@ Dictionary storing cached object data to optimize replication by detecting chang
 
 
 # Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
+|<div style="width:100%; max-size: 100%">Name</div>|<div style="width:100%; max-size: 100%">Description</div>|
 |---|---|
 |ReplicationRequest|Params -> [Request](Request.md) <br>  Fired when a request is received by the client<br>|
 

@@ -30,7 +30,7 @@ The UserId of the client which sent the request if exists
 
 
 # Events
-|<div style="width:20%; max-size: 20%">Name</div>|<div style="width:80%; max-size: 80%">Description</div>|
+|<div style="width:100%; max-size: 100%">Name</div>|<div style="width:100%; max-size: 100%">Description</div>|
 |---|---|
 |Build|Params -> [BaseObject](BaseObject.md)<br>  Fired when a request is accepted and the object to be replicated is being built<br>|
 
