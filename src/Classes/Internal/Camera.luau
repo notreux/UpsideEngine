@@ -45,8 +45,10 @@ function camera.new(scene: Scene): Camera
 	self.Scene = scene.Id
 	self.Smoothness = 0.7
 	self.Instance = scene.Instance:WaitForChild("GameFrame")
+	local defaultSubject = character.new()
+	self.Subject = defaultSubject
 	self.SubjectDestroyConnection = nil
-	bindSubject(self, character.new())
+	bindSubject(self, defaultSubject)
 
 	return setmetatable(self, camera)
 end

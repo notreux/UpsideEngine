@@ -50,8 +50,10 @@ function sound.new(): Sound
 	self.Range = 1000
 	self.MaxVolume = 1
 	self.DistanceFading = true
+	local defaultSubject = character.new()
+	self.Subject = defaultSubject
 	self.SubjectDestroyConnection = nil
-	bindSubject(self, character.new())
+	bindSubject(self, defaultSubject)
 
 	return setmetatable(self, sound)
 end

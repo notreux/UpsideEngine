@@ -138,6 +138,11 @@ This property defines the smoothness with which the camera will move, it only wo
 */
 Smoothness: number;
 /**
+This property defines the object which is going to follow the camera
+  
+*/
+Subject: Subject;
+/**
 
 */
 SubjectDestroyConnection: SubjectDestroyConnection;
@@ -1230,6 +1235,11 @@ The volume will depend on the player distance
 
 */
 DistanceFading: boolean;
+/**
+This table stores all the objects in the scene
+  
+*/
+Subject: Subject;
 /**
 
 */
