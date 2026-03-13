@@ -19,33 +19,38 @@ Some Upside Engine features may not work if you don't have [EditableImages](http
 
 ## Summary
 
-This update focuses on runtime stability. It hardens character-related trackers during destroy/respawn flows, fixes a few core regressions caught by the test suite, and makes networking more resilient to stale request state on the server.
+Major physics overhaul focused on performance and reliability. Introduces angular velocity, optimizes the collision pipeline, and fixes several physics behavioral issues.
 
 **Key Features:**
-- Safer character and subject lifecycle handling
-- Test-driven fixes for connection waits, lighting setup, and scene raycasts
-- More robust server networking request cache handling
+- Angular velocity system with collision-generated spin and configurable properties
+- Adaptive spatial hash grid for broad-phase collision optimization
+- Fixed-timestep physics loop with accumulator pattern
+- Improved collision response and jump reliability
 
 ---
 
 ### Added
 
-- Automatic cleanup hooks when tracked characters or subjects are destroyed in runtime services.
-- Root-level `context7.json` support for the Upside Engine Context7 entry.
+- Angular physics properties: `AngularVelocity`, `AngularFriction`, `AngularScale`, `AngularStiffness`, `Torque`.
+- `ApplyTorque()` method on `PhysicalObject`.
+- Spatial hash grid for O(n) broad-phase collision detection (activates at 30+ objects).
+- Continuous collision detection via velocity subdivision.
+- Spring-damper stabilization system that snaps objects to stable angles when grounded.
 
 ### Changed
 
-- `CrossPlatformService`, camera subjects, and sound subjects now release destroyed references automatically.
-- Runtime trackers now tolerate missing `Character`, `Subject`, or backing `Instance` values during respawn gaps.
-- Lighting pixel startup no longer blocks on a nested `task.wait()` during tests.
-
-### Removed
-- No removals in this release.
+- Physics loop now runs at a fixed 250Hz timestep with accumulator cap to prevent death spiral on lag spikes.
+- Camera and parallax trackers moved to fixed-rate loop for smoother visuals.
+- Collision corrections use min/max per direction to prevent wall-squeeze flying.
+- Velocity corrections clamped to never reverse direction.
+- Jump uses direct velocity impulse instead of `ApplyForce` for reliability.
+- GJK/EPA collision modules now use `--!native` and `--!optimize 2` for native compilation.
+- Pre-allocated table buffers to reduce GC pressure.
 
 ### Fixed
 
-- Fixed runtime errors from `CrossPlatformTracker`, `ProximityPromptTracker`, `ParallaxTracker`, and `SoundTracker` when characters are destroyed and respawned.
-- Fixed `Connection:Wait()` timeout behavior so timed waits resume correctly and tests do not hang.
-- Fixed `Scene:Raycast()` iterating over `nil` when no filter list is provided.
-- Fixed server networking errors caused by stale `RequestsCache` entries and orphaned pending requests.
+- Objects flying when squeezed between walls or jumping against walls.
+- Jump pausing at apex due to incorrect `IsGrounded` persistence.
+- Performance regression from spatial grid table allocation (resolved with table reuse).
+- Character visual judder caused by camera tracking at different rate than physics.
 
