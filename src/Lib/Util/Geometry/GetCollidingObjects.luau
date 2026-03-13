@@ -1,15 +1,24 @@
+--!native
+--!optimize 2
 local checkCollision = require(script.Parent.CheckCollision)
-local getDistance = require(script.Parent.Parent.Math.GetDistance)
 
-local function isFar(object, other)
-	local osize = object.AbsoluteSize * 2
-	local msize = other.AbsoluteSize * 2
+local function isFar(objectA, objectB)
+	local a = objectA.Instance
+	local b = objectB.Instance
+	local scaleA = objectA.HitboxScale
+	local scaleB = objectB.HitboxScale
 
-	local distance = getDistance(object.AbsolutePosition, other.AbsolutePosition)
-	local x = osize.X + msize.X
-	local y = osize.Y + msize.Y
+	local aw, ah = a.AbsoluteSize.X * scaleA, a.AbsoluteSize.Y * scaleA
+	local bw, bh = b.AbsoluteSize.X * scaleB, b.AbsoluteSize.Y * scaleB
 
-	return distance > x * x and distance > y * y
+	local rA = math.sqrt(aw * aw + ah * ah) * 0.5
+	local rB = math.sqrt(bw * bw + bh * bh) * 0.5
+
+	local dx = (a.AbsolutePosition.X + a.AbsoluteSize.X * 0.5) - (b.AbsolutePosition.X + b.AbsoluteSize.X * 0.5)
+	local dy = (a.AbsolutePosition.Y + a.AbsoluteSize.Y * 0.5) - (b.AbsolutePosition.Y + b.AbsoluteSize.Y * 0.5)
+	local sumR = rA + rB
+
+	return dx * dx + dy * dy > sumR * sumR
 end
 
 local function shouldSkip(object, other)
@@ -19,7 +28,7 @@ local function shouldSkip(object, other)
 		or object.CollisionBlacklist[other.Id]
 end
 
-function toVector3(v2)
+local function toVector3(v2)
 	return Vector3.new(v2.X, v2.Y, 0)
 end
 
@@ -37,8 +46,8 @@ local function getRotatedArea(instance, area, centre)
 
 		-- stylua: ignore start
 		vertex = Vector3.new(
-			centre.X + XDistance * cos - YDistance * sin, 
-			centre.Y + XDistance * sin + YDistance * cos, 
+			centre.X + XDistance * cos - YDistance * sin,
+			centre.Y + XDistance * sin + YDistance * cos,
 			0
 		)
 		-- stylua: ignore end
@@ -58,10 +67,12 @@ local function getObjectData(object, velocity)
 	local centre = position + size * 0.5
 	local radius = if object.Shape == "circle" then (size.X / 2) * object.HitboxScale else nil
 
+	local hitboxSize = size * object.HitboxScale
+	local alignment = size * (1 - math.clamp(object.HitboxScale, 0, 1)) * 0.5
+	local offset = position + alignment
+
 	for i, vertex in object.Hitbox do
-		local hitboxSize = size * object.HitboxScale
-		local alignment = size * (1 - math.clamp(object.HitboxScale, 0, 1)) * 0.5
-		area[i] = position + alignment + hitboxSize * vertex
+		area[i] = offset + hitboxSize * vertex
 	end
 
 	return {
@@ -77,15 +88,12 @@ return function(objects, object, velocity)
 	local objectData = getObjectData(object, velocity)
 
 	for _, other in objects do
-		local isFar = isFar(object.Instance, other.Instance)
-		local collision, otherData, moveVector = nil, nil, Vector2.zero
-
-		if shouldSkip(object, other) or isFar then
+		if shouldSkip(object, other) or isFar(object, other) then
 			continue
 		end
 
-		otherData = getObjectData(other, Vector2.zero)
-		collision, moveVector = checkCollision(objectData, otherData)
+		local otherData = getObjectData(other, Vector2.zero)
+		local collision, moveVector = checkCollision(objectData, otherData)
 
 		if not collision then
 			continue

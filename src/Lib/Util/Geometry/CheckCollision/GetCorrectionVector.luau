@@ -1,3 +1,5 @@
+--!native
+--!optimize 2
 local supportFn = require(script.Parent.Support)
 
 local function getEdge(simplex)

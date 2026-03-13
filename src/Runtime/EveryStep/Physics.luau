@@ -1,8 +1,16 @@
+--!native
+--!optimize 2
 local upsideEngine = script.Parent.Parent.Parent
 local ToUDim2 = require(script.Parent.Parent.Parent.Lib.Util.DataType.ToUDim2)
 local getCollidingObjects = require(script.Parent.Parent.Parent.Lib.Util.Geometry.GetCollidingObjects)
+local SpatialGrid = require(script.Parent.Parent.Parent.Lib.Util.Geometry.SpatialGrid)
 local crossPlatformService = require(script.Parent.Parent.Parent.Services.CrossPlatformService)
 local util = require(upsideEngine.Lib.Util)
+
+local MAX_ITERATIONS = 4
+local grid = SpatialGrid.new(256)
+local nearbyBuffer = {}
+local seenBuffer = {}
 
 local function emit(self, meta, active)
 	local oldState = self.Collisions[meta.Id]
@@ -35,6 +43,9 @@ function applyBuoyancy(scene, object, fluid)
 	object:ApplyForce(dragForce)
 end
 
+local GRAVITY_SCALE = 100
+local FORCE_SCALE = 10
+
 local function update(scene, object, deltaTime)
 	if object.Anchored then
 		return
@@ -43,26 +54,29 @@ local function update(scene, object, deltaTime)
 	local sideView = crossPlatformService.SideView
 	local mass = math.max(object.Mass, 1)
 
-	object.Acceleration = scene.Gravity * object.Mass
-	object.Acceleration += ((object.Force * 10) * (1 / mass))
+	object.Acceleration = scene.Gravity * GRAVITY_SCALE + (object.Force * FORCE_SCALE) / mass
 	object.Velocity += object.Acceleration * deltaTime
 
-	local velocity = object.Velocity
-	local moveVector = velocity * deltaTime
-
 	local friction = math.max(1 - object.Friction * deltaTime, 0)
-	local vx = velocity.X * friction
-	local vy = if sideView then velocity.Y else velocity.Y * friction
-
-	object.Force = Vector2.zero
+	local vx = object.Velocity.X * friction
+	local vy = if sideView then object.Velocity.Y else object.Velocity.Y * friction
 	object.Velocity = Vector2.new(vx, vy)
 
-	return moveVector
+	object.Force = Vector2.zero
+
+	return object.Velocity * deltaTime
 end
 
+local GRID_THRESHOLD = 30
+local objects = {}
+local freefall = {}
+local collisionsBuffer = {}
+
 return function(scene, deltaTime)
-	local objects = {}
-	local freefall = {}
+	table.clear(objects)
+	table.clear(freefall)
+	local objectCount = 0
+	local useGrid = false
 
 	for index, object in scene.Objects do
 		if
@@ -80,28 +94,39 @@ return function(scene, deltaTime)
 
 		objects[index] = object
 		freefall[index] = object
+		objectCount += 1
+	end
+
+	useGrid = objectCount >= GRID_THRESHOLD
+	if useGrid then
+		grid:clear()
+		for _, object in objects do
+			grid:insert(object)
+		end
 	end
 
 	for _, object in freefall do
 		local x, y = 0, 0
 		local instance = object.Instance
 		local velocity = update(scene, object, deltaTime)
-		local iterations = (object.Velocity / instance.AbsoluteSize).Magnitude
-		iterations = math.round(1 + iterations * deltaTime * 10)
+		local absSize = instance.AbsoluteSize
+		local sizeMax = math.max(absSize.X, absSize.Y, 1)
+		local iterations = math.min(math.ceil(velocity.Magnitude / sizeMax), MAX_ITERATIONS)
+		iterations = math.max(iterations, 1)
 
-		local collisionCount, collisions = 0, {}
+		table.clear(collisionsBuffer)
+		local collisions = collisionsBuffer
 		local colliding = {}
+		local nearby = if useGrid then grid:query(object, nearbyBuffer, seenBuffer) else objects
 
-		for i = iterations, 1, -1 do
-			local vel = velocity / i
-			colliding = getCollidingObjects(objects, object, vel)
+		for i = 1, iterations do
+			local vel = velocity * (i / iterations)
+			colliding = getCollidingObjects(nearby, object, vel)
 
-			if #colliding < collisionCount then
-				velocity = velocity / (i + 1)
+			if #colliding > 0 then
+				velocity = vel
 				break
 			end
-
-			collisionCount = #colliding
 		end
 
 		for _, collision in colliding do
@@ -120,8 +145,8 @@ return function(scene, deltaTime)
 				continue
 			end
 
-			x = math.abs(mv.X) > math.abs(x) and mv.X or x
-			y = math.abs(mv.Y) > math.abs(y) and mv.Y or y
+			x += mv.X
+			y += mv.Y
 		end
 
 		for id in object.Collisions do
@@ -139,8 +164,8 @@ return function(scene, deltaTime)
 		end
 
 		local moveVector = Vector2.new(x, y)
-		instance.Position += ToUDim2(velocity - moveVector)
 		object.IsGrounded = y > 0
+		instance.Position += ToUDim2(velocity - moveVector)
 		object.Velocity -= moveVector
 	end
 end

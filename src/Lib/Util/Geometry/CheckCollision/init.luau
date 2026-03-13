@@ -1,3 +1,5 @@
+--!native
+--!optimize 2
 local getCorrectionVector = require(script.GetCorrectionVector)
 local support = require(script.Support)
 local handlers = require(script.Handlers)

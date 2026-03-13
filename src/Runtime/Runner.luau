@@ -16,32 +16,46 @@ end
 
 local t1 = os.clock()
 local FIXED_DELTA_TIME = 1 / 250
-
-local function everyStep(target)
-	local now = os.clock()
-	local deltaTime = now - t1
-
-	local accumulator = deltaTime
-	t1 = now
-
-	while accumulator >= FIXED_DELTA_TIME do
-		for _, scene in sceneManager.ActiveScenes do
-			for _, tracker in target do
-				tracker(scene, FIXED_DELTA_TIME)
-			end
-		end
-
-		accumulator -= FIXED_DELTA_TIME
-	end
-end
+local MAX_STEPS = 10
 
 if runService:IsRunning() then
-	local target = if runService:IsServer() --
-		then { trackers.Physics }
-		else trackers
+	local fixedNames = { Physics = true, CameraTracker = true, ParallaxTracker = true }
+	local fixedTarget = {}
+	local frameTarget = {}
+
+	if runService:IsServer() then
+		table.insert(fixedTarget, trackers.Physics)
+	else
+		for name, tracker in trackers do
+			if fixedNames[name] then
+				table.insert(fixedTarget, tracker)
+			else
+				table.insert(frameTarget, tracker)
+			end
+		end
+	end
 
 	runService.Heartbeat:Connect(function()
-		everyStep(target)
+		local now = os.clock()
+		local deltaTime = now - t1
+		t1 = now
+
+		local accumulator = math.min(deltaTime, FIXED_DELTA_TIME * MAX_STEPS)
+
+		while accumulator >= FIXED_DELTA_TIME do
+			for _, scene in sceneManager.ActiveScenes do
+				for _, tracker in fixedTarget do
+					tracker(scene, FIXED_DELTA_TIME)
+				end
+			end
+			accumulator -= FIXED_DELTA_TIME
+		end
+
+		for _, scene in sceneManager.ActiveScenes do
+			for _, tracker in frameTarget do
+				tracker(scene, deltaTime)
+			end
+		end
 	end)
 end
 

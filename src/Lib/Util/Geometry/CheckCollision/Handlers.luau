@@ -1,3 +1,5 @@
+--!native
+--!optimize 2
 local handlers = {}
 
 local function tripleProduct(a, b, c)

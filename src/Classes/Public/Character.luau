@@ -100,13 +100,16 @@ end
 	@link void.link
 }=]]
 
+local JUMP_SCALE = 10
+
 function character:Jump(jumpPower: number?)
 	if not self.IsGrounded then
 		return
 	end
 
-	jumpPower = (jumpPower or self.JumpPower) * self.Mass * 250
-	self:ApplyForce(-Vector2.new(0, jumpPower))
+	jumpPower = jumpPower or self.JumpPower
+	self.Velocity -= Vector2.new(0, jumpPower * JUMP_SCALE)
+	self.IsGrounded = false
 	self.IsJumping = true
 
 	task.defer(function()

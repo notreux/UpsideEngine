@@ -1,3 +1,5 @@
+--!native
+--!optimize 2
 return function(object, direction)
 	if object.shape == "circle" then
 		if direction.X == 0 and direction.Y == 0 then
