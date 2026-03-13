@@ -106,7 +106,7 @@ return function(scene, deltaTime)
 	end
 
 	for _, object in freefall do
-		local x, y = 0, 0
+		local posX, negX, posY, negY = 0, 0, 0, 0
 		local instance = object.Instance
 		local velocity = update(scene, object, deltaTime)
 		local absSize = instance.AbsoluteSize
@@ -145,8 +145,15 @@ return function(scene, deltaTime)
 				continue
 			end
 
-			x += mv.X
-			y += mv.Y
+			if mv.X > 0 then posX = math.max(posX, mv.X) else negX = math.min(negX, mv.X) end
+			if mv.Y > 0 then posY = math.max(posY, mv.Y) else negY = math.min(negY, mv.Y) end
+
+			if object.AngularScale ~= 0 and math.abs(mv.X) > math.abs(mv.Y) * 0.25 then
+				local vel = object.Velocity
+				local size = math.max(absSize.X, absSize.Y, 1)
+				local spin = (vel.X * mv.Y - vel.Y * mv.X) / size
+				object.AngularVelocity += spin * object.AngularScale * deltaTime * 12
+			end
 		end
 
 		for id in object.Collisions do
@@ -163,9 +170,33 @@ return function(scene, deltaTime)
 			continue
 		end
 
-		local moveVector = Vector2.new(x, y)
-		object.IsGrounded = y > 0
+		local moveVector = Vector2.new(posX + negX, posY + negY)
+		object.IsGrounded = moveVector.Y > 0
 		instance.Position += ToUDim2(velocity - moveVector)
-		object.Velocity -= moveVector
+
+		local vx, vy = object.Velocity.X, object.Velocity.Y
+		local cvx = math.clamp(moveVector.X, math.min(0, vx), math.max(0, vx))
+		local cvy = math.clamp(moveVector.Y, math.min(0, vy), math.max(0, vy))
+		object.Velocity -= Vector2.new(cvx, cvy)
+
+		local speed = object.Velocity.Magnitude
+		if speed > 5000 then
+			object.Velocity *= 5000 / speed
+		end
+
+		if object.AngularScale ~= 0 or object.Torque ~= 0 then
+			local mass = math.max(object.Mass, 1)
+			object.AngularVelocity += (object.Torque * FORCE_SCALE / mass) * deltaTime
+
+			if object.IsGrounded then
+				local target = math.round(instance.Rotation / 90) * 90
+				local offset = instance.Rotation - target
+				object.AngularVelocity -= offset * object.AngularStiffness * deltaTime
+			end
+
+			object.AngularVelocity *= math.max(1 - object.AngularFriction * deltaTime, 0)
+			instance.Rotation += object.AngularVelocity * deltaTime
+			object.Torque = 0
+		end
 	end
 end

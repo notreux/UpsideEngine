@@ -138,10 +138,9 @@ This property defines the smoothness with which the camera will move, it only wo
 */
 Smoothness: number;
 /**
-This property defines the object which is going to follow the camera
-  
+
 */
-Subject: Character;
+SubjectDestroyConnection: SubjectDestroyConnection;
 /**
 Gets the camera position
 	
@@ -775,7 +774,7 @@ Is the velocity applied to the object
 Velocity: Vector2;
 /**
 Defines the rate of change of velocity for the physical object, initially set to zero.
-	
+  
 */
 Acceleration: Vector2;
 /**
@@ -822,6 +821,31 @@ Determines the resistance to sliding motion between this object and another surf
 */
 Friction: number;
 /**
+The rotational speed of the object in degrees per second.
+  
+*/
+AngularVelocity: number;
+/**
+Determines how quickly the angular velocity decays over time.
+  
+*/
+AngularFriction: number;
+/**
+Multiplier for collision-generated spin. Defaults to 0 (disabled). Set to 1 or higher to enable angular physics.
+  
+*/
+AngularScale: number;
+/**
+How strongly the object snaps to stable angles when grounded. Higher = faster settling, lower = more wobbly. Set to 0 to disable auto-stabilization.
+  
+*/
+AngularStiffness: number;
+/**
+The rotational force applied to the object this frame.
+	
+*/
+Torque: number;
+/**
 This property defines if the object should have physics or not
   
 */
@@ -846,6 +870,11 @@ Applies force to the object
 	
 */
 ApplyForce(force: Vector2): null;
+/**
+Applies torque to the object (rotational force in degrees/s²)
+	
+*/
+ApplyTorque(torque: number): null;
 }
  
 
@@ -1202,10 +1231,9 @@ The volume will depend on the player distance
 */
 DistanceFading: boolean;
 /**
-This table stores all the objects in the scene
-  
+
 */
-Subject: Character;
+SubjectDestroyConnection: SubjectDestroyConnection;
 /**
 Sets the provided character as subject, if is provided a sound group, this will be the new sound group of the sound
 	
@@ -1474,10 +1502,9 @@ This is the sensibility of the sticks in mobile and in game controllers
 */
 StickSensibility: number;
 /**
-This is the character which is going to be tracked by the camera
-  
+
 */
-Character: Character;
+CharacterDestroyConnection: CharacterDestroyConnection;
 /**
 This table stores the default controllers
 	

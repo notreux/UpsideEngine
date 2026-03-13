@@ -28,6 +28,11 @@ function physicalObject.new(): PhysicalObject
 	self.HitboxScale = 1
 	self.CollisionGroup = 0
 	self.Friction = 4
+	self.AngularVelocity = 0
+	self.AngularFriction = 12
+	self.AngularScale = 0
+	self.AngularStiffness = 1500
+	self.Torque = 0
 	self.Anchored = true
 	self.CanCollide = true
 	self.IsGrounded = false
@@ -43,6 +48,15 @@ end
 
 function physicalObject:ApplyForce(force: Vector2)
 	self.Force += force
+end
+
+--[[={
+	@desc Applies torque to the object (rotational force in degrees/s²)
+	@link PhysicalObject.md
+}=]]
+
+function physicalObject:ApplyTorque(torque: number)
+	self.Torque += torque
 end
 
 --[[={
@@ -66,6 +80,11 @@ end
 		@Shape Specifies the geometric shape of the physical object, which can be "circle" and "custom" for polygons, custom is has box hitbox by default, also is the default shape.
 		@Friction Determines the resistance to sliding motion between this object and another surface, influencing how quickly it slows down.
 		@Acceleration Defines the rate of change of velocity for the physical object, initially set to zero.
+		@AngularVelocity The rotational speed of the object in degrees per second.
+		@AngularFriction Determines how quickly the angular velocity decays over time.
+		@AngularScale Multiplier for collision-generated spin. Defaults to 0 (disabled). Set to 1 or higher to enable angular physics.
+		@AngularStiffness How strongly the object snaps to stable angles when grounded. Higher = faster settling, lower = more wobbly. Set to 0 to disable auto-stabilization.
+		@Torque The rotational force applied to the object this frame.
 	@events 
 		@Collision Params -> [PhysicalObject](PhysicalObject.md)
 		This event is fired when the object collides with other object
