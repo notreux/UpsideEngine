@@ -6,7 +6,7 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 # Roadmap
 ✅ Collision Masks
 ✅ Parallel lighting system
-⬜ Angular Velocity
+✅ Angular Velocity
 ✅ Parallax Objects
 ⬜ Beams
 ✅ Spotlights
@@ -15,7 +15,7 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 ### WARNING
 Some Upside Engine features may not work if you don't have [EditableImages](https://create.roblox.com/docs/es-es/reference/engine/classes/EditableImage) enabled in your game
 
-# Changelog v3.1.2
+# Changelog v3.2.0
 
 ## Summary
 
