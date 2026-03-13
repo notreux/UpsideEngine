@@ -68,8 +68,8 @@ function character.new(): Character
 	self.Anchored = false
 	self.Health = 100
 	self.MaxHealth = 100
-	self.WalkSpeed = 50
-	self.JumpPower = 100
+	self.WalkSpeed = 150
+	self.JumpPower = 150
 	self.IsJumping = false
 
 	self:SetClassName(script.Name)
