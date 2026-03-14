@@ -175,9 +175,9 @@ return function(scene, deltaTime)
 		instance.Position += ToUDim2(velocity - moveVector)
 
 		local vx, vy = object.Velocity.X, object.Velocity.Y
-		local cvx = math.clamp(moveVector.X, math.min(0, vx), math.max(0, vx))
-		local cvy = math.clamp(moveVector.Y, math.min(0, vy), math.max(0, vy))
-		object.Velocity -= Vector2.new(cvx, cvy)
+		if moveVector.X * vx > 0 then vx = 0 end
+		if moveVector.Y * vy > 0 then vy = 0 end
+		object.Velocity = Vector2.new(vx, vy)
 
 		local speed = object.Velocity.Magnitude
 		if speed > 5000 then
