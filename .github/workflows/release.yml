@@ -17,7 +17,9 @@ jobs:
           ./aftman-bin/aftman self-install
           echo "$HOME/.aftman/bin" >> $GITHUB_PATH
 
-      - run: aftman install --trust
+      - run: |
+          aftman trust rojo-rbx/rojo
+          aftman install
 
       - run: rojo build default.project.json --output UpsideEngine.rbxm
 
