@@ -19,6 +19,7 @@ jobs:
 
       - run: |
           aftman trust rojo-rbx/rojo
+          aftman trust UpliftGames/wally
           aftman install
 
       - run: rojo build default.project.json --output UpsideEngine.rbxm
