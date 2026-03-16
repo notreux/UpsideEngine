@@ -15,6 +15,28 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 ### WARNING
 Some Upside Engine features may not work if you don't have [EditableImages](https://create.roblox.com/docs/es-es/reference/engine/classes/EditableImage) enabled in your game
 
+# Changelog v3.3.0
+
+## Summary
+
+Physics improvements focused on correctness and per-object control. Adds gravity scaling, mass-based collision response, and fixes raycast blacklist filtering.
+
+---
+
+### Added
+
+- `GravityScale` property on `PhysicalObject`. Multiplier for gravity per object (default `1`). Set to `0` to disable gravity (useful for projectiles, floating objects).
+
+### Changed
+
+- Collision response now distributes correction proportionally to mass. Heavier objects move less on impact, lighter objects move more. Falls back to 50/50 when both masses are zero.
+
+### Fixed
+
+- Raycast blacklist mode now correctly accepts arrays (`{ objectA, objectB }`) in addition to dictionaries (`{ [id] = true }`), consistent with whitelist mode.
+
+---
+
 # Changelog v3.2.0
 
 ## Summary

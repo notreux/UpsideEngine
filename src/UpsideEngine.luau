@@ -5,7 +5,7 @@ local services = require(parent.Services)
 local upsideWorkspace = require(parent.AppData.Data).workSpace
 
 local upsideEngine = {}
-upsideEngine.Version = "v3.2.2"
+upsideEngine.Version = "v3.3.0"
 upsideEngine.Workspace = upsideWorkspace
 
 function upsideEngine.new(name: string)

@@ -3,6 +3,8 @@
 export type Dictionary<k, v> = { [k]: v }
 export type Array<v> = { [number]: v }
 export type ChromaticAberrationConnection = {}
+export type SubjectDestroyConnection = {}
+export type CharacterDestroyConnection = {}
 export type AuthorityType = "Server" | "Client"
 
 export type Event = {

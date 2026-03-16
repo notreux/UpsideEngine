@@ -3,6 +3,8 @@
 export type Dictionary<k, v> = { [k]: v }
 export type Array<v> = { [number]: v }
 export type ChromaticAberrationConnection = {}
+export type SubjectDestroyConnection = {}
+export type CharacterDestroyConnection = {}
 export type AuthorityType = "Server" | "Client"
 
 export type Event = {
@@ -126,7 +128,7 @@ Smoothness: number,
 --[[
 This property defines the object which is going to follow the camera
   ]]
-Subject: Subject,
+Subject: Character,
 --[[
 ]]
 SubjectDestroyConnection: SubjectDestroyConnection,
@@ -1037,7 +1039,7 @@ DistanceFading: boolean,
 --[[
 This table stores all the objects in the scene
   ]]
-Subject: Subject,
+Subject: Character,
 --[[
 ]]
 SubjectDestroyConnection: SubjectDestroyConnection,

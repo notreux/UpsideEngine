@@ -141,7 +141,7 @@ Smoothness: number;
 This property defines the object which is going to follow the camera
   
 */
-Subject: Subject;
+Subject: Character;
 /**
 
 */
@@ -1244,7 +1244,7 @@ DistanceFading: boolean;
 This table stores all the objects in the scene
   
 */
-Subject: Subject;
+Subject: Character;
 /**
 
 */
