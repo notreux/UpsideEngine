@@ -154,6 +154,15 @@ function scene:Raycast(info: Raycast2dParams): Raycast2dResult
 
 	local from, to = info.From, info.To
 	info.List = info.List or {}
+
+	local blacklistSet
+	if isBlackList then
+		blacklistSet = {}
+		for _, obj in info.List do
+			blacklistSet[obj.Id] = true
+		end
+	end
+
 	local targetList = isBlackList and self.Objects or info.List
 
 	from = Vector3.new(from.X, from.Y)
@@ -169,7 +178,7 @@ function scene:Raycast(info: Raycast2dParams): Raycast2dResult
 	end
 
 	for _, object in targetList do
-		if isBlackList and info.List[object.Id] or not object:IsA("PhysicalObject") then
+		if isBlackList and blacklistSet[object.Id] or not object:IsA("PhysicalObject") then
 			continue
 		end
 
