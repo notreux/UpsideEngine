@@ -37,7 +37,10 @@ This the CollisionMask of the object
 Specifies the geometric shape of the physical object, which can be "circle" and "custom" for polygons, custom is has box hitbox by default, also is the default shape.
   
 ## [number](number.md) Mass
-The object mass
+The object mass, also affects collision response distribution between objects
+  
+## [number](number.md) GravityScale
+Multiplier for gravity. Defaults to 1. Set to 0 to disable gravity for this object
   
 ## [number](number.md) HitboxScale
 Change this property to change the hitbox size, the default value is 1
