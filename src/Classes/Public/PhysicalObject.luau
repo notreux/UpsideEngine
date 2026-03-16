@@ -25,6 +25,7 @@ function physicalObject.new(): PhysicalObject
 
 	self.Shape = "Custom"
 	self.Mass = 100
+	self.GravityScale = 1
 	self.HitboxScale = 1
 	self.CollisionGroup = 0
 	self.Friction = 4
@@ -67,7 +68,8 @@ end
 		```lua
 		CollisionBlacklist[object.Id] = true
 		```
-		@Mass The object mass
+		@Mass The object mass, also affects collision response distribution between objects
+		@GravityScale Multiplier for gravity. Defaults to 1. Set to 0 to disable gravity for this object
 		@CollisionGroup A number which indicates the collision group of the object, the object only can collide with other objects with the same CollisionGroup
 		@Anchored This property defines if the object should have physics or not
 		@CanCollide This property defines if the object can collide with other objects

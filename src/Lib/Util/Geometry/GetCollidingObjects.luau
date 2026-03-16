@@ -99,7 +99,9 @@ return function(objects, object, velocity)
 			continue
 		end
 
-		moveVector *= if other.Anchored then 1 else 0.5
+		local totalMass = object.Mass + other.Mass
+		local ratio = if other.Anchored then 1 elseif totalMass == 0 then 0.5 else other.Mass / totalMass
+		moveVector *= ratio
 		velocity -= moveVector
 		objectData = getObjectData(object, velocity)
 

@@ -806,10 +806,15 @@ Specifies the geometric shape of the physical object, which can be "circle" and 
 */
 Shape: string;
 /**
-The object mass
+The object mass, also affects collision response distribution between objects
   
 */
 Mass: number;
+/**
+Multiplier for gravity. Defaults to 1. Set to 0 to disable gravity for this object
+  
+*/
+GravityScale: number;
 /**
 Change this property to change the hitbox size, the default value is 1
   
