@@ -158,8 +158,12 @@ function scene:Raycast(info: Raycast2dParams): Raycast2dResult
 	local blacklistSet
 	if isBlackList then
 		blacklistSet = {}
-		for _, obj in info.List do
-			blacklistSet[obj.Id] = true
+		for key, value in info.List do
+			if type(key) == "number" then
+				blacklistSet[value.Id] = true
+			else
+				blacklistSet[key] = true
+			end
 		end
 	end
 
