@@ -107,6 +107,7 @@ return function(scene, deltaTime)
 
 	for _, object in freefall do
 		local posX, negX, posY, negY = 0, 0, 0, 0
+		local grounded = false
 		local instance = object.Instance
 		local velocity = update(scene, object, deltaTime)
 		local absSize = instance.AbsoluteSize
@@ -146,7 +147,12 @@ return function(scene, deltaTime)
 			end
 
 			if mv.X > 0 then posX = math.max(posX, mv.X) else negX = math.min(negX, mv.X) end
-			if mv.Y > 0 then posY = math.max(posY, mv.Y) else negY = math.min(negY, mv.Y) end
+			if mv.Y > 0 then
+				posY = math.max(posY, mv.Y)
+				grounded = true
+			else
+				negY = math.min(negY, mv.Y)
+			end
 
 			if object.AngularScale ~= 0 and math.abs(mv.X) > math.abs(mv.Y) * 0.25 then
 				local vel = object.Velocity
@@ -171,7 +177,7 @@ return function(scene, deltaTime)
 		end
 
 		local moveVector = Vector2.new(posX + negX, posY + negY)
-		object.IsGrounded = moveVector.Y > 0
+		object.IsGrounded = grounded
 		instance.Position += ToUDim2(velocity - moveVector)
 
 		local vx, vy = object.Velocity.X, object.Velocity.Y
