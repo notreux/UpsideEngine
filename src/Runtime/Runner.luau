@@ -17,6 +17,7 @@ end
 local t1 = os.clock()
 local FIXED_DELTA_TIME = 1 / 250
 local MAX_STEPS = 10
+local accumulator = 0
 
 if runService:IsRunning() then
 	local fixedNames = { Physics = true, CameraTracker = true, ParallaxTracker = true }
@@ -40,7 +41,7 @@ if runService:IsRunning() then
 		local deltaTime = now - t1
 		t1 = now
 
-		local accumulator = math.min(deltaTime, FIXED_DELTA_TIME * MAX_STEPS)
+		accumulator = math.min(accumulator + deltaTime, FIXED_DELTA_TIME * MAX_STEPS)
 
 		while accumulator >= FIXED_DELTA_TIME do
 			for _, scene in sceneManager.ActiveScenes do
