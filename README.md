@@ -19,21 +19,19 @@ Some Upside Engine features may not work if you don't have [EditableImages](http
 
 ## Summary
 
-Physics improvements focused on correctness and per-object control. Adds gravity scaling, mass-based collision response, and fixes raycast blacklist filtering.
+Bugfix release focused on frame-rate independent physics, tiled-floor jump reliability, heartbeat overhead, and lighting resize behavior.
 
 ---
 
-### Added
-
-- `GravityScale` property on `PhysicalObject`. Multiplier for gravity per object (default `1`). Set to `0` to disable gravity (useful for projectiles, floating objects).
-
-### Changed
-
-- Collision response now distributes correction proportionally to mass. Heavier objects move less on impact, lighter objects move more. Falls back to 50/50 when both masses are zero.
-
 ### Fixed
 
-- Raycast blacklist mode now correctly accepts arrays (`{ objectA, objectB }`) in addition to dictionaries (`{ [id] = true }`), consistent with whitelist mode.
+- Fixed fixed-timestep scheduling dropping fractional frame time, which made physics run slow at high FPS caps.
+- Fixed intermittent jump failures on tiled/block floors by preserving grounded state from any upward solid collision.
+- Fixed proximity prompts repeatedly creating fade tweens while their visible state had not changed.
+- Fixed parallax tracker filtering so only tracked `Parallax` objects are processed.
+- Fixed lighting chunks keeping the initial Roblox screen resolution after automatic viewport resize.
+- Fixed light serialization mutating the original light table and made point/spot lights use the light center consistently.
+- Kept actor variable updates direct for lighting/shader data so actor-side serialization always receives raw scene objects.
 
 ---
 
