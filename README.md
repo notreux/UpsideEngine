@@ -15,7 +15,7 @@ Upside Engine It's a 2d framework that lets you create amazing games with ease. 
 ### WARNING
 Some Upside Engine features may not work if you don't have [EditableImages](https://create.roblox.com/docs/es-es/reference/engine/classes/EditableImage) enabled in your game
 
-# Changelog v3.3.0
+# Changelog v3.3.1
 
 ## Summary
 
