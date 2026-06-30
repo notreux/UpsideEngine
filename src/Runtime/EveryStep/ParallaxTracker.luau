@@ -7,7 +7,7 @@ return function(scene: Scene)
 	end
 
 	for _, parallax in scene.Objects.Content do
-		if not parallax:IsA("Parallax") and not parallax.Track then
+		if not parallax:IsA("Parallax") or not parallax.Track then
 			continue
 		end
 

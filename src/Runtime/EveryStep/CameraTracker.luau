@@ -11,13 +11,13 @@ return function(scene, deltaTime)
 	local camera = scene.Camera
 	local subject = camera.Subject
 
-	local resolution = workspace.CurrentCamera.ViewportSize
 	if not subject or not camera.FollowSubject then
 		return
 	elseif camera.Limits == Vector2.zero then
 		return camera:LookTo(subject)
 	end
 
+	local resolution = workspace.CurrentCamera.ViewportSize
 	local velocity = subject.Velocity * deltaTime
 	local limits = (camera.Limits / 2)
 	local target = (subject.Instance.AbsolutePosition + velocity) / resolution

@@ -1,5 +1,7 @@
 local TweenService = game:GetService("TweenService")
 local getDistance = require(script.Parent.Parent.Parent.Lib.Util.Math.GetDistance)
+local proximityPrompts = {}
+local proximityInRange = {}
 
 local function setProximityPromptVisible(proximityPrompt, visible)
 	local targetTransparency = if visible then 0 else 1
@@ -36,28 +38,29 @@ return function(scene)
 	local subject = scene.Camera.Subject
 	local maxDistance = math.huge
 	local targetProximityPrompt = nil
-	local proximityPrompts = {}
+	local promptCount = 0
+
+	table.clear(proximityPrompts)
+	table.clear(proximityInRange)
 
 	if not subject or not subject.Instance then
 		return
 	end
 
+	local subjectPos = subject.Instance.AbsolutePosition
 	for _, object in scene.Objects do
 		if not object:IsA("ProximityPrompt2D") or not object.Enabled or not object.Instance then
 			continue
 		end
 
-		local subjectPos = subject.Instance.AbsolutePosition
-		local objectPos = object.Instance and object.Instance.AbsolutePosition
-
+		local objectPos = object.Instance.AbsolutePosition
 		local range = object.Range and object.Range * object.Range
 		local distance = getDistance(subjectPos, objectPos)
-
 		local inRange = distance <= (range or math.huge)
-		table.insert(proximityPrompts, {
-			object = object,
-			inRange = inRange,
-		})
+
+		promptCount += 1
+		proximityPrompts[promptCount] = object
+		proximityInRange[object] = inRange
 
 		if distance < maxDistance and inRange then
 			maxDistance = distance
@@ -65,15 +68,17 @@ return function(scene)
 		end
 	end
 
-	for _, data in proximityPrompts do
-		local object = data.object
-		local show = if object ~= targetProximityPrompt then not object.ShowIfClosest else true
-		local closestChange = object.ShowIfClosest and object ~= targetProximityPrompt
-		object.InRange = data.inRange
-		object.IsClosest = object == targetProximityPrompt
+	for _, object in proximityPrompts do
+		local inRange = proximityInRange[object]
+		local isClosest = object == targetProximityPrompt
+		local wasVisible = object.InRange == true and (object.IsClosest or not object.ShowIfClosest) or false
+		local visible = inRange and (isClosest or not object.ShowIfClosest) or false
 
-		if object.inRange ~= data.inRange or closestChange then
-			setProximityPromptVisible(object, object.InRange and show)
+		object.InRange = inRange
+		object.IsClosest = isClosest
+
+		if wasVisible ~= visible then
+			setProximityPromptVisible(object, visible)
 		end
 	end
 end
