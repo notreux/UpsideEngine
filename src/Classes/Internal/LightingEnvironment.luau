@@ -23,6 +23,8 @@ function lightingEnvironment.new(scene: Scene): LightingEnvironment
 	self.ChunkColumns = 1
 	self.ChunkResolution = Vector2.new(64, 64)
 	self.__actrees = actrees.new()
+	self.__resizeQueued = false
+	self.__resizeConnection = nil
 
 	local gameFrame = scene.Instance:WaitForChild("GameFrame")
 	local instance = self.Instance
@@ -74,6 +76,7 @@ function lightingEnvironment:DrawPixels()
 			chunk = chunk,
 			chunkSize = chunkSize,
 			chunkResolution = chunkResolution,
+			chunkColumns = chunkCols,
 			screen = self.Instance,
 			screenSize = self.Instance.AbsoluteSize,
 		})
@@ -90,6 +93,22 @@ function lightingEnvironment:DrawPixels()
 			chkActor:Execute("build")
 			chkActor:ExecuteEveryStep("draw")
 		end
+	end)
+
+	if self.__resizeConnection then
+		self.__resizeConnection:Disconnect()
+	end
+
+	self.__resizeConnection = instance:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		if self.__resizeQueued then
+			return
+		end
+
+		self.__resizeQueued = true
+		task.defer(function()
+			self.__resizeQueued = false
+			self:UpdateScreen()
+		end)
 	end)
 end
 

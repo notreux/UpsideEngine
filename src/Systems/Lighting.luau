@@ -31,10 +31,11 @@ end
 
 @native
 local function isCircleOutsideChunk(chk, light, range)
-	return chk.position.X >= light.Position.X + range
-		or chk.position.X + chk.size.X <= light.Position.X - range
-		or chk.position.Y >= light.Position.Y + range
-		or chk.position.Y + chk.size.Y <= light.Position.Y - range
+	local centre = light.Center
+	return chk.position.X >= centre.X + range
+		or chk.position.X + chk.size.X <= centre.X - range
+		or chk.position.Y >= centre.Y + range
+		or chk.position.Y + chk.size.Y <= centre.Y - range
 end
 
 
@@ -50,8 +51,9 @@ end
 
 @native
 local function getRotatedAngle(light, origin)
-	local dx = origin.X - light.Position.X
-	local dy = origin.Y - light.Position.Y
+	local centre = light.Center
+	local dx = origin.X - centre.X
+	local dy = origin.Y - centre.Y
 
 	local angle = math.atan2(dy, dx)
 	local rotatedAngle = angle - light.Rotation
@@ -90,6 +92,7 @@ end
 local function drawSpotLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
+	local centre = light.Center
 	local angle = light.Angle * 0.5
 	local pixelCount = #chkData.content - 1
 
@@ -101,7 +104,7 @@ local function drawSpotLight(chkData, light, staticData)
 		local px = chkData.content[i + 1]
 		local position = px.position
 
-		local distance = getDistance(position, light.Position + light.Size * 0.5)
+		local distance = getDistance(position, centre)
 		local rotatedAngle = getRotatedAngle(light, position)
 
 		if distance > absRange or (rotatedAngle <= -angle or rotatedAngle >= angle) then
@@ -132,6 +135,7 @@ end
 local function drawPointLight(chkData, light, staticData)
 	local ambientTransparency = staticData.ambientTransparency
 	local absRange = light.AbsoluteRange
+	local centre = light.Center
 
 	if isCircleOutsideChunk(chkData, light, light.Range) then
 		return
@@ -142,7 +146,7 @@ local function drawPointLight(chkData, light, staticData)
 		local px = chkData.content[i + 1]
 		local position = px.position
 
-		local distance = getDistance(position, light.Position)
+		local distance = getDistance(position, centre)
 		if distance > absRange then
 			continue
 		end
@@ -195,6 +199,41 @@ local function buildCanvas(position, size, data)
 	return canvas, pixels
 end
 
+local function getChunkLayout(details)
+	local screenSize = details.screen.AbsoluteSize
+	if screenSize.X <= 0 or screenSize.Y <= 0 then
+		return 0, -1
+	end
+
+	local chunkColumns = math.max(details.chunkColumns or 1, 1)
+	local chunkSize = screenSize.X / chunkColumns
+	local chunkRows = math.floor(screenSize.Y / math.max(chunkSize, 1))
+
+	return chunkSize, chunkRows
+end
+
+local function updateChunk(chkData, row, details, lighting)
+	local chunkSize = details.chunkSize
+	local instance = chkData.instance
+
+	instance.Size = UDim2.fromOffset(chunkSize, chunkSize)
+	instance.Position = UDim2.fromOffset(details.col * chunkSize, row * chunkSize)
+	instance.ResampleMode = lighting.lightStyle or instance.ResampleMode
+
+	local size = Vector3.new(instance.AbsoluteSize.X, instance.AbsoluteSize.Y)
+	local position = Vector3.new(instance.AbsolutePosition.X, instance.AbsolutePosition.Y)
+	local canvas, pixels = buildCanvas(position, size, {
+		Canvas = chkData.canvas,
+		instance = instance,
+		resolution = lighting.chunkResolution or details.chunkResolution,
+	})
+
+	chkData.canvas = canvas
+	chkData.position = position
+	chkData.size = size
+	chkData.content = pixels
+end
+
 @native
 local function serializeChunk(chunks, chkData, lighting)
 	local resolution = chkData.canvas.image.Size
@@ -238,7 +277,8 @@ function lightingSystem.onSetData(data, name, value)
 		return value
 	end
 
-	for index, light in value do
+	local result = {}
+	for _, light in value do
 		local instance = light.Instance
 		local range = light.Range * light.Range
 
@@ -250,8 +290,12 @@ function lightingSystem.onSetData(data, name, value)
 			continue
 		end
 
-		value[index] = {
+		table.insert(result, {
 			Position = Vector3.new(absolutePosition.X, absolutePosition.Y),
+			Center = Vector3.new(
+				absolutePosition.X + absoluteSize.X * 0.5,
+				absolutePosition.Y + absoluteSize.Y * 0.5
+			),
 			Size = Vector3.new(absoluteSize.X, absoluteSize.Y),
 			Rotation = math.rad(light.Rotation),
 			Angle = math.rad(light.Angle),
@@ -262,40 +306,34 @@ function lightingSystem.onSetData(data, name, value)
 			Color = light.Color,
 			Inverted = light.Inverted,
 			Brightness = light.Brightness,
-		}
+		})
 	end
 
-	table.sort(value, sortf)
-	return value
+	table.sort(result, sortf)
+	return result
 end
 
 @native
 function lightingSystem.build(data)
+	if #data.pixels > 0 then
+		return lightingSystem.updateScreen(data)
+	end
+
 	local details = data.details
 	local chunk = details.chunk
-	local chunkSize = details.chunkSize
+	local chunkSize, chunkRows = getChunkLayout(details)
 
-	local chunkRows = math.floor(details.screenSize.Y / chunkSize)
+	details.chunkSize = chunkSize
+	details.screenSize = details.screen.AbsoluteSize
 	for row = 0, chunkRows do
 		local instance = chunk:Clone()
-		instance.Position = UDim2.fromOffset(details.col * chunkSize, row * chunkSize)
 		instance.Parent = details.screen
 
-		local size = Vector3.new(instance.AbsoluteSize.X, instance.AbsoluteSize.Y)
-		local position = Vector3.new(instance.AbsolutePosition.X, instance.AbsolutePosition.Y)
-
-		local canvas, pixels = buildCanvas(position, size, {
+		local chkData = {
 			instance = instance,
-			resolution = details.chunkResolution,
-		})
-
-		table.insert(data.pixels, {
-			instance = instance,
-			canvas = canvas,
-			position = position,
-			size = size,
-			content = pixels,
-		})
+		}
+		updateChunk(chkData, row, details, data.lighting)
+		table.insert(data.pixels, chkData)
 	end
 end
 
@@ -341,14 +379,38 @@ end
 @native
 function lightingSystem.updateScreen(data)
 	local lighting = data.lighting
-	for _, chkData in data.pixels do
-		local _, pixels = buildCanvas(chkData.position, chkData.size, {
-			instance = chkData.instance,
-			resolution = lighting.chunkResolution,
-		})
+	local details = data.details
+	local chunkSize, chunkRows = getChunkLayout(details)
+	local pixels = data.pixels
 
-		chkData.instance.ResampleMode = lighting.lightStyle
-		chkData.content = pixels
+	details.chunkSize = chunkSize
+	details.chunkResolution = lighting.chunkResolution or details.chunkResolution
+	details.screenSize = details.screen.AbsoluteSize
+
+	for index = #pixels, chunkRows + 2, -1 do
+		local chkData = pixels[index]
+		if chkData.canvas and chkData.canvas.image then
+			chkData.canvas.image:Destroy()
+		end
+
+		chkData.instance:Destroy()
+		pixels[index] = nil
+	end
+
+	for row = 0, chunkRows do
+		local index = row + 1
+		local chkData = pixels[index]
+
+		if not chkData then
+			local instance = details.chunk:Clone()
+			instance.Parent = details.screen
+			chkData = {
+				instance = instance,
+			}
+			pixels[index] = chkData
+		end
+
+		updateChunk(chkData, row, details, lighting)
 	end
 end
 
